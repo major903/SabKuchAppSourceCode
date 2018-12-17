@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.directory.AddReviewActivity">
+
+        <include layout="@layout/toolbar" />
+
+        <RatingBar
+            android:id="@+id/rb_rating"
+            style="@style/RatingBarBig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:rating="@integer/default_pro_rating"
+            android:stepSize="1"
+            android:theme="@style/RatingBarBig" />
+
+        <TextView
+            style="@style/TextViewBlackHeading2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_16dp"
+            android:layout_marginRight="@dimen/margin_16dp"
+            android:layout_marginTop="@dimen/margin_4dp"
+            android:text="@string/review" />
+
+        <EditText
+            android:id="@+id/et_review"
+            style="@style/EditTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_16dp"
+            android:layout_marginRight="@dimen/margin_16dp"
+            android:layout_marginTop="@dimen/margin_8dp"
+            android:hint="@string/review_hint"
+            android:inputType="textMultiLine"
+            android:padding="@dimen/margin_8dp" />
+
+    </LinearLayout>
+</layout>

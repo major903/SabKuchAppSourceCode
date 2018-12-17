@@ -1,0 +1,89 @@
+package vedam.subkuch.ui.directory;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import com.android.volley.Response;
+
+import vedam.subkuch.R;
+import vedam.subkuch.base.BaseListFragment;
+import vedam.subkuch.helpers.Constants;
+import vedam.subkuch.network.DataFetcher;
+import vedam.subkuch.ui.directory.models.Category;
+import vedam.subkuch.ui.directory.models.CategoryResponse;
+import vedam.subkuch.utils.UiUtil;
+
+public class DirectoryFragment extends BaseListFragment {
+
+    private Category[] categories;
+
+    public DirectoryFragment() {
+        // Required empty public constructor
+    }
+
+    public static DirectoryFragment newInstance() {
+        return new DirectoryFragment();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_directory, container, false);
+    }
+
+    public void onViewCreated(@NonNull View v, Bundle savedInstanceState) {
+        super.onViewCreated(v, savedInstanceState);
+        getCategories();
+    }
+
+    private void getCategories() {
+        UiUtil.showProgressDialog(context, R.string.please_wait);
+        DataFetcher.getCategories(context, onCategorySuccessListener, CategoryResponse.class, onErrorListener);
+
+    }
+
+    private Response.Listener<CategoryResponse> onCategorySuccessListener = response -> {
+
+        UiUtil.cancelProgressDialog();
+        if (response != null && response.getStatus().equals(Constants.TRUE)) {
+            categories = response.getCategoryResult().getCategories();
+            loadValues();
+        } else
+            UiUtil.showToast(context, getString(R.string.no_data));
+    };
+
+    private void loadValues() {
+
+        ArrayAdapter<Category> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1,
+                android.R.id.text1, categories);
+        setListAdapter(adapter);
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+
+
+        Intent intent = new Intent(getActivity(),
+                SubDirectoryActivity.class);
+        Category category = categories[position];
+        intent.putExtra(Constants.EXTRA_CATEGORY_ID,
+                category.getCategoryId());
+        intent.putExtra(Constants.EXTRA_CATEGORY_NAME, category.getName());
+        startActivity(intent);
+    }
+}

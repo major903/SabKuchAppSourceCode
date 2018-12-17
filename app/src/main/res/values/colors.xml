@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#012F6B</color>
+    <color name="colorPrimaryDark">#131521</color>
+    <color name="colorAccent">#009688</color>
+    <color name="red">#e53030</color>
+    <color name="colorAccent_translucent">#80cbc4</color>
+    <color name="green">#26c281</color>
+    <color name="white">#fafafa</color>
+    <color name="blue">#012F6B</color>
+    <color name="sky_blue">#1E90FF</color>
+    <color name="black">#131521</color>
+    <color name="black_translucent">#D9000000</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="light_grey">#efefef</color>
+    <color name="brown">#a53d00</color>
+    <color name="grey">#DAD9D9</color>
+    <color name="blue_light">#AA012F6B</color>
+    <color name="light_phone_book">#b9d1e3</color>
+    <color name="dark_phone_book">#91d8f7</color>
+    <color name="transparent">#00000000</color>
+</resources>

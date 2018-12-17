@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "644643405590",
+    "firebase_url": "https://subkuch-7e39b.firebaseio.com",
+    "project_id": "subkuch-7e39b",
+    "storage_bucket": "subkuch-7e39b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:644643405590:android:9a940f478d778194",
+        "android_client_info": {
+          "package_name": "vedam.subkuch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "644643405590-ar5ifrdc720in856n2b6lje0rksk27jb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vedam.subkuch",
+            "certificate_hash": "9965ff50a75f6bd8e69f98f7a36103c156f955d8"
+          }
+        },
+        {
+          "client_id": "644643405590-ajkbvlr2lf9v81t6rps57anmc2n1iukg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbJyPcubEVE_QvTqRps5vLq7329EcU8b0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "644643405590-ajkbvlr2lf9v81t6rps57anmc2n1iukg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_marginRight="@dimen/margin_16dp"
+        android:layout_marginBottom="@dimen/margin_4dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_job_title"
+            style="@style/TextViewBlackHeading2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/bt_remove"
+            android:text="@string/job_title" />
+
+        <Button
+            android:id="@+id/bt_remove"
+            style="@style/ButtonBlue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:minHeight="0dp"
+            android:padding="@dimen/margin_4dp"
+            android:text="@string/remove" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/et_job_title"
+        style="@style/EditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginRight="@dimen/margin_16dp"
+        android:layout_marginBottom="@dimen/margin_16dp"
+        android:hint="@string/job_title"
+        android:inputType="textMultiLine"
+        android:padding="@dimen/margin_4dp" />
+
+    <TextView
+        android:id="@+id/tv_job_requirement"
+        style="@style/TextViewBlackHeading2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginRight="@dimen/margin_16dp"
+        android:text="@string/job_requirement" />
+
+    <EditText
+        android:id="@+id/et_job_requirement"
+        style="@style/EditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_4dp"
+        android:layout_marginRight="@dimen/margin_16dp"
+        android:hint="@string/job_requirement"
+        android:inputType="textMultiLine"
+        android:padding="@dimen/margin_4dp" />
+</LinearLayout>

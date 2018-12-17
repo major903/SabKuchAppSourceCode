@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/myshape"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_8dp">
+
+    <TextView
+        android:id="@+id/tvName"
+        style="@style/TextViewBlackHeading2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        tools:text="@string/err" />
+
+    <TextView
+        android:id="@+id/tvDistance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        tools:text="@string/err" />
+
+    <LinearLayout
+        android:id="@+id/ll_reviews"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <RatingBar
+            android:id="@+id/rb_rating"
+            style="@style/RatingBarSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin_8dp"
+            android:rating="3"
+            android:theme="@style/RatingBarSmall" />
+
+        <TextView
+            android:id="@+id/tv_reviews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="12sp"
+            tools:text="@string/err" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:autoLink="phone"
+        android:textSize="14sp"
+        tools:text="@string/err" />
+
+    <TextView
+        android:id="@+id/tvMobile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:autoLink="phone"
+        android:textSize="14sp"
+        tools:text="@string/err" />
+
+    <TextView
+        android:id="@+id/tvEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        android:autoLink="email"
+        tools:text="@string/err" />
+
+    <TextView
+        android:id="@+id/tvWebsite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        tools:text="@string/err" />
+
+    <TextView
+        android:id="@+id/tvContactPerson"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        tools:text="@string/err" />
+
+
+    <RelativeLayout
+        android:id="@+id/rl_branches_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TextViewBlackHeading2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_8dp"
+            android:layout_toLeftOf="@+id/iv_triangle"
+            android:ellipsize="end"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:text="@string/branches" />
+
+        <ImageView
+            android:id="@+id/iv_triangle"
+            android:layout_width="@dimen/margin_24dp"
+            android:layout_height="@dimen/margin_24dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/baseline_expand_more_black_24dp" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>
