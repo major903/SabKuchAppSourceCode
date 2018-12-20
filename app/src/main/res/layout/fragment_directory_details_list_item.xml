@@ -15,14 +15,6 @@
         android:textColor="@color/black"
         tools:text="@string/err" />
 
-    <TextView
-        android:id="@+id/tvDistance"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#000000"
-        android:textSize="14sp"
-        tools:text="@string/err" />
-
     <LinearLayout
         android:id="@+id/ll_reviews"
         android:layout_width="match_parent"
@@ -50,11 +42,35 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tvDistance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        tools:text="@string/err" />
+
+    <TextView
+        android:id="@+id/tvDealingIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        tools:text="@string/err" />
+
+    <TextView
+        android:id="@+id/tv_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        tools:text="@string/err" />
+
+    <TextView
         android:id="@+id/tvPhone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
         android:autoLink="phone"
+        android:textColor="@color/black"
         android:textSize="14sp"
         tools:text="@string/err" />
 
@@ -62,8 +78,8 @@
         android:id="@+id/tvMobile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
         android:autoLink="phone"
+        android:textColor="@color/black"
         android:textSize="14sp"
         tools:text="@string/err" />
 
@@ -71,9 +87,9 @@
         android:id="@+id/tvEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
-        android:textSize="14sp"
         android:autoLink="email"
+        android:textColor="@color/black"
+        android:textSize="14sp"
         tools:text="@string/err" />
 
     <TextView
@@ -81,7 +97,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:autoLink="web"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         android:textSize="14sp"
         tools:text="@string/err" />
 
@@ -89,10 +105,33 @@
         android:id="@+id/tvContactPerson"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         android:textSize="14sp"
         tools:text="@string/err" />
 
+    <TextView
+        android:id="@+id/tvLine1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        tools:text="@string/err" />
+
+    <TextView
+        android:id="@+id/tvLine2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        tools:text="@string/err" />
+
+    <Button
+        android:id="@+id/bt_direction"
+        style="@style/ButtonBlue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_4dp"
+        android:text="@string/direction" />
 
     <RelativeLayout
         android:id="@+id/rl_branches_container"
@@ -109,9 +148,9 @@
             android:layout_marginRight="@dimen/margin_8dp"
             android:layout_toLeftOf="@+id/iv_triangle"
             android:ellipsize="end"
-            android:textColor="#000000"
-            android:textSize="14sp"
-            android:text="@string/branches" />
+            android:text="@string/branches"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
 
         <ImageView
             android:id="@+id/iv_triangle"

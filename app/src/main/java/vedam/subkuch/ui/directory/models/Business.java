@@ -6,59 +6,35 @@ import android.os.Parcelable;
 
 public class Business implements Parcelable {
 
-    private String BusinessImage;
+    private String Image;
 
     private String AvegrageOfRating;
 
-    private String Phone;
-
-    private Address[] Addresses;
-
-    private String Email;
-
-    private String ContactPerson;
-
-    private String Website;
+    private BusinessAddress[] Addresses;
 
     private Review[] Reviews;
-
-    private String Mobile;
 
     private String BusinessID;
 
     private String BusinessName;
 
-    private String Distance;
-
     protected Business(Parcel in) {
-        BusinessImage = in.readString();
+        Image = in.readString();
         AvegrageOfRating = in.readString();
-        Phone = in.readString();
-        Addresses = in.createTypedArray(Address.CREATOR);
-        Email = in.readString();
-        ContactPerson = in.readString();
-        Website = in.readString();
+        Addresses = in.createTypedArray(BusinessAddress.CREATOR);
         Reviews = in.createTypedArray(Review.CREATOR);
-        Mobile = in.readString();
         BusinessID = in.readString();
         BusinessName = in.readString();
-        Distance = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(BusinessImage);
+        dest.writeString(Image);
         dest.writeString(AvegrageOfRating);
-        dest.writeString(Phone);
         dest.writeTypedArray(Addresses, flags);
-        dest.writeString(Email);
-        dest.writeString(ContactPerson);
-        dest.writeString(Website);
         dest.writeTypedArray(Reviews, flags);
-        dest.writeString(Mobile);
         dest.writeString(BusinessID);
         dest.writeString(BusinessName);
-        dest.writeString(Distance);
     }
 
     @Override
@@ -78,16 +54,12 @@ public class Business implements Parcelable {
         }
     };
 
-    public String getDistance() {
-        return Distance;
-    }
-
     public String getBusinessImage() {
-        return BusinessImage;
+        return Image;
     }
 
-    public void setBusinessImage(String BusinessImage) {
-        this.BusinessImage = BusinessImage;
+    public void setBusinessImage(String Image) {
+        this.Image = Image;
     }
 
     public String getAvegrageOfRating() {
@@ -98,44 +70,12 @@ public class Business implements Parcelable {
         this.AvegrageOfRating = AvegrageOfRating;
     }
 
-    public String getPhone() {
-        return Phone;
-    }
-
-    public void setPhone(String Phone) {
-        this.Phone = Phone;
-    }
-
-    public Address[] getAddresses() {
+    public BusinessAddress[] getBusinessAddresses() {
         return Addresses;
     }
 
-    public void setAddresses(Address[] Addresses) {
-        this.Addresses = Addresses;
-    }
-
-    public String getEmail() {
-        return Email;
-    }
-
-    public void setEmail(String Email) {
-        this.Email = Email;
-    }
-
-    public String getContactPerson() {
-        return ContactPerson;
-    }
-
-    public void setContactPerson(String ContactPerson) {
-        this.ContactPerson = ContactPerson;
-    }
-
-    public String getWebsite() {
-        return Website;
-    }
-
-    public void setWebsite(String Website) {
-        this.Website = Website;
+    public void setBusinessAddresses(BusinessAddress[] businessAddresses) {
+        this.Addresses = businessAddresses;
     }
 
     public Review[] getReviews() {
@@ -144,14 +84,6 @@ public class Business implements Parcelable {
 
     public void setReviews(Review[] Reviews) {
         this.Reviews = Reviews;
-    }
-
-    public String getMobile() {
-        return Mobile;
-    }
-
-    public void setMobile(String Mobile) {
-        this.Mobile = Mobile;
     }
 
     public String getBusinessID() {
@@ -168,10 +100,5 @@ public class Business implements Parcelable {
 
     public void setBusinessName(String BusinessName) {
         this.BusinessName = BusinessName;
-    }
-
-    @Override
-    public String toString() {
-        return "ClassPojo [BusinessImage = " + BusinessImage + ", AvegrageOfRating = " + AvegrageOfRating + ", Phone = " + Phone + ", Address = " + Addresses + ", Email = " + Email + ", ContactPerson = " + ContactPerson + ", Website = " + Website + ", Reviews = " + Reviews + ", Mobile = " + Mobile + ", BusinessID = " + BusinessID + ", BusinessName = " + BusinessName + "]";
     }
 }

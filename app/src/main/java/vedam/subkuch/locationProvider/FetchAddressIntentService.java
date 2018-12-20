@@ -30,7 +30,7 @@ public class FetchAddressIntentService extends IntentService {
      * Creates an IntentService.  Invoked by your subclass's constructor.
      */
     public FetchAddressIntentService() {
-        super("Fetch Address");
+        super("Fetch BusinessAddress");
 
     }
 

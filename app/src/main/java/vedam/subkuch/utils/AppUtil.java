@@ -37,7 +37,7 @@ import java.util.TimeZone;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import vedam.subkuch.R;
-import vedam.subkuch.ui.directory.models.Address;
+import vedam.subkuch.ui.directory.models.BusinessAddress;
 
 public class AppUtil {
 
@@ -365,18 +365,16 @@ public class AppUtil {
             return text.toString();
     }
 
-    public static String getFormattedAddress(Address address) {
+    public static String getFormattedAddress(BusinessAddress businessAddress) {
 
         StringBuilder stringBuilder = new StringBuilder();
 
-        if (!TextUtils.isEmpty(address.getAddress1()))
-            stringBuilder.append(address.getAddress1());
-        if (!TextUtils.isEmpty(address.getAddress2()))
-            stringBuilder.append(", ").append(address.getAddress2());
-//        if(!TextUtils.isEmpty(address.getCity()))
-//            stringBuilder.append(", ").append(address.getCity());
-//        if(!TextUtils.isEmpty(address.getZipcode()))
-//            stringBuilder.append(" ").append(address.getZipcode());
+        if (!TextUtils.isEmpty(businessAddress.getAddress()))
+            stringBuilder.append(businessAddress.getAddress());
+        if (!TextUtils.isEmpty(businessAddress.getCity()))
+            stringBuilder.append(", ").append(businessAddress.getCity());
+        if (!TextUtils.isEmpty(businessAddress.getZipcode()))
+            stringBuilder.append(" ").append(businessAddress.getZipcode());
 
         return stringBuilder.toString();
     }

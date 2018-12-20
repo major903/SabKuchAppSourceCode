@@ -126,9 +126,9 @@ public enum LocationProvider implements GoogleApiClient.ConnectionCallbacks, Goo
     }
 
     /**
-     * Initializes the LocationProvider and then requests Address from the LocationProvider by connecting.
+     * Initializes the LocationProvider and then requests BusinessAddress from the LocationProvider by connecting.
      *
-     * @param locationCallbacks The activity which requests the Address and implements {@link LocationCallbacks}
+     * @param locationCallbacks The activity which requests the BusinessAddress and implements {@link LocationCallbacks}
      */
     public synchronized void requestAddress(LocationCallbacks locationCallbacks) {
         LogUtils.LOGD("LocationProvider", "address requested");

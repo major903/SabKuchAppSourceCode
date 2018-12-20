@@ -9,11 +9,86 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/tvDistance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        tools:text="@string/err" />
+
+    <TextView
+        android:id="@+id/tvDealingIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        tools:text="@string/err" />
+
+    <TextView
         android:id="@+id/tv_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:textColor="#000000"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        tools:text="@string/err" />
+
+    <TextView
+        android:id="@+id/tvPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="phone"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        tools:text="@string/err" />
+
+    <TextView
+        android:id="@+id/tvMobile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="phone"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        tools:text="@string/err" />
+
+    <TextView
+        android:id="@+id/tvEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="email"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        tools:text="@string/err" />
+
+    <TextView
+        android:id="@+id/tvWebsite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        tools:text="@string/err" />
+
+    <TextView
+        android:id="@+id/tvContactPerson"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        tools:text="@string/err" />
+
+    <TextView
+        android:id="@+id/tvLine1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        tools:text="@string/err" />
+
+    <TextView
+        android:id="@+id/tvLine2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
         android:textSize="14sp"
         tools:text="@string/err" />
 

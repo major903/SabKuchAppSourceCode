@@ -24,7 +24,7 @@ import vedam.subkuch.R;
 import vedam.subkuch.base.BaseFragment;
 import vedam.subkuch.databinding.FragmentDetailBinding;
 import vedam.subkuch.helpers.Constants;
-import vedam.subkuch.ui.directory.models.Address;
+import vedam.subkuch.ui.directory.models.BusinessAddress;
 import vedam.subkuch.ui.directory.models.Business;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.UiUtil;
@@ -82,12 +82,6 @@ public class DetailFragment extends BaseFragment {
                 .placeholder(R.drawable.grey).error(R.drawable.grey).into(fragmentDetailBinding.ivEvent);
 
         fragmentDetailBinding.tvName.setText(directoryDetail.getBusinessName());
-//        setText(fragmentDetailBinding.tvAddress, directoryDetail.getAddresses());
-        setText(fragmentDetailBinding.tvPhone, "Ph :", directoryDetail.getPhone());
-        setText(fragmentDetailBinding.tvMobile, "Mobile :", directoryDetail.getMobile());
-        setText(fragmentDetailBinding.tvEmail, "Email :", directoryDetail.getEmail());
-        setText(fragmentDetailBinding.tvWebsite, "Website :", directoryDetail.getWebsite());
-        setText(fragmentDetailBinding.tvContactPerson, "Contact Person :", directoryDetail.getContactPerson());
 
         if (!TextUtils.isEmpty(directoryDetail.getAvegrageOfRating()) && AppUtil.isNumeric(directoryDetail.getAvegrageOfRating())) {
             fragmentDetailBinding.rbRating.setVisibility(View.VISIBLE);
@@ -109,14 +103,14 @@ public class DetailFragment extends BaseFragment {
 
     private void setAddressContainer() {
 
-        Address[] addresses = directoryDetail.getAddresses();
+        BusinessAddress[] businessAddresses = directoryDetail.getBusinessAddresses();
 
-        for (Address address : addresses) {
-            String formattedAddress = AppUtil.getFormattedAddress(address);
+        for (BusinessAddress businessAddress : businessAddresses) {
+            String formattedAddress = AppUtil.getFormattedAddress(businessAddress);
             View view = getLayoutInflater().inflate(R.layout.fragment_directory_details_child_list_item, fragmentDetailBinding.llContainer, false);
             view.setBackground(null);
 
-            /*if (i != addresses.length - 1) {
+            /*if (i != businessAddresses.length - 1) {
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
                         (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 layoutParams.bottomMargin = AppUtil.dpToPx(context, 8);
@@ -124,14 +118,33 @@ public class DetailFragment extends BaseFragment {
             }*/
 
             TextView tvAddress = view.findViewById(R.id.tv_address);
+            TextView tvDistance = view.findViewById(R.id.tvDistance);
+            TextView tvDealingIn = view.findViewById(R.id.tvDealingIn);
+            TextView tvPhone = view.findViewById(R.id.tvPhone);
+            TextView tvMobile = view.findViewById(R.id.tvMobile);
+            TextView tvEmail = view.findViewById(R.id.tvEmail);
+            TextView tvWebsite = view.findViewById(R.id.tvWebsite);
+            TextView tvContactPerson = view.findViewById(R.id.tvContactPerson);
+            TextView tvLine1 = view.findViewById(R.id.tvLine1);
+            TextView tvLine2 = view.findViewById(R.id.tvLine2);
+
             UiUtil.setTextView(tvAddress, formattedAddress);
+            UiUtil.setTextView(tvDistance, businessAddress.getDistance());
+            setText(tvDealingIn, "Dealing In :", businessAddress.getDealingIn());
+            setText(tvPhone, "Ph :", businessAddress.getPhoneNo());
+            setText(tvMobile, "Mobile :", businessAddress.getMobile1());
+            setText(tvEmail, "Email :", businessAddress.getEmail());
+            setText(tvWebsite, "Website :", businessAddress.getWebsite());
+            setText(tvContactPerson, "Contact Person :", businessAddress.getContactPerson());
+            UiUtil.setTextView(tvLine1, businessAddress.getInfoLine1());
+            UiUtil.setTextView(tvLine2, businessAddress.getInfoLine2());
 
             Button btDirection = view.findViewById(R.id.bt_direction);
 
-            if (!TextUtils.isEmpty(address.getLatitude()) && !TextUtils.isEmpty(address.getLongitude())) {
+            if (!TextUtils.isEmpty(businessAddress.getLatitude()) && !TextUtils.isEmpty(businessAddress.getLongitude())) {
                 btDirection.setVisibility(View.VISIBLE);
                 btDirection.setOnClickListener(v -> {
-                    String webURL = "https://www.google.com/maps/dir/?api=1&" + "destination=" + address.getLatitude() + "%2C" + address.getLongitude();
+                    String webURL = "https://www.google.com/maps/dir/?api=1&" + "destination=" + businessAddress.getLatitude() + "%2C" + businessAddress.getLongitude();
                     AppUtil.openUrl(context, webURL);
                 });
             } else

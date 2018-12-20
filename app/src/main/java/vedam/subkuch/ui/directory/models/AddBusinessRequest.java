@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class AddBusinessRequest {
 
-    private String BusinessImage;
+    private String Image;
 
     private String Phone;
 
@@ -25,11 +25,11 @@ public class AddBusinessRequest {
     private String BusinessName;
 
     public String getBusinessImage() {
-        return BusinessImage;
+        return Image;
     }
 
-    public void setBusinessImage(String BusinessImage) {
-        this.BusinessImage = BusinessImage;
+    public void setBusinessImage(String Image) {
+        this.Image = Image;
     }
 
     public String getPhone() {
@@ -106,6 +106,6 @@ public class AddBusinessRequest {
 
     @Override
     public String toString() {
-        return "ClassPojo [BusinessImage = " + BusinessImage + ", Phone = " + Phone + ", BusinessAddresses = " + BusinessAddresses + ", SubCategoryID = " + SubCategoryID + ", Email = " + Email + ", ContactPerson = " + ContactPerson + ", Website = " + Website + ", CategoryID = " + CategoryID + ", Mobile = " + Mobile + ", BusinessName = " + BusinessName + "]";
+        return "ClassPojo [BusinessImage = " + Image + ", Phone = " + Phone + ", BusinessAddresses = " + BusinessAddresses + ", SubCategoryID = " + SubCategoryID + ", Email = " + Email + ", ContactPerson = " + ContactPerson + ", Website = " + Website + ", CategoryID = " + CategoryID + ", Mobile = " + Mobile + ", BusinessName = " + BusinessName + "]";
     }
 }

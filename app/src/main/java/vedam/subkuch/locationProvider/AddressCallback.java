@@ -8,7 +8,7 @@ import android.location.Address;
  */
 public interface AddressCallback {
     /**
-     * Called when user requests for an Address and address is found using {@link android.location.Geocoder}
+     * Called when user requests for an BusinessAddress and address is found using {@link android.location.Geocoder}
      *
      * @param googleAddress provides {@link Address}
      */

@@ -2,13 +2,13 @@
     <string name="app_name">Sabkuch</string>
 
     <string name="invalid_lat_long_used">Invalid latitude or longitude used</string>
-    <string name="no_address_found">Sorry, no address found</string>
+    <string name="no_address_found">Sorry, no businessAddress found</string>
     <string name="geocoder_not_available">Geocoder not available</string>
     <string name="select_one_pro">Please select one Pro from the list to get a quote</string>
     <string name="view_profile">View Profile</string>
     <string name="no_location_data_provided">No location data provided</string>
     <string name="service_not_available">Service not available</string>
-    <string name="allow_location_permission">SubKuch needs location permission to fetch your current location.</string>
+    <string name="allow_location_permission">SabKuch needs location permission to fetch your current location.</string>
     <string name="typeface_bold">avenir_regular_bold.ttf</string>
     <string name="typeface_regular">avenir_light.ttf</string>
     <string name="typeface_heavy">avenir_heavy.ttf</string>

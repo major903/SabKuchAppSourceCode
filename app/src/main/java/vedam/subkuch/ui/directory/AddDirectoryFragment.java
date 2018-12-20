@@ -178,8 +178,8 @@ public class AddDirectoryFragment extends BaseAddImagesFragment {
             EditText etCountry = v.findViewById(R.id.et_country);
             EditText etZipCode = v.findViewById(R.id.et_zip_code);
 
-            businessAddress.setAddress1(etAddressLine1.getText().toString());
-            businessAddress.setAddress2(AppUtil.deNull(etAddressLine2.getText().toString()));
+//            businessAddress.setAddress1(etAddressLine1.getText().toString());
+//            businessAddress.setAddress2(AppUtil.deNull(etAddressLine2.getText().toString()));
             businessAddress.setCity(etCity.getText().toString());
             businessAddress.setState(etState.getText().toString());
             businessAddress.setCountry(etCountry.getText().toString());

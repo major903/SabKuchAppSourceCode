@@ -69,50 +69,6 @@
                         tools:text="@string/err" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tvPhone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:autoLink="phone"
-                    android:textColor="#000000"
-                    android:textSize="14sp"
-                    tools:text="@string/err" />
-
-                <TextView
-                    android:id="@+id/tvMobile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:autoLink="phone"
-                    android:textColor="#000000"
-                    android:textSize="14sp"
-                    tools:text="@string/err" />
-
-                <TextView
-                    android:id="@+id/tvEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:autoLink="email"
-                    android:textColor="#000000"
-                    android:textSize="14sp"
-                    tools:text="@string/err" />
-
-                <TextView
-                    android:id="@+id/tvWebsite"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:autoLink="web"
-                    android:textColor="#000000"
-                    android:textSize="14sp"
-                    tools:text="@string/err" />
-
-                <TextView
-                    android:id="@+id/tvContactPerson"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="#000000"
-                    android:textSize="14sp"
-                    tools:text="@string/err" />
-
             </LinearLayout>
 
             <LinearLayout

@@ -18,7 +18,7 @@ import java.util.Locale;
 
 import vedam.subkuch.R;
 import vedam.subkuch.interfaces.OnListViewItemClickListener;
-import vedam.subkuch.ui.directory.models.Address;
+import vedam.subkuch.ui.directory.models.BusinessAddress;
 import vedam.subkuch.ui.directory.models.Business;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.ListItemClickAction;
@@ -46,7 +46,7 @@ public class DirectoryDetailAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int listPosition) {
-        return directoryDetails.get(listPosition).getAddresses().length;
+        return directoryDetails.get(listPosition).getBusinessAddresses().length - 1;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class DirectoryDetailAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int listPosition, int expandedListPosition) {
-        return directoryDetails.get(listPosition).getAddresses()[expandedListPosition];
+        return directoryDetails.get(listPosition).getBusinessAddresses()[expandedListPosition + 1];
     }
 
     @Override
@@ -66,7 +66,7 @@ public class DirectoryDetailAdapter extends BaseExpandableListAdapter {
 
     @Override
     public long getChildId(int listPosition, int expandedListPosition) {
-        return expandedListPosition;
+        return expandedListPosition + 1;
     }
 
     @Override
@@ -80,17 +80,22 @@ public class DirectoryDetailAdapter extends BaseExpandableListAdapter {
         DirectoryDetailAdapter.ViewHolder holder;
 
         if (v == null) {
-            v = inflater.inflate(R.layout.fragment_directory_details_list_item, null);
+            v = inflater.inflate(R.layout.fragment_directory_details_list_item, parent, false);
             holder = new DirectoryDetailAdapter.ViewHolder();
             holder.tvName = v.findViewById(R.id.tvName);
             holder.tvDistance = v.findViewById(R.id.tvDistance);
             holder.rbRating = v.findViewById(R.id.rb_rating);
             holder.tvReviews = v.findViewById(R.id.tv_reviews);
+            holder.tvDealingIn = v.findViewById(R.id.tvDealingIn);
+            holder.tvAddress = v.findViewById(R.id.tv_address);
             holder.tvPhone = v.findViewById(R.id.tvPhone);
             holder.tvMobile = v.findViewById(R.id.tvMobile);
             holder.tvEmail = v.findViewById(R.id.tvEmail);
             holder.tvWebsite = v.findViewById(R.id.tvWebsite);
             holder.tvContactPerson = v.findViewById(R.id.tvContactPerson);
+            holder.tvLine1 = v.findViewById(R.id.tvLine1);
+            holder.tvLine2 = v.findViewById(R.id.tvLine2);
+            holder.btDirection = v.findViewById(R.id.bt_direction);
             holder.ivTriangle = v.findViewById(R.id.iv_triangle);
             holder.rlBranchesContainer = v.findViewById(R.id.rl_branches_container);
             v.setTag(holder);
@@ -99,15 +104,21 @@ public class DirectoryDetailAdapter extends BaseExpandableListAdapter {
         }
 
         Business directoryDetail = (Business) getGroup(listPosition);
+        BusinessAddress businessAddress = directoryDetail.getBusinessAddresses()[0];
 
         holder.tvName.setText(directoryDetail.getBusinessName());
 
-        UiUtil.setTextView(holder.tvDistance, directoryDetail.getDistance());
-        setText(holder.tvPhone, "Ph :", directoryDetail.getPhone());
-        setText(holder.tvMobile, "Mobile :", directoryDetail.getMobile());
-        setText(holder.tvEmail, "Email :", directoryDetail.getEmail());
-        setText(holder.tvWebsite, "Website :", directoryDetail.getWebsite());
-        setText(holder.tvContactPerson, "Contact Person :", directoryDetail.getContactPerson());
+        UiUtil.setTextView(holder.tvDistance, businessAddress.getDistance());
+        setText(holder.tvDealingIn, "Dealing In :", businessAddress.getDealingIn());
+        String formattedAddress = AppUtil.getFormattedAddress(businessAddress);
+        UiUtil.setTextView(holder.tvAddress, formattedAddress);
+        setText(holder.tvPhone, "Ph :", businessAddress.getPhoneNo());
+        setText(holder.tvMobile, "Mobile :", businessAddress.getMobile1());
+        setText(holder.tvEmail, "Email :", businessAddress.getEmail());
+        setText(holder.tvWebsite, "Website :", businessAddress.getWebsite());
+        setText(holder.tvContactPerson, "Contact Person :", businessAddress.getContactPerson());
+        UiUtil.setTextView(holder.tvLine1, businessAddress.getInfoLine1());
+        UiUtil.setTextView(holder.tvLine2, businessAddress.getInfoLine2());
 
         if (!TextUtils.isEmpty(directoryDetail.getAvegrageOfRating()) && AppUtil.isNumeric(directoryDetail.getAvegrageOfRating())) {
             holder.rbRating.setVisibility(View.VISIBLE);
@@ -123,16 +134,28 @@ public class DirectoryDetailAdapter extends BaseExpandableListAdapter {
         int imageResourceId = isExpanded ? R.drawable.baseline_expand_less_black_24dp : R.drawable.baseline_expand_more_black_24dp;
         holder.ivTriangle.setImageResource(imageResourceId);
 
-        holder.rlBranchesContainer.setOnClickListener(view -> {
-            if (isExpanded) ((ExpandableListView) parent).collapseGroup(listPosition);
-            else ((ExpandableListView) parent).expandGroup(listPosition, true);
-        });
+        if (directoryDetail.getBusinessAddresses().length > 1) {
+            holder.rlBranchesContainer.setVisibility(View.VISIBLE);
+            holder.rlBranchesContainer.setOnClickListener(view -> {
+                if (isExpanded) ((ExpandableListView) parent).collapseGroup(listPosition);
+                else ((ExpandableListView) parent).expandGroup(listPosition, true);
+            });
+        } else
+            holder.rlBranchesContainer.setVisibility(View.GONE);
 
         v.setOnClickListener(view -> {
             if (onListViewItemClickListener != null)
                 onListViewItemClickListener.onItemClick(directoryDetail, listPosition, view, ListItemClickAction.SELECT);
         });
 
+        if (!TextUtils.isEmpty(businessAddress.getLatitude()) && !TextUtils.isEmpty(businessAddress.getLongitude())) {
+            holder.btDirection.setVisibility(View.VISIBLE);
+            holder.btDirection.setOnClickListener(view -> {
+                String webURL = "https://www.google.com/maps/dir/?api=1&" + "destination=" + businessAddress.getLatitude() + "%2C" + businessAddress.getLongitude();
+                AppUtil.openUrl(parent.getContext(), webURL);
+            });
+        } else
+            holder.btDirection.setVisibility(View.GONE);
         return v;
     }
 
@@ -141,7 +164,7 @@ public class DirectoryDetailAdapter extends BaseExpandableListAdapter {
         DirectoryDetailAdapter.ChildViewHolder holder;
 
         if (v == null) {
-            v = inflater.inflate(R.layout.fragment_directory_details_child_list_item, null);
+            v = inflater.inflate(R.layout.fragment_directory_details_child_list_item, viewGroup, false);
 //            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
 //                    (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 //            int dps = AppUtil.dpToPx(viewGroup.getContext(), 16);
@@ -151,6 +174,15 @@ public class DirectoryDetailAdapter extends BaseExpandableListAdapter {
 
             holder = new DirectoryDetailAdapter.ChildViewHolder();
             holder.tvAddress = v.findViewById(R.id.tv_address);
+            holder.tvDistance = v.findViewById(R.id.tvDistance);
+            holder.tvDealingIn = v.findViewById(R.id.tvDealingIn);
+            holder.tvPhone = v.findViewById(R.id.tvPhone);
+            holder.tvMobile = v.findViewById(R.id.tvMobile);
+            holder.tvEmail = v.findViewById(R.id.tvEmail);
+            holder.tvWebsite = v.findViewById(R.id.tvWebsite);
+            holder.tvContactPerson = v.findViewById(R.id.tvContactPerson);
+            holder.tvLine1 = v.findViewById(R.id.tvLine1);
+            holder.tvLine2 = v.findViewById(R.id.tvLine2);
             holder.btDirection = v.findViewById(R.id.bt_direction);
             v.setTag(holder);
         } else {
@@ -158,14 +190,24 @@ public class DirectoryDetailAdapter extends BaseExpandableListAdapter {
         }
 
         Business directoryDetail = (Business) getGroup(listPosition);
-        Address address = directoryDetail.getAddresses()[expandedListPosition];
-        String formattedAddress = AppUtil.getFormattedAddress(address);
-        UiUtil.setTextView(holder.tvAddress, formattedAddress);
+        BusinessAddress businessAddress = directoryDetail.getBusinessAddresses()[expandedListPosition];
 
-        if (!TextUtils.isEmpty(address.getLatitude()) && !TextUtils.isEmpty(address.getLongitude())) {
+        UiUtil.setTextView(holder.tvDistance, businessAddress.getDistance());
+        setText(holder.tvDealingIn, "Dealing In :", businessAddress.getDealingIn());
+        String formattedAddress = AppUtil.getFormattedAddress(businessAddress);
+        UiUtil.setTextView(holder.tvAddress, formattedAddress);
+        setText(holder.tvPhone, "Ph :", businessAddress.getPhoneNo());
+        setText(holder.tvMobile, "Mobile :", businessAddress.getMobile1());
+        setText(holder.tvEmail, "Email :", businessAddress.getEmail());
+        setText(holder.tvWebsite, "Website :", businessAddress.getWebsite());
+        setText(holder.tvContactPerson, "Contact Person :", businessAddress.getContactPerson());
+        UiUtil.setTextView(holder.tvLine1, businessAddress.getInfoLine1());
+        UiUtil.setTextView(holder.tvLine2, businessAddress.getInfoLine2());
+
+        if (!TextUtils.isEmpty(businessAddress.getLatitude()) && !TextUtils.isEmpty(businessAddress.getLongitude())) {
             holder.btDirection.setVisibility(View.VISIBLE);
             holder.btDirection.setOnClickListener(view -> {
-                String webURL = "https://www.google.com/maps/dir/?api=1&" + "destination=" + address.getLatitude() + "%2C" + address.getLongitude();
+                String webURL = "https://www.google.com/maps/dir/?api=1&" + "destination=" + businessAddress.getLatitude() + "%2C" + businessAddress.getLongitude();
                 AppUtil.openUrl(viewGroup.getContext(), webURL);
             });
         } else
@@ -195,17 +237,31 @@ public class DirectoryDetailAdapter extends BaseExpandableListAdapter {
         private TextView tvDistance;
         private RatingBar rbRating;
         private TextView tvReviews;
+        private TextView tvDealingIn;
+        private TextView tvAddress;
         private TextView tvPhone;
         private TextView tvMobile;
         private TextView tvEmail;
         private TextView tvWebsite;
         private TextView tvContactPerson;
+        private TextView tvLine1;
+        private TextView tvLine2;
+        private Button btDirection;
         private ImageView ivTriangle;
         private RelativeLayout rlBranchesContainer;
     }
 
     private static class ChildViewHolder {
+        private TextView tvDistance;
+        private TextView tvDealingIn;
         private TextView tvAddress;
+        private TextView tvPhone;
+        private TextView tvMobile;
+        private TextView tvEmail;
+        private TextView tvWebsite;
+        private TextView tvContactPerson;
+        private TextView tvLine1;
+        private TextView tvLine2;
         private Button btDirection;
     }
 }
