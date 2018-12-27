@@ -9,9 +9,9 @@
 
     <TextView
         android:id="@+id/tv_organisation"
+        style="@style/TextViewBlackHeading"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
         tools:text="@string/err" />
 
     <TextView
@@ -27,6 +27,13 @@
         tools:text="@string/err" />
 
     <TextView
+        android:id="@+id/tvDistance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        tools:text="@string/err" />
+
+    <TextView
         android:id="@+id/tv_position"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,13 +46,5 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8dp"
         tools:text="@string/err" />
-
-    <Button
-        android:id="@+id/bt_direction"
-        style="@style/ButtonBlue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_8dp"
-        android:text="@string/direction" />
 
 </LinearLayout>

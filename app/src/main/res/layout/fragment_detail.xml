@@ -44,7 +44,7 @@
                     tools:text="@string/err" />
 
                 <LinearLayout
-                    android:id="@+id/ll_reviews"
+                    android:id="@+id/ll_ratings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -69,6 +69,15 @@
                         tools:text="@string/err" />
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/tvWebsite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoLink="web"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    tools:text="@string/err" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -90,6 +99,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_reviews"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16dp"

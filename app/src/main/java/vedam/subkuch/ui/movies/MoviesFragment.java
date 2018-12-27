@@ -62,10 +62,11 @@ public class MoviesFragment extends BaseListFragment {
     private Response.Listener<MoviesResponse> onMoviesSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (response != null && response.getReturnMessage().equals(Constants.SUCCESS) && response.getReturnData().size() > 0) {
-            loadValues(response.getReturnData());
-        } else
-            UiUtil.showToast(context, getString(R.string.err_occurred));
+        if (getActivity() != null)
+            if (response != null && response.getReturnMessage().equals(Constants.SUCCESS) && response.getReturnData().size() > 0) {
+                loadValues(response.getReturnData());
+            } else
+                UiUtil.showToast(context, getString(R.string.no_data));
     };
 
     private void loadValues(ArrayList<Movie> response) {

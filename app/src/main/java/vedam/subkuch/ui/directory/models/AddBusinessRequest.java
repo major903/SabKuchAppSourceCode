@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class AddBusinessRequest {
 
-    private String Image;
+    private String BusinessImage;
 
     private String Phone;
 
@@ -20,16 +20,18 @@ public class AddBusinessRequest {
 
     private String CategoryID;
 
-    private String Mobile;
-
     private String BusinessName;
 
+    private String countryid;
+
+    private String cityid;
+
     public String getBusinessImage() {
-        return Image;
+        return BusinessImage;
     }
 
-    public void setBusinessImage(String Image) {
-        this.Image = Image;
+    public void setBusinessImage(String BusinessImage) {
+        this.BusinessImage = BusinessImage;
     }
 
     public String getPhone() {
@@ -88,14 +90,6 @@ public class AddBusinessRequest {
         this.CategoryID = CategoryID;
     }
 
-    public String getMobile() {
-        return Mobile;
-    }
-
-    public void setMobile(String Mobile) {
-        this.Mobile = Mobile;
-    }
-
     public String getBusinessName() {
         return BusinessName;
     }
@@ -104,8 +98,24 @@ public class AddBusinessRequest {
         this.BusinessName = BusinessName;
     }
 
+    public String getCountryid() {
+        return countryid;
+    }
+
+    public void setCountryid(String countryid) {
+        this.countryid = countryid;
+    }
+
+    public String getCityid() {
+        return cityid;
+    }
+
+    public void setCityid(String cityid) {
+        this.cityid = cityid;
+    }
+
     @Override
     public String toString() {
-        return "ClassPojo [BusinessImage = " + Image + ", Phone = " + Phone + ", BusinessAddresses = " + BusinessAddresses + ", SubCategoryID = " + SubCategoryID + ", Email = " + Email + ", ContactPerson = " + ContactPerson + ", Website = " + Website + ", CategoryID = " + CategoryID + ", Mobile = " + Mobile + ", BusinessName = " + BusinessName + "]";
+        return "ClassPojo [BusinessImage = " + BusinessImage + ", Phone = " + Phone + ", BusinessAddresses = " + BusinessAddresses + ", SubCategoryID = " + SubCategoryID + ", Email = " + Email + ", ContactPerson = " + ContactPerson + ", Website = " + Website + ", CategoryID = " + CategoryID + ", BusinessName = " + BusinessName + ", countryid = " + countryid + ", cityid = " + cityid + "]";
     }
 }

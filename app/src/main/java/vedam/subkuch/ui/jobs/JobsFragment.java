@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -16,20 +18,29 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 
 import com.android.volley.Response;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import vedam.subkuch.R;
-import vedam.subkuch.base.BaseListFragment;
+import vedam.subkuch.base.BaseFragment;
 import vedam.subkuch.databinding.FragmentJobsBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.utils.UiUtil;
 
-public class JobsFragment extends BaseListFragment {
+public class JobsFragment extends BaseFragment {
 
     private String categoryId;
     private FragmentJobsBinding fragmentJobsBinding;
+    private JobsAdapter adapter;
+    private ArrayList<Job> jobsList = new ArrayList<>();
+    private boolean loading = true;
+    private LinearLayoutManager linearLayoutManager;
+    private int pageNo = 1;
+    private int pageSize = 20;
+    private boolean hasMoreProjects = true;
+    private String searchText;
 
     public JobsFragment() {
         // Required empty public constructor
@@ -57,7 +68,7 @@ public class JobsFragment extends BaseListFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         fragmentJobsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_jobs, container, false);
@@ -66,11 +77,14 @@ public class JobsFragment extends BaseListFragment {
 
     public void onViewCreated(@NonNull View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
-        getJobs(null);
+
+        initUI();
+        getJobs();
 
         fragmentJobsBinding.etSearch.setOnEditorActionListener((textView, actionId, keyEvent) -> {
             if (actionId == EditorInfo.IME_ACTION_GO) {
-                getJobs(textView.getText().toString());
+                searchText = textView.getText().toString();
+                getJobs();
                 return true;
             }
             return false;
@@ -97,36 +111,77 @@ public class JobsFragment extends BaseListFragment {
 
         fragmentJobsBinding.ibClose.setOnClickListener(view -> {
             fragmentJobsBinding.etSearch.setText("");
-            getJobs(null);
+            setDefaults();
+            getJobs();
         });
 
     }
 
-    private void getJobs(String searchText) {
+    private void setDefaults() {
+        searchText = null;
+        pageNo = 1;
+        hasMoreProjects = true;
+        jobsList.clear();
+        adapter.notifyDataSetChanged();
+
+    }
+
+    private void initUI() {
+
+        linearLayoutManager = new LinearLayoutManager(context);
+        fragmentJobsBinding.rvJobs.setLayoutManager(linearLayoutManager);
+        adapter = new JobsAdapter(context, jobsList);
+        fragmentJobsBinding.rvJobs.setHasFixedSize(true);
+        fragmentJobsBinding.rvJobs.setAdapter(adapter);
+        fragmentJobsBinding.rvJobs.addOnScrollListener(new JobsOnScrollListener());
+    }
+
+    private void getJobs() {
 
         UiUtil.showProgressDialog(context, getString(R.string.please_wait));
-        DataFetcher.getJobs(context, onJobsSuccessListener, JobResponse.class, onErrorListener, categoryId, searchText);
+        DataFetcher.getJobs(context, onJobsSuccessListener, JobResponse.class, onErrorListener, categoryId, searchText, pageNo, pageSize);
     }
 
     private Response.Listener<JobResponse> onJobsSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (response != null && response.getStatus().equals(Constants.TRUE)) {
-            loadValues(response.getJobsResult().getJobs());
-        } else
-            UiUtil.showToast(context, getString(R.string.err_occurred));
+        if (getActivity() != null)
+            if (response != null && response.getStatus().equals(Constants.TRUE)) {
+                if (!response.getJobsResult().getJobs().isEmpty()) {
+                    hasMoreProjects = response.getJobsResult().getJobs().size() >= pageSize;
+                    loading = true;
+                    loadValues(response.getJobsResult().getJobs());
+                } else
+                    UiUtil.showToast(context, getString(R.string.no_jobs_found));
+            } else
+                UiUtil.showToast(context, getString(R.string.err_occurred));
     };
 
     private void loadValues(ArrayList<Job> returnData) {
 
-        JobsAdapter jobsAdapter = new JobsAdapter(getActivity(), returnData);
-        getListView().setAdapter(jobsAdapter);
+        if (returnData != null && !returnData.isEmpty()) {
+            pageNo++;
+            jobsList.addAll(returnData);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-        inflater.inflate(R.menu.add, menu);
+        inflater.inflate(R.menu.add_search, menu);
+
+        /*MenuItem searchItem = menu.findItem(R.id.action_search);
+
+        SearchManager searchManager = (SearchManager) context.getSystemService(Context.SEARCH_SERVICE);
+
+        SearchView searchView = null;
+        if (searchItem != null) {
+            searchView = (SearchView) searchItem.getActionView();
+        }
+        if (searchView != null && searchManager != null && getActivity() != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        }*/
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -138,8 +193,49 @@ public class JobsFragment extends BaseListFragment {
                 startActivity(new Intent(getActivity(), AddJobsActivity.class)
                         .putExtra(Constants.EXTRA_CATEGORY_ID, categoryId));
                 return true;
+            case R.id.action_search:
+                if (fragmentJobsBinding.cvSearch.getVisibility() == View.VISIBLE)
+                    fragmentJobsBinding.cvSearch.setVisibility(View.GONE);
+                else {
+                    fragmentJobsBinding.etSearch.requestFocus();
+                    fragmentJobsBinding.cvSearch.setVisibility(View.VISIBLE);
+                }
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public class JobsOnScrollListener extends RecyclerView.OnScrollListener {
+
+        @Override
+        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            final Picasso picasso = Picasso.with(context);
+
+            if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                picasso.resumeTag(context);
+            } else {
+                picasso.pauseTag(context);
+            }
+        }
+
+        @Override
+        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+            if (dy > 0) //check for scroll down
+            {
+                int visibleItemCount = linearLayoutManager.getChildCount();
+                int totalItemCount = linearLayoutManager.getItemCount();
+                int pastVisibleItems = linearLayoutManager.findFirstVisibleItemPosition();
+
+                if (loading) {
+                    if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                        loading = false;
+                        if (hasMoreProjects) getJobs();
+
+                    }
+                }
+            }
         }
     }
 }

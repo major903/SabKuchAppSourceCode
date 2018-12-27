@@ -5,6 +5,7 @@ import android.content.Context;
 import com.android.volley.Response;
 
 import java.lang.reflect.Type;
+import java.util.Locale;
 
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.AppUtil;
@@ -62,9 +63,10 @@ public class DataFetcher {
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
-    public static <T> void getEvents(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
+    public static <T> void getEvents(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener,
+                                     int pageIndex, int pageSize) {
         String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
-        String url = String.format("%s/AllAPI/GetEvent?userid=%s", NetworkConstants.END_POINT, userId);
+        String url = String.format(Locale.US, "%s/AllAPI/GetEvent?userid=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT, userId, pageIndex, pageSize);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
@@ -85,8 +87,10 @@ public class DataFetcher {
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
-    public static <T> void getJobs(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener, String categoryId, String search) {
-        String url = String.format("%s/Jobs/GetJobs?CategoryId=%s&JobTitle=%s", NetworkConstants.END_POINT2, categoryId, AppUtil.deNull(search));
+    public static <T> void getJobs(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener, String categoryId, String search
+            , int pageIndex, int pageSize) {
+        String url = String.format(Locale.US, "%s/Jobs/GetJobs?CategoryId=%s&JobTitle=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT2,
+                categoryId, AppUtil.deNull(search), pageIndex, pageSize);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 

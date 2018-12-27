@@ -17,6 +17,9 @@ public class Business implements Parcelable {
     private String BusinessID;
 
     private String BusinessName;
+    private String Website;
+    private String Country;
+    private String City;
 
     protected Business(Parcel in) {
         Image = in.readString();
@@ -25,6 +28,9 @@ public class Business implements Parcelable {
         Reviews = in.createTypedArray(Review.CREATOR);
         BusinessID = in.readString();
         BusinessName = in.readString();
+        Website = in.readString();
+        Country = in.readString();
+        City = in.readString();
     }
 
     @Override
@@ -35,6 +41,9 @@ public class Business implements Parcelable {
         dest.writeTypedArray(Reviews, flags);
         dest.writeString(BusinessID);
         dest.writeString(BusinessName);
+        dest.writeString(Website);
+        dest.writeString(Country);
+        dest.writeString(City);
     }
 
     @Override
@@ -53,6 +62,18 @@ public class Business implements Parcelable {
             return new Business[size];
         }
     };
+
+    public String getWebsite() {
+        return Website;
+    }
+
+    public String getCountry() {
+        return Country;
+    }
+
+    public String getCity() {
+        return City;
+    }
 
     public String getBusinessImage() {
         return Image;

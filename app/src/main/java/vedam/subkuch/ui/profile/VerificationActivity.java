@@ -56,6 +56,7 @@ public class VerificationActivity extends BaseActivity {
     private static String emailId;
     private static String dob;
     private static String gender;
+    private static String cityId;
     private static String countryId;
 
     @Override
@@ -78,6 +79,7 @@ public class VerificationActivity extends BaseActivity {
         emailId = getIntent().getStringExtra(Constants.EXTRA_EMAIL_ID);
         dob = getIntent().getStringExtra(Constants.EXTRA_DOB);
         gender = getIntent().getStringExtra(Constants.EXTRA_GENDER);
+        cityId = getIntent().getStringExtra(Constants.EXTRA_CITY_ID);
         countryId = getIntent().getStringExtra(Constants.EXTRA_COUNTRY_ID);
 
         btSubmit.setOnClickListener(v -> attemptVerification());
@@ -174,6 +176,7 @@ public class VerificationActivity extends BaseActivity {
         request.put(Constants.Longitude, longitude);
         request.put(Constants.DOB, dob);
         request.put(Constants.Gender, gender);
+        request.put(Constants.cityid, cityId);
         request.put(Constants.countryid, countryId);
 
         UiUtil.showProgressDialog(context, context.getString(R.string.please_wait));

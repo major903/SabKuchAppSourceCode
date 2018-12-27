@@ -17,6 +17,18 @@ public class Job {
 
     private String latitude;
 
+    private String Distance;
+
+    private String City;
+
+    public String getCity() {
+        return City;
+    }
+
+    public String getDistance() {
+        return Distance;
+    }
+
     public String getDealingIn() {
         return DealingIn;
     }

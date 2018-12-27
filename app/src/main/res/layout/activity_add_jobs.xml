@@ -28,6 +28,31 @@
                     android:layout_marginLeft="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_16dp"
                     android:layout_marginRight="@dimen/margin_16dp"
+                    android:text="@string/job_category" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_4dp"
+                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:background="@drawable/edit_text_border">
+
+                    <Spinner
+                        android:id="@+id/sp_category"
+                        style="@style/SpinnerStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/SpinnerStyle" />
+                </FrameLayout>
+
+                <TextView
+                    style="@style/TextViewBlackHeading2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_16dp"
+                    android:layout_marginRight="@dimen/margin_16dp"
                     android:text="@string/company_name" />
 
                 <EditText
@@ -61,8 +86,8 @@
                     android:layout_marginTop="@dimen/margin_4dp"
                     android:layout_marginRight="@dimen/margin_16dp"
                     android:hint="@string/dealing_in"
-                    android:inputType="text"
                     android:imeOptions="actionNext"
+                    android:inputType="text"
                     android:padding="@dimen/margin_8dp" />
 
                 <TextView
@@ -80,15 +105,13 @@
                     android:layout_marginLeft="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_4dp"
                     android:layout_marginRight="@dimen/margin_16dp"
-                    android:background="@drawable/edit_text_border"
-                    android:padding="@dimen/margin_8dp">
+                    android:background="@drawable/edit_text_border">
 
                     <Spinner
                         android:id="@+id/sp_city"
                         style="@style/SpinnerStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="8dp"
                         android:theme="@style/SpinnerStyle" />
                 </FrameLayout>
 
@@ -157,7 +180,7 @@
                     android:layout_marginLeft="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_4dp"
                     android:layout_marginRight="@dimen/margin_16dp"
-                    android:hint="@string/how_to_contact"
+                    android:hint="@string/how_to_apply"
                     android:inputType="textMultiLine"
                     android:padding="@dimen/margin_8dp" />
 

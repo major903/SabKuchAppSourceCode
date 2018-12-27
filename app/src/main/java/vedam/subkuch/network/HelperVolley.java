@@ -21,7 +21,6 @@ import java.util.Map;
 
 import vedam.subkuch.BuildConfig;
 import vedam.subkuch.SubKuchApplication;
-import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.utils.AppPrefs;
 
 /**

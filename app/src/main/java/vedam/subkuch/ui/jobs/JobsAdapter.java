@@ -2,6 +2,8 @@ package vedam.subkuch.ui.jobs;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -9,8 +11,6 @@ import android.text.style.MetricAffectingSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -20,71 +20,48 @@ import vedam.subkuch.uicomponent.CustomTypefaceSpan;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.UiUtil;
 
-public class JobsAdapter extends BaseAdapter {
+public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
 
-    private LayoutInflater inflater;
     private ArrayList<Job> jobs;
+    private Context context;
 
 
-    public JobsAdapter(Context context, ArrayList<Job> jobs) {
-
-        inflater = LayoutInflater.from(context);
+    JobsAdapter(Context context, ArrayList<Job> jobs) {
         this.jobs = jobs;
+        this.context = context;
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View view = layoutInflater.inflate(R.layout.fragment_jobs_list_item, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public int getCount() {
-        return jobs.size();
-    }
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-    @Override
-    public Object getItem(int position) {
-        return jobs.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View v, ViewGroup parent) {
-
-        JobsAdapter.ViewHolder holder;
-
-        if (v == null) {
-            v = inflater.inflate(R.layout.fragment_jobs_list_item, null);
-            holder = new JobsAdapter.ViewHolder();
-            holder.tvOrganisation = v.findViewById(R.id.tv_organisation);
-            holder.tvDealsIn = v.findViewById(R.id.tv_deals);
-            holder.tvLocation = v.findViewById(R.id.tv_location);
-            holder.tvPosition = v.findViewById(R.id.tv_position);
-            holder.tvContact = v.findViewById(R.id.tv_contact);
-            holder.btDirection = v.findViewById(R.id.bt_direction);
-            v.setTag(holder);
-        } else {
-            holder = (JobsAdapter.ViewHolder) v.getTag();
-        }
-
-        Job job = (Job) getItem(position);
+        Job job = jobs.get(position);
 
         holder.tvOrganisation.setText(job.getOrganisationName());
+        UiUtil.setTextView(job.getDistance(), "away", holder.tvDistance);
         UiUtil.setTextView("Dealing in : ", job.getDealingIn(), holder.tvDealsIn);
-        UiUtil.setTextView("Job Location : ", job.getJobLocation(), holder.tvLocation);
+        UiUtil.setTextView("Job Location : ", String.format("%s, %s", job.getJobLocation(),
+                AppUtil.deNull(job.getCity())), holder.tvLocation);
         UiUtil.setTextView(holder.tvContact, job.getHowToContact());
 
         setPosition(holder.tvPosition, job.getPosts());
 
         if (!TextUtils.isEmpty(job.getLatitude()) && !TextUtils.isEmpty(job.getLongitude())) {
-            holder.btDirection.setVisibility(View.VISIBLE);
-            holder.btDirection.setOnClickListener(view -> {
+            holder.tvLocation.setOnClickListener(view -> {
                 String webURL = "https://www.google.com/maps/dir/?api=1&" + "destination=" + job.getLatitude() + "%2C" + job.getLongitude();
-                AppUtil.openUrl(parent.getContext(), webURL);
+                AppUtil.openUrl(context, webURL);
             });
-        } else
-            holder.btDirection.setVisibility(View.GONE);
-
-        return v;
+        } else {
+            UiUtil.showToast(context, "No location information found");
+            holder.tvLocation.setOnClickListener(null);
+        }
     }
 
     private void setPosition(TextView tvPosition, ArrayList<Post> posts) {
@@ -109,23 +86,35 @@ public class JobsAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getItemViewType(int position) {
-
-        return 0;
+    public int getItemCount() {
+        return jobs.size();
     }
 
-    @Override
-    public int getViewTypeCount() {
-        return 1;
-    }
-
-    private static class ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvOrganisation;
         private TextView tvDealsIn;
+        private TextView tvDistance;
         private TextView tvLocation;
         private TextView tvPosition;
         private TextView tvContact;
-        private Button btDirection;
+
+        ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvDistance = itemView.findViewById(R.id.tvDistance);
+            tvOrganisation = itemView.findViewById(R.id.tv_organisation);
+            tvDealsIn = itemView.findViewById(R.id.tv_deals);
+            tvLocation = itemView.findViewById(R.id.tv_location);
+            tvPosition = itemView.findViewById(R.id.tv_position);
+            tvContact = itemView.findViewById(R.id.tv_contact);
+        }
+
+        /*public <E> void bind(final E item, final int position, final OnListViewItemClickListener listener) {
+
+            itemView.setOnClickListener(v -> {
+                if (listener != null)
+                    listener.onItemClick(item, position, itemView, null);
+            });
+        }*/
     }
 }

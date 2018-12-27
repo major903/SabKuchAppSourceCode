@@ -6,8 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -18,8 +18,8 @@ import java.util.Locale;
 
 import vedam.subkuch.R;
 import vedam.subkuch.interfaces.OnListViewItemClickListener;
-import vedam.subkuch.ui.directory.models.BusinessAddress;
 import vedam.subkuch.ui.directory.models.Business;
+import vedam.subkuch.ui.directory.models.BusinessAddress;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.ListItemClickAction;
 import vedam.subkuch.utils.UiUtil;
@@ -95,7 +95,7 @@ public class DirectoryDetailAdapter extends BaseExpandableListAdapter {
             holder.tvContactPerson = v.findViewById(R.id.tvContactPerson);
             holder.tvLine1 = v.findViewById(R.id.tvLine1);
             holder.tvLine2 = v.findViewById(R.id.tvLine2);
-            holder.btDirection = v.findViewById(R.id.bt_direction);
+            holder.ibDirection = v.findViewById(R.id.ib_direction);
             holder.ivTriangle = v.findViewById(R.id.iv_triangle);
             holder.rlBranchesContainer = v.findViewById(R.id.rl_branches_container);
             v.setTag(holder);
@@ -104,58 +104,63 @@ public class DirectoryDetailAdapter extends BaseExpandableListAdapter {
         }
 
         Business directoryDetail = (Business) getGroup(listPosition);
-        BusinessAddress businessAddress = directoryDetail.getBusinessAddresses()[0];
+        if (directoryDetail.getBusinessAddresses().length > 0) {
+            BusinessAddress businessAddress = directoryDetail.getBusinessAddresses()[0];
+            businessAddress.setCity(directoryDetail.getCity());
+            setText(holder.tvWebsite, "Website :", directoryDetail.getWebsite());
 
-        holder.tvName.setText(directoryDetail.getBusinessName());
+            holder.tvName.setText(directoryDetail.getBusinessName());
 
-        UiUtil.setTextView(holder.tvDistance, businessAddress.getDistance());
-        setText(holder.tvDealingIn, "Dealing In :", businessAddress.getDealingIn());
-        String formattedAddress = AppUtil.getFormattedAddress(businessAddress);
-        UiUtil.setTextView(holder.tvAddress, formattedAddress);
-        setText(holder.tvPhone, "Ph :", businessAddress.getPhoneNo());
-        setText(holder.tvMobile, "Mobile :", businessAddress.getMobile1());
-        setText(holder.tvEmail, "Email :", businessAddress.getEmail());
-        setText(holder.tvWebsite, "Website :", businessAddress.getWebsite());
-        setText(holder.tvContactPerson, "Contact Person :", businessAddress.getContactPerson());
-        UiUtil.setTextView(holder.tvLine1, businessAddress.getInfoLine1());
-        UiUtil.setTextView(holder.tvLine2, businessAddress.getInfoLine2());
+            UiUtil.setTextView(businessAddress.getDistance(), "Kms away", holder.tvDistance);
+            setText(holder.tvDealingIn, "Dealing In :", businessAddress.getDealingIn());
+            String formattedAddress = AppUtil.getFormattedAddress(businessAddress);
+            UiUtil.setTextView(holder.tvAddress, formattedAddress);
+            setText(holder.tvPhone, "Ph :", businessAddress.getPhoneNo());
+            setText(holder.tvMobile, "Mobile :", businessAddress.getMobile1());
+            setText(holder.tvEmail, "Email :", businessAddress.getEmail());
+            setText(holder.tvContactPerson, "Contact Person :", businessAddress.getContactPerson());
+            UiUtil.setTextView(holder.tvLine1, businessAddress.getInfoLine1());
+            UiUtil.setTextView(holder.tvLine2, businessAddress.getInfoLine2());
 
-        if (!TextUtils.isEmpty(directoryDetail.getAvegrageOfRating()) && AppUtil.isNumeric(directoryDetail.getAvegrageOfRating())) {
-            holder.rbRating.setVisibility(View.VISIBLE);
-            holder.rbRating.setRating(Float.valueOf(directoryDetail.getAvegrageOfRating()));
-        } else
-            holder.rbRating.setVisibility(View.GONE);
+            if (!TextUtils.isEmpty(directoryDetail.getAvegrageOfRating()) && AppUtil.isNumeric(directoryDetail.getAvegrageOfRating())) {
+                holder.rbRating.setVisibility(View.VISIBLE);
+                holder.rbRating.setRating(Float.valueOf(directoryDetail.getAvegrageOfRating()));
+            } else
+                holder.rbRating.setVisibility(View.GONE);
 
-        if (directoryDetail.getReviews().length != 0)
-            UiUtil.setTextView(holder.tvReviews, String.format(Locale.US, "( %d Reviews)", directoryDetail.getReviews().length));
-        else
-            holder.tvReviews.setVisibility(View.GONE);
+            int noOfReviews = directoryDetail.getReviews().length;
+            if (noOfReviews != 0)
+                UiUtil.setTextView(holder.tvReviews, String.format(Locale.US, "( %d %s)", noOfReviews,
+                        AppUtil.getSingularOrPluralString("Review", noOfReviews)));
+            else
+                holder.tvReviews.setVisibility(View.GONE);
 
-        int imageResourceId = isExpanded ? R.drawable.baseline_expand_less_black_24dp : R.drawable.baseline_expand_more_black_24dp;
-        holder.ivTriangle.setImageResource(imageResourceId);
+            int imageResourceId = isExpanded ? R.drawable.baseline_expand_less_black_24dp : R.drawable.baseline_expand_more_black_24dp;
+            holder.ivTriangle.setImageResource(imageResourceId);
 
-        if (directoryDetail.getBusinessAddresses().length > 1) {
-            holder.rlBranchesContainer.setVisibility(View.VISIBLE);
-            holder.rlBranchesContainer.setOnClickListener(view -> {
-                if (isExpanded) ((ExpandableListView) parent).collapseGroup(listPosition);
-                else ((ExpandableListView) parent).expandGroup(listPosition, true);
+            if (directoryDetail.getBusinessAddresses().length > 1) {
+                holder.rlBranchesContainer.setVisibility(View.VISIBLE);
+                holder.rlBranchesContainer.setOnClickListener(view -> {
+                    if (isExpanded) ((ExpandableListView) parent).collapseGroup(listPosition);
+                    else ((ExpandableListView) parent).expandGroup(listPosition, true);
+                });
+            } else
+                holder.rlBranchesContainer.setVisibility(View.GONE);
+
+            v.setOnClickListener(view -> {
+                if (onListViewItemClickListener != null)
+                    onListViewItemClickListener.onItemClick(directoryDetail, listPosition, view, ListItemClickAction.SELECT);
             });
-        } else
-            holder.rlBranchesContainer.setVisibility(View.GONE);
 
-        v.setOnClickListener(view -> {
-            if (onListViewItemClickListener != null)
-                onListViewItemClickListener.onItemClick(directoryDetail, listPosition, view, ListItemClickAction.SELECT);
-        });
-
-        if (!TextUtils.isEmpty(businessAddress.getLatitude()) && !TextUtils.isEmpty(businessAddress.getLongitude())) {
-            holder.btDirection.setVisibility(View.VISIBLE);
-            holder.btDirection.setOnClickListener(view -> {
-                String webURL = "https://www.google.com/maps/dir/?api=1&" + "destination=" + businessAddress.getLatitude() + "%2C" + businessAddress.getLongitude();
-                AppUtil.openUrl(parent.getContext(), webURL);
-            });
-        } else
-            holder.btDirection.setVisibility(View.GONE);
+            if (!TextUtils.isEmpty(businessAddress.getLatitude()) && !TextUtils.isEmpty(businessAddress.getLongitude())) {
+                holder.ibDirection.setVisibility(View.VISIBLE);
+                holder.ibDirection.setOnClickListener(view -> {
+                    String webURL = "https://www.google.com/maps/dir/?api=1&" + "destination=" + businessAddress.getLatitude() + "%2C" + businessAddress.getLongitude();
+                    AppUtil.openUrl(parent.getContext(), webURL);
+                });
+            } else
+                holder.ibDirection.setVisibility(View.GONE);
+        }
         return v;
     }
 
@@ -179,11 +184,10 @@ public class DirectoryDetailAdapter extends BaseExpandableListAdapter {
             holder.tvPhone = v.findViewById(R.id.tvPhone);
             holder.tvMobile = v.findViewById(R.id.tvMobile);
             holder.tvEmail = v.findViewById(R.id.tvEmail);
-            holder.tvWebsite = v.findViewById(R.id.tvWebsite);
             holder.tvContactPerson = v.findViewById(R.id.tvContactPerson);
             holder.tvLine1 = v.findViewById(R.id.tvLine1);
             holder.tvLine2 = v.findViewById(R.id.tvLine2);
-            holder.btDirection = v.findViewById(R.id.bt_direction);
+            holder.ibDirection = v.findViewById(R.id.ib_direction);
             v.setTag(holder);
         } else {
             holder = (DirectoryDetailAdapter.ChildViewHolder) v.getTag();
@@ -192,26 +196,25 @@ public class DirectoryDetailAdapter extends BaseExpandableListAdapter {
         Business directoryDetail = (Business) getGroup(listPosition);
         BusinessAddress businessAddress = directoryDetail.getBusinessAddresses()[expandedListPosition];
 
-        UiUtil.setTextView(holder.tvDistance, businessAddress.getDistance());
+        UiUtil.setTextView(businessAddress.getDistance(), "Kms away", holder.tvDistance);
         setText(holder.tvDealingIn, "Dealing In :", businessAddress.getDealingIn());
         String formattedAddress = AppUtil.getFormattedAddress(businessAddress);
         UiUtil.setTextView(holder.tvAddress, formattedAddress);
         setText(holder.tvPhone, "Ph :", businessAddress.getPhoneNo());
         setText(holder.tvMobile, "Mobile :", businessAddress.getMobile1());
         setText(holder.tvEmail, "Email :", businessAddress.getEmail());
-        setText(holder.tvWebsite, "Website :", businessAddress.getWebsite());
         setText(holder.tvContactPerson, "Contact Person :", businessAddress.getContactPerson());
         UiUtil.setTextView(holder.tvLine1, businessAddress.getInfoLine1());
         UiUtil.setTextView(holder.tvLine2, businessAddress.getInfoLine2());
 
         if (!TextUtils.isEmpty(businessAddress.getLatitude()) && !TextUtils.isEmpty(businessAddress.getLongitude())) {
-            holder.btDirection.setVisibility(View.VISIBLE);
-            holder.btDirection.setOnClickListener(view -> {
+            holder.ibDirection.setVisibility(View.VISIBLE);
+            holder.ibDirection.setOnClickListener(view -> {
                 String webURL = "https://www.google.com/maps/dir/?api=1&" + "destination=" + businessAddress.getLatitude() + "%2C" + businessAddress.getLongitude();
                 AppUtil.openUrl(viewGroup.getContext(), webURL);
             });
         } else
-            holder.btDirection.setVisibility(View.GONE);
+            holder.ibDirection.setVisibility(View.GONE);
 
         return v;
     }
@@ -246,7 +249,7 @@ public class DirectoryDetailAdapter extends BaseExpandableListAdapter {
         private TextView tvContactPerson;
         private TextView tvLine1;
         private TextView tvLine2;
-        private Button btDirection;
+        private ImageButton ibDirection;
         private ImageView ivTriangle;
         private RelativeLayout rlBranchesContainer;
     }
@@ -258,10 +261,9 @@ public class DirectoryDetailAdapter extends BaseExpandableListAdapter {
         private TextView tvPhone;
         private TextView tvMobile;
         private TextView tvEmail;
-        private TextView tvWebsite;
         private TextView tvContactPerson;
         private TextView tvLine1;
         private TextView tvLine2;
-        private Button btDirection;
+        private ImageButton ibDirection;
     }
 }

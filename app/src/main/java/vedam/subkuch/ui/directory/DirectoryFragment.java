@@ -11,6 +11,8 @@ import android.widget.ListView;
 
 import com.android.volley.Response;
 
+import java.util.ArrayList;
+
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseListFragment;
 import vedam.subkuch.helpers.Constants;
@@ -21,7 +23,7 @@ import vedam.subkuch.utils.UiUtil;
 
 public class DirectoryFragment extends BaseListFragment {
 
-    private Category[] categories;
+    private ArrayList<Category> categories;
 
     public DirectoryFragment() {
         // Required empty public constructor
@@ -80,7 +82,7 @@ public class DirectoryFragment extends BaseListFragment {
 
         Intent intent = new Intent(getActivity(),
                 SubDirectoryActivity.class);
-        Category category = categories[position];
+        Category category = categories.get(position);
         intent.putExtra(Constants.EXTRA_CATEGORY_ID,
                 category.getCategoryId());
         intent.putExtra(Constants.EXTRA_CATEGORY_NAME, category.getName());

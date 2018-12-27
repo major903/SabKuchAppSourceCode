@@ -1,13 +1,15 @@
 package vedam.subkuch.ui.directory.models;
 
-public class CategoryResult {
-    private Category[] Categories;
+import java.util.ArrayList;
 
-    public Category[] getCategories() {
+public class CategoryResult {
+    private ArrayList<Category> Categories;
+
+    public ArrayList<Category> getCategories() {
         return Categories;
     }
 
-    public void setCategories(Category[] Categories) {
+    public void setCategories(ArrayList<Category> Categories) {
         this.Categories = Categories;
     }
 

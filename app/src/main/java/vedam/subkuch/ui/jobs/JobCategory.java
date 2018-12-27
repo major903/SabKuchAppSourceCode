@@ -24,6 +24,6 @@ public class JobCategory {
 
     @Override
     public String toString() {
-        return "JobCategory [JobCategoryName = " + JobCategoryName + ", JobCategoryId = " + JobCategoryId + "]";
+        return JobCategoryName;
     }
 }

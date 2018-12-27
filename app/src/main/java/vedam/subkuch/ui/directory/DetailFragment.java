@@ -13,9 +13,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
@@ -24,8 +25,8 @@ import vedam.subkuch.R;
 import vedam.subkuch.base.BaseFragment;
 import vedam.subkuch.databinding.FragmentDetailBinding;
 import vedam.subkuch.helpers.Constants;
-import vedam.subkuch.ui.directory.models.BusinessAddress;
 import vedam.subkuch.ui.directory.models.Business;
+import vedam.subkuch.ui.directory.models.BusinessAddress;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.UiUtil;
 
@@ -71,17 +72,36 @@ public class DetailFragment extends BaseFragment {
 
     private void initUI() {
 
-        fragmentDetailBinding.rvReviews.setLayoutManager(new LinearLayoutManager(context));
-        fragmentDetailBinding.rvReviews.setNestedScrollingEnabled(false);
-        fragmentDetailBinding.rvReviews.setAdapter(new ReviewAdapter(directoryDetail.getReviews()));
+        if (directoryDetail.getReviews().length > 0) {
+            fragmentDetailBinding.rvReviews.setLayoutManager(new LinearLayoutManager(context));
+            fragmentDetailBinding.rvReviews.setNestedScrollingEnabled(false);
+            fragmentDetailBinding.rvReviews.setAdapter(new ReviewAdapter(directoryDetail.getReviews()));
+        } else {
+            fragmentDetailBinding.llReviews.setVisibility(View.GONE);
+        }
     }
 
     private void bindData() {
 
-        Picasso.with(context).load(directoryDetail.getBusinessImage())
-                .placeholder(R.drawable.grey).error(R.drawable.grey).into(fragmentDetailBinding.ivEvent);
+        if (!TextUtils.isEmpty(directoryDetail.getBusinessImage())) {
+            fragmentDetailBinding.ivEvent.setVisibility(View.VISIBLE);
+            Picasso.with(context).load(directoryDetail.getBusinessImage())
+                    .placeholder(R.drawable.grey).error(R.drawable.grey).into(fragmentDetailBinding.ivEvent, new Callback() {
+                @Override
+                public void onSuccess() {
+                    fragmentDetailBinding.ivEvent.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onError() {
+                    fragmentDetailBinding.ivEvent.setVisibility(View.GONE);
+                }
+            });
+        } else
+            fragmentDetailBinding.ivEvent.setVisibility(View.GONE);
 
         fragmentDetailBinding.tvName.setText(directoryDetail.getBusinessName());
+        UiUtil.setTextView(fragmentDetailBinding.tvWebsite, directoryDetail.getWebsite());
 
         if (!TextUtils.isEmpty(directoryDetail.getAvegrageOfRating()) && AppUtil.isNumeric(directoryDetail.getAvegrageOfRating())) {
             fragmentDetailBinding.rbRating.setVisibility(View.VISIBLE);
@@ -89,8 +109,10 @@ public class DetailFragment extends BaseFragment {
         } else
             fragmentDetailBinding.rbRating.setVisibility(View.GONE);
 
-        if (directoryDetail.getReviews().length != 0)
-            UiUtil.setTextView(fragmentDetailBinding.tvReviews, String.format(Locale.US, "( %d Reviews)", directoryDetail.getReviews().length));
+        int noOfReviews = directoryDetail.getReviews().length;
+        if (noOfReviews != 0)
+            UiUtil.setTextView(fragmentDetailBinding.tvReviews, String.format(Locale.US, "( %d %s)", noOfReviews,
+                    AppUtil.getSingularOrPluralString("Review", noOfReviews)));
         else
             fragmentDetailBinding.tvReviews.setVisibility(View.GONE);
 
@@ -106,6 +128,7 @@ public class DetailFragment extends BaseFragment {
         BusinessAddress[] businessAddresses = directoryDetail.getBusinessAddresses();
 
         for (BusinessAddress businessAddress : businessAddresses) {
+            businessAddress.setCity(directoryDetail.getCity());
             String formattedAddress = AppUtil.getFormattedAddress(businessAddress);
             View view = getLayoutInflater().inflate(R.layout.fragment_directory_details_child_list_item, fragmentDetailBinding.llContainer, false);
             view.setBackground(null);
@@ -123,32 +146,31 @@ public class DetailFragment extends BaseFragment {
             TextView tvPhone = view.findViewById(R.id.tvPhone);
             TextView tvMobile = view.findViewById(R.id.tvMobile);
             TextView tvEmail = view.findViewById(R.id.tvEmail);
-            TextView tvWebsite = view.findViewById(R.id.tvWebsite);
             TextView tvContactPerson = view.findViewById(R.id.tvContactPerson);
             TextView tvLine1 = view.findViewById(R.id.tvLine1);
             TextView tvLine2 = view.findViewById(R.id.tvLine2);
 
             UiUtil.setTextView(tvAddress, formattedAddress);
-            UiUtil.setTextView(tvDistance, businessAddress.getDistance());
+            UiUtil.setTextView(businessAddress.getDistance(), "Kms away", tvDistance);
             setText(tvDealingIn, "Dealing In :", businessAddress.getDealingIn());
             setText(tvPhone, "Ph :", businessAddress.getPhoneNo());
             setText(tvMobile, "Mobile :", businessAddress.getMobile1());
             setText(tvEmail, "Email :", businessAddress.getEmail());
-            setText(tvWebsite, "Website :", businessAddress.getWebsite());
+//            setText(tvWebsite, "Website :", businessAddress.getWebsite());
             setText(tvContactPerson, "Contact Person :", businessAddress.getContactPerson());
             UiUtil.setTextView(tvLine1, businessAddress.getInfoLine1());
             UiUtil.setTextView(tvLine2, businessAddress.getInfoLine2());
 
-            Button btDirection = view.findViewById(R.id.bt_direction);
+            ImageButton ibDirection = view.findViewById(R.id.ib_direction);
 
             if (!TextUtils.isEmpty(businessAddress.getLatitude()) && !TextUtils.isEmpty(businessAddress.getLongitude())) {
-                btDirection.setVisibility(View.VISIBLE);
-                btDirection.setOnClickListener(v -> {
+                ibDirection.setVisibility(View.VISIBLE);
+                ibDirection.setOnClickListener(v -> {
                     String webURL = "https://www.google.com/maps/dir/?api=1&" + "destination=" + businessAddress.getLatitude() + "%2C" + businessAddress.getLongitude();
                     AppUtil.openUrl(context, webURL);
                 });
             } else
-                btDirection.setVisibility(View.GONE);
+                ibDirection.setVisibility(View.GONE);
 
             fragmentDetailBinding.llBranches.addView(view);
         }

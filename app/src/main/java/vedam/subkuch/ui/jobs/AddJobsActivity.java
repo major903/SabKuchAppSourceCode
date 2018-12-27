@@ -2,7 +2,6 @@ package vedam.subkuch.ui.jobs;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.location.Address;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -40,7 +39,6 @@ public class AddJobsActivity extends BaseActivity {
     private ArrayList<View> alJobs = new ArrayList<>();
     private LatLng latLng;
     private String cityId;
-    private String currentCity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,16 +47,49 @@ public class AddJobsActivity extends BaseActivity {
         setToolbarBackButton();
         setTitle(R.string.add_job);
 
-        jobCategoryId = getIntent().getStringExtra(Constants.EXTRA_CATEGORY_ID);
+//        jobCategoryId = getIntent().getStringExtra(Constants.EXTRA_CATEGORY_ID);
+        getJobCategory();
         getCities();
         bindCallbacks();
-        requestAddress();
+        requestLocation();
     }
 
-    @Override
-    public void onAddressChanged(Address address) {
+    private void getJobCategory() {
 
-        currentCity = address.getLocality();
+        UiUtil.showProgressDialog(this, getString(R.string.please_wait));
+        DataFetcher.getJobsCategory(this, onJobCategorySuccessListener, JobCategoryResponse.class, onErrorListener);
+    }
+
+    private Response.Listener<JobCategoryResponse> onJobCategorySuccessListener = response -> {
+
+        UiUtil.cancelProgressDialog();
+        if (response != null && response.getStatus().equals(Constants.TRUE)) {
+            setJobCategories(response.getJobCategoriesResult().getJobCategories());
+        } else
+            UiUtil.showToast(this, getString(R.string.err_occurred));
+    };
+
+    private void setJobCategories(ArrayList<JobCategory> jobCategories) {
+
+        JobCategory jobCategory = new JobCategory();
+        jobCategory.setJobCategoryName(getString(R.string.select_a_category));
+        jobCategories.add(0, jobCategory);
+
+        ArrayAdapter<JobCategory> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, jobCategories);
+        activityAddJobsBinding.spCategory.setAdapter(adapter);
+        activityAddJobsBinding.spCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                jobCategoryId = ((JobCategory) parent.getItemAtPosition(position)).getJobCategoryId();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        activityAddJobsBinding.spCity.setSelection(0);
     }
 
     private void getCities() {
@@ -81,8 +112,12 @@ public class AddJobsActivity extends BaseActivity {
 
     private void setCities(ArrayList<City> cities) {
 
+        City city = new City();
+        city.setName(getString(R.string.select_a_city));
+        cities.add(0, city);
+
         ArrayAdapter<City> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, cities);
+                android.R.layout.simple_spinner_dropdown_item, cities);
         activityAddJobsBinding.spCity.setAdapter(adapter);
         activityAddJobsBinding.spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -95,18 +130,8 @@ public class AddJobsActivity extends BaseActivity {
 
             }
         });
-        activityAddJobsBinding.spCity.setSelection(getIndexOfCurrentCity(cities));
+        activityAddJobsBinding.spCity.setSelection(0);
 
-    }
-
-    private int getIndexOfCurrentCity(ArrayList<City> cities) {
-
-        for (int i = 0; i < cities.size(); i++) {
-            City city = cities.get(i);
-            if (city.getName().equalsIgnoreCase(currentCity))
-                return i;
-        }
-        return 0;
     }
 
     private void bindCallbacks() {
@@ -201,13 +226,15 @@ public class AddJobsActivity extends BaseActivity {
         UiUtil.cancelProgressDialog();
         if (response != null && response.isStatus()) {
             UiUtil.showToast(this, AppUtil.deNull(response.getMessage()));
-            finish();
+//            finish();
         } else
             UiUtil.showToast(this, getString(R.string.err_occurred));
     };
 
     private int validateErrorMessage() {
         int errorMessage = 0;
+        if (TextUtils.isEmpty(jobCategoryId))
+            errorMessage = R.string.select_a_category;
         if (TextUtils.isEmpty(activityAddJobsBinding.etCompanyName.getText()))
             errorMessage = R.string.enter_company_name;
         else if (TextUtils.isEmpty(activityAddJobsBinding.etDealingIn.getText()))

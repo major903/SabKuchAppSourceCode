@@ -157,4 +157,26 @@
     <string name="add_a_location_for_a_branch">Add a location for a branch</string>
     <string name="select_an_image">Select an image</string>
     <string name="reviews">Reviews</string>
+    <string name="search_hint">Search</string>
+    <string name="add">Add</string>
+    <string name="how_to_apply">How to apply?</string>
+    <string name="job_category">Job Category</string>
+    <string name="select_a_category">Select a category</string>
+    <string name="no_jobs_found">No jobs found</string>
+    <string name="no_events_found">No events found</string>
+    <string name="category">Category</string>
+    <string name="sub_category">Subcategory</string>
+    <string name="address">Address</string>
+    <string name="cellphone1">Cellphone 1</string>
+    <string name="cellphone2">Cellphone 2</string>
+    <string name="cellphone1_hint">Enter all your mobile numbers separated by ,</string>
+    <string name="cellphone2_hint">This number will not be displayed anywhere</string>
+    <string name="email">Email</string>
+    <string name="info_1">Additional info Line 1</string>
+    <string name="info_2">Additional info Line 2</string>
+    <string name="select_a_sub_category">Select a subcategory</string>
+    <string name="add_branches">Add Branches</string>
+    <string name="enter_cellphone_1">Enter cellphone 1</string>
+    <string name="enter_phone">Enter phone</string>
+    <string name="enter_contact_person">Enter contact person</string>
 </resources>

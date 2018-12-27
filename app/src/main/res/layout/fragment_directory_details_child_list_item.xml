@@ -9,14 +9,6 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/tvDistance"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:text="@string/err" />
-
-    <TextView
         android:id="@+id/tvDealingIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,8 +16,35 @@
         android:textSize="14sp"
         tools:text="@string/err" />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_4dp">
+
+        <TextView
+            android:id="@+id/tv_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_8dp"
+            android:layout_toLeftOf="@+id/ib_direction"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            tools:text="@string/err" />
+
+        <ImageButton
+            android:id="@+id/ib_direction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@color/transparent"
+            android:src="@drawable/baseline_directions_black_24" />
+
+    </RelativeLayout>
+
     <TextView
-        android:id="@+id/tv_address"
+        android:id="@+id/tvDistance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -60,15 +79,6 @@
         tools:text="@string/err" />
 
     <TextView
-        android:id="@+id/tvWebsite"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autoLink="web"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:text="@string/err" />
-
-    <TextView
         android:id="@+id/tvContactPerson"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -91,12 +101,4 @@
         android:textColor="@color/black"
         android:textSize="14sp"
         tools:text="@string/err" />
-
-    <Button
-        android:id="@+id/bt_direction"
-        style="@style/ButtonBlue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_4dp"
-        android:text="@string/direction" />
 </LinearLayout>

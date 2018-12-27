@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/bt_remove"
-            android:text="@string/address_line_1" />
+            android:text="@string/dealing_in" />
 
         <Button
             android:id="@+id/bt_remove"
@@ -35,14 +35,14 @@
     </RelativeLayout>
 
     <EditText
-        android:id="@+id/et_address_1"
+        android:id="@+id/et_dealing_in"
         style="@style/EditTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_16dp"
         android:layout_marginRight="@dimen/margin_16dp"
         android:layout_marginBottom="@dimen/margin_16dp"
-        android:hint="@string/address_line_1"
+        android:hint="@string/dealing_in"
         android:inputType="textMultiLine"
         android:padding="@dimen/margin_8dp" />
 
@@ -52,86 +52,17 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_16dp"
         android:layout_marginRight="@dimen/margin_16dp"
-        android:text="@string/address_line_2" />
+        android:layout_marginBottom="@dimen/margin_4dp"
+        android:text="@string/address" />
 
     <EditText
-        android:id="@+id/et_address_2"
+        android:id="@+id/et_address"
         style="@style/EditTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_16dp"
-        android:layout_marginTop="@dimen/margin_4dp"
         android:layout_marginRight="@dimen/margin_16dp"
-        android:hint="@string/address_line_2"
-        android:inputType="textMultiLine"
-        android:padding="@dimen/margin_8dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_16dp"
-        android:layout_marginTop="@dimen/margin_16dp"
-        android:layout_marginRight="@dimen/margin_16dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/bt_add_location"
-            style="@style/ButtonBlue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/margin_16dp"
-            android:paddingRight="@dimen/margin_16dp"
-            android:text="@string/add_location" />
-
-        <TextView
-            android:id="@+id/tv_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_16dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            tools:text="@string/err" />
-    </LinearLayout>
-
-    <TextView
-        style="@style/TextViewBlackHeading2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_16dp"
-        android:layout_marginTop="@dimen/margin_16dp"
-        android:layout_marginRight="@dimen/margin_16dp"
-        android:text="@string/city" />
-
-    <EditText
-        android:id="@+id/et_city"
-        style="@style/EditTextStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_16dp"
-        android:layout_marginTop="@dimen/margin_4dp"
-        android:layout_marginRight="@dimen/margin_16dp"
-        android:hint="@string/city"
-        android:inputType="textMultiLine"
-        android:padding="@dimen/margin_8dp" />
-
-    <TextView
-        style="@style/TextViewBlackHeading2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_16dp"
-        android:layout_marginTop="@dimen/margin_16dp"
-        android:layout_marginRight="@dimen/margin_16dp"
-        android:text="@string/state" />
-
-    <EditText
-        android:id="@+id/et_state"
-        style="@style/EditTextStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_16dp"
-        android:layout_marginTop="@dimen/margin_4dp"
-        android:layout_marginRight="@dimen/margin_16dp"
-        android:hint="@string/state"
+        android:hint="@string/address"
         android:inputType="textMultiLine"
         android:padding="@dimen/margin_8dp" />
 
@@ -163,17 +94,179 @@
         android:layout_marginLeft="@dimen/margin_16dp"
         android:layout_marginTop="@dimen/margin_16dp"
         android:layout_marginRight="@dimen/margin_16dp"
-        android:text="@string/country" />
+        android:text="@string/phone" />
 
     <EditText
-        android:id="@+id/et_country"
+        android:id="@+id/et_phone"
         style="@style/EditTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_16dp"
         android:layout_marginTop="@dimen/margin_4dp"
         android:layout_marginRight="@dimen/margin_16dp"
-        android:hint="@string/country"
-        android:inputType="textMultiLine"
+        android:hint="@string/phone"
+        android:inputType="phone"
         android:padding="@dimen/margin_8dp" />
+
+    <TextView
+        style="@style/TextViewBlackHeading2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_marginRight="@dimen/margin_16dp"
+        android:text="@string/cellphone1" />
+
+    <EditText
+        android:id="@+id/et_cellphone_1"
+        style="@style/EditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_4dp"
+        android:layout_marginRight="@dimen/margin_16dp"
+        android:hint="@string/cellphone1_hint"
+        android:imeOptions="actionNext"
+        android:inputType="phone"
+        android:padding="@dimen/margin_8dp" />
+
+    <TextView
+        style="@style/TextViewBlackHeading2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_marginRight="@dimen/margin_16dp"
+        android:text="@string/cellphone2" />
+
+    <EditText
+        android:id="@+id/et_cellphone_2"
+        style="@style/EditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_4dp"
+        android:layout_marginRight="@dimen/margin_16dp"
+        android:hint="@string/cellphone2_hint"
+        android:imeOptions="actionNext"
+        android:inputType="phone"
+        android:padding="@dimen/margin_8dp" />
+
+    <TextView
+        style="@style/TextViewBlackHeading2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_marginRight="@dimen/margin_16dp"
+        android:text="@string/email" />
+
+    <EditText
+        android:id="@+id/et_email"
+        style="@style/EditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_4dp"
+        android:layout_marginRight="@dimen/margin_16dp"
+        android:hint="@string/email"
+        android:imeOptions="actionNext"
+        android:inputType="textEmailAddress"
+        android:padding="@dimen/margin_8dp" />
+
+    <TextView
+        style="@style/TextViewBlackHeading2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_marginRight="@dimen/margin_16dp"
+        android:text="@string/contact_person" />
+
+    <EditText
+        android:id="@+id/et_contact_person"
+        style="@style/EditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_4dp"
+        android:layout_marginRight="@dimen/margin_16dp"
+        android:hint="@string/contact_person"
+        android:imeOptions="actionNext"
+        android:inputType="textPersonName"
+        android:padding="@dimen/margin_8dp" />
+
+    <TextView
+        style="@style/TextViewBlackHeading2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_marginRight="@dimen/margin_16dp"
+        android:text="@string/info_1" />
+
+    <EditText
+        android:id="@+id/et_info_1"
+        style="@style/EditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_4dp"
+        android:layout_marginRight="@dimen/margin_16dp"
+        android:hint="@string/info_1"
+        android:imeOptions="actionNext"
+        android:inputType="text"
+        android:padding="@dimen/margin_8dp" />
+
+    <TextView
+        style="@style/TextViewBlackHeading2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_marginRight="@dimen/margin_16dp"
+        android:text="@string/info_2" />
+
+    <EditText
+        android:id="@+id/et_info_2"
+        style="@style/EditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_4dp"
+        android:layout_marginRight="@dimen/margin_16dp"
+        android:hint="@string/info_2"
+        android:imeOptions="actionNext"
+        android:inputType="text"
+        android:padding="@dimen/margin_8dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_marginRight="@dimen/margin_16dp"
+        android:layout_marginBottom="@dimen/margin_16dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/bt_add_location"
+            style="@style/ButtonBlue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/margin_16dp"
+            android:paddingRight="@dimen/margin_16dp"
+            android:text="@string/add_location" />
+
+        <TextView
+            android:id="@+id/tv_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_16dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="@string/err" />
+    </LinearLayout>
+
+    <include layout="@layout/border_grey" />
 </LinearLayout>

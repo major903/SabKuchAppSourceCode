@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.android.volley.Response;
@@ -64,8 +65,9 @@ public class JobCategoryFragment extends BaseListFragment {
 
     private void loadValues(ArrayList<JobCategory> response) {
 
-        JobCategoryAdapter jobCategoryAdapter= new JobCategoryAdapter(context, response);
-        getListView().setAdapter(jobCategoryAdapter);
+        ArrayAdapter<JobCategory> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1,
+                android.R.id.text1, response);
+        setListAdapter(adapter);
     }
 
 
