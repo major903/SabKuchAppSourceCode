@@ -130,16 +130,15 @@ public class DirectoryDetailAdapter extends BaseExpandableListAdapter {
 
             int noOfReviews = directoryDetail.getReviews().length;
             if (noOfReviews != 0)
-                UiUtil.setTextView(holder.tvReviews, String.format(Locale.US, "( %d %s)", noOfReviews,
+                UiUtil.setTextView(holder.tvReviews, String.format(Locale.US, "(%d %s)", noOfReviews,
                         AppUtil.getSingularOrPluralString("Review", noOfReviews)));
             else
                 holder.tvReviews.setVisibility(View.GONE);
 
-            int imageResourceId = isExpanded ? R.drawable.baseline_expand_less_black_24dp : R.drawable.baseline_expand_more_black_24dp;
-            holder.ivTriangle.setImageResource(imageResourceId);
-
             if (directoryDetail.getBusinessAddresses().length > 1) {
                 holder.rlBranchesContainer.setVisibility(View.VISIBLE);
+                int imageResourceId = isExpanded ? R.drawable.baseline_expand_less_black_24dp : R.drawable.baseline_expand_more_black_24dp;
+                holder.ivTriangle.setImageResource(imageResourceId);
                 holder.rlBranchesContainer.setOnClickListener(view -> {
                     if (isExpanded) ((ExpandableListView) parent).collapseGroup(listPosition);
                     else ((ExpandableListView) parent).expandGroup(listPosition, true);

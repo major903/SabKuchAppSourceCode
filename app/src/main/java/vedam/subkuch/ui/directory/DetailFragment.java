@@ -111,7 +111,7 @@ public class DetailFragment extends BaseFragment {
 
         int noOfReviews = directoryDetail.getReviews().length;
         if (noOfReviews != 0)
-            UiUtil.setTextView(fragmentDetailBinding.tvReviews, String.format(Locale.US, "( %d %s)", noOfReviews,
+            UiUtil.setTextView(fragmentDetailBinding.tvReviews, String.format(Locale.US, "(%d %s)", noOfReviews,
                     AppUtil.getSingularOrPluralString("Review", noOfReviews)));
         else
             fragmentDetailBinding.tvReviews.setVisibility(View.GONE);

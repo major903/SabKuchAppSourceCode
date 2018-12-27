@@ -14,7 +14,8 @@
         android:childDivider="@android:color/transparent"
         android:clipToPadding="false"
         android:divider="@android:color/transparent"
-        android:dividerHeight="@dimen/margin_8dp" />
+        android:dividerHeight="@dimen/margin_8dp"
+        android:groupIndicator="@null" />
 
 
 </LinearLayout>
