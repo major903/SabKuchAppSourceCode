@@ -15,12 +15,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import vedam.subkuch.R;
 import vedam.subkuch.network.models.Event;
+import vedam.subkuch.utils.AppUtil;
+import vedam.subkuch.utils.ImageSetter;
 import vedam.subkuch.utils.UiUtil;
 
 
@@ -57,23 +58,37 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         UiUtil.setTextView("Time:", event.getTime(), holder.tvTime);
         UiUtil.setTextView("Venue:", event.getVenue(), holder.tvVenue);
         UiUtil.setTextView("Entry Fee:", event.getEntryFee(), holder.tvCost);
+        UiUtil.setTextView(event.getDistance(), "Kms away", holder.tvDistance);
 
         if (!TextUtils.isEmpty(event.getEventImage())) {
             holder.ivEvent.setVisibility(View.VISIBLE);
-            Picasso.with(context).load(event.getEventImage()).placeholder(R.drawable.grey)
-                    .error(R.drawable.grey).into(holder.ivEvent, new Callback() {
-                @Override
-                public void onSuccess() {
-                    holder.ivEvent.setVisibility(View.VISIBLE);
-                }
+            UiUtil.setImageView(new ImageSetter.ImageBuilder(context)
+                    .setImageLink(event.getEventImage())
+                    .setDefaults()
+                    .setTarget(holder.ivEvent)
+                    .setCallback(new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            holder.ivEvent.setVisibility(View.VISIBLE);
+                        }
 
-                @Override
-                public void onError() {
-                    holder.ivEvent.setVisibility(View.GONE);
-                }
-            });
+                        @Override
+                        public void onError(Exception e) {
+                            holder.ivEvent.setVisibility(View.GONE);
+                        }
+                    })
+                    .build());
         } else
             holder.ivEvent.setVisibility(View.GONE);
+
+        if (!TextUtils.isEmpty(event.getLatitude()) && !TextUtils.isEmpty(event.getLongitude())) {
+            holder.ibDirection.setVisibility(View.VISIBLE);
+            holder.ibDirection.setOnClickListener(view -> {
+                String webURL = "https://www.google.com/maps/dir/?api=1&" + "destination=" + event.getLatitude() + "%2C" + event.getLongitude();
+                AppUtil.openUrl(context, webURL);
+            });
+        } else
+            holder.ibDirection.setVisibility(View.GONE);
     }
 
     @Override
@@ -88,7 +103,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         private TextView tvDetails;
         private TextView tvVenue;
         private TextView tvCost;
+        private TextView tvDistance;
         private ImageView ivEvent;
+        private ImageView ibDirection;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -97,7 +114,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             tvTime = itemView.findViewById(R.id.tvTime);
             tvVenue = itemView.findViewById(R.id.tvVenue);
             tvCost = itemView.findViewById(R.id.tvCost);
+            tvDistance = itemView.findViewById(R.id.tvDistance);
             ivEvent = itemView.findViewById(R.id.iv_event);
+            ibDirection = itemView.findViewById(R.id.ib_direction);
         }
 
         /*public <E> void bind(final E item, final int position, final OnListViewItemClickListener listener) {

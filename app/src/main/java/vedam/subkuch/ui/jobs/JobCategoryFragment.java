@@ -1,8 +1,12 @@
 package vedam.subkuch.ui.jobs;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -38,12 +42,12 @@ public class JobCategoryFragment extends BaseListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_phone_book, container, false);
+        return inflater.inflate(R.layout.fragment_directory, container, false);
     }
 
     public void onViewCreated(@NonNull View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
-
+        setHasOptionsMenu(true);
         getJobCategory();
     }
 
@@ -77,5 +81,23 @@ public class JobCategoryFragment extends BaseListFragment {
         JobCategory jobCategory = ((JobCategory) l.getItemAtPosition(position));
         addFragment(R.id.content_frame, JobsFragment.newInstance(jobCategory),
                 null, true, 0, 0, 0, 0);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.add, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_add:
+                startActivity(new Intent(getActivity(), AddJobsActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

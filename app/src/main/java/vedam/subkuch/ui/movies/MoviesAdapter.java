@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Callback;
 
 import java.util.ArrayList;
 
@@ -19,6 +19,8 @@ import vedam.subkuch.R;
 import vedam.subkuch.network.models.Movie;
 import vedam.subkuch.network.models.Venue;
 import vedam.subkuch.utils.AppUtil;
+import vedam.subkuch.utils.ImageSetter;
+import vedam.subkuch.utils.UiUtil;
 
 public class MoviesAdapter extends BaseAdapter {
 
@@ -79,7 +81,22 @@ public class MoviesAdapter extends BaseAdapter {
 
         if (!TextUtils.isEmpty(movie.getMovieposter())) {
             holder.flMovie.setVisibility(View.VISIBLE);
-            Picasso.with(parent.getContext()).load(movie.getMovieposter()).placeholder(R.drawable.grey).error(R.drawable.grey).into(holder.ivMovie);
+            UiUtil.setImageView(new ImageSetter.ImageBuilder(parent.getContext())
+                    .setImageLink(movie.getMovieposter())
+                    .setDefaults()
+                    .setTarget(holder.ivMovie)
+                    .setCallback(new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            holder.flMovie.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            holder.flMovie.setVisibility(View.GONE);
+                        }
+                    })
+                    .build());
         } else
             holder.flMovie.setVisibility(View.GONE);
 

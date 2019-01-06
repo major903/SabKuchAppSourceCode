@@ -42,7 +42,7 @@ public class RegisterUserActivity extends BaseActivity {
         bindData();
         getCities();
         getCountries();
-        requestLocation();
+        requestLocation(true);
 
     }
 

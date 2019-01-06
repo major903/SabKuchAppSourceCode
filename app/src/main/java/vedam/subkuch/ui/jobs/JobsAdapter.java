@@ -11,6 +11,7 @@ import android.text.style.MetricAffectingSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -54,14 +55,13 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
         setPosition(holder.tvPosition, job.getPosts());
 
         if (!TextUtils.isEmpty(job.getLatitude()) && !TextUtils.isEmpty(job.getLongitude())) {
-            holder.tvLocation.setOnClickListener(view -> {
+            holder.ibDirection.setVisibility(View.VISIBLE);
+            holder.ibDirection.setOnClickListener(view -> {
                 String webURL = "https://www.google.com/maps/dir/?api=1&" + "destination=" + job.getLatitude() + "%2C" + job.getLongitude();
                 AppUtil.openUrl(context, webURL);
             });
-        } else {
-            UiUtil.showToast(context, "No location information found");
-            holder.tvLocation.setOnClickListener(null);
-        }
+        } else
+            holder.ibDirection.setVisibility(View.GONE);
     }
 
     private void setPosition(TextView tvPosition, ArrayList<Post> posts) {
@@ -98,6 +98,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
         private TextView tvLocation;
         private TextView tvPosition;
         private TextView tvContact;
+        private ImageView ibDirection;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -107,6 +108,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
             tvLocation = itemView.findViewById(R.id.tv_location);
             tvPosition = itemView.findViewById(R.id.tv_position);
             tvContact = itemView.findViewById(R.id.tv_contact);
+            ibDirection = itemView.findViewById(R.id.ib_direction);
         }
 
         /*public <E> void bind(final E item, final int position, final OnListViewItemClickListener listener) {

@@ -3,6 +3,11 @@ package vedam.subkuch.ui.offers;
 public class Offer {
 
     private String Imageurl;
+    private String RedirectURL;
+
+    public String getRedirectURL() {
+        return RedirectURL;
+    }
 
     public String getImageurl() {
         return Imageurl;

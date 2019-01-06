@@ -1,17 +1,19 @@
 package vedam.subkuch.ui.offers;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 
 import vedam.subkuch.R;
+import vedam.subkuch.utils.AppUtil;
+import vedam.subkuch.utils.ImageSetter;
+import vedam.subkuch.utils.UiUtil;
 
 /**
  * Created by nadeemansari on 09/02/16.
@@ -58,9 +60,16 @@ public class OffersAdapter extends BaseAdapter {
         }
         Offer offer = (Offer) getItem(position);
 
-        Picasso.with(parent.getContext()).load(offer.getImageurl()).
-                placeholder(R.drawable.grey).error(R.drawable.grey).into(holder.image);
+        UiUtil.setImageView(new ImageSetter.ImageBuilder(parent.getContext())
+                .setImageLink(offer.getImageurl())
+                .setDefaults()
+                .setTarget(holder.image)
+                .build());
 
+        if (!TextUtils.isEmpty(offer.getImageurl()))
+            holder.image.setOnClickListener(view -> {
+                AppUtil.openUrl(parent.getContext(), offer.getImageurl());
+            });
         return v;
     }
 

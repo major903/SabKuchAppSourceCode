@@ -19,3 +19,94 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-dontwarn com.google.android.gms.**
+-dontwarn com.google.errorprone.annotations.*
+
+#-dontwarn **
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+
+-keepattributes Signature
+-keepattributes *Annotation*, EnclosingMethod
+-keep class org.codehaus.** { *; }
+
+############################## Active Android #############################
+-keep public class vedam.subkuch.network.models.** {
+  public void set*(***);
+  public *** get*();
+}
+-keepname public class vedam.subkuch.network.models.** {
+  public void set*(***);
+  public *** get*();
+}
+
+
+############################## OKHTTP #############################
+-keepattributes Signature
+-keepattributes *Annotation*
+#-keep class okhttp3.** { *; }
+#-keep interface okhttp3.** { *; }
+-keep class com.squareup.okhttp3.** { *; }
+-keep interface com.squareup.okhttp3.** { *; }
+#-keep class com.squareup.okhttp3.internal.** { *; }
+-dontwarn okhttp3.**
+-dontwarn okio.**
+-dontwarn com.squareup.okio.**
+#-dontwarn com.squareup.okhttp3.internal.huc.**
+############################## OKHTTP #############################
+
+
+-dontwarn org.apache.commons.logging.**
+-dontwarn org.apache.commons.codec.binary.**
+-dontwarn org.apache.commons.logging.impl.**
+-dontwarn org.apache.http.conn.scheme.**
+-dontwarn org.apache.http.annotation.**
+-dontwarn android.support.**
+-dontwarn com.squareup.okhttp.**
+
+
+-keepclassmembers class ** {
+    public void onEvent*(***);
+}
+
+# Only required if you use AsyncExecutor
+-keepclassmembers class * extends de.greenrobot.event.util.ThrowableFailureEvent {
+    public <init>(java.lang.Throwable);
+}
+
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+-keep public class * extends android.preference.Preference
+
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet);
+}
+
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+
+-keepclassmembers class * extends android.app.Activity {
+   public void *(android.view.View);
+}
+
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
+}

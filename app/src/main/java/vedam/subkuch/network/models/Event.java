@@ -12,11 +12,27 @@ public class Event {
 
     private String Date;
 
-    private String ID;
+    private double ID;
 
     private String About;
 
     private String Title;
+
+    private String Latitude;
+    private String Longitude;
+    private String Distance;
+
+    public String getLatitude() {
+        return Latitude;
+    }
+
+    public String getLongitude() {
+        return Longitude;
+    }
+
+    public String getDistance() {
+        return Distance;
+    }
 
     public String getEntryFee() {
         return EntryFee;
@@ -54,11 +70,11 @@ public class Event {
         this.Date = Date;
     }
 
-    public String getID() {
+    public double getID() {
         return ID;
     }
 
-    public void setID(String ID) {
+    public void setID(double ID) {
         this.ID = ID;
     }
 
@@ -76,10 +92,5 @@ public class Event {
 
     public void setTitle(String Title) {
         this.Title = Title;
-    }
-
-    @Override
-    public String toString() {
-        return "Event [EventImage = " + EventImage + ", Time = " + Time + ", Venue = " + Venue + ", Date = " + Date + ", ID = " + ID + ", About = " + About + ", Title = " + Title + "]";
     }
 }

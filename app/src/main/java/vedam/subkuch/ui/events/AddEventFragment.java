@@ -1,6 +1,6 @@
 package vedam.subkuch.ui.events;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.volley.Response;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -28,10 +33,13 @@ import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.UiUtil;
 
+import static android.app.Activity.RESULT_OK;
+
 
 public class AddEventFragment extends BaseAddImagesFragment {
 
     private FragmentAddEventBinding fragmentAddEventBinding;
+    private LatLng latLng;
 
     public AddEventFragment() {
         // Required empty public constructor
@@ -64,6 +72,22 @@ public class AddEventFragment extends BaseAddImagesFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setImagesLayout(view, 1);
+        bind();
+    }
+
+    private void bind() {
+
+        fragmentAddEventBinding.btAddLocation.setOnClickListener(view -> {
+            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+            try {
+                startActivityForResult(builder.build(getActivity()), Constants.REQUEST_PLACE_PICKER);
+            } catch (GooglePlayServicesRepairableException e) {
+                e.printStackTrace();
+            } catch (GooglePlayServicesNotAvailableException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -97,6 +121,8 @@ public class AddEventFragment extends BaseAddImagesFragment {
         request.put(Constants.Venue, fragmentAddEventBinding.etVenue.getText().toString());
         request.put(Constants.About, fragmentAddEventBinding.etDetails.getText().toString());
         request.put(Constants.EntryFee, fragmentAddEventBinding.etEntryFee.getText().toString());
+        request.put("Lat", String.valueOf(latLng.latitude));
+        request.put("Long", String.valueOf(latLng.longitude));
         if (!getImageItemMap().isEmpty())
             request.put(Constants.image, AppUtil.getBase64FromBitmap(AppUtil.getSingleBitmap(context, getImageItemMap())));
 
@@ -109,10 +135,10 @@ public class AddEventFragment extends BaseAddImagesFragment {
         UiUtil.cancelProgressDialog();
         if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
             UiUtil.showToast(context, context.getString(R.string.event_added));
-            if (getGlobalFragmentInteractionListener() != null) {
-                getGlobalFragmentInteractionListener().setFragmentResult(Activity.RESULT_OK, null);
-                getGlobalFragmentInteractionListener().finishActivity();
-            }
+//            if (getGlobalFragmentInteractionListener() != null) {
+//                getGlobalFragmentInteractionListener().setFragmentResult(RESULT_OK, null);
+//                getGlobalFragmentInteractionListener().finishActivity();
+//            }
         } else
             UiUtil.showToast(context, context.getString(R.string.err_occurred));
     };
@@ -129,7 +155,21 @@ public class AddEventFragment extends BaseAddImagesFragment {
             errorMessage = R.string.enter_event_time;
         else if (TextUtils.isEmpty(fragmentAddEventBinding.etVenue.getText()))
             errorMessage = R.string.enter_event_venue;
+        else if (latLng == null)
+            errorMessage = R.string.add_a_location;
 
         return errorMessage;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.REQUEST_PLACE_PICKER) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(context, data);
+                fragmentAddEventBinding.tvLocation.setText(place.getName());
+                latLng = place.getLatLng();
+            }
+        } else
+            super.onActivityResult(requestCode, resultCode, data);
     }
 }

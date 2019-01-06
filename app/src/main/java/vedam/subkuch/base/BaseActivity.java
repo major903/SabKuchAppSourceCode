@@ -54,6 +54,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ScreenCh
     public static final String TAG = "BaseActivity";
     private Toolbar toolbar;
     private boolean isAddressRequested;
+    private boolean shouldForce;
 
     protected Response.ErrorListener onErrorListener = error -> {
 
@@ -135,7 +136,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ScreenCh
     }
 
     private boolean setToolbar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
 
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -152,18 +153,6 @@ public abstract class BaseActivity extends AppCompatActivity implements ScreenCh
             setToolbar();
         return toolbar;
     }
-
-//    public void setSearch() {
-//        ImageButton ibSearch = (ImageButton) findViewById(R.id.ib_search);
-//        if (ibSearch != null) {
-//            ibSearch.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    requestSearch();
-//                }
-//            });
-//        }
-//    }
 
     public void replaceFragment(final int containerId, Fragment fragment, String tag, boolean addToBackStack,
                                 @AnimRes int enterAnim, @AnimRes int exitAnim,
@@ -260,8 +249,9 @@ public abstract class BaseActivity extends AppCompatActivity implements ScreenCh
      * Request user's current location and delivers the result in the {@link #onLocationChanged(Location)} callback
      */
     @Override
-    public void requestLocation() {
+    public void requestLocation(boolean shouldForce) {
         isAddressRequested = false;
+        this.shouldForce = shouldForce;
         requestLocationProvider();
     }
 
@@ -269,8 +259,9 @@ public abstract class BaseActivity extends AppCompatActivity implements ScreenCh
      * Request user's current address and delivers the result in the {@link #onAddressChanged(Address)} callback
      */
     @Override
-    public void requestAddress() {
+    public void requestAddress(boolean shouldForce) {
         isAddressRequested = true;
+        this.shouldForce = shouldForce;
         requestLocationProvider();
     }
 
@@ -364,8 +355,10 @@ public abstract class BaseActivity extends AppCompatActivity implements ScreenCh
                     requestLocationProvider();
 
                 } else {
-                    startAppSettings();
-                    finish();
+                    if (shouldForce) {
+                        startAppSettings();
+                        finish();
+                    }
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }

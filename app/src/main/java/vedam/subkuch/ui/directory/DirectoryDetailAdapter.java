@@ -9,6 +9,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -98,6 +99,7 @@ public class DirectoryDetailAdapter extends BaseExpandableListAdapter {
             holder.ibDirection = v.findViewById(R.id.ib_direction);
             holder.ivTriangle = v.findViewById(R.id.iv_triangle);
             holder.rlBranchesContainer = v.findViewById(R.id.rl_branches_container);
+            holder.llRatings = v.findViewById(R.id.ll_ratings);
             v.setTag(holder);
         } else {
             holder = (DirectoryDetailAdapter.ViewHolder) v.getTag();
@@ -122,18 +124,18 @@ public class DirectoryDetailAdapter extends BaseExpandableListAdapter {
             UiUtil.setTextView(holder.tvLine1, businessAddress.getInfoLine1());
             UiUtil.setTextView(holder.tvLine2, businessAddress.getInfoLine2());
 
-            if (!TextUtils.isEmpty(directoryDetail.getAvegrageOfRating()) && AppUtil.isNumeric(directoryDetail.getAvegrageOfRating())) {
-                holder.rbRating.setVisibility(View.VISIBLE);
-                holder.rbRating.setRating(Float.valueOf(directoryDetail.getAvegrageOfRating()));
-            } else
-                holder.rbRating.setVisibility(View.GONE);
-
             int noOfReviews = directoryDetail.getReviews().length;
-            if (noOfReviews != 0)
+            if (noOfReviews != 0) {
+                holder.llRatings.setVisibility(View.VISIBLE);
                 UiUtil.setTextView(holder.tvReviews, String.format(Locale.US, "(%d %s)", noOfReviews,
                         AppUtil.getSingularOrPluralString("Review", noOfReviews)));
-            else
-                holder.tvReviews.setVisibility(View.GONE);
+                if (!TextUtils.isEmpty(directoryDetail.getAvegrageOfRating()) && AppUtil.isNumeric(directoryDetail.getAvegrageOfRating())) {
+                    holder.rbRating.setVisibility(View.VISIBLE);
+                    holder.rbRating.setRating(Float.valueOf(directoryDetail.getAvegrageOfRating()));
+                } else
+                    holder.rbRating.setVisibility(View.GONE);
+            } else
+                holder.llRatings.setVisibility(View.GONE);
 
             if (directoryDetail.getBusinessAddresses().length > 1) {
                 holder.rlBranchesContainer.setVisibility(View.VISIBLE);
@@ -239,6 +241,7 @@ public class DirectoryDetailAdapter extends BaseExpandableListAdapter {
         private TextView tvDistance;
         private RatingBar rbRating;
         private TextView tvReviews;
+        private LinearLayout llRatings;
         private TextView tvDealingIn;
         private TextView tvAddress;
         private TextView tvPhone;

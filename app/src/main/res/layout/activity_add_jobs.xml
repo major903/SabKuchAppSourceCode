@@ -151,7 +151,7 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="@dimen/margin_16dp"
                         android:paddingRight="@dimen/margin_16dp"
-                        android:text="@string/add_location" />
+                        android:text="@string/show_location" />
 
                     <TextView
                         android:id="@+id/tv_location"
@@ -196,7 +196,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin_16dp"
-                    android:text="@string/add_job" />
+                    android:text="@string/add_position" />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

@@ -21,6 +21,7 @@ public class Constants {
     public static final String EXTRA_LAST_NAME = "EXTRA_LAST_NAME";
     public static final String EXTRA_ADDRESS = "EXTRA_ADDRESS";
     public static final String EXTRA_CATEGORY_ID = "EXTRA_CATEGORY_ID";
+    public static final String EXTRA_CITY_NAME = "EXTRA_CITY_NAME";
     public static final String EXTRA_BUSINESS_ID = "EXTRA_BUSINESS_ID";
     public static final String EXTRA_CATEGORY_NAME = "EXTRA_CATEGORY_NAME";
     public static final String EXTRA_SUB_CATEGORY_NAME = "EXTRA_SUB_CATEGORY_NAME";
@@ -41,7 +42,7 @@ public class Constants {
     public static final int REQUEST_CHECK_SETTINGS = 2;
     public static final int REQUEST_PICK_IMAGE_FROM_GALLERY = 3;
     public static final int REQUEST_PICK_IMAGE_FROM_CAMERA = 4;
-    public static final int REQUEST_ADD_EVENT = 5;
+    public static final int REQUEST_ADD_QUESTION = 5;
     public static final int REQUEST_PLACE_PICKER = 6;
 
     public static final int SUCCESS_RESULT = 0;
@@ -73,6 +74,10 @@ public class Constants {
     public static final String Gender = "Gender";
     public static final String cityid = "cityid";
     public static final String countryid = "countryid";
+    public static final String categoryid = "categoryid";
+    public static final String topic = "topic";
+    public static final String Blogid = "Blogid";
+    public static final String Replaymessage = "Replaymessage";
 
     public static final String Directory = "Directory";
     public static final String Jobs = "Jobs";
@@ -102,6 +107,8 @@ public class Constants {
     public static final String jobcategory = "jobcategory";
     public static final String title = "title";
     public static final String discription = "discription";
+
+    public static final String PRIVACY_POLICY_URL = "https://sabkuchworld.com/privacypolicy.html";
 
 
 }

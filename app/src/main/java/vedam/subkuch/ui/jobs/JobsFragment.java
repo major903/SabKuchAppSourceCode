@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 
 import com.android.volley.Response;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -190,8 +189,7 @@ public class JobsFragment extends BaseFragment {
 
         switch (item.getItemId()) {
             case R.id.action_add:
-                startActivity(new Intent(getActivity(), AddJobsActivity.class)
-                        .putExtra(Constants.EXTRA_CATEGORY_ID, categoryId));
+                startActivity(new Intent(getActivity(), AddJobsActivity.class));
                 return true;
             case R.id.action_search:
                 if (fragmentJobsBinding.cvSearch.getVisibility() == View.VISIBLE)
@@ -211,13 +209,13 @@ public class JobsFragment extends BaseFragment {
         @Override
         public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
-            final Picasso picasso = Picasso.with(context);
+            /*final Picasso picasso = Picasso.get();
 
             if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                 picasso.resumeTag(context);
             } else {
                 picasso.pauseTag(context);
-            }
+            }*/
         }
 
         @Override

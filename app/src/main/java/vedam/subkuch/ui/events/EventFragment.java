@@ -1,6 +1,5 @@
 package vedam.subkuch.ui.events;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.volley.Response;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -52,7 +50,7 @@ public class EventFragment extends BaseFragment {
 
     //Layout of BulleinFragment is used because both needed to same i.e. ListView
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         fragmentEventBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_event, container, false);
@@ -71,7 +69,6 @@ public class EventFragment extends BaseFragment {
 
         linearLayoutManager = new LinearLayoutManager(context);
         fragmentEventBinding.rvEvents.setLayoutManager(linearLayoutManager);
-        adapter = new EventAdapter(context, eventsList);
         fragmentEventBinding.rvEvents.setHasFixedSize(true);
         adapter = new EventAdapter(context, eventsList);
         fragmentEventBinding.rvEvents.setAdapter(adapter);
@@ -129,23 +126,10 @@ public class EventFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
-                startActivityForResult(new Intent(context, AddEventActivity.class), Constants.REQUEST_ADD_EVENT);
+                startActivity(new Intent(context, AddEventActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        switch (requestCode) {
-            case Constants.REQUEST_ADD_EVENT:
-                if (resultCode == Activity.RESULT_OK)
-                    getEvents();
-                break;
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
-        }
     }
 
     public class EventsOnScrollListener extends RecyclerView.OnScrollListener {
@@ -153,13 +137,13 @@ public class EventFragment extends BaseFragment {
         @Override
         public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
-            final Picasso picasso = Picasso.with(context);
+            /*final Picasso picasso = Picasso.get();
 
             if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                 picasso.resumeTag(context);
             } else {
                 picasso.pauseTag(context);
-            }
+            }*/
         }
 
         @Override

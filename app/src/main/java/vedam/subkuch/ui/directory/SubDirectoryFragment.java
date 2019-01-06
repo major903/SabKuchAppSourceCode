@@ -7,6 +7,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -49,6 +52,7 @@ public class SubDirectoryFragment extends BaseListFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if (getArguments() != null)
             categoryId = getArguments().getString(Constants.EXTRA_CATEGORY_ID);
     }
@@ -99,5 +103,24 @@ public class SubDirectoryFragment extends BaseListFragment {
         intent.putExtra(Constants.EXTRA_SUB_CATEGORY_NAME, subCategory.getSubCategoryName());
         intent.putExtra(Constants.EXTRA_SUB_CATEGORY_ID, subCategory.getSubCategoryId());
         startActivity(intent);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.add, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_add:
+                startActivity(new Intent(getActivity(), AddDirectoryActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

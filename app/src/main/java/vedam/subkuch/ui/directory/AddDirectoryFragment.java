@@ -70,12 +70,9 @@ public class AddDirectoryFragment extends BaseAddImagesFragment implements Adapt
     }
 
 
-    public static AddDirectoryFragment newInstance(Bundle extras) {
+    public static AddDirectoryFragment newInstance() {
 
-        AddDirectoryFragment fragment = new AddDirectoryFragment();
-        fragment.setArguments(extras);
-
-        return fragment;
+        return new AddDirectoryFragment();
     }
 
     @Override
@@ -351,7 +348,7 @@ public class AddDirectoryFragment extends BaseAddImagesFragment implements Adapt
         UiUtil.cancelProgressDialog();
         if (getActivity() != null)
             if (response != null && response.isStatus()) {
-                UiUtil.showToast(context, AppUtil.deNull(response.getMessage()));
+                UiUtil.showToast(context, getString(R.string.business_added));
                 getActivity().setResult(RESULT_OK);
                 getActivity().finish();
             } else

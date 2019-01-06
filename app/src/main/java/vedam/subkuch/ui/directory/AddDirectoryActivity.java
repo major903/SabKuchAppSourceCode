@@ -14,7 +14,7 @@ public class AddDirectoryActivity extends BaseActivity {
         setToolbarBackButton();
         setTitle(R.string.add_business);
 
-        addFragment(R.id.content_frame, AddDirectoryFragment.newInstance(getIntent().getExtras()));
+        addFragment(R.id.content_frame, AddDirectoryFragment.newInstance());
 
     }
 }

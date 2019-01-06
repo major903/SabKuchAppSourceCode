@@ -24,7 +24,7 @@
         tools:text="@string/err" />
 
     <LinearLayout
-        android:id="@+id/ll_reviews"
+        android:id="@+id/ll_ratings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"

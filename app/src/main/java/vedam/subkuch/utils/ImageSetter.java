@@ -3,6 +3,8 @@ package vedam.subkuch.utils;
 import android.content.Context;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Callback;
+
 /**
  * Created by nansari on 11/7/2016.
  */
@@ -11,6 +13,7 @@ public class ImageSetter {
     private Context context;
     private String imageLink;
     private int imageResource;
+    private Callback callback;
     private int placeholderResource;
     private String filePath;
     private int errorResource;
@@ -25,6 +28,7 @@ public class ImageSetter {
         this.context = builder.context;
         this.imageLink = builder.imageLink;
         this.imageResource = builder.imageResource;
+        this.callback = builder.callback;
         this.filePath = builder.filePath;
         this.placeholderResource = builder.placeholderResource;
         this.errorResource = builder.errorResource;
@@ -46,6 +50,10 @@ public class ImageSetter {
 
     public int getImageResource() {
         return imageResource;
+    }
+
+    public Callback getCallback() {
+        return callback;
     }
 
     public int getPlaceholderResource() {
@@ -88,6 +96,7 @@ public class ImageSetter {
         private Context context;
         private String imageLink;
         private int imageResource;
+        private Callback callback;
         private String filePath;
         private int placeholderResource;
         private int errorResource;
@@ -109,6 +118,11 @@ public class ImageSetter {
 
         public ImageBuilder setImageResource(int imageResource) {
             this.imageResource = imageResource;
+            return this;
+        }
+
+        public ImageBuilder setCallback(Callback callback) {
+            this.callback = callback;
             return this;
         }
 

@@ -21,7 +21,6 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.Map;
 
-import vedam.subkuch.BuildConfig;
 import vedam.subkuch.utils.LogUtils;
 
 import static vedam.subkuch.base.BaseActivity.TAG;
@@ -193,9 +192,7 @@ public class GsonRequest<T> extends Request<T> {
             isReader = new InputStreamReader(isr);
             JsonReader reader = new JsonReader(isReader);
 
-            if (BuildConfig.DEBUG) {
-                LogUtils.LOGD("GsonRequest", "========================== received response" + new String(response.data));
-            }
+            LogUtils.LOGD("GsonRequest", "========================== received response" + new String(response.data));
             if (clazz != null) {
                 return (Response<T>) Response.success(mGson.fromJson(reader, clazz),
                         HttpHeaderParser.parseCacheHeaders(response));

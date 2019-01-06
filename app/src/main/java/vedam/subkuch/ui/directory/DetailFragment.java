@@ -17,7 +17,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
 
@@ -28,6 +27,7 @@ import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.ui.directory.models.Business;
 import vedam.subkuch.ui.directory.models.BusinessAddress;
 import vedam.subkuch.utils.AppUtil;
+import vedam.subkuch.utils.ImageSetter;
 import vedam.subkuch.utils.UiUtil;
 
 public class DetailFragment extends BaseFragment {
@@ -77,7 +77,7 @@ public class DetailFragment extends BaseFragment {
             fragmentDetailBinding.rvReviews.setNestedScrollingEnabled(false);
             fragmentDetailBinding.rvReviews.setAdapter(new ReviewAdapter(directoryDetail.getReviews()));
         } else {
-            fragmentDetailBinding.llReviews.setVisibility(View.GONE);
+            fragmentDetailBinding.llRatings.setVisibility(View.GONE);
         }
     }
 
@@ -85,18 +85,24 @@ public class DetailFragment extends BaseFragment {
 
         if (!TextUtils.isEmpty(directoryDetail.getBusinessImage())) {
             fragmentDetailBinding.ivEvent.setVisibility(View.VISIBLE);
-            Picasso.with(context).load(directoryDetail.getBusinessImage())
-                    .placeholder(R.drawable.grey).error(R.drawable.grey).into(fragmentDetailBinding.ivEvent, new Callback() {
-                @Override
-                public void onSuccess() {
-                    fragmentDetailBinding.ivEvent.setVisibility(View.VISIBLE);
-                }
 
-                @Override
-                public void onError() {
-                    fragmentDetailBinding.ivEvent.setVisibility(View.GONE);
-                }
-            });
+            UiUtil.setImageView(new ImageSetter.ImageBuilder(context)
+                    .setImageLink(directoryDetail.getBusinessImage())
+                    .setDefaults()
+                    .setTarget(fragmentDetailBinding.ivEvent)
+                    .setCallback(new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            fragmentDetailBinding.ivEvent.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            fragmentDetailBinding.ivEvent.setVisibility(View.GONE);
+                        }
+                    })
+                    .build());
+
         } else
             fragmentDetailBinding.ivEvent.setVisibility(View.GONE);
 
@@ -116,18 +122,68 @@ public class DetailFragment extends BaseFragment {
         else
             fragmentDetailBinding.tvReviews.setVisibility(View.GONE);
 
-        setAddressContainer();
+        setTopContainer();
+        if (directoryDetail.getBusinessAddresses().length > 1)
+            setAddressContainer();
+        else
+            fragmentDetailBinding.llBranches.setVisibility(View.GONE);
 //        fragmentDetailBinding.btDirection.setOnClickListener(v -> {
 //            String webURL = "https://www.google.com/maps/dir/?api=1&" + "destination=" + directoryDetail.get() + "%2C" + directoryDetail.getLongitude();
 //            AppUtil.openUrl(context, webURL);
 //        });
     }
 
+    private void setTopContainer() {
+
+        if (directoryDetail.getBusinessAddresses().length < 1)
+            return;
+
+        BusinessAddress businessAddress = directoryDetail.getBusinessAddresses()[0];
+        businessAddress.setCity(directoryDetail.getCity());
+        setText(fragmentDetailBinding.tvWebsite, "Website :", directoryDetail.getWebsite());
+
+        fragmentDetailBinding.tvName.setText(directoryDetail.getBusinessName());
+
+        UiUtil.setTextView(businessAddress.getDistance(), "Kms away", fragmentDetailBinding.tvDistance);
+        setText(fragmentDetailBinding.tvDealingIn, "Dealing In :", businessAddress.getDealingIn());
+        String formattedAddress = AppUtil.getFormattedAddress(businessAddress);
+        UiUtil.setTextView(fragmentDetailBinding.tvAddress, formattedAddress);
+        setText(fragmentDetailBinding.tvPhone, "Ph :", businessAddress.getPhoneNo());
+        setText(fragmentDetailBinding.tvMobile, "Mobile :", businessAddress.getMobile1());
+        setText(fragmentDetailBinding.tvEmail, "Email :", businessAddress.getEmail());
+        setText(fragmentDetailBinding.tvContactPerson, "Contact Person :", businessAddress.getContactPerson());
+        UiUtil.setTextView(fragmentDetailBinding.tvLine1, businessAddress.getInfoLine1());
+        UiUtil.setTextView(fragmentDetailBinding.tvLine2, businessAddress.getInfoLine2());
+
+        int noOfReviews = directoryDetail.getReviews().length;
+        if (noOfReviews != 0) {
+            fragmentDetailBinding.llRatings.setVisibility(View.VISIBLE);
+            UiUtil.setTextView(fragmentDetailBinding.tvReviews, String.format(Locale.US, "(%d %s)", noOfReviews,
+                    AppUtil.getSingularOrPluralString("Review", noOfReviews)));
+            if (!TextUtils.isEmpty(directoryDetail.getAvegrageOfRating()) && AppUtil.isNumeric(directoryDetail.getAvegrageOfRating())) {
+                fragmentDetailBinding.rbRating.setVisibility(View.VISIBLE);
+                fragmentDetailBinding.rbRating.setRating(Float.valueOf(directoryDetail.getAvegrageOfRating()));
+            } else
+                fragmentDetailBinding.rbRating.setVisibility(View.GONE);
+        } else
+            fragmentDetailBinding.llRatings.setVisibility(View.GONE);
+
+        if (!TextUtils.isEmpty(businessAddress.getLatitude()) && !TextUtils.isEmpty(businessAddress.getLongitude())) {
+            fragmentDetailBinding.ibDirection.setVisibility(View.VISIBLE);
+            fragmentDetailBinding.ibDirection.setOnClickListener(view -> {
+                String webURL = "https://www.google.com/maps/dir/?api=1&" + "destination=" + businessAddress.getLatitude() + "%2C" + businessAddress.getLongitude();
+                AppUtil.openUrl(context, webURL);
+            });
+        } else
+            fragmentDetailBinding.ibDirection.setVisibility(View.GONE);
+    }
+
     private void setAddressContainer() {
 
         BusinessAddress[] businessAddresses = directoryDetail.getBusinessAddresses();
 
-        for (BusinessAddress businessAddress : businessAddresses) {
+        for (int i = 1; i < businessAddresses.length; i++) {
+            BusinessAddress businessAddress = businessAddresses[i];
             businessAddress.setCity(directoryDetail.getCity());
             String formattedAddress = AppUtil.getFormattedAddress(businessAddress);
             View view = getLayoutInflater().inflate(R.layout.fragment_directory_details_child_list_item, fragmentDetailBinding.llContainer, false);

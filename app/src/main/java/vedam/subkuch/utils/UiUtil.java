@@ -258,9 +258,7 @@ public class UiUtil {
             return;
         }
 
-        Context context = imageSetter.getContext();
-
-        Picasso picasso = Picasso.with(context);
+        Picasso picasso = Picasso.get();
 
         RequestCreator requestCreator;
         if (!TextUtils.isEmpty(imageSetter.getImageLink()))
@@ -273,8 +271,8 @@ public class UiUtil {
             return;
 
         if (imageSetter.isDefaultsSet()) {
-            requestCreator.placeholder(R.drawable.grey);
-            requestCreator.error(R.drawable.grey);
+//            requestCreator.placeholder(R.drawable.grey);
+//            requestCreator.error(R.drawable.grey);
         } else {
             if (imageSetter.getPlaceholderResource() != 0)
                 requestCreator.placeholder(imageSetter.getPlaceholderResource());
@@ -292,15 +290,17 @@ public class UiUtil {
         if (imageSetter.isCenterInside())
             requestCreator.centerInside();
 
-
-        setImageViewPeripherals(imageSetter.getContext(), requestCreator, imageSetter.getIvTarget());
+        setImageViewPeripherals(imageSetter.getContext(), requestCreator, imageSetter);
 
     }
 
-    private static void setImageViewPeripherals(Context context, RequestCreator requestCreator, ImageView ivTarget) {
+    private static void setImageViewPeripherals(Context context, RequestCreator requestCreator, ImageSetter imageSetter) {
         if (requestCreator == null)
             return;
-        requestCreator.tag(context).into(ivTarget);
+        if (imageSetter.getCallback() == null)
+            requestCreator.tag(context).into(imageSetter.getIvTarget());
+        else
+            requestCreator.tag(context).into(imageSetter.getIvTarget(), imageSetter.getCallback());
     }
 
     public static SpannableString getBulletedString(String text) {
@@ -563,7 +563,7 @@ public class UiUtil {
     }
 
     public static void setTextView(String prefix, String suffix, TextView tv) {
-        if (!TextUtils.isEmpty(suffix)) {
+        if (!TextUtils.isEmpty(suffix) && !TextUtils.isEmpty(prefix)) {
             tv.setText(String.format("%s %s", prefix, suffix));
             tv.setVisibility(View.VISIBLE);
         } else

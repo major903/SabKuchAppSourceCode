@@ -174,9 +174,9 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
     /**
      * requests parent activity to get {@link Address} corresponding to current location
      */
-    protected void getAddress() {
+    protected void getAddress(boolean shouldForce) {
         if (mListener != null) {
-            mListener.requestAddress();
+            mListener.requestAddress(shouldForce);
         }
     }
 

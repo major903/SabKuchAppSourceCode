@@ -106,9 +106,7 @@ public class DirectoryDetailsFragment extends BaseFragment implements OnListView
 
         switch (item.getItemId()) {
             case R.id.action_add:
-                startActivity(new Intent(getActivity(), AddDirectoryActivity.class)
-                        .putExtra(Constants.EXTRA_CATEGORY_ID, categoryId)
-                        .putExtra(Constants.EXTRA_SUB_CATEGORY_ID, subCategoryId));
+                startActivity(new Intent(getActivity(), AddDirectoryActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

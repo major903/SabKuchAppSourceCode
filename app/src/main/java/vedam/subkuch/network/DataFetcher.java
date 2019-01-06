@@ -108,7 +108,7 @@ public class DataFetcher {
 
     public static <T> void addQuestion(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
 
-        String url = String.format("%s/AllAPI/Postaskme", NetworkConstants.END_POINT);
+        String url = String.format("http://sabkuch.bhavikgoyal.net/AllAPI/AskmePost");
         HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
     }
 
@@ -134,5 +134,52 @@ public class DataFetcher {
         String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
         String url = String.format("%s/AllAPI/GetAlloffer?userid=%s", NetworkConstants.END_POINT, userId);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
+    public static <T> void getAskCategories(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
+        String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
+        String url = String.format("%s/AllAPI/GetAskmecategory?userid=%s", NetworkConstants.END_POINT2, userId);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
+    public static <T> void getVehicles(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
+        String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
+        String url = String.format("%s/AllAPI/GetVehicleBycity?userid=%s", NetworkConstants.END_POINT2, userId);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
+    public static <T> void getDestinationCities(Context context, Response.Listener<T> updateSuccessListener,
+                                                Class<T> repClass, Response.ErrorListener errorListener, String vehicletype) {
+        String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
+        String url = String.format("%s/AllAPI/GetDesinationCity?userid=%s&vehicletype=%s", NetworkConstants.END_POINT2, userId, vehicletype);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
+    public static <T> void getVehicleTimings(Context context, Response.Listener<T> updateSuccessListener,
+                                             Class<T> repClass, Response.ErrorListener errorListener, String vehicletype, String cityName) {
+        String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
+        String url = String.format("%s/AllAPI/GetVehicleTimingDetails?userid=%s&vehicletype=%s&Cityname=%s", NetworkConstants.END_POINT2, userId, vehicletype, cityName);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
+    public static <T> void updateLocation(Context context, Response.Listener<T> updateSuccessListener,
+                                          Class<T> repClass, Response.ErrorListener errorListener, String latitude, String longitude) {
+        String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
+        String url = String.format("http://sabkuch.bhavikgoyal.net/AllAPI/UserCurrentLocation?userid=%s&Latitude=%s&Longitude=%s", userId, latitude, longitude);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
+    public static <T> void getAskConversation(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener,
+                                              String categoryId, int pageIndex, int pageSize) {
+        String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
+        String url = String.format(Locale.US, "http://sabkuch.bhavikgoyal.net/AllAPI/GetAskmebycategory?userid=%s&categoryid=%s&PageSize=%d&PageNumber=%d", userId,
+                categoryId, pageSize, pageIndex);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
+    public static <T> void addAskReply(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
+
+        String url = String.format("http://sabkuch.bhavikgoyal.net/AllAPI/AskmeReplay");
+        HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
     }
 }

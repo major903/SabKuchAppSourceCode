@@ -103,6 +103,12 @@ public class BaseListFragment extends ListFragment implements SwipeRefreshLayout
         context = null;
     }
 
+    protected void addFragmentWithAnimation(final int containerId, Fragment fragment, String tag, boolean addToBackStack) {
+
+        addFragment(containerId, fragment, tag, addToBackStack,
+                R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
     protected void addFragment(final int containerId, Fragment fragment, String tag, boolean addToBackStack,
                                @AnimRes int enterAnim, @AnimRes int exitAnim,
                                @AnimRes int enterAnimPop, @AnimRes int exitAnimPop) {
@@ -168,9 +174,9 @@ public class BaseListFragment extends ListFragment implements SwipeRefreshLayout
     /**
      * requests parent activity to get {@link Address} corresponding to current location
      */
-    protected void getAddress() {
+    protected void getAddress(boolean shouldForce) {
         if (mListener != null) {
-            mListener.requestAddress();
+            mListener.requestAddress(shouldForce);
         }
     }
 }

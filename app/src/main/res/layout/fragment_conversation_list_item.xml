@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/myshape"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_question"
+            style="@style/TextViewBlackHeading"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin_8dp"
+            android:layout_toLeftOf="@+id/bt_reply"
+            tools:text="@string/err" />
+
+        <Button
+            android:id="@+id/bt_reply"
+            style="@style/ButtonBlue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingLeft="@dimen/margin_16dp"
+            android:paddingTop="@dimen/margin_4dp"
+            android:paddingRight="@dimen/margin_16dp"
+            android:paddingBottom="@dimen/margin_4dp"
+            android:text="@string/reply" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_sub_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_answers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_8dp"
+            android:layout_toLeftOf="@+id/iv_triangle"
+            android:ellipsize="end"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            tools:text="@string/err" />
+
+        <ImageView
+            android:id="@+id/iv_triangle"
+            android:layout_width="@dimen/margin_24dp"
+            android:layout_height="@dimen/margin_24dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/baseline_expand_more_black_24dp" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

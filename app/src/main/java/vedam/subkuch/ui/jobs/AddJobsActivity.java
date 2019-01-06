@@ -51,7 +51,6 @@ public class AddJobsActivity extends BaseActivity {
         getJobCategory();
         getCities();
         bindCallbacks();
-        requestLocation();
     }
 
     private void getJobCategory() {
@@ -89,7 +88,7 @@ public class AddJobsActivity extends BaseActivity {
 
             }
         });
-        activityAddJobsBinding.spCity.setSelection(0);
+        activityAddJobsBinding.spCategory.setSelection(0);
     }
 
     private void getCities() {
@@ -106,7 +105,6 @@ public class AddJobsActivity extends BaseActivity {
         } else {
             UiUtil.showToast(AddJobsActivity.this, getString(R.string.err_occurred));
         }
-
 
     };
 

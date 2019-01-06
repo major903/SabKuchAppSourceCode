@@ -1,7 +1,5 @@
 package vedam.subkuch.network.models;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.ArrayList;
 
 public class EventsResponse {
@@ -9,8 +7,7 @@ public class EventsResponse {
 
     private String ReturnMessage;
 
-    @SerializedName("ReturnData")
-    private ArrayList<Event> events;
+    private ArrayList<Event> ReturnData;
 
     public String getReturnCode() {
         return ReturnCode;
@@ -29,15 +26,10 @@ public class EventsResponse {
     }
 
     public ArrayList<Event> getReturnData() {
-        return events;
+        return ReturnData;
     }
 
     public void setReturnData(ArrayList<Event> ReturnData) {
-        this.events = ReturnData;
-    }
-
-    @Override
-    public String toString() {
-        return "EventsResponse [ReturnCode = " + ReturnCode + ", ReturnMessage = " + ReturnMessage + ", ReturnData = " + events + "]";
+        this.ReturnData = ReturnData;
     }
 }
