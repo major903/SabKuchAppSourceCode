@@ -1,4 +1,4 @@
-package vedam.subkuch.ui.vehicle;
+package vedam.subkuch.ui.vehicle.models;
 
 public class Vehicle {
     private String vehicle;

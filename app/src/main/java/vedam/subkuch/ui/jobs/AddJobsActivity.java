@@ -29,6 +29,13 @@ import vedam.subkuch.base.BaseActivity;
 import vedam.subkuch.databinding.ActivityAddJobsBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
+import vedam.subkuch.ui.jobs.models.AddResponse;
+import vedam.subkuch.ui.jobs.models.CitiesResponse;
+import vedam.subkuch.ui.jobs.models.City;
+import vedam.subkuch.ui.jobs.models.JobCategory;
+import vedam.subkuch.ui.jobs.models.JobCategoryResponse;
+import vedam.subkuch.ui.jobs.models.JobRequest;
+import vedam.subkuch.ui.jobs.models.Post;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.UiUtil;
 

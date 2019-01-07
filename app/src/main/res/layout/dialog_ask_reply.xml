@@ -10,7 +10,9 @@
         style="@style/EditTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/type_your_reply" />
+        android:hint="@string/type_your_reply"
+        android:inputType="textMultiLine"
+        android:lines="2" />
 
     <Button
         android:id="@+id/bt_submit"

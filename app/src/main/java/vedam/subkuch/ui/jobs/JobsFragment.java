@@ -26,6 +26,9 @@ import vedam.subkuch.base.BaseFragment;
 import vedam.subkuch.databinding.FragmentJobsBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
+import vedam.subkuch.ui.jobs.models.Job;
+import vedam.subkuch.ui.jobs.models.JobCategory;
+import vedam.subkuch.ui.jobs.models.JobResponse;
 import vedam.subkuch.utils.UiUtil;
 
 public class JobsFragment extends BaseFragment {

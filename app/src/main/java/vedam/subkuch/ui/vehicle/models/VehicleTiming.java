@@ -1,6 +1,6 @@
-package vedam.subkuch.ui.vehicle;
+package vedam.subkuch.ui.vehicle.models;
 
-class VehicleTiming {
+public class VehicleTiming {
 
     private String Cityname;
 

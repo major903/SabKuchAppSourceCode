@@ -1,4 +1,4 @@
-package vedam.subkuch.ui.ask;
+package vedam.subkuch.ui.ask.models;
 
 import android.support.annotation.NonNull;
 

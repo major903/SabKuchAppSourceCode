@@ -1,38 +1,32 @@
-package vedam.subkuch.ui.jobs;
+package vedam.subkuch.ui.jobs.models;
 
 import java.util.ArrayList;
 
-public class JobRequest {
-    private String CityID;
-
-    private ArrayList<Post> Jobs;
-
+public class Job {
     private String DealingIn;
-
-    private String JobLocation;
 
     private String OrganisationName;
 
+    private String JobLocation;
+
     private String HowToContact;
+
+    private ArrayList<Post> posts;
 
     private String longitude;
 
     private String latitude;
 
-    public String getCityID() {
-        return CityID;
+    private String Distance;
+
+    private String City;
+
+    public String getCity() {
+        return City;
     }
 
-    public void setCityID(String CityID) {
-        this.CityID = CityID;
-    }
-
-    public ArrayList<Post> getJobs() {
-        return Jobs;
-    }
-
-    public void setJobs(ArrayList<Post> Jobs) {
-        this.Jobs = Jobs;
+    public String getDistance() {
+        return Distance;
     }
 
     public String getDealingIn() {
@@ -43,14 +37,6 @@ public class JobRequest {
         this.DealingIn = DealingIn;
     }
 
-    public String getJobLocation() {
-        return JobLocation;
-    }
-
-    public void setJobLocation(String JobLocation) {
-        this.JobLocation = JobLocation;
-    }
-
     public String getOrganisationName() {
         return OrganisationName;
     }
@@ -59,12 +45,28 @@ public class JobRequest {
         this.OrganisationName = OrganisationName;
     }
 
+    public String getJobLocation() {
+        return JobLocation;
+    }
+
+    public void setJobLocation(String JobLocation) {
+        this.JobLocation = JobLocation;
+    }
+
     public String getHowToContact() {
         return HowToContact;
     }
 
     public void setHowToContact(String HowToContact) {
         this.HowToContact = HowToContact;
+    }
+
+    public ArrayList<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(ArrayList<Post> posts) {
+        this.posts = posts;
     }
 
     public String getLongitude() {
@@ -85,6 +87,6 @@ public class JobRequest {
 
     @Override
     public String toString() {
-        return "ClassPojo [CityID = " + CityID + ", Jobs = " + Jobs + ", DealingIn = " + DealingIn + ", JobLocation = " + JobLocation + ", OrganisationName = " + OrganisationName + ", HowToContact = " + HowToContact + ", longitude = " + longitude + ", latitude = " + latitude + "]";
+        return "ClassPojo [DealingIn = " + DealingIn + ", OrganisationName = " + OrganisationName + ", JobLocation = " + JobLocation + ", HowToContact = " + HowToContact + ", posts = " + posts + ", longitude = " + longitude + ", latitude = " + latitude + "]";
     }
 }

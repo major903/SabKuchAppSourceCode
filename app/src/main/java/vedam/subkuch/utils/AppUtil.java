@@ -389,4 +389,11 @@ public class AppUtil {
         }
         return scaledBitmap;
     }
+
+    public static String getZeroedString(int value) {
+        if (value < 10)
+            return String.format("0%s", value);
+        else
+            return String.valueOf(value);
+    }
 }

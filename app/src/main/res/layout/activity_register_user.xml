@@ -162,9 +162,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_4dp"
+                        android:clickable="true"
+                        android:focusable="false"
                         android:hint="@string/dob"
-                        android:imeOptions="actionDone"
-                        android:inputType="date"
                         android:maxLines="1"
                         android:padding="@dimen/margin_8dp" />
 

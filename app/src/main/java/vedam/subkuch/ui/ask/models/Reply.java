@@ -1,4 +1,4 @@
-package vedam.subkuch.ui.ask;
+package vedam.subkuch.ui.ask.models;
 
 public class Reply {
 

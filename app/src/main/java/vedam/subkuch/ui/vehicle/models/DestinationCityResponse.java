@@ -1,14 +1,13 @@
-package vedam.subkuch.ui.jobs;
+package vedam.subkuch.ui.vehicle.models;
 
 import java.util.ArrayList;
 
-public class CitiesResponse {
-
+public class DestinationCityResponse {
     private String ReturnCode;
 
     private String ReturnMessage;
 
-    private ArrayList<City> ReturnData;
+    private ArrayList<DestinationCity> ReturnData;
 
     public String getReturnCode() {
         return ReturnCode;
@@ -26,11 +25,11 @@ public class CitiesResponse {
         this.ReturnMessage = ReturnMessage;
     }
 
-    public ArrayList<City> getReturnData() {
+    public ArrayList<DestinationCity> getReturnData() {
         return ReturnData;
     }
 
-    public void setReturnData(ArrayList<City> ReturnData) {
+    public void setReturnData(ArrayList<DestinationCity> ReturnData) {
         this.ReturnData = ReturnData;
     }
 

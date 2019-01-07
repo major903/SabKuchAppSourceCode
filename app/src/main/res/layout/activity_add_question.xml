@@ -55,6 +55,7 @@
             android:layout_marginRight="@dimen/margin_16dp"
             android:hint="@string/ask_hint"
             android:inputType="textMultiLine"
+            android:lines="3"
             android:padding="@dimen/margin_8dp" />
 
         <Button

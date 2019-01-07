@@ -18,6 +18,8 @@ import vedam.subkuch.R;
 import vedam.subkuch.base.BaseListFragment;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
+import vedam.subkuch.ui.vehicle.models.DestinationCity;
+import vedam.subkuch.ui.vehicle.models.DestinationCityResponse;
 import vedam.subkuch.utils.UiUtil;
 
 public class DestinationCityFragment extends BaseListFragment {

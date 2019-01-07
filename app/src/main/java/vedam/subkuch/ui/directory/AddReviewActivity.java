@@ -17,7 +17,7 @@ import vedam.subkuch.base.BaseActivity;
 import vedam.subkuch.databinding.ActivityAddReviewBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
-import vedam.subkuch.ui.jobs.AddResponse;
+import vedam.subkuch.ui.jobs.models.AddResponse;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.UiUtil;
 

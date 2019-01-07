@@ -1,4 +1,4 @@
-package vedam.subkuch.ui.offers;
+package vedam.subkuch.ui.offers.models;
 
 public class Offer {
 

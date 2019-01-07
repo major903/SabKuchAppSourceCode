@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import vedam.subkuch.R;
+import vedam.subkuch.ui.vehicle.models.VehicleTiming;
 import vedam.subkuch.utils.UiUtil;
 
 public class VehicleTimingAdapter extends RecyclerView.Adapter<VehicleTimingAdapter.ViewHolder> {

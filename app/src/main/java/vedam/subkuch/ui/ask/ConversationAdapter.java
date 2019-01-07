@@ -14,7 +14,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import vedam.subkuch.R;
+import vedam.subkuch.ui.ask.models.Conversation;
+import vedam.subkuch.ui.ask.models.Reply;
 import vedam.subkuch.utils.UiUtil;
+
+import static vedam.subkuch.utils.UiUtil.getTypeface;
 
 public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter.ViewHolder> {
 
@@ -46,6 +50,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
         setAnswerListener(holder.tvAnswers, holder.ivTriangle, holder.rlSubContainer, conversation);
         setAnswers(holder.tvAnswers, holder.ivTriangle, conversation);
+        holder.tvAnswers.setTypeface(getTypeface(context, context.getString(R.string.typeface_regular)));
 
         if (conversation.getReplayallowed().equals(context.getString(R.string.one))) {
             holder.btReply.setVisibility(View.VISIBLE);
@@ -84,7 +89,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             } else {
                 ivTriangle.setImageResource(R.drawable.baseline_expand_more_black_24dp);
                 if (conversation.getBlogReplydetails().size() > 0)
-                    tvAnswer.setText(conversation.getBlogReplydetails().get(0).getReplayMessage());
+                    tvAnswer.setText(getIndividualAnswer(conversation.getBlogReplydetails().get(0)));
                 else
                     tvAnswer.setText("");
             }
@@ -98,11 +103,16 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         for (int i = 0; i < replies.size(); i++) {
             Reply reply = replies.get(i);
             if (i == replies.size() - 1)
-                fullReplies.append(reply.getReplayMessage());
+                fullReplies.append(getIndividualAnswer(reply));
             else
-                fullReplies.append(reply.getReplayMessage()).append("\n\n");
+                fullReplies.append(getIndividualAnswer(reply)).append("\n\n");
         }
         return fullReplies.toString();
+    }
+
+    private String getIndividualAnswer(Reply reply) {
+
+        return reply.getUsername() + "\n" + reply.getUpdateddon() + " " + reply.getReplayMessage();
     }
 
     @Override

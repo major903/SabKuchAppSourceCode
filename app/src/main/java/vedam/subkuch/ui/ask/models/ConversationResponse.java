@@ -1,14 +1,14 @@
-package vedam.subkuch.ui.offers;
+package vedam.subkuch.ui.ask.models;
 
 import java.util.ArrayList;
 
-public class OfferResponse {
+public class ConversationResponse {
 
     private String ReturnCode;
 
     private String ReturnMessage;
 
-    private ArrayList<Offer> ReturnData;
+    private ArrayList<Conversation> ReturnData;
 
     public String getReturnCode() {
         return ReturnCode;
@@ -26,12 +26,11 @@ public class OfferResponse {
         this.ReturnMessage = ReturnMessage;
     }
 
-    public ArrayList<Offer> getReturnData() {
+    public ArrayList<Conversation> getReturnData() {
         return ReturnData;
     }
 
-    @Override
-    public String toString() {
-        return "OfferResponse [ReturnCode = " + ReturnCode + ", ReturnMessage = " + ReturnMessage + ", ReturnData = " + ReturnData + "]";
+    public void setReturnData(ArrayList<Conversation> ReturnData) {
+        this.ReturnData = ReturnData;
     }
 }

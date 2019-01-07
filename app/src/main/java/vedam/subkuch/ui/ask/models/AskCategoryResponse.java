@@ -1,13 +1,13 @@
-package vedam.subkuch.ui.vehicle;
+package vedam.subkuch.ui.ask.models;
 
 import java.util.ArrayList;
 
-public class VehicleTimingResponse {
+public class AskCategoryResponse {
     private String ReturnCode;
 
     private String ReturnMessage;
 
-    private ArrayList<VehicleTiming> ReturnData;
+    private ArrayList<AskCategory> ReturnData;
 
     public String getReturnCode() {
         return ReturnCode;
@@ -25,11 +25,11 @@ public class VehicleTimingResponse {
         this.ReturnMessage = ReturnMessage;
     }
 
-    public ArrayList<VehicleTiming> getReturnData() {
+    public ArrayList<AskCategory> getReturnData() {
         return ReturnData;
     }
 
-    public void setReturnData(ArrayList<VehicleTiming> ReturnData) {
+    public void setReturnData(ArrayList<AskCategory> ReturnData) {
         this.ReturnData = ReturnData;
     }
 }

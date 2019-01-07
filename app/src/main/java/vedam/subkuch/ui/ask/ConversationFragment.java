@@ -28,6 +28,8 @@ import vedam.subkuch.base.BaseFragment;
 import vedam.subkuch.databinding.FragmentConversationBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
+import vedam.subkuch.ui.ask.models.Conversation;
+import vedam.subkuch.ui.ask.models.ConversationResponse;
 import vedam.subkuch.utils.UiUtil;
 
 /**

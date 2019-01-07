@@ -1,14 +1,13 @@
-package vedam.subkuch.ui.vehicle;
+package vedam.subkuch.ui.vehicle.models;
 
 import java.util.ArrayList;
 
-public class VehicleResponse {
-
+public class VehicleTimingResponse {
     private String ReturnCode;
 
     private String ReturnMessage;
 
-    private ArrayList<Vehicle> ReturnData;
+    private ArrayList<VehicleTiming> ReturnData;
 
     public String getReturnCode() {
         return ReturnCode;
@@ -26,16 +25,11 @@ public class VehicleResponse {
         this.ReturnMessage = ReturnMessage;
     }
 
-    public ArrayList<Vehicle> getReturnData() {
+    public ArrayList<VehicleTiming> getReturnData() {
         return ReturnData;
     }
 
-    public void setReturnData(ArrayList<Vehicle> ReturnData) {
+    public void setReturnData(ArrayList<VehicleTiming> ReturnData) {
         this.ReturnData = ReturnData;
-    }
-
-    @Override
-    public String toString() {
-        return "ClassPojo [ReturnCode = " + ReturnCode + ", ReturnMessage = " + ReturnMessage + ", ReturnData = " + ReturnData + "]";
     }
 }

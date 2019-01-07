@@ -19,6 +19,8 @@ import vedam.subkuch.R;
 import vedam.subkuch.base.BaseFragment;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
+import vedam.subkuch.ui.vehicle.models.VehicleTiming;
+import vedam.subkuch.ui.vehicle.models.VehicleTimingResponse;
 import vedam.subkuch.utils.UiUtil;
 
 /**

@@ -1,4 +1,4 @@
-package vedam.subkuch.ui.jobs;
+package vedam.subkuch.ui.jobs.models;
 
 public class JobCategoryResponse {
 

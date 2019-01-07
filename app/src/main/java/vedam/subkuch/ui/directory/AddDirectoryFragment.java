@@ -44,9 +44,9 @@ import vedam.subkuch.ui.directory.models.BusinessAddress;
 import vedam.subkuch.ui.directory.models.Category;
 import vedam.subkuch.ui.directory.models.CategoryResponse;
 import vedam.subkuch.ui.directory.models.SubCategoryResponse;
-import vedam.subkuch.ui.jobs.AddResponse;
-import vedam.subkuch.ui.jobs.CitiesResponse;
-import vedam.subkuch.ui.jobs.City;
+import vedam.subkuch.ui.jobs.models.AddResponse;
+import vedam.subkuch.ui.jobs.models.CitiesResponse;
+import vedam.subkuch.ui.jobs.models.City;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.UiUtil;
 

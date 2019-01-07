@@ -17,6 +17,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import vedam.subkuch.R;
+import vedam.subkuch.ui.jobs.models.Job;
+import vedam.subkuch.ui.jobs.models.Post;
 import vedam.subkuch.uicomponent.CustomTypefaceSpan;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.UiUtil;

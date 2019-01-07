@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 import vedam.subkuch.R;
+import vedam.subkuch.ui.offers.models.Offer;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.ImageSetter;
 import vedam.subkuch.utils.UiUtil;

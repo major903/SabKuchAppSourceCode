@@ -196,4 +196,5 @@
     <string name="type_your_reply">Type your reply</string>
     <string name="enter_a_reply">Please enter a reply</string>
     <string name="reply_posted">Reply posted</string>
+    <string name="date_picker">datePicker</string>
 </resources>

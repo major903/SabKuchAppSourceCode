@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 
 import com.android.volley.Response;
 
@@ -20,12 +22,13 @@ import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.network.models.CountriesResponse;
 import vedam.subkuch.network.models.Country;
-import vedam.subkuch.ui.jobs.CitiesResponse;
-import vedam.subkuch.ui.jobs.City;
+import vedam.subkuch.ui.jobs.models.CitiesResponse;
+import vedam.subkuch.ui.jobs.models.City;
+import vedam.subkuch.uicomponent.DatePickerFragment;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.UiUtil;
 
-public class RegisterUserActivity extends BaseActivity {
+public class RegisterUserActivity extends BaseActivity implements DatePickerFragment.DateSetListener {
     private ActivityRegisterUserBinding activityRegisterUserBinding;
     private String latitude;
     private String longitude;
@@ -163,6 +166,9 @@ public class RegisterUserActivity extends BaseActivity {
             }
         });
 
+        activityRegisterUserBinding.etDob.setOnClickListener(v -> {
+            showDatePickerDialog();
+        });
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.gender_list));
         activityRegisterUserBinding.spGender.setAdapter(adapter);
@@ -180,6 +186,19 @@ public class RegisterUserActivity extends BaseActivity {
 
             }
         });
+    }
+
+    public void showDatePickerDialog() {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getSupportFragmentManager(), getString(R.string.date_picker));
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int day) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(AppUtil.getZeroedString(day)).append("/").append(AppUtil.getZeroedString(month + 1))
+                .append("/").append(year);
+        activityRegisterUserBinding.etDob.setText(stringBuilder);
     }
 
     private int validateErrorMessage() {

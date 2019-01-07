@@ -20,6 +20,8 @@ import vedam.subkuch.R;
 import vedam.subkuch.base.BaseListFragment;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
+import vedam.subkuch.ui.ask.models.AskCategory;
+import vedam.subkuch.ui.ask.models.AskCategoryResponse;
 import vedam.subkuch.utils.UiUtil;
 
 public class AskCategoryFragment extends BaseListFragment {

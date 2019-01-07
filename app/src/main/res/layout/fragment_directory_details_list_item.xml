@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/tvName"
-        style="@style/TextViewBlackHeading2"
+        style="@style/TextViewBlackHeading"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"

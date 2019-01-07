@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import vedam.subkuch.R;
+import vedam.subkuch.ui.jobs.models.JobCategory;
 
 public class JobCategoryAdapter extends BaseAdapter {
     private LayoutInflater inflater;
