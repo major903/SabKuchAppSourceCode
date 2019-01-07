@@ -81,8 +81,11 @@ public class AddReviewActivity extends BaseActivity {
 
     private int validateErrorMessage() {
         int errorMessage = 0;
-        if (TextUtils.isEmpty(activityAddReviewBinding.etReview.getText()))
+        if (activityAddReviewBinding.rbRating.getRating() == 0)
+            errorMessage = R.string.select_rating;
+        else if (TextUtils.isEmpty(activityAddReviewBinding.etReview.getText()))
             errorMessage = R.string.enter_review;
+
 
         return errorMessage;
     }

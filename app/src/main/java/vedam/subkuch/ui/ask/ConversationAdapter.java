@@ -46,7 +46,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
         Conversation conversation = conversations.get(position);
 
-        UiUtil.setTextView(holder.tvQuestion, conversation.getTopic());
+        UiUtil.setTextView(holder.tvQuestion, getTopic(conversation));
 
         setAnswerListener(holder.tvAnswers, holder.ivTriangle, holder.rlSubContainer, conversation);
         setAnswers(holder.tvAnswers, holder.ivTriangle, conversation);
@@ -61,6 +61,11 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
         } else
             holder.btReply.setVisibility(View.GONE);
+    }
+
+    private String getTopic(Conversation conversation) {
+
+        return conversation.getPostedon() + " " + conversation.getTopic();
     }
 
 

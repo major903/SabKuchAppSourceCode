@@ -28,7 +28,8 @@ public class DatePickerFragment extends DialogFragment
 
         // Create a new instance of DatePickerDialog and return it
         DatePickerDialog dialog = new DatePickerDialog(getActivity(), R.style.AlertDialogTheme, this, year, month, day);
-        dialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+        long millis = System.currentTimeMillis() - 378683112000L;
+        dialog.getDatePicker().setMaxDate(millis);
         return dialog;
     }
 
