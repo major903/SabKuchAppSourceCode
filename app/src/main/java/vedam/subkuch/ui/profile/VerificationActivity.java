@@ -106,16 +106,15 @@ public class VerificationActivity extends BaseActivity {
         switch (requestCode) {
             case PERMISSIONS_REQUEST_SMS:
                 // If request is cancelled, the result arrays are empty.
+                sendOtp();
 
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    sendOtp();
-                } else {
+                if (grantResults.length <= 0
+                        || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
 
-                    UiUtil.showToast(VerificationActivity.this, getString(R.string.sms_permission_denied));
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
+                            UiUtil.showToast(VerificationActivity.this, getString(R.string.sms_permission_denied));
+                            // permission denied, boo! Disable the
+                            // functionality that depends on this permission.
+                        }
                 break;
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);

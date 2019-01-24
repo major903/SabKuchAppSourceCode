@@ -78,6 +78,7 @@ public class DetailFragment extends BaseFragment {
             fragmentDetailBinding.rvReviews.setAdapter(new ReviewAdapter(directoryDetail.getReviews()));
         } else {
             fragmentDetailBinding.llRatings.setVisibility(View.GONE);
+            fragmentDetailBinding.llReviews.setVisibility(View.GONE);
         }
     }
 
@@ -186,7 +187,7 @@ public class DetailFragment extends BaseFragment {
             BusinessAddress businessAddress = businessAddresses[i];
             businessAddress.setCity(directoryDetail.getCity());
             String formattedAddress = AppUtil.getFormattedAddress(businessAddress);
-            View view = getLayoutInflater().inflate(R.layout.fragment_directory_details_child_list_item, fragmentDetailBinding.llContainer, false);
+            View view = getLayoutInflater().inflate(R.layout.fragment_directory_details_child_list_item_2, fragmentDetailBinding.llContainer, false);
             view.setBackground(null);
 
             /*if (i != businessAddresses.length - 1) {

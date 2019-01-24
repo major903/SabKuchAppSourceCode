@@ -195,7 +195,7 @@ public class DirectoryDetailAdapter extends BaseExpandableListAdapter {
         }
 
         Business directoryDetail = (Business) getGroup(listPosition);
-        BusinessAddress businessAddress = directoryDetail.getBusinessAddresses()[expandedListPosition];
+        BusinessAddress businessAddress = directoryDetail.getBusinessAddresses()[expandedListPosition + 1];
 
         UiUtil.setTextView(businessAddress.getDistance(), "Kms away", holder.tvDistance);
         setText(holder.tvDealingIn, "Dealing In :", businessAddress.getDealingIn());

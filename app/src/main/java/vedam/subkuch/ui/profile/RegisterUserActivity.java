@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,8 +11,11 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 
 import com.android.volley.Response;
+import com.tsongkha.spinnerdatepicker.DatePickerDialog;
+import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseActivity;
@@ -28,7 +30,7 @@ import vedam.subkuch.uicomponent.DatePickerFragment;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.UiUtil;
 
-public class RegisterUserActivity extends BaseActivity implements DatePickerFragment.DateSetListener {
+public class RegisterUserActivity extends BaseActivity implements DatePickerFragment.DateSetListener, DatePickerDialog.OnDateSetListener {
     private ActivityRegisterUserBinding activityRegisterUserBinding;
     private String latitude;
     private String longitude;
@@ -189,16 +191,33 @@ public class RegisterUserActivity extends BaseActivity implements DatePickerFrag
     }
 
     public void showDatePickerDialog() {
-        DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(getSupportFragmentManager(), getString(R.string.date_picker));
+
+        long millis = System.currentTimeMillis() - 378683112000L;
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(millis);
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        new SpinnerDatePickerDialogBuilder()
+                .context(this)
+                .callback(this)
+                .spinnerTheme(R.style.DatePickerTheme)
+                .maxDate(mYear, mMonth, mDay)
+                .defaultDate(mYear, mMonth, mDay)
+                .build()
+                .show();
+
+//        DialogFragment newFragment = new DatePickerFragment();
+//        newFragment.show(getSupportFragmentManager(), getString(R.string.date_picker));
     }
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(AppUtil.getZeroedString(day)).append("/").append(AppUtil.getZeroedString(month + 1))
-                .append("/").append(year);
-        activityRegisterUserBinding.etDob.setText(stringBuilder);
+//        StringBuilder stringBuilder = new StringBuilder();
+//        stringBuilder.append(AppUtil.getZeroedString(day)).append("/").append(AppUtil.getZeroedString(month + 1))
+//                .append("/").append(year);
+//        activityRegisterUserBinding.etDob.setText(stringBuilder);
     }
 
     private int validateErrorMessage() {
@@ -227,5 +246,14 @@ public class RegisterUserActivity extends BaseActivity implements DatePickerFrag
         else if (TextUtils.isEmpty(latitude) || TextUtils.isEmpty(latitude))
             errorMessage = R.string.submit_after_location;
         return errorMessage;
+    }
+
+    @Override
+    public void onDateSet(com.tsongkha.spinnerdatepicker.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(AppUtil.getZeroedString(dayOfMonth)).append("/").append(AppUtil.getZeroedString(monthOfYear + 1))
+                .append("/").append(year);
+        activityRegisterUserBinding.etDob.setText(stringBuilder);
     }
 }

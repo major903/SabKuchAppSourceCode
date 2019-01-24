@@ -177,7 +177,7 @@
     <string name="select_a_sub_category">Select a subcategory</string>
     <string name="add_branches">Add Branches</string>
     <string name="enter_cellphone_1">Enter cellphone 1</string>
-    <string name="enter_phone">Enter phone</string>
+    <string name="enter_phone_or_cellphone">Enter phone or cell phone number</string>
     <string name="enter_contact_person">Enter contact person</string>
     <string name="vehicles">Vehicles</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>

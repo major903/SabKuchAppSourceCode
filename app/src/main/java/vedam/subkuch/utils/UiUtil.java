@@ -270,7 +270,7 @@ public class UiUtil {
         else
             return;
 
-        if (imageSetter.isDefaultsSet() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (imageSetter.isDefaultsSet() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestCreator.placeholder(R.drawable.grey);
             requestCreator.error(R.drawable.grey);
         } else {

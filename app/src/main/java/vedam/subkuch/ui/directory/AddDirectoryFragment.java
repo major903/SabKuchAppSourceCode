@@ -367,8 +367,6 @@ public class AddDirectoryFragment extends BaseAddImagesFragment implements Adapt
             errorMessage = R.string.select_a_city;
         else if (TextUtils.isEmpty(fragmentAddDirectoryBinding.etBusinessName.getText()))
             errorMessage = R.string.enter_business_name;
-        else if (TextUtils.isEmpty(fragmentAddDirectoryBinding.etWebsite.getText()))
-            errorMessage = R.string.enter_website;
         else if (getImageItemMap().isEmpty())
             errorMessage = R.string.select_an_image;
         else if (alBranches.isEmpty())
@@ -380,7 +378,6 @@ public class AddDirectoryFragment extends BaseAddImagesFragment implements Adapt
                 EditText etPhone = v.findViewById(R.id.et_phone);
                 EditText etCellPhone1 = v.findViewById(R.id.et_cellphone_1);
                 EditText etEmail = v.findViewById(R.id.et_email);
-                EditText etContactPerson = v.findViewById(R.id.et_contact_person);
                 EditText etZipCode = v.findViewById(R.id.et_zip_code);
 
                 if (TextUtils.isEmpty(etDealingIn.getText()))
@@ -389,16 +386,10 @@ public class AddDirectoryFragment extends BaseAddImagesFragment implements Adapt
                     errorMessage = R.string.enter_address;
                 else if (TextUtils.isEmpty(etZipCode.getText()))
                     errorMessage = R.string.enter_zip_code;
-                else if (TextUtils.isEmpty(etPhone.getText()))
-                    errorMessage = R.string.enter_phone;
-                else if (TextUtils.isEmpty(etCellPhone1.getText()))
-                    errorMessage = R.string.enter_cellphone_1;
-                else if (TextUtils.isEmpty(etEmail.getText()))
-                    errorMessage = R.string.enter_email;
-                else if (!AppUtil.validateEmail(etEmail.getText().toString()))
+                else if (TextUtils.isEmpty(etPhone.getText()) && TextUtils.isEmpty(etCellPhone1.getText()))
+                    errorMessage = R.string.enter_phone_or_cellphone;
+                else if (!TextUtils.isEmpty(etEmail.getText()) && !AppUtil.validateEmail(etEmail.getText().toString()))
                     errorMessage = R.string.enter_valid_email;
-                else if (TextUtils.isEmpty(etContactPerson.getText()))
-                    errorMessage = R.string.enter_contact_person;
                 else if (v.getTag() == null)
                     errorMessage = R.string.add_a_location_for_a_branch;
             }
