@@ -24,12 +24,13 @@ import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.network.models.CountriesResponse;
 import vedam.subkuch.network.models.Country;
-import vedam.subkuch.network.models.ProfileRequest;
+import vedam.subkuch.network.models.Profile;
 import vedam.subkuch.ui.jobs.models.CitiesResponse;
 import vedam.subkuch.ui.jobs.models.City;
 import vedam.subkuch.uicomponent.DatePickerFragment;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.AppUtil;
+import vedam.subkuch.utils.DateTimeUtils;
 import vedam.subkuch.utils.UiUtil;
 
 public class RegisterUserActivity extends BaseActivity implements DatePickerFragment.DateSetListener, DatePickerDialog.OnDateSetListener {
@@ -157,20 +158,21 @@ public class RegisterUserActivity extends BaseActivity implements DatePickerFrag
             if (errorMessage == 0) {
                 Intent intent = new Intent(RegisterUserActivity.this, VerificationActivity.class);
 
-                ProfileRequest profileRequest = new ProfileRequest();
-                profileRequest.setFirstName(activityRegisterUserBinding.etFirstName.getText().toString());
-                profileRequest.setLastName(AppUtil.deNull(activityRegisterUserBinding.etLastName.getText()));
-                profileRequest.setMobile(activityRegisterUserBinding.etMobileNumber.getText().toString());
-                profileRequest.setEMail(activityRegisterUserBinding.etEmail.getText().toString());
-                profileRequest.setDOB(activityRegisterUserBinding.etDob.getText().toString());
-                profileRequest.setGender(gender);
-                profileRequest.setCityId(cityId);
-                profileRequest.setCountryid(countryId);
-                profileRequest.setLatitude(latitude);
-                profileRequest.setLongitude(longitude);
+                Profile profile = new Profile();
+                profile.setFirstName(activityRegisterUserBinding.etFirstName.getText().toString());
+                profile.setLastName(AppUtil.deNull(activityRegisterUserBinding.etLastName.getText()));
+                profile.setMobile(activityRegisterUserBinding.etMobileNumber.getText().toString());
+                profile.setEMail(activityRegisterUserBinding.etEmail.getText().toString());
+                profile.setDOB(DateTimeUtils.getFormattedDate(activityRegisterUserBinding.etDob.getText().toString(),
+                        DateTimeUtils.DATE_FORMAT_3, DateTimeUtils.DEFAULT_DATE_FORMAT));
+                profile.setGender(gender);
+                profile.setCityId(cityId);
+                profile.setCountryid(countryId);
+                profile.setLatitude(latitude);
+                profile.setLongitude(longitude);
                 AppPrefs.getInstance(this).getSharedPreferences().edit()
                         .putString(Constants.EXTRA_COUNTRY_CODE, countryCode).apply();
-                intent.putExtra(Constants.EXTRA_DATA, profileRequest);
+                intent.putExtra(Constants.EXTRA_DATA, profile);
                 startActivity(intent);
             } else {
                 UiUtil.showDialog(RegisterUserActivity.this, getString(errorMessage), true);

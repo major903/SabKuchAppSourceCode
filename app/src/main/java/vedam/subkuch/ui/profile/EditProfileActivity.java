@@ -13,6 +13,7 @@ import com.android.volley.Response;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseActivity;
@@ -21,8 +22,8 @@ import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.network.models.CountriesResponse;
 import vedam.subkuch.network.models.Country;
-import vedam.subkuch.network.models.ProfileRequest;
-import vedam.subkuch.network.models.RegisterUserResponse;
+import vedam.subkuch.network.models.Profile;
+import vedam.subkuch.network.models.ProfileResponse;
 import vedam.subkuch.ui.jobs.models.CitiesResponse;
 import vedam.subkuch.ui.jobs.models.City;
 import vedam.subkuch.utils.AppPrefs;
@@ -39,7 +40,8 @@ public class EditProfileActivity extends BaseActivity {
     private String countryId;
     private String countryCode;
     private String cityId;
-    private ProfileRequest profileRequest;
+    private Profile profile;
+    private Stack<Object> requestStack = new Stack<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +49,12 @@ public class EditProfileActivity extends BaseActivity {
 
         activityEditProfileBinding = DataBindingUtil.setContentView(
                 this, R.layout.activity_edit_profile);
-        profileRequest = new ProfileRequest();
+        profile = new Profile();
         setToolbarBackButton();
         bindData();
+        requestStack.add(new Object());
         getCities();
+        requestStack.add(new Object());
         getCountries();
         requestLocation(true);
     }
@@ -62,15 +66,13 @@ public class EditProfileActivity extends BaseActivity {
     }
 
     private Response.Listener<CitiesResponse> onCitiesSuccessListener = response -> {
-
         UiUtil.cancelProgressDialog();
+        requestStack.pop();
         if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
             setCities(response.getReturnData());
         } else {
             UiUtil.showToast(this, getString(R.string.err_occurred));
         }
-
-
     };
 
     private void setCities(ArrayList<City> cities) {
@@ -104,8 +106,8 @@ public class EditProfileActivity extends BaseActivity {
     }
 
     private Response.Listener<CountriesResponse> onCountriesSuccessListener = response -> {
-
         UiUtil.cancelProgressDialog();
+        requestStack.pop();
         if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
             setCountries(response.getCountries());
         } else {
@@ -144,6 +146,14 @@ public class EditProfileActivity extends BaseActivity {
         return 0;
     }
 
+    private void checkFlagAndLoadUI() {
+        UiUtil.cancelProgressDialog();
+        if (requestStack.isEmpty()) {
+
+//            DataFetcher.getProfile();
+        }
+    }
+
     @Override
     public void onLocationChanged(Location location) {
         super.onLocationChanged(location);
@@ -157,14 +167,14 @@ public class EditProfileActivity extends BaseActivity {
             int errorMessage = validateErrorMessage();
             if (errorMessage == 0) {
                 String userId = AppPrefs.getInstance(this).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
-                profileRequest.setProfileId(userId);
-                profileRequest.setFirstName(activityEditProfileBinding.etFirstName.getText().toString());
-                profileRequest.setLastName(AppUtil.deNull(activityEditProfileBinding.etLastName.getText()));
-                profileRequest.setEMail(activityEditProfileBinding.etEmail.getText().toString());
-                profileRequest.setCityId(cityId);
-                profileRequest.setCountryid(countryId);
-                profileRequest.setLatitude(latitude);
-                profileRequest.setLongitude(longitude);
+                profile.setProfileId(userId);
+                profile.setFirstName(activityEditProfileBinding.etFirstName.getText().toString());
+                profile.setLastName(AppUtil.deNull(activityEditProfileBinding.etLastName.getText()));
+                profile.setEMail(activityEditProfileBinding.etEmail.getText().toString());
+                profile.setCityId(cityId);
+                profile.setCountryid(countryId);
+                profile.setLatitude(latitude);
+                profile.setLongitude(longitude);
                 AppPrefs.getInstance(this).getSharedPreferences().edit()
                         .putString(Constants.EXTRA_COUNTRY_CODE, countryCode).apply();
                 updateUser();
@@ -178,10 +188,10 @@ public class EditProfileActivity extends BaseActivity {
     private void updateUser() {
 
         UiUtil.showProgressDialog(this, getString(R.string.please_wait));
-        DataFetcher.editProfile(this, new Gson().toJson(profileRequest), onRegisterUserSuccessListener, RegisterUserResponse.class, onErrorListener);
+        DataFetcher.editProfile(this, new Gson().toJson(profile), onRegisterUserSuccessListener, ProfileResponse.class, onErrorListener);
     }
 
-    private Response.Listener<RegisterUserResponse> onRegisterUserSuccessListener = response -> {
+    private Response.Listener<ProfileResponse> onRegisterUserSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
         if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)
@@ -196,7 +206,7 @@ public class EditProfileActivity extends BaseActivity {
     };
 
     private String getFullName() {
-        String fullName = profileRequest.getFirstName() + " " + profileRequest.getLastName();
+        String fullName = profile.getFirstName() + " " + profile.getLastName();
         return fullName.trim();
     }
 

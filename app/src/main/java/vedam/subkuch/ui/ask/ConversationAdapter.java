@@ -21,6 +21,7 @@ import vedam.subkuch.R;
 import vedam.subkuch.ui.ask.models.Conversation;
 import vedam.subkuch.ui.ask.models.Reply;
 import vedam.subkuch.uicomponent.CustomTypefaceSpan;
+import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.UiUtil;
 
 import static vedam.subkuch.utils.UiUtil.getTypeface;
@@ -71,12 +72,12 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     private CharSequence getTopic(Conversation conversation) {
 
         SpannableStringBuilder fullString = new SpannableStringBuilder();
-        fullString.append(conversation.getUsername())
-                .append("\n").append(conversation.getPostedon())
-                .append("\n").append(conversation.getTopic());
+        fullString.append(AppUtil.deNull(conversation.getUsername()))
+                .append("\n").append(AppUtil.deNull(conversation.getPostedon()))
+                .append("\n").append(AppUtil.deNull(conversation.getTopic()));
         MetricAffectingSpan boldSpan = new CustomTypefaceSpan(Typeface.DEFAULT_BOLD);
 
-        fullString.setSpan(boldSpan, 0, conversation.getUsername().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        fullString.setSpan(boldSpan, 0, AppUtil.deNull(conversation.getUsername()).length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         return fullString;
     }

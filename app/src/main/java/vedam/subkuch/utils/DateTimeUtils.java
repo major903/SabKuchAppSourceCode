@@ -16,7 +16,7 @@ public class DateTimeUtils {
     public static String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
     public static String DATE_TIME_FORMAT_1 = "yyyy-MM-dd'T'hh:mm:ss";
     public static String DATE_FORMAT_2 = "dd MMMM yyyy hh:mm aaa";
-    public static String DATE_FORMAT_3 = "MM/dd/yyyy";
+    public static String DATE_FORMAT_3 = "dd/MM/yyyy";
     public static String DATE_FORMAT_4 = "EEEE, MMMM dd";
     public static String DATE_FORMAT_5 = "EEEE, MMMM dd, yyyy";
     public static String DATE_FORMAT_6 = "EEE, dd MMM";

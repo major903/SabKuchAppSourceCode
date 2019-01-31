@@ -238,4 +238,10 @@ public class DataFetcher {
         String url = String.format("%s/api/Inbox/GetInbox?UserProfileId=%s", NetworkConstants.END_POINT3, userId);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
+
+    public static <T> void getProfile(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
+        String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
+        String url = String.format("%s/api/UserProfile/ViewProfile?ProfileId=%s", NetworkConstants.END_POINT3, userId);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
 }

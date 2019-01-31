@@ -17,8 +17,8 @@ import vedam.subkuch.base.BaseActivity;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.network.models.OtpResponse;
-import vedam.subkuch.network.models.ProfileRequest;
-import vedam.subkuch.network.models.RegisterUserResponse;
+import vedam.subkuch.network.models.Profile;
+import vedam.subkuch.network.models.ProfileResponse;
 import vedam.subkuch.ui.home.HomeActivity;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.UiUtil;
@@ -34,7 +34,7 @@ public class VerificationActivity extends BaseActivity {
     // UI references.
     private EditText etOtp;
     private String sentOtp;
-    private ProfileRequest profileRequest;
+    private Profile profile;
     private int noOfAttempts;
 
     @Override
@@ -47,7 +47,7 @@ public class VerificationActivity extends BaseActivity {
         Button btSubmit = findViewById(R.id.btSubmit);
         etOtp = findViewById(R.id.etOtp);
 
-        profileRequest = getIntent().getParcelableExtra(Constants.EXTRA_DATA);
+        profile = getIntent().getParcelableExtra(Constants.EXTRA_DATA);
 
         btSubmit.setOnClickListener(v -> {
                     if (noOfAttempts <= 5)
@@ -64,7 +64,7 @@ public class VerificationActivity extends BaseActivity {
 
         UiUtil.showProgressDialog(this, getString(R.string.please_wait));
         String countryCode = AppPrefs.getInstance(this).getSharedPreferences().getString(Constants.EXTRA_COUNTRY_CODE, "91");
-        DataFetcher.sendOtp(this, onOtpSuccessListener, OtpResponse.class, onErrorListener, countryCode, profileRequest.getMobile());
+        DataFetcher.sendOtp(this, onOtpSuccessListener, OtpResponse.class, onErrorListener, countryCode, profile.getMobile());
     }
 
     private void attemptVerification() {
@@ -107,7 +107,7 @@ public class VerificationActivity extends BaseActivity {
     private void registerUser() {
 
         UiUtil.showProgressDialog(this, getString(R.string.please_wait));
-        DataFetcher.registerUser(this, new Gson().toJson(profileRequest), onRegisterUserSuccessListener, RegisterUserResponse.class, onErrorListener);
+        DataFetcher.registerUser(this, new Gson().toJson(profile), onRegisterUserSuccessListener, ProfileResponse.class, onErrorListener);
     }
 
     private Response.Listener<OtpResponse> onOtpSuccessListener = new Response.Listener<OtpResponse>() {
@@ -126,7 +126,7 @@ public class VerificationActivity extends BaseActivity {
         }
     };
 
-    private Response.Listener<RegisterUserResponse> onRegisterUserSuccessListener = response -> {
+    private Response.Listener<ProfileResponse> onRegisterUserSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
         if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)
@@ -146,7 +146,7 @@ public class VerificationActivity extends BaseActivity {
     };
 
     private String getFullName() {
-        String fullName = profileRequest.getFirstName() + " " + profileRequest.getLastName();
+        String fullName = profile.getFirstName() + " " + profile.getLastName();
         return fullName.trim();
     }
 

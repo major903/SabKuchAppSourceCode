@@ -2,7 +2,7 @@ package vedam.subkuch.network.models;
 
 import java.util.ArrayList;
 
-public class RegisterUserResponse {
+public class ProfileResponse {
 
     private String ReturnCode;
 
