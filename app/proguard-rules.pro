@@ -35,16 +35,26 @@
 -keepattributes *Annotation*, EnclosingMethod
 -keep class org.codehaus.** { *; }
 
-############################## Active Android #############################
--keep public class vedam.subkuch.network.models.** {
-  public void set*(***);
-  public *** get*();
-}
--keepname public class vedam.subkuch.network.models.** {
-  public void set*(***);
-  public *** get*();
-}
+-keep class vedam.subkuch.network.models.** { *; }
+-keepclassmembers public class vedam.subkuch.network.models.** { *; }
 
+-keep class vedam.subkuch.ui.ask.models.** { *; }
+-keepclassmembers class vedam.subkuch.ui.ask.models.** { *; }
+
+-keep class vedam.subkuch.ui.directory.models.** { *; }
+-keepclassmembers class vedam.subkuch.ui.directory.models.** { *; }
+
+-keep class vedam.subkuch.ui.jobs.models.** { *; }
+-keepclassmembers class vedam.subkuch.ui.jobs.models.** { *; }
+
+-keep class vedam.subkuch.ui.offers.models.** { *; }
+-keepclassmembers class vedam.subkuch.ui.offers.models.** { *; }
+
+-keep class vedam.subkuch.ui.vehicle.models.** { *; }
+-keepclassmembers class vedam.subkuch.ui.vehicle.models.** { *; }
+
+-keep class vedam.subkuch.ui.inbox.models.** { *; }
+-keepclassmembers class vedam.subkuch.ui.inbox.models.** { *; }
 
 ############################## OKHTTP #############################
 -keepattributes Signature
@@ -110,3 +120,26 @@
 -keep class * implements android.os.Parcelable {
   public static final android.os.Parcelable$Creator *;
 }
+
+##---------------Begin: proguard configuration for Gson  ----------
+# Gson uses generic type information stored in a class file when working with fields. Proguard
+# removes such information by default, so configure it to keep all of it.
+-keepattributes Signature
+
+# For using GSON @Expose annotation
+-keepattributes *Annotation*
+
+# Gson specific classes
+-dontwarn sun.misc.**
+#-keep class com.google.gson.stream.** { *; }
+
+# Application classes that will be serialized/deserialized over Gson
+-keep class com.google.gson.examples.android.model.** { *; }
+
+# Prevent proguard from stripping interface information from TypeAdapterFactory,
+# JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
+-keep class * implements com.google.gson.TypeAdapterFactory
+-keep class * implements com.google.gson.JsonSerializer
+-keep class * implements com.google.gson.JsonDeserializer
+
+##---------------End: proguard configuration for Gson  ----------

@@ -175,7 +175,7 @@
                 android:layout_marginTop="@dimen/margin_16dp"
                 android:layout_marginRight="@dimen/margin_16dp"
                 android:paddingBottom="@dimen/margin_4dp"
-                android:text="@string/add_photos" />
+                android:text="@string/add_photo" />
 
             <HorizontalScrollView
                 android:layout_width="match_parent"

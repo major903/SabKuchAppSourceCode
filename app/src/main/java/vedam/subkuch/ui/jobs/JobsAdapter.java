@@ -107,7 +107,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
             tvDistance = itemView.findViewById(R.id.tvDistance);
             tvOrganisation = itemView.findViewById(R.id.tv_organisation);
             tvDealsIn = itemView.findViewById(R.id.tv_deals);
-            tvLocation = itemView.findViewById(R.id.tv_location);
+            tvLocation = itemView.findViewById(R.id.tv_address);
             tvPosition = itemView.findViewById(R.id.tv_position);
             tvContact = itemView.findViewById(R.id.tv_contact);
             ibDirection = itemView.findViewById(R.id.ib_direction);

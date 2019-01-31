@@ -8,6 +8,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
@@ -390,10 +392,52 @@ public class AppUtil {
         return scaledBitmap;
     }
 
+    public static byte[] getBytesFromBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bos);
+        return bos.toByteArray();
+    }
+
+
+    /**
+     * Turn drawable resource into byte array.
+     *
+     * @param context parent context
+     * @param id      drawable resource id
+     * @return byte array
+     */
+    public static byte[] getFileDataFromDrawable(Context context, int id) {
+        Drawable drawable = ContextCompat.getDrawable(context, id);
+        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    /**
+     * Turn drawable into byte array.
+     *
+     * @param drawable data
+     * @return byte array
+     */
+    public static byte[] getFileDataFromDrawable(Context context, Drawable drawable) {
+        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+
     public static String getZeroedString(int value) {
         if (value < 10)
             return String.format("0%s", value);
         else
             return String.valueOf(value);
+    }
+
+    public static String getUniqueFileName() {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yymmddhhmmss", Locale.US);
+        String date = dateFormat.format(new Date(System.currentTimeMillis()));
+        return "image_" + date + ".jpg";
     }
 }

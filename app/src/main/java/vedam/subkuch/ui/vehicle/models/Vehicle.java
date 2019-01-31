@@ -1,5 +1,7 @@
 package vedam.subkuch.ui.vehicle.models;
 
+import android.support.annotation.NonNull;
+
 public class Vehicle {
     private String vehicle;
 
@@ -26,6 +28,7 @@ public class Vehicle {
         return vehicletype;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return vehicle;

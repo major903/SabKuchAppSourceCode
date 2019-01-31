@@ -1,28 +1,36 @@
 package vedam.subkuch.network.models;
 
+import java.util.ArrayList;
+
 public class RegisterUserResponse {
 
-    private String status;
-    private String userId;
-    private String AuthenticationResult;
+    private String ReturnCode;
 
-    public String getStatus() {
-        return status;
+    private String ReturnMessage;
+
+    private ArrayList<Profile> ReturnData;
+
+    public String getReturnCode() {
+        return ReturnCode;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setReturnCode(String ReturnCode) {
+        this.ReturnCode = ReturnCode;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getReturnMessage() {
+        return ReturnMessage;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setReturnMessage(String ReturnMessage) {
+        this.ReturnMessage = ReturnMessage;
     }
 
-    public String getAuthenticationResult() {
-        return AuthenticationResult;
+    public ArrayList<Profile> getReturnData() {
+        return ReturnData;
+    }
+
+    public void setReturnData(ArrayList<Profile> ReturnData) {
+        this.ReturnData = ReturnData;
     }
 }

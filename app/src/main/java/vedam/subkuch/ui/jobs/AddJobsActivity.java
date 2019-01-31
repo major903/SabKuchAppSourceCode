@@ -52,7 +52,7 @@ public class AddJobsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         activityAddJobsBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_jobs);
         setToolbarBackButton();
-        setTitle(R.string.add_job);
+        setTitle(R.string.post_a_job);
 
 //        jobCategoryId = getIntent().getStringExtra(Constants.EXTRA_CATEGORY_ID);
         getJobCategory();
@@ -231,16 +231,24 @@ public class AddJobsActivity extends BaseActivity {
         UiUtil.cancelProgressDialog();
         if (response != null && response.isStatus()) {
             UiUtil.showToast(this, AppUtil.deNull(response.getMessage()));
+            refreshData();
 //            finish();
         } else
             UiUtil.showToast(this, getString(R.string.err_occurred));
     };
 
+    private void refreshData() {
+        activityAddJobsBinding.llContainer.removeAllViews();
+        alJobs.clear();
+        activityAddJobsBinding.spCategory.setSelection(0);
+
+    }
+
     private int validateErrorMessage() {
         int errorMessage = 0;
         if (TextUtils.isEmpty(jobCategoryId))
             errorMessage = R.string.select_a_category;
-        if (TextUtils.isEmpty(activityAddJobsBinding.etCompanyName.getText()))
+        else if (TextUtils.isEmpty(activityAddJobsBinding.etCompanyName.getText()))
             errorMessage = R.string.enter_company_name;
         else if (TextUtils.isEmpty(activityAddJobsBinding.etDealingIn.getText()))
             errorMessage = R.string.enter_dealing_in;

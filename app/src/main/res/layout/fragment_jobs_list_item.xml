@@ -20,32 +20,7 @@
         android:layout_height="wrap_content"
         tools:text="@string/err" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_4dp">
-
-        <TextView
-            android:id="@+id/tv_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/margin_8dp"
-            android:layout_toLeftOf="@+id/ib_direction"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            tools:text="@string/err" />
-
-        <ImageButton
-            android:id="@+id/ib_direction"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@color/transparent"
-            android:src="@drawable/baseline_directions_black_24" />
-
-    </RelativeLayout>
+    <include layout="@layout/layout_direction" />
 
     <TextView
         android:id="@+id/tvDistance"
@@ -58,7 +33,7 @@
         android:id="@+id/tv_position"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_8dp"
+        android:layout_marginTop="@dimen/margin_16dp"
         tools:text="@string/err" />
 
     <TextView

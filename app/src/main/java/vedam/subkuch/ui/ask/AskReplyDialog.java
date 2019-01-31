@@ -16,7 +16,7 @@ import vedam.subkuch.R;
 import vedam.subkuch.base.BaseDialog;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
-import vedam.subkuch.ui.events.AddEventResponse;
+import vedam.subkuch.network.models.AddEventResponse;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.UiUtil;
 

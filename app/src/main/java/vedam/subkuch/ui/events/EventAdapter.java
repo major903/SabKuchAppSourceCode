@@ -112,7 +112,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             tvDetails = itemView.findViewById(R.id.tvDetails);
             tvDate = itemView.findViewById(R.id.tvDate);
             tvTime = itemView.findViewById(R.id.tvTime);
-            tvVenue = itemView.findViewById(R.id.tvVenue);
+            tvVenue = itemView.findViewById(R.id.tv_address);
             tvCost = itemView.findViewById(R.id.tvCost);
             tvDistance = itemView.findViewById(R.id.tvDistance);
             ivEvent = itemView.findViewById(R.id.iv_event);

@@ -29,6 +29,7 @@ import vedam.subkuch.base.BaseAddImagesFragment;
 import vedam.subkuch.databinding.FragmentAddEventBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
+import vedam.subkuch.network.models.AddEventResponse;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.UiUtil;
@@ -135,10 +136,9 @@ public class AddEventFragment extends BaseAddImagesFragment {
         UiUtil.cancelProgressDialog();
         if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
             UiUtil.showToast(context, context.getString(R.string.event_added));
-//            if (getGlobalFragmentInteractionListener() != null) {
-//                getGlobalFragmentInteractionListener().setFragmentResult(RESULT_OK, null);
-//                getGlobalFragmentInteractionListener().finishActivity();
-//            }
+            if (getGlobalFragmentInteractionListener() != null) {
+                getGlobalFragmentInteractionListener().finishActivity();
+            }
         } else
             UiUtil.showToast(context, context.getString(R.string.err_occurred));
     };

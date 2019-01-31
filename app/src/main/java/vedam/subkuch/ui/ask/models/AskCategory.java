@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 public class AskCategory {
     private String categoryname;
 
-    private String Id;
+    private String categoryid;
 
     public String getCategoryname() {
         return categoryname;
@@ -16,11 +16,11 @@ public class AskCategory {
     }
 
     public String getId() {
-        return Id;
+        return categoryid;
     }
 
-    public void setId(String Id) {
-        this.Id = Id;
+    public void setId(String categoryid) {
+        this.categoryid = categoryid;
     }
 
     @NonNull

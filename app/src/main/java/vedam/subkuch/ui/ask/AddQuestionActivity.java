@@ -22,7 +22,7 @@ import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.ui.ask.models.AskCategory;
 import vedam.subkuch.ui.ask.models.AskCategoryResponse;
-import vedam.subkuch.ui.events.AddEventResponse;
+import vedam.subkuch.network.models.AddEventResponse;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.UiUtil;
 

@@ -24,9 +24,11 @@ import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.network.models.CountriesResponse;
 import vedam.subkuch.network.models.Country;
+import vedam.subkuch.network.models.ProfileRequest;
 import vedam.subkuch.ui.jobs.models.CitiesResponse;
 import vedam.subkuch.ui.jobs.models.City;
 import vedam.subkuch.uicomponent.DatePickerFragment;
+import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.UiUtil;
 
@@ -36,6 +38,7 @@ public class RegisterUserActivity extends BaseActivity implements DatePickerFrag
     private String longitude;
     private String gender;
     private String countryId;
+    private String countryCode;
     private String cityId;
 
     @Override
@@ -118,6 +121,7 @@ public class RegisterUserActivity extends BaseActivity implements DatePickerFrag
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 countryId = ((Country) parent.getItemAtPosition(position)).getCountryid();
+                countryCode = ((Country) parent.getItemAtPosition(position)).getCountrycode();
             }
 
             @Override
@@ -152,16 +156,21 @@ public class RegisterUserActivity extends BaseActivity implements DatePickerFrag
             int errorMessage = validateErrorMessage();
             if (errorMessage == 0) {
                 Intent intent = new Intent(RegisterUserActivity.this, VerificationActivity.class);
-                intent.putExtra(Constants.EXTRA_FIRST_NAME, activityRegisterUserBinding.etFirstName.getText().toString());
-                intent.putExtra(Constants.EXTRA_LAST_NAME, AppUtil.deNull(activityRegisterUserBinding.etLastName.getText()));
-                intent.putExtra(Constants.EXTRA_MOBILE_NUMBER, activityRegisterUserBinding.etMobileNumber.getText().toString());
-                intent.putExtra(Constants.EXTRA_EMAIL_ID, activityRegisterUserBinding.etEmail.getText().toString());
-                intent.putExtra(Constants.EXTRA_DOB, activityRegisterUserBinding.etDob.getText().toString());
-                intent.putExtra(Constants.EXTRA_GENDER, gender);
-                intent.putExtra(Constants.EXTRA_CITY_ID, cityId);
-                intent.putExtra(Constants.EXTRA_COUNTRY_ID, countryId);
-                intent.putExtra(Constants.EXTRA_LOCATION_LATITUDE, latitude);
-                intent.putExtra(Constants.EXTRA_LOCATION_LONGITUDE, longitude);
+
+                ProfileRequest profileRequest = new ProfileRequest();
+                profileRequest.setFirstName(activityRegisterUserBinding.etFirstName.getText().toString());
+                profileRequest.setLastName(AppUtil.deNull(activityRegisterUserBinding.etLastName.getText()));
+                profileRequest.setMobile(activityRegisterUserBinding.etMobileNumber.getText().toString());
+                profileRequest.setEMail(activityRegisterUserBinding.etEmail.getText().toString());
+                profileRequest.setDOB(activityRegisterUserBinding.etDob.getText().toString());
+                profileRequest.setGender(gender);
+                profileRequest.setCityId(cityId);
+                profileRequest.setCountryid(countryId);
+                profileRequest.setLatitude(latitude);
+                profileRequest.setLongitude(longitude);
+                AppPrefs.getInstance(this).getSharedPreferences().edit()
+                        .putString(Constants.EXTRA_COUNTRY_CODE, countryCode).apply();
+                intent.putExtra(Constants.EXTRA_DATA, profileRequest);
                 startActivity(intent);
             } else {
                 UiUtil.showDialog(RegisterUserActivity.this, getString(errorMessage), true);

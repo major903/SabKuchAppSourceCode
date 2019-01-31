@@ -11,14 +11,7 @@ public class Constants {
     public static final String EXTRA_IMAGE_URL = "EXTRA_IMAGE_URL";
     public static final String EXTRA_RECEIVER = "EXTRA_RECEIVER";
     public static final String EXTRA_DIRECTORY_DETAIL = "EXTRA_DIRECTORY_DETAIL";
-    public static final String EXTRA_CITY_ID = "EXTRA_CITY_ID";
-    public static final String EXTRA_COUNTRY_ID = "EXTRA_COUNTRY_ID";
-    public static final String EXTRA_MOBILE_NUMBER = "EXTRA_MOBILE_NUMBER";
-    public static final String EXTRA_EMAIL_ID = "EXTRA_EMAIL_ID";
-    public static final String EXTRA_GENDER = "EXTRA_GENDER";
-    public static final String EXTRA_DOB = "EXTRA_DOB";
-    public static final String EXTRA_FIRST_NAME = "EXTRA_FIRST_NAME";
-    public static final String EXTRA_LAST_NAME = "EXTRA_LAST_NAME";
+    public static final String EXTRA_COUNTRY_CODE = "EXTRA_COUNTRY_CODE";
     public static final String EXTRA_ADDRESS = "EXTRA_ADDRESS";
     public static final String EXTRA_CATEGORY_ID = "EXTRA_CATEGORY_ID";
     public static final String EXTRA_CITY_NAME = "EXTRA_CITY_NAME";
@@ -27,6 +20,7 @@ public class Constants {
     public static final String EXTRA_SUB_CATEGORY_NAME = "EXTRA_SUB_CATEGORY_NAME";
     public static final String EXTRA_SUB_CATEGORY_ID = "EXTRA_SUB_CATEGORY_ID";
     public static final String EXTRA_IMAGE_ITEMS = "EXTRA_IMAGE_ITEMS";
+    public static final String EXTRA_DATA = "EXTRA_DATA";
     public static final String EXTRA_URL = "EXTRA_URL";
     public static final String EXTRA_POSITION = "EXTRA_POSITION";
     public static final String EXTRA_IS_IMAGE_URLS = "EXTRA_IS_IMAGE_URLS";
@@ -54,6 +48,7 @@ public class Constants {
 
     //Permission constants
     public static final int PERMISSION_REQUEST_READ_LOCATION = 1;
+    public static final String FRESHER = "1";
     public static String COUNTRY_CODE = "91";
 
     public static final int PERMISSIONS_REQUEST_SMS = 4;

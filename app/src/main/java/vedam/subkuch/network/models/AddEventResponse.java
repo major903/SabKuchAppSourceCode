@@ -1,4 +1,4 @@
-package vedam.subkuch.ui.events;
+package vedam.subkuch.network.models;
 
 public class AddEventResponse {
 
@@ -30,10 +30,5 @@ public class AddEventResponse {
 
     public void setReturnData(String ReturnData) {
         this.ReturnData = ReturnData;
-    }
-
-    @Override
-    public String toString() {
-        return "AddEventResponse [ReturnCode = " + ReturnCode + ", ReturnMessage = " + ReturnMessage + ", ReturnData = " + ReturnData + "]";
     }
 }

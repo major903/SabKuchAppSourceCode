@@ -1,8 +1,12 @@
 package vedam.subkuch.ui.ask;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.MetricAffectingSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +20,7 @@ import java.util.ArrayList;
 import vedam.subkuch.R;
 import vedam.subkuch.ui.ask.models.Conversation;
 import vedam.subkuch.ui.ask.models.Reply;
+import vedam.subkuch.uicomponent.CustomTypefaceSpan;
 import vedam.subkuch.utils.UiUtil;
 
 import static vedam.subkuch.utils.UiUtil.getTypeface;
@@ -63,9 +68,17 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             holder.btReply.setVisibility(View.GONE);
     }
 
-    private String getTopic(Conversation conversation) {
+    private CharSequence getTopic(Conversation conversation) {
 
-        return conversation.getPostedon() + " " + conversation.getTopic();
+        SpannableStringBuilder fullString = new SpannableStringBuilder();
+        fullString.append(conversation.getUsername())
+                .append("\n").append(conversation.getPostedon())
+                .append("\n").append(conversation.getTopic());
+        MetricAffectingSpan boldSpan = new CustomTypefaceSpan(Typeface.DEFAULT_BOLD);
+
+        fullString.setSpan(boldSpan, 0, conversation.getUsername().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return fullString;
     }
 
 
@@ -103,8 +116,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         }
     }
 
-    private String getFullAnswerString(ArrayList<Reply> replies) {
-        StringBuilder fullReplies = new StringBuilder();
+    private CharSequence getFullAnswerString(ArrayList<Reply> replies) {
+        SpannableStringBuilder fullReplies = new SpannableStringBuilder();
         for (int i = 0; i < replies.size(); i++) {
             Reply reply = replies.get(i);
             if (i == replies.size() - 1)
@@ -112,12 +125,20 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             else
                 fullReplies.append(getIndividualAnswer(reply)).append("\n\n");
         }
-        return fullReplies.toString();
+        return fullReplies;
     }
 
-    private String getIndividualAnswer(Reply reply) {
+    private CharSequence getIndividualAnswer(Reply reply) {
 
-        return reply.getUsername() + "\n" + reply.getUpdateddon() + " " + reply.getReplayMessage();
+        SpannableStringBuilder fullString = new SpannableStringBuilder();
+        fullString.append(reply.getUsername())
+                .append("\n").append(reply.getUpdateddon())
+                .append("\n").append(reply.getReplayMessage());
+        MetricAffectingSpan boldSpan = new CustomTypefaceSpan(getTypeface(context, context.getString(R.string.typeface_bold)));
+
+        fullString.setSpan(boldSpan, 0, reply.getUsername().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return fullString;
     }
 
     @Override

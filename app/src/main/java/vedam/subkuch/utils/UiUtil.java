@@ -554,7 +554,7 @@ public class UiUtil {
      * @param tv    The text view to be set
      * @param value the value to be set on text view
      */
-    public static void setTextView(TextView tv, String value) {
+    public static void setTextView(TextView tv, CharSequence value) {
 
         if (TextUtils.isEmpty(value))
             tv.setVisibility(View.GONE);

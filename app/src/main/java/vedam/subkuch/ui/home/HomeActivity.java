@@ -24,15 +24,17 @@ import vedam.subkuch.base.BaseActivity;
 import vedam.subkuch.databinding.ActivityHomeBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
+import vedam.subkuch.network.models.AddEventResponse;
 import vedam.subkuch.network.models.Feature;
 import vedam.subkuch.ui.ask.AskCategoryActivity;
 import vedam.subkuch.ui.directory.DirectoryActivity;
-import vedam.subkuch.ui.events.AddEventResponse;
 import vedam.subkuch.ui.events.EventActivity;
+import vedam.subkuch.ui.inbox.InboxActivity;
 import vedam.subkuch.ui.jobs.JobCategoryActivity;
 import vedam.subkuch.ui.movies.MoviesActivity;
 import vedam.subkuch.ui.offers.OffersActivity;
 import vedam.subkuch.ui.phonebook.PhoneBookActivity;
+import vedam.subkuch.ui.profile.EditProfileActivity;
 import vedam.subkuch.ui.vehicle.VehicleActivity;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.AppUtil;
@@ -263,9 +265,9 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         int id = item.getItemId();
 
         if (id == R.id.nav_edit_profile) {
-
+            startActivity(new Intent(this, EditProfileActivity.class));
         } else if (id == R.id.nav_inbox) {
-
+            startActivity(new Intent(this, InboxActivity.class));
         } else if (id == R.id.nav_privacy) {
             AppUtil.openUrl(this, Constants.PRIVACY_POLICY_URL);
         }

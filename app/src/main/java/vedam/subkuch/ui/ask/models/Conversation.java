@@ -18,6 +18,12 @@ public class Conversation {
 
     private boolean isExpanded;
 
+    private String Username;
+
+    public String getUsername() {
+        return Username;
+    }
+
     public boolean isExpanded() {
         return isExpanded;
     }

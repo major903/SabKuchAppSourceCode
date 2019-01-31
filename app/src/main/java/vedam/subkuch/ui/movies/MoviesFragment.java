@@ -63,7 +63,8 @@ public class MoviesFragment extends BaseListFragment {
 
         UiUtil.cancelProgressDialog();
         if (getActivity() != null)
-            if (response != null && response.getReturnMessage().equals(Constants.SUCCESS) && response.getReturnData().size() > 0) {
+            if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)
+                    && response.getReturnData() != null && response.getReturnData().size() > 0) {
                 loadValues(response.getReturnData());
             } else
                 UiUtil.showToast(context, getString(R.string.no_data));
