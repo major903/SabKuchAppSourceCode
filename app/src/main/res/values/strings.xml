@@ -222,4 +222,6 @@
     <string name="select_a_job_experience">Select your job experience</string>
     <string name="profile_updated_successfully">Profile updated successfully</string>
     <string name="too_many_otp_attempts">Too many attempts. Try registering again.</string>
+    <string name="india">India</string>
+    <string name="update">Update</string>
 </resources>

@@ -42,6 +42,8 @@ public class EditProfileActivity extends BaseActivity {
     private String cityId;
     private Profile profile;
     private Stack<Object> requestStack = new Stack<>();
+    private ArrayList<Country> countries = new ArrayList<>();
+    private ArrayList<City> cities = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,32 +52,34 @@ public class EditProfileActivity extends BaseActivity {
         activityEditProfileBinding = DataBindingUtil.setContentView(
                 this, R.layout.activity_edit_profile);
         profile = new Profile();
+        setTitle(getString(R.string.edit_profile));
         setToolbarBackButton();
         bindData();
         requestStack.add(new Object());
-        getCities();
         requestStack.add(new Object());
+        UiUtil.showProgressDialog(this, getString(R.string.loading));
+        getCities();
         getCountries();
         requestLocation(true);
     }
 
     private void getCities() {
 
-        UiUtil.showProgressDialog(this, getString(R.string.loading));
         DataFetcher.getCities(this, onCitiesSuccessListener, CitiesResponse.class, onErrorListener);
     }
 
     private Response.Listener<CitiesResponse> onCitiesSuccessListener = response -> {
-        UiUtil.cancelProgressDialog();
         requestStack.pop();
         if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
-            setCities(response.getReturnData());
+            cities = response.getReturnData();
+            setCities();
         } else {
             UiUtil.showToast(this, getString(R.string.err_occurred));
         }
+        checkFlagAndLoadUI();
     };
 
-    private void setCities(ArrayList<City> cities) {
+    private void setCities() {
 
         City city = new City();
         city.setName(getString(R.string.select_a_city));
@@ -101,21 +105,21 @@ public class EditProfileActivity extends BaseActivity {
 
     private void getCountries() {
 
-        UiUtil.showProgressDialog(this, getString(R.string.loading));
         DataFetcher.getCountries(this, onCountriesSuccessListener, CountriesResponse.class, onErrorListener);
     }
 
     private Response.Listener<CountriesResponse> onCountriesSuccessListener = response -> {
-        UiUtil.cancelProgressDialog();
         requestStack.pop();
         if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
-            setCountries(response.getCountries());
+            countries = response.getCountries();
+            setCountries();
         } else {
             UiUtil.showToast(EditProfileActivity.this, getString(R.string.err_occurred));
         }
+        checkFlagAndLoadUI();
     };
 
-    private void setCountries(ArrayList<Country> countries) {
+    private void setCountries() {
 
         ArrayAdapter<Country> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, countries);
@@ -132,15 +136,15 @@ public class EditProfileActivity extends BaseActivity {
 
             }
         });
-        activityEditProfileBinding.spCountry.setSelection(getIndexOfIndia(countries));
+        activityEditProfileBinding.spCountry.setSelection(getIndexOfIndia());
 
     }
 
-    private int getIndexOfIndia(ArrayList<Country> countries) {
+    private int getIndexOfIndia() {
 
         for (int i = 0; i < countries.size(); i++) {
             Country country = countries.get(i);
-            if (country.getName().equalsIgnoreCase("India"))
+            if (country.getName().equalsIgnoreCase(getString(R.string.india)))
                 return i;
         }
         return 0;
@@ -149,9 +153,57 @@ public class EditProfileActivity extends BaseActivity {
     private void checkFlagAndLoadUI() {
         UiUtil.cancelProgressDialog();
         if (requestStack.isEmpty()) {
-
-//            DataFetcher.getProfile();
+            getProfile();
         }
+    }
+
+    private void getProfile() {
+
+        UiUtil.showProgressDialog(this, getString(R.string.loading));
+        DataFetcher.getProfile(this, onProfileSuccessListener, ProfileResponse.class, onErrorListener);
+    }
+
+    private Response.Listener<ProfileResponse> onProfileSuccessListener = response -> {
+        UiUtil.cancelProgressDialog();
+        if (response != null && response.getReturnMessage().equals(Constants.SUCCESS) &&
+                response.getReturnData() != null && response.getReturnData().size() > 0) {
+            setValues(response.getReturnData().get(0));
+        } else {
+            UiUtil.showToast(EditProfileActivity.this, getString(R.string.err_occurred));
+        }
+    };
+
+    private void setValues(Profile profile) {
+        UiUtil.setTextView(activityEditProfileBinding.etEmail, profile.getEMail());
+        UiUtil.setTextView(activityEditProfileBinding.etFirstName, profile.getFirstName());
+        UiUtil.setTextView(activityEditProfileBinding.etLastName, profile.getLastName());
+
+        int indexOfCurrentCountry = getIndexOfCurrentCountry(profile.getCountryid());
+        activityEditProfileBinding.spCountry.setSelection(indexOfCurrentCountry);
+
+        int indexOfCurrentCity = getIndexOfCurrentCity(profile.getCityId());
+        activityEditProfileBinding.spCity.setSelection(indexOfCurrentCity);
+
+    }
+
+    private int getIndexOfCurrentCountry(String countryid) {
+
+        for (int i = 0; i < countries.size(); i++) {
+            Country country = countries.get(i);
+            if (country.getCountryid().equals(countryid))
+                return i;
+        }
+        return 0;
+    }
+
+    private int getIndexOfCurrentCity(String cityId) {
+
+        for (int i = 0; i < cities.size(); i++) {
+            City city = cities.get(i);
+            if (!TextUtils.isEmpty(city.getCityid()) && city.getCityid().equals(cityId))
+                return i;
+        }
+        return 0;
     }
 
     @Override

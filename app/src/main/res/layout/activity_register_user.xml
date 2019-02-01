@@ -73,7 +73,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_16dp"
-                        android:text="@string/city" />
+                        android:text="@string/country" />
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -82,7 +82,7 @@
                         android:background="@drawable/edit_text_border">
 
                         <Spinner
-                            android:id="@+id/sp_city"
+                            android:id="@+id/sp_country"
                             style="@style/SpinnerStyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_16dp"
-                        android:text="@string/country" />
+                        android:text="@string/city" />
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -103,7 +103,7 @@
                         android:background="@drawable/edit_text_border">
 
                         <Spinner
-                            android:id="@+id/sp_country"
+                            android:id="@+id/sp_city"
                             style="@style/SpinnerStyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
