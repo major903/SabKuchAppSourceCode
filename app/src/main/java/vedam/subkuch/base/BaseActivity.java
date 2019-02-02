@@ -37,6 +37,8 @@ import vedam.subkuch.interfaces.OnFragmentInteractionListener;
 import vedam.subkuch.interfaces.ScreenChangeListener;
 import vedam.subkuch.locationProvider.LocationCallbacks;
 import vedam.subkuch.locationProvider.LocationProvider;
+import vedam.subkuch.network.NetworkConstants;
+import vedam.subkuch.ui.profile.RegisterUserActivity;
 import vedam.subkuch.utils.LogUtils;
 import vedam.subkuch.utils.TargetScreen;
 import vedam.subkuch.utils.UiUtil;
@@ -71,7 +73,10 @@ public abstract class BaseActivity extends AppCompatActivity implements ScreenCh
             UiUtil.showToast(this, this.getString(R.string.timeoutError));
         } else if (error instanceof ParseError) {
             UiUtil.showToast(this, getString(R.string.err_parsing));
-        } else if (error instanceof AuthFailureError) {
+        } else if (error instanceof AuthFailureError || (error.networkResponse != null &&
+                error.networkResponse.statusCode == NetworkConstants.CODE_UNAUTHORIZED)) {
+            int flags = Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK;
+            startActivity(new Intent(this, RegisterUserActivity.class).addFlags(flags));
             UiUtil.showToast(this, getString(R.string.err_unauthorized));
         } else {
             parseAndShowError(error);

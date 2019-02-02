@@ -1,7 +1,6 @@
 package vedam.subkuch.network;
 
 import android.content.Context;
-import android.net.Uri;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -54,27 +53,6 @@ public class HelperVolley<T> {
 
         RequestQueue mRequestQueue = ((SubKuchApplication) context.getApplicationContext()).getRequestQueue();
         mRequestQueue.cancelAll(tag);
-    }
-
-    public static String buildURIWithQueryParameters(String apiServiceName, HashMap<String, String> params) {
-
-        Uri.Builder builder = new Uri.Builder();
-        builder.scheme(NetworkConstants.API_SCHEME)
-                .authority(NetworkConstants.HOST_NAME)
-                .appendPath("api")
-                .appendEncodedPath(apiServiceName);
-
-
-        if (params != null && !params.isEmpty()) {
-            for (Map.Entry<String, String> e : params.entrySet()) {
-                String key = e.getKey();
-                String value = e.getValue();
-
-                builder.appendQueryParameter(key, value);
-
-            }
-        }
-        return builder.build().toString();
     }
 
 

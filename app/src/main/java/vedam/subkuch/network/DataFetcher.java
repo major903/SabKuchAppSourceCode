@@ -32,13 +32,13 @@ public class DataFetcher {
     public static <T> void sendOtp(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener,
                                    String countryCode, String phoneNumber) {
 
-        String url = String.format("%s/login/otps/get/%s/%s", NetworkConstants.HOST_NAME, countryCode, phoneNumber);
+        String url = String.format("%s/api/login/otps/get/%s/%s", NetworkConstants.END_POINT, countryCode, phoneNumber);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void getFeatures(Context context, Response.Listener<T> updateSuccessListener, Type repClass, Response.ErrorListener errorListener, String userId) {
 
-        String url = String.format("%s/features/users/%s/get", NetworkConstants.HOST_NAME, userId);
+        String url = String.format("%s/api/features/users/%s/get", NetworkConstants.END_POINT, userId);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 

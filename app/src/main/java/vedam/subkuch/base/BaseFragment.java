@@ -2,6 +2,7 @@ package vedam.subkuch.base;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Address;
 import android.os.Bundle;
 import android.support.annotation.AnimRes;
@@ -24,7 +25,9 @@ import vedam.subkuch.R;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.interfaces.OnFragmentInteractionListener;
 import vedam.subkuch.interfaces.ScreenChangeListener;
+import vedam.subkuch.network.NetworkConstants;
 import vedam.subkuch.network.models.Image;
+import vedam.subkuch.ui.profile.RegisterUserActivity;
 import vedam.subkuch.uicomponent.SlideShowDialogFragment;
 import vedam.subkuch.utils.LogUtils;
 import vedam.subkuch.utils.UiUtil;
@@ -43,7 +46,8 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
     protected Response.ErrorListener onErrorListener = error -> {
 
         LogUtils.LOGD("ERROR", error.getMessage());
-        onErrorReceived(error);
+        if (getActivity() != null)
+            onErrorReceived(error);
 
     };
 
@@ -55,8 +59,10 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
             UiUtil.showToast(context, getString(R.string.timeoutError));
         } else if (error instanceof ParseError) {
             UiUtil.showToast(context, getString(R.string.err_parsing));
-        } else if (error instanceof AuthFailureError) {
-            UiUtil.showToast(context, getString(R.string.err_unauthorized));
+        } else if (error instanceof AuthFailureError || (error.networkResponse != null &&
+                error.networkResponse.statusCode == NetworkConstants.CODE_UNAUTHORIZED)) {
+            int flags = Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK;
+            startActivity(new Intent(context, RegisterUserActivity.class).addFlags(flags));
         } else {
             parseAndShowError(error);
         }
