@@ -77,7 +77,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
             int currentLength = fullString.length();
 
             fullString.append(String.valueOf(i + 1)).append(". ")
-                    .append(post.getJobTitle());
+                    .append(AppUtil.deNull(post.getJobTitle()));
             fullString.setSpan(boldSpan, currentLength, currentLength + post.getJobTitle().length() + 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             fullString.append("\n").append(post.getRequirement());
             if (i != posts.size() - 1)
