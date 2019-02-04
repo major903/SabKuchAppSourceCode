@@ -39,6 +39,7 @@ import vedam.subkuch.locationProvider.LocationCallbacks;
 import vedam.subkuch.locationProvider.LocationProvider;
 import vedam.subkuch.network.NetworkConstants;
 import vedam.subkuch.ui.profile.RegisterUserActivity;
+import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.LogUtils;
 import vedam.subkuch.utils.TargetScreen;
 import vedam.subkuch.utils.UiUtil;
@@ -75,9 +76,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ScreenCh
             UiUtil.showToast(this, getString(R.string.err_parsing));
         } else if (error instanceof AuthFailureError || (error.networkResponse != null &&
                 error.networkResponse.statusCode == NetworkConstants.CODE_UNAUTHORIZED)) {
-            int flags = Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK;
-            startActivity(new Intent(this, RegisterUserActivity.class).addFlags(flags));
-            UiUtil.showToast(this, getString(R.string.err_unauthorized));
+            logout();
         } else {
             parseAndShowError(error);
         }
@@ -87,6 +86,14 @@ public abstract class BaseActivity extends AppCompatActivity implements ScreenCh
     protected void parseAndShowError(VolleyError error) {
 
         UiUtil.showToast(this, getString(R.string.err_occurred));
+    }
+
+    @Override
+    public void logout() {
+        AppPrefs.getInstance(this).getSharedPreferences().edit().clear().apply();
+        int flags = Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK;
+        startActivity(new Intent(this, RegisterUserActivity.class).addFlags(flags));
+        UiUtil.showToast(this, getString(R.string.err_unauthorized));
     }
 
     @Override

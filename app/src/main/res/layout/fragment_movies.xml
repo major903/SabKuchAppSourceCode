@@ -10,8 +10,11 @@
         android:id="@android:id/list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_8dp"
+        android:clipToPadding="false"
+        android:dividerHeight="@dimen/margin_16dp"
+        android:padding="@dimen/margin_16dp"
         android:cacheColorHint="@android:color/transparent"
+        tools:listitem="@layout/fragment_movies_list_item"
         android:divider="@android:color/transparent">
 
     </ListView>

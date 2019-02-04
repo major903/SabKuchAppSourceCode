@@ -45,7 +45,6 @@ import vedam.subkuch.R;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.NetworkConstants;
 import vedam.subkuch.network.models.Image;
-import vedam.subkuch.ui.profile.RegisterUserActivity;
 import vedam.subkuch.uicomponent.PickImageDialog;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.LogUtils;
@@ -131,8 +130,7 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
             UiUtil.showToast(context, getString(R.string.err_parsing));
         } else if (error instanceof AuthFailureError || (error.networkResponse != null &&
                 error.networkResponse.statusCode == NetworkConstants.CODE_UNAUTHORIZED)) {
-            int flags = Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK;
-            startActivity(new Intent(context, RegisterUserActivity.class).addFlags(flags));
+            logout();
         } else {
             parseAndShowError(error);
         }

@@ -151,7 +151,7 @@ public class MoviesAdapter extends BaseAdapter {
             if (i == venues.size() - 1)
                 fullVenues.append(venue.getVenuewithtime());
             else
-                fullVenues.append(venue.getVenuewithtime()).append("\n\n");
+                fullVenues.append(venue.getVenuewithtime()).append("\n");
         }
         return fullVenues.toString();
     }

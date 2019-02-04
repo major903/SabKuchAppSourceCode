@@ -38,4 +38,9 @@ public interface OnFragmentInteractionListener {
      * @param data   Extra data in Intent
      */
     void setFragmentResult(int result, Intent data);
+
+    /**
+     * Logout from application
+     */
+    void logout();
 }
