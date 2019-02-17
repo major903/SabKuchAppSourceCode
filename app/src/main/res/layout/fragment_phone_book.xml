@@ -10,8 +10,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:divider="@android:color/transparent"
-        android:dividerHeight="@dimen/margin_16dp"
-        android:layout_margin="@dimen/margin_8dp"
+        android:dividerHeight="@dimen/margin_4dp"
+        android:padding="@dimen/margin_8dp"
         tools:listitem="@layout/fragment_phone_book_list_item"
         android:cacheColorHint="@android:color/transparent">
 

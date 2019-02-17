@@ -68,7 +68,7 @@
                         android:maxLines="1"
                         android:padding="@dimen/margin_8dp" />
 
-                    <TextView
+                    <!--<TextView
                         style="@style/TextViewBlueHeading"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:theme="@style/SpinnerStyle" />
-                    </FrameLayout>
+                    </FrameLayout>-->
 
                     <TextView
                         style="@style/TextViewBlueHeading"
@@ -130,7 +130,7 @@
                         android:maxLines="1"
                         android:padding="@dimen/margin_8dp" />
 
-                    <TextView
+                    <!--<TextView
                         style="@style/TextViewBlueHeading"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -147,7 +147,7 @@
                         android:imeOptions="actionNext"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
-                        android:padding="@dimen/margin_8dp" />
+                        android:padding="@dimen/margin_8dp" />-->
 
                     <TextView
                         style="@style/TextViewBlueHeading"

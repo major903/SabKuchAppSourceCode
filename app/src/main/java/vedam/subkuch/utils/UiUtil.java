@@ -270,9 +270,13 @@ public class UiUtil {
         else
             return;
 
-        if (imageSetter.isDefaultsSet() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestCreator.placeholder(R.drawable.grey);
-            requestCreator.error(R.drawable.grey);
+        if (imageSetter.isDefaultsSet()) {
+            try {
+                requestCreator.placeholder(R.drawable.grey);
+                requestCreator.error(R.drawable.grey);
+            } catch (Exception e) {
+                Crashlytics.logException(e);
+            }
         } else {
             if (imageSetter.getPlaceholderResource() != 0)
                 requestCreator.placeholder(imageSetter.getPlaceholderResource());

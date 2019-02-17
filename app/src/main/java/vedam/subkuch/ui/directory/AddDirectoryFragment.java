@@ -303,7 +303,8 @@ public class AddDirectoryFragment extends BaseAddImagesFragment implements Adapt
         addBusinessRequest.setCityid(cityId);
         addBusinessRequest.setBusinessName(fragmentAddDirectoryBinding.etBusinessName.getText().toString());
         addBusinessRequest.setWebsite(fragmentAddDirectoryBinding.etWebsite.getText().toString());
-        addBusinessRequest.setBusinessImage(AppUtil.getBase64FromBitmap(AppUtil.getSingleBitmap(context, getImageItemMap())));
+        if (!getImageItemMap().isEmpty())
+            addBusinessRequest.setBusinessImage(AppUtil.getBase64FromBitmap(AppUtil.getSingleBitmap(context, getImageItemMap())));
 
         ArrayList<BusinessAddress> alBusinessAddresses = new ArrayList<>();
         for (View v : alBranches) {
@@ -367,8 +368,8 @@ public class AddDirectoryFragment extends BaseAddImagesFragment implements Adapt
             errorMessage = R.string.select_a_city;
         else if (TextUtils.isEmpty(fragmentAddDirectoryBinding.etBusinessName.getText()))
             errorMessage = R.string.enter_business_name;
-        else if (getImageItemMap().isEmpty())
-            errorMessage = R.string.select_an_image;
+//        else if (getImageItemMap().isEmpty())
+//            errorMessage = R.string.select_an_image;
         else if (alBranches.isEmpty())
             errorMessage = R.string.add_one_branch;
         else {

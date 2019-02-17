@@ -20,8 +20,6 @@ import vedam.subkuch.base.BaseActivity;
 import vedam.subkuch.databinding.ActivityEditProfileBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
-import vedam.subkuch.network.models.CountriesResponse;
-import vedam.subkuch.network.models.Country;
 import vedam.subkuch.network.models.Profile;
 import vedam.subkuch.network.models.ProfileResponse;
 import vedam.subkuch.ui.jobs.models.CitiesResponse;
@@ -37,12 +35,12 @@ public class EditProfileActivity extends BaseActivity {
     private ActivityEditProfileBinding activityEditProfileBinding;
     private String latitude;
     private String longitude;
-    private String countryId;
-    private String countryCode;
+    /*private String countryId;
+    private String countryCode;*/
     private String cityId;
     private Profile profile;
     private Stack<Object> requestStack = new Stack<>();
-    private ArrayList<Country> countries = new ArrayList<>();
+//    private ArrayList<Country> countries = new ArrayList<>();
     private ArrayList<City> cities = new ArrayList<>();
 
     @Override
@@ -55,11 +53,11 @@ public class EditProfileActivity extends BaseActivity {
         setTitle(getString(R.string.edit_profile));
         setToolbarBackButton();
         bindData();
-        requestStack.add(new Object());
+//        requestStack.add(new Object());
         requestStack.add(new Object());
         UiUtil.showProgressDialog(this, getString(R.string.loading));
         getCities();
-        getCountries();
+//        getCountries();
         requestLocation(true);
     }
 
@@ -103,7 +101,7 @@ public class EditProfileActivity extends BaseActivity {
         activityEditProfileBinding.spCity.setSelection(0);
     }
 
-    private void getCountries() {
+    /*private void getCountries() {
 
         DataFetcher.getCountries(this, onCountriesSuccessListener, CountriesResponse.class, onErrorListener);
     }
@@ -148,7 +146,7 @@ public class EditProfileActivity extends BaseActivity {
                 return i;
         }
         return 0;
-    }
+    }*/
 
     private void checkFlagAndLoadUI() {
         UiUtil.cancelProgressDialog();
@@ -178,23 +176,23 @@ public class EditProfileActivity extends BaseActivity {
         UiUtil.setTextView(activityEditProfileBinding.etFirstName, profile.getFirstName());
         UiUtil.setTextView(activityEditProfileBinding.etLastName, profile.getLastName());
 
-        int indexOfCurrentCountry = getIndexOfCurrentCountry(profile.getCountryid());
-        activityEditProfileBinding.spCountry.setSelection(indexOfCurrentCountry);
+        /*int indexOfCurrentCountry = getIndexOfCurrentCountry(profile.getCountryid());
+        activityEditProfileBinding.spCountry.setSelection(indexOfCurrentCountry);*/
 
         int indexOfCurrentCity = getIndexOfCurrentCity(profile.getCityId());
         activityEditProfileBinding.spCity.setSelection(indexOfCurrentCity);
 
     }
 
-    private int getIndexOfCurrentCountry(String countryid) {
-
-        for (int i = 0; i < countries.size(); i++) {
-            Country country = countries.get(i);
-            if (country.getCountryid().equals(countryid))
-                return i;
-        }
-        return 0;
-    }
+//    private int getIndexOfCurrentCountry(String countryid) {
+//
+//        for (int i = 0; i < countries.size(); i++) {
+//            Country country = countries.get(i);
+//            if (country.getCountryid().equals(countryid))
+//                return i;
+//        }
+//        return 0;
+//    }
 
     private int getIndexOfCurrentCity(String cityId) {
 
@@ -224,11 +222,11 @@ public class EditProfileActivity extends BaseActivity {
                 profile.setLastName(AppUtil.deNull(activityEditProfileBinding.etLastName.getText()));
                 profile.setEMail(activityEditProfileBinding.etEmail.getText().toString());
                 profile.setCityId(cityId);
-                profile.setCountryid(countryId);
+//                profile.setCountryid(countryId);
                 profile.setLatitude(latitude);
                 profile.setLongitude(longitude);
-                AppPrefs.getInstance(this).getSharedPreferences().edit()
-                        .putString(Constants.EXTRA_COUNTRY_CODE, countryCode).apply();
+                /*AppPrefs.getInstance(this).getSharedPreferences().edit()
+                        .putString(Constants.EXTRA_COUNTRY_CODE, countryCode).apply();*/
                 updateUser();
 
             } else {
@@ -272,8 +270,8 @@ public class EditProfileActivity extends BaseActivity {
             errorMessage = R.string.enter_valid_email;
         else if (TextUtils.isEmpty(cityId))
             errorMessage = R.string.select_a_city;
-        else if (TextUtils.isEmpty(countryId))
-            errorMessage = R.string.select_a_country;
+        /*else if (TextUtils.isEmpty(countryId))
+            errorMessage = R.string.select_a_country;*/
         else if (TextUtils.isEmpty(latitude) || TextUtils.isEmpty(latitude))
             errorMessage = R.string.submit_after_location;
         return errorMessage;

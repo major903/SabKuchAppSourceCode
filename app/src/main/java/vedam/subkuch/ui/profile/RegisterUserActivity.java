@@ -22,8 +22,6 @@ import vedam.subkuch.base.BaseActivity;
 import vedam.subkuch.databinding.ActivityRegisterUserBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
-import vedam.subkuch.network.models.CountriesResponse;
-import vedam.subkuch.network.models.Country;
 import vedam.subkuch.network.models.Profile;
 import vedam.subkuch.ui.jobs.models.CitiesResponse;
 import vedam.subkuch.ui.jobs.models.City;
@@ -38,8 +36,8 @@ public class RegisterUserActivity extends BaseActivity implements DatePickerFrag
     private String latitude;
     private String longitude;
     private String gender;
-    private String countryId;
-    private String countryCode;
+//    private String countryId;
+//    private String countryCode;
     private String cityId;
 
     @Override
@@ -50,7 +48,7 @@ public class RegisterUserActivity extends BaseActivity implements DatePickerFrag
                 this, R.layout.activity_register_user);
         bindData();
         getCities();
-        getCountries();
+//        getCountries();
         requestLocation(true);
 
     }
@@ -97,13 +95,13 @@ public class RegisterUserActivity extends BaseActivity implements DatePickerFrag
         activityRegisterUserBinding.spCity.setSelection(0);
     }
 
-    private void getCountries() {
+    /*private void getCountries() {
 
         UiUtil.showProgressDialog(this, getString(R.string.loading));
         DataFetcher.getCountries(this, onCountriesSuccessListener, CountriesResponse.class, onErrorListener);
-    }
+    }*/
 
-    private Response.Listener<CountriesResponse> onCountriesSuccessListener = response -> {
+    /*private Response.Listener<CountriesResponse> onCountriesSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
         if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
@@ -111,9 +109,9 @@ public class RegisterUserActivity extends BaseActivity implements DatePickerFrag
         } else {
             UiUtil.showToast(RegisterUserActivity.this, getString(R.string.err_occurred));
         }
-    };
+    };*/
 
-    private void setCountries(ArrayList<Country> countries) {
+    /*private void setCountries(ArrayList<Country> countries) {
 
         ArrayAdapter<Country> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, countries);
@@ -132,9 +130,9 @@ public class RegisterUserActivity extends BaseActivity implements DatePickerFrag
         });
         activityRegisterUserBinding.spCountry.setSelection(getIndexOfIndia(countries));
 
-    }
+    }*/
 
-    private int getIndexOfIndia(ArrayList<Country> countries) {
+    /*private int getIndexOfIndia(ArrayList<Country> countries) {
 
         for (int i = 0; i < countries.size(); i++) {
             Country country = countries.get(i);
@@ -142,7 +140,7 @@ public class RegisterUserActivity extends BaseActivity implements DatePickerFrag
                 return i;
         }
         return 0;
-    }
+    }*/
 
     @Override
     public void onLocationChanged(Location location) {
@@ -162,16 +160,16 @@ public class RegisterUserActivity extends BaseActivity implements DatePickerFrag
                 profile.setFirstName(activityRegisterUserBinding.etFirstName.getText().toString());
                 profile.setLastName(AppUtil.deNull(activityRegisterUserBinding.etLastName.getText()));
                 profile.setMobile(activityRegisterUserBinding.etMobileNumber.getText().toString());
-                profile.setEMail(activityRegisterUserBinding.etEmail.getText().toString());
+//                profile.setEMail(activityRegisterUserBinding.etEmail.getText().toString());
                 profile.setDOB(DateTimeUtils.getFormattedDate(activityRegisterUserBinding.etDob.getText().toString(),
                         DateTimeUtils.DATE_FORMAT_3, DateTimeUtils.DEFAULT_DATE_FORMAT));
                 profile.setGender(gender);
                 profile.setCityId(cityId);
-                profile.setCountryid(countryId);
+//                profile.setCountryid(countryId);
                 profile.setLatitude(latitude);
                 profile.setLongitude(longitude);
                 AppPrefs.getInstance(this).getSharedPreferences().edit()
-                        .putString(Constants.EXTRA_COUNTRY_CODE, countryCode).apply();
+                        .putString(Constants.EXTRA_COUNTRY_CODE, "91").apply();
                 intent.putExtra(Constants.EXTRA_DATA, profile);
                 startActivity(intent);
             } else {
@@ -179,9 +177,7 @@ public class RegisterUserActivity extends BaseActivity implements DatePickerFrag
             }
         });
 
-        activityRegisterUserBinding.etDob.setOnClickListener(v -> {
-            showDatePickerDialog();
-        });
+        activityRegisterUserBinding.etDob.setOnClickListener(v -> showDatePickerDialog());
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.gender_list));
         activityRegisterUserBinding.spGender.setAdapter(adapter);
@@ -235,10 +231,10 @@ public class RegisterUserActivity extends BaseActivity implements DatePickerFrag
         int errorMessage = 0;
         if (TextUtils.isEmpty(activityRegisterUserBinding.etFirstName.getText()))
             errorMessage = R.string.enter_first_name;
-        else if (TextUtils.isEmpty(activityRegisterUserBinding.etEmail.getText()))
+        /*else if (TextUtils.isEmpty(activityRegisterUserBinding.etEmail.getText()))
             errorMessage = R.string.enter_email;
         else if (!AppUtil.validateEmail(activityRegisterUserBinding.etEmail.getText().toString()))
-            errorMessage = R.string.enter_valid_email;
+            errorMessage = R.string.enter_valid_email;*/
         else if (TextUtils.isEmpty(activityRegisterUserBinding.etMobileNumber.getText()))
             errorMessage = R.string.enter_mobile;
         else if (activityRegisterUserBinding.etMobileNumber.getText().toString().length() != 10 ||
@@ -252,8 +248,8 @@ public class RegisterUserActivity extends BaseActivity implements DatePickerFrag
             errorMessage = R.string.select_a_gender;
         else if (TextUtils.isEmpty(cityId))
             errorMessage = R.string.select_a_city;
-        else if (TextUtils.isEmpty(countryId))
-            errorMessage = R.string.select_a_country;
+        /*else if (TextUtils.isEmpty(countryId))
+            errorMessage = R.string.select_a_country;*/
         else if (TextUtils.isEmpty(latitude) || TextUtils.isEmpty(latitude))
             errorMessage = R.string.submit_after_location;
         return errorMessage;
