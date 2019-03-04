@@ -150,8 +150,7 @@ public class HelperVolley<T> {
                 Map<String, String> headers = super.getHeaders();
                 if (headers == null || headers.equals(Collections.emptyMap())) {
                     headers = new HashMap<>();
-                    String authenticationKey = AppPrefs.getInstance(context).getSharedPreferences().
-                            getString(AppPrefs.PREFS_TOKEN, "");
+                    String authenticationKey = AppPrefs.getPrefsToken(context);
                     if (authenticationKey != null) {
                         headers.put("Authorization", authenticationKey);
                     }
@@ -188,8 +187,7 @@ public class HelperVolley<T> {
                 Map<String, String> headers = super.getHeaders();
                 if (headers == null || headers.equals(Collections.emptyMap())) {
                     headers = new HashMap<>();
-                    String authenticationKey = AppPrefs.getInstance(context).getSharedPreferences().
-                            getString(AppPrefs.PREFS_TOKEN, "");
+                    String authenticationKey = AppPrefs.getPrefsToken(context);
                     if (authenticationKey != null) {
                         headers.put("Authorization", authenticationKey);
                     }
@@ -316,8 +314,7 @@ public class HelperVolley<T> {
                 Map<String, String> headers = super.getHeaders();
                 if (headers == null || headers.equals(Collections.emptyMap())) {
                     headers = new HashMap<>();
-                    String authenticationKey = AppPrefs.getInstance(context).getSharedPreferences().
-                            getString(AppPrefs.PREFS_TOKEN, "");
+                    String authenticationKey = AppPrefs.getPrefsToken(context);
                     if (authenticationKey != null) {
                         headers.put("Authorization", authenticationKey);
                     }

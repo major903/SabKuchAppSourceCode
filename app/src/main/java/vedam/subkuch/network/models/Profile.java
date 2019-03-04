@@ -69,7 +69,7 @@ public class Profile implements Parcelable {
 
     private String Weight;
 
-    private String UserTypeId;
+    private String UserTypeId = "1";
 
     private String MotherTougeid;
 

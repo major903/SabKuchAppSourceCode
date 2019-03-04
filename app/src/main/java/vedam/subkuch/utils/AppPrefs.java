@@ -20,6 +20,14 @@ public class AppPrefs {
         sharedPreferences = context.getSharedPreferences(APP_PREFS, Activity.MODE_PRIVATE);
     }
 
+    public static String getPrefsUserId(Context context) {
+        return getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
+    }
+
+
+    public static String getPrefsToken(Context context) {
+        return getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_TOKEN, "");
+    }
 
     public static AppPrefs getInstance(Context context) {
         if (instance == null) {

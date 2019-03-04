@@ -63,7 +63,7 @@ public class AskReplyDialog extends BaseDialog {
 
         UiUtil.showProgressDialog(context, context.getString(R.string.please_wait));
         Map<String, String> request = new HashMap<>();
-        String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
+        String userId = AppPrefs.getPrefsUserId(context);
         request.put(Constants.Blogid, questionId);
         request.put(Constants.userid, userId);
         request.put(Constants.Replaymessage, etReply.getText().toString());

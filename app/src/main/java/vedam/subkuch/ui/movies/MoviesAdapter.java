@@ -122,8 +122,10 @@ public class MoviesAdapter extends BaseAdapter {
                     setVenue(tvVenue, ivTriangle, movie);
                 }
             });
-        } else
+        } else {
             ivTriangle.setVisibility(View.GONE);
+            rlSubContainer.setOnClickListener(null);
+        }
     }
 
     private void setVenue(TextView tvVenue, ImageView ivTriangle, Movie movie) {

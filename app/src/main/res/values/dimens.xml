@@ -107,4 +107,23 @@
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="margin_96dp">96dp</dimen>
+    <dimen name="profile_fab_margin">96dp</dimen>
+    <dimen name="fab_half_margin">12dp</dimen>
+    <dimen name="margin_480dp">480dp</dimen>
+    <dimen name="dp_four">4dp</dimen>
+    <dimen name="dp_ten">10dp</dimen>
+    <dimen name="dp_twenty">20dp</dimen>
+    <dimen name="dp_hundered">100dp</dimen>
+    <dimen name="dp_twenty_four">24dp</dimen>
+
+
+    <dimen name="sp_eighteen">18sp</dimen>
+    <dimen name="sp_twenty_two">22sp</dimen>
+    <dimen name="dp_eight">8dp</dimen>
+    <dimen name="dp_sixteen">16dp</dimen>
+    <dimen name="dp_one">1dp</dimen>
+    <dimen name="dp_twenty_five">25dp</dimen>
+    <dimen name="dp_four_hundered">400dp</dimen>
+    <dimen name="margin_136dp">136dp</dimen>
 </resources>

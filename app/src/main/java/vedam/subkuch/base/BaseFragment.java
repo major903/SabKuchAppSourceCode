@@ -2,14 +2,25 @@ package vedam.subkuch.base;
 
 
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.AnimRes;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -17,6 +28,7 @@ import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
 
@@ -26,6 +38,7 @@ import vedam.subkuch.interfaces.OnFragmentInteractionListener;
 import vedam.subkuch.interfaces.ScreenChangeListener;
 import vedam.subkuch.network.NetworkConstants;
 import vedam.subkuch.network.models.Image;
+import vedam.subkuch.ui.dating.preference.ItemAdapter;
 import vedam.subkuch.uicomponent.SlideShowDialogFragment;
 import vedam.subkuch.utils.LogUtils;
 import vedam.subkuch.utils.UiUtil;
@@ -36,10 +49,12 @@ import vedam.subkuch.utils.UiUtil;
  */
 public abstract class BaseFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
+    int permissionNeeded;
     public Context context;
     protected OnFragmentInteractionListener mListener;
     private ScreenChangeListener screenChangeListener;
     private SwipeRefreshLayout swipeRefreshLayout;
+    public PopupWindow mPopupWindow;
 
     protected Response.ErrorListener onErrorListener = error -> {
 
@@ -199,5 +214,51 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         SlideShowDialogFragment newFragment = SlideShowDialogFragment.newInstance(bundle);
         newFragment.show(ft, "slideshow");
+    }
+
+    public void baseshowFeedbackMessage(View view, String message) {
+        try {
+            Snackbar snakbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
+            TextView tv = snakbar.getView().findViewById(android.support.design.R.id.snackbar_text);
+            tv.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+            snakbar.getView().setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.white));
+            if (snakbar.isShown()) {
+                snakbar.dismiss();
+            }
+            snakbar.show();
+        } catch (Exception e) {
+            Crashlytics.logException(e);
+        }
+    }
+
+    public void showPopWindow(View view, ItemAdapter adapter) {
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        View customView = LayoutInflater.from(getActivity()).inflate(R.layout.view_pop_window, null);
+        RecyclerView recylcerView = customView.findViewById(R.id.recyclerView);
+        recylcerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recylcerView.setAdapter(adapter);
+        mPopupWindow = new PopupWindow(customView, view.getWidth(), WindowManager.LayoutParams.WRAP_CONTENT);
+        mPopupWindow.setOutsideTouchable(true);
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+        mPopupWindow.showAsDropDown(view, 0, 10);
+    }
+
+    public Integer checkPermission(String[] permission) {
+        permissionNeeded = 0;
+        if (Build.VERSION.SDK_INT >= 23) {
+            for (int i = 0; i < permission.length; i++) {
+                int result = ContextCompat.checkSelfPermission(getActivity(), permission[i]);
+                if (result != PackageManager.PERMISSION_GRANTED) {
+                    permissionNeeded++;
+                }
+            }
+        }
+        return permissionNeeded;
+    }
+
+    protected void requestLocation() {
+        if (getGlobalFragmentInteractionListener() != null)
+            getGlobalFragmentInteractionListener().requestLocation(false);
     }
 }

@@ -23,13 +23,13 @@ public interface OnFragmentInteractionListener {
      * You can request for location from any Activity or fragment using this method and get the location in
      * {@link LocationCallbacks#onLocationChanged(Location)}
      */
-    void requestLocation(boolean shouldLocation);
+    void requestLocation(boolean shouldForce);
 
     /**
      * You can request for address from any Activity or fragment using this method and get the address in
      * {@link AddressCallback#onAddressChanged(Address)}
      */
-    void requestAddress(boolean shouldLocation);
+    void requestAddress(boolean shouldForce);
 
     /**
      * You can set the result for an Activity in the fragment using this method. It automatically finishes the parent activity,

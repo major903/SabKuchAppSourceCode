@@ -27,7 +27,7 @@ import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.network.DataPart;
 import vedam.subkuch.network.NetworkConstants;
-import vedam.subkuch.network.models.AddResponse2;
+import vedam.subkuch.network.models.GeneralResponse;
 import vedam.subkuch.ui.jobs.models.JobMelaRequest;
 import vedam.subkuch.ui.jobs.models.JobSalary;
 import vedam.subkuch.ui.jobs.models.JobSalaryResponse;
@@ -139,10 +139,10 @@ public class SubmitFragment extends BaseAddImagesFragment implements AdapterView
         params.put(NetworkConstants.ProfileImage, new DataPart(AppUtil.getUniqueFileName(),
                 AppUtil.getBytesFromBitmap(AppUtil.getSingleBitmap(context, getImageItemMap()))
                 , NetworkConstants.JPEG_MIME_TYPE));
-        DataFetcher.uploadJobProfileImage(context, params, onImageUploadSuccessListener, AddResponse2.class, onErrorListener);
+        DataFetcher.uploadJobProfileImage(context, params, onImageUploadSuccessListener, GeneralResponse.class, onErrorListener);
     }
 
-    private Response.Listener<AddResponse2> onImageUploadSuccessListener = response -> {
+    private Response.Listener<GeneralResponse> onImageUploadSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
         if (getActivity() != null)
@@ -156,16 +156,16 @@ public class SubmitFragment extends BaseAddImagesFragment implements AdapterView
     private void submit() {
 
         UiUtil.showProgressDialog(context, getString(R.string.please_wait));
-        String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
+        String userId = AppPrefs.getPrefsUserId(context);
         jobMelaRequest.setUserId(userId);
         jobMelaRequest.setIsOwnTwoWheeler(isTwoWheelerOwner);
         jobMelaRequest.setJobSalaryId(salaryId);
-        DataFetcher.addJobProfile(context, new Gson().toJson(jobMelaRequest), onAddJobProfileSuccessListener, AddResponse2.class, onErrorListener);
+        DataFetcher.addJobProfile(context, new Gson().toJson(jobMelaRequest), onAddJobProfileSuccessListener, GeneralResponse.class, onErrorListener);
 
     }
 
 
-    private Response.Listener<AddResponse2> onAddJobProfileSuccessListener = response -> {
+    private Response.Listener<GeneralResponse> onAddJobProfileSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
         if (getActivity() != null)

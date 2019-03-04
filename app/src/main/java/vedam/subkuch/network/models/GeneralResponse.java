@@ -1,6 +1,6 @@
 package vedam.subkuch.network.models;
 
-public class AddResponse2 {
+public class GeneralResponse {
 
     private String ReturnCode;
 

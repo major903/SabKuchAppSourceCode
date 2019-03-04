@@ -115,7 +115,7 @@ public class AddEventFragment extends BaseAddImagesFragment {
         UiUtil.showProgressDialog(context, context.getString(R.string.please_wait));
         Map<String, String> request = new HashMap<>();
 //        request.put(Constants.Title, "Title");
-        String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
+        String userId = AppPrefs.getPrefsUserId(context);
         request.put(Constants.userid, userId);
         request.put(Constants.Date, fragmentAddEventBinding.etDate.getText().toString());
         request.put(Constants.Time, fragmentAddEventBinding.etTime.getText().toString());

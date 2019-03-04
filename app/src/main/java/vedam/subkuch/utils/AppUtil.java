@@ -392,6 +392,15 @@ public class AppUtil {
         return scaledBitmap;
     }
 
+    public static Bitmap getBitmap(Context context, String imagePath) {
+        Bitmap scaledBitmap = null;
+
+        Bitmap bitmap = UiUtil.rotateImageIfRequired(imagePath);
+        if (bitmap != null)
+            scaledBitmap = UiUtil.getResizedBitmap(bitmap, dpToPx(context, 320));
+        return scaledBitmap;
+    }
+
     public static byte[] getBytesFromBitmap(Bitmap bitmap) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bos);
@@ -439,5 +448,9 @@ public class AppUtil {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yymmddhhmmss", Locale.US);
         String date = dateFormat.format(new Date(System.currentTimeMillis()));
         return "image_" + date + ".jpg";
+    }
+
+    public static String getFullName(String firstName, String lastName) {
+        return (deNull(firstName) + " " + deNull(lastName)).trim();
     }
 }

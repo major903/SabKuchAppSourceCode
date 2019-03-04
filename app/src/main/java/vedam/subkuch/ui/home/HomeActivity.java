@@ -27,6 +27,7 @@ import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.network.models.AddEventResponse;
 import vedam.subkuch.network.models.Feature;
 import vedam.subkuch.ui.ask.AskCategoryActivity;
+import vedam.subkuch.ui.dating.PinActivity;
 import vedam.subkuch.ui.directory.DirectoryActivity;
 import vedam.subkuch.ui.events.EventActivity;
 import vedam.subkuch.ui.inbox.InboxActivity;
@@ -205,7 +206,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     public void datingClick(View v) {
-//        startActivity(new Intent(this, PhoneBookActivity.class));
+        startActivity(new Intent(this, PinActivity.class));
     }
 
     public void askClick(View v) {

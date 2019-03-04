@@ -35,8 +35,8 @@ public class EditProfileActivity extends BaseActivity {
     private ActivityEditProfileBinding activityEditProfileBinding;
     private String latitude;
     private String longitude;
-    /*private String countryId;
-    private String countryCode;*/
+    private String countryId = "1";
+    /*private String countryCode;*/
     private String cityId;
     private Profile profile;
     private Stack<Object> requestStack = new Stack<>();
@@ -222,11 +222,11 @@ public class EditProfileActivity extends BaseActivity {
                 profile.setLastName(AppUtil.deNull(activityEditProfileBinding.etLastName.getText()));
                 profile.setEMail(activityEditProfileBinding.etEmail.getText().toString());
                 profile.setCityId(cityId);
-//                profile.setCountryid(countryId);
+                profile.setCountryid(countryId);
                 profile.setLatitude(latitude);
                 profile.setLongitude(longitude);
-                /*AppPrefs.getInstance(this).getSharedPreferences().edit()
-                        .putString(Constants.EXTRA_COUNTRY_CODE, countryCode).apply();*/
+//                AppPrefs.getInstance(this).getSharedPreferences().edit()
+//                        .putString(Constants.EXTRA_COUNTRY_CODE, countryCode).apply();
                 updateUser();
 
             } else {

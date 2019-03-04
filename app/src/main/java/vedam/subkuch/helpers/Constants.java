@@ -12,6 +12,8 @@ public class Constants {
     public static final String EXTRA_RECEIVER = "EXTRA_RECEIVER";
     public static final String EXTRA_DIRECTORY_DETAIL = "EXTRA_DIRECTORY_DETAIL";
     public static final String EXTRA_COUNTRY_CODE = "EXTRA_COUNTRY_CODE";
+    public static final String EXTRA_CODE = "EXTRA_CODE";
+    public static final String EXTRA_PIN = "EXTRA_PIN";
     public static final String EXTRA_ADDRESS = "EXTRA_ADDRESS";
     public static final String EXTRA_CATEGORY_ID = "EXTRA_CATEGORY_ID";
     public static final String EXTRA_CITY_NAME = "EXTRA_CITY_NAME";
@@ -49,6 +51,7 @@ public class Constants {
     //Permission constants
     public static final int PERMISSION_REQUEST_READ_LOCATION = 1;
     public static final String FRESHER = "1";
+    public static final int COUNTRY_ID = 1;
     public static String COUNTRY_CODE = "91";
 
     public static final int PERMISSIONS_REQUEST_SMS = 4;
@@ -104,6 +107,22 @@ public class Constants {
     public static final String discription = "discription";
 
     public static final String PRIVACY_POLICY_URL = "https://sabkuchworld.com/privacypolicy.html";
+
+    public static final int ENTER_PIN_CODE = 0;
+    public static final int SET_PIN_CODE = 1;
+    public static final int RE_ENTER_PIN_CODE = 2;
+
+    public static final int REACTION_TYPE_LIKE = 1;
+    public static final int REACTION_TYPE_DISLIKE = 2;
+
+    //Deepak Constants
+    public final static String APP_NAME = "SabKuch";
+    //public final static String BASE_URL = "http://sabkuch.visitmydemo.xyz/AllAPI/";
+    public final static int GALLERY_INTENT = 1;
+    public final static int CAMERA_INTENT = 2;
+    public final static int REQUEST_PERMISSION = 3;
+    public final static int REQUEST_PERMISSION_SETTING = 4;
+    public final static int CROP_IMAGE_INTENT = 5;
 
 
 }

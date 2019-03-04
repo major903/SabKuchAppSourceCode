@@ -56,6 +56,9 @@
 -keep class vedam.subkuch.ui.inbox.models.** { *; }
 -keepclassmembers class vedam.subkuch.ui.inbox.models.** { *; }
 
+-keep class vedam.subkuch.ui.dating.models.** { *; }
+-keepclassmembers class vedam.subkuch.ui.dating.models.** { *; }
+
 ############################## OKHTTP #############################
 -keepattributes Signature
 -keepattributes *Annotation*

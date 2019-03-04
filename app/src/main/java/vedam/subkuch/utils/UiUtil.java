@@ -24,6 +24,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.BulletSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.MetricAffectingSpan;
+import android.text.style.StyleSpan;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -468,9 +469,9 @@ public class UiUtil {
             tv.setVisibility(View.GONE);
         else {
 
-            Typeface typeface = Typeface.createFromAsset(context.getAssets(), context.getString(R.string.typeface_heavy));
-            MetricAffectingSpan boldSpan = new CustomTypefaceSpan(typeface);
-
+//            Typeface typeface = Typeface.createFromAsset(context.getAssets(), context.getString(R.string.typeface_heavy));
+//            MetricAffectingSpan boldSpan = new CustomTypefaceSpan(typeface);
+            StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
             final SpannableStringBuilder str = new SpannableStringBuilder(String.format("%s %s", prefix, suffix));
             str.setSpan(boldSpan, 0, prefix.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 

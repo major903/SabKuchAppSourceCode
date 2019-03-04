@@ -7,6 +7,8 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+import vedam.subkuch.network.WebServices;
+
 /**
  * Created by naddy on 27/12/15.
  */
@@ -23,6 +25,7 @@ public class SubKuchApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
+        new WebServices(getApplicationContext());
     }
 
     public static synchronized SubKuchApplication getInstance() {

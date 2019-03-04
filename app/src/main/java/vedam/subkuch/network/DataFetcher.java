@@ -73,19 +73,19 @@ public class DataFetcher {
 
     public static <T> void getEvents(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener,
                                      int pageIndex, int pageSize) {
-        String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
+        String userId = AppPrefs.getPrefsUserId(context);
         String url = String.format(Locale.US, "%s/AllAPI/GetEvent?userid=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT, userId, pageIndex, pageSize);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void getPhoneBook(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
-        String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
+        String userId = AppPrefs.getPrefsUserId(context);
         String url = String.format("%s/AllAPI/Phoonebookcategory?userid=%s", NetworkConstants.END_POINT, userId);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void getPhoneBookDetails(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener, String categoryId) {
-        String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
+        String userId = AppPrefs.getPrefsUserId(context);
         String url = String.format("%s/AllAPI/Phonebook?userid=%s&categoryId=%s", NetworkConstants.END_POINT, userId, categoryId);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
@@ -103,7 +103,7 @@ public class DataFetcher {
     }
 
     public static <T> void getMovies(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
-        String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
+        String userId = AppPrefs.getPrefsUserId(context);
         String url = String.format("%s/AllAPI/GetMovies?userid=%s", NetworkConstants.END_POINT, userId);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
@@ -139,40 +139,40 @@ public class DataFetcher {
     }
 
     public static <T> void getOffers(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
-        String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
+        String userId = AppPrefs.getPrefsUserId(context);
         String url = String.format("%s/AllAPI/GetAlloffer?userid=%s", NetworkConstants.END_POINT, userId);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void getAskCategories(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
-        String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
+        String userId = AppPrefs.getPrefsUserId(context);
         String url = String.format("%s/AllAPI/GetAskmecategory?userid=%s", NetworkConstants.END_POINT, userId);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void getVehicles(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
-        String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
+        String userId = AppPrefs.getPrefsUserId(context);
         String url = String.format("%s/AllAPI/GetVehicleBycity?userid=%s", NetworkConstants.END_POINT, userId);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void getDestinationCities(Context context, Response.Listener<T> updateSuccessListener,
                                                 Class<T> repClass, Response.ErrorListener errorListener, String vehicletype) {
-        String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
+        String userId = AppPrefs.getPrefsUserId(context);
         String url = String.format("%s/AllAPI/GetDesinationCity?userid=%s&vehicletype=%s", NetworkConstants.END_POINT, userId, vehicletype);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void getVehicleTimings(Context context, Response.Listener<T> updateSuccessListener,
                                              Class<T> repClass, Response.ErrorListener errorListener, String vehicletype, String cityName) {
-        String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
+        String userId = AppPrefs.getPrefsUserId(context);
         String url = String.format("%s/AllAPI/GetVehicleTimingDetails?userid=%s&vehicletype=%s&Cityname=%s", NetworkConstants.END_POINT, userId, vehicletype, cityName);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void updateLocation(Context context, Response.Listener<T> updateSuccessListener,
                                           Class<T> repClass, Response.ErrorListener errorListener, String latitude, String longitude) {
-        String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
+        String userId = AppPrefs.getPrefsUserId(context);
         String url = String.format("%s/AllAPI/UserCurrentLocation?userid=%s&Latitude=%s&Longitude=%s",
                 NetworkConstants.END_POINT, userId, latitude, longitude);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
@@ -180,7 +180,7 @@ public class DataFetcher {
 
     public static <T> void getAskConversation(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener,
                                               String categoryId, int pageIndex, int pageSize) {
-        String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
+        String userId = AppPrefs.getPrefsUserId(context);
         String url = String.format(Locale.US, "%s/AllAPI/GetAskmebycategory?userid=%s&categoryid=%s&PageSize=%d&PageNumber=%d",
                 NetworkConstants.END_POINT, userId, categoryId, pageSize, pageIndex);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
@@ -213,7 +213,7 @@ public class DataFetcher {
     }
 
     public static <T> void getJobProfile(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
-        String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
+        String userId = AppPrefs.getPrefsUserId(context);
         String url = String.format("%s/api/Jobs/ViewJobProfile?ProfileId=%s", NetworkConstants.END_POINT3, userId);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
@@ -226,22 +226,59 @@ public class DataFetcher {
 
     public static <T> void uploadJobProfileImage(Context context, Map<String, DataPart> dataPartMap, Response.Listener<T> updateSuccessListener, Class<T> repClass,
                                                  Response.ErrorListener errorListener) {
-        String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
         Map<String, String> map = new HashMap<>();
-        map.put(NetworkConstants.ProfileId, userId);
+        map.put(NetworkConstants.ProfileId, AppPrefs.getPrefsUserId(context));
         String url = String.format("%s/api/Jobs/UploadJobProfileImage", NetworkConstants.END_POINT3);
         HelperVolley.callApiWithMultipartBody(context, url, null, updateSuccessListener, map, dataPartMap, repClass, errorListener);
     }
 
+    public static <T> void uploadProfileImage(Context context, Map<String, DataPart> dataPartMap, Response.Listener<T> updateSuccessListener, Class<T> repClass,
+                                                 Response.ErrorListener errorListener) {
+        Map<String, String> map = new HashMap<>();
+        map.put(NetworkConstants.ProfileId, AppPrefs.getPrefsUserId(context));
+        String url = String.format("%s/api/Matrimony/UploadProfileImage", NetworkConstants.END_POINT3);
+        HelperVolley.callApiWithMultipartBody(context, url, null, updateSuccessListener, map, dataPartMap, repClass, errorListener);
+    }
+
     public static <T> void getInbox(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
-        String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
+        String userId = AppPrefs.getPrefsUserId(context);
         String url = String.format("%s/api/Inbox/GetInbox?UserProfileId=%s", NetworkConstants.END_POINT3, userId);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void getProfile(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
-        String userId = AppPrefs.getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, "");
+        String userId = AppPrefs.getPrefsUserId(context);
         String url = String.format("%s/api/UserProfile/ViewProfile?ProfileId=%s", NetworkConstants.END_POINT3, userId);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
+    public static <T> void setAccessPin(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
+
+        String url = String.format("%s/api/UserProfile/SetAccessPin", NetworkConstants.END_POINT3);
+        HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
+    }
+
+    public static <T> void verifyAccessPin(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
+
+        String url = String.format("%s/api/UserProfile/VerifyAccessPin", NetworkConstants.END_POINT3);
+        HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
+    }
+
+    public static <T> void getDatingProfile(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener, int pageIndex, int pageSize) {
+        String userId = AppPrefs.getPrefsUserId(context);
+        String url = String.format(Locale.US, "%s/api/Matrimony/GetProfiles?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT3, userId, pageIndex, pageSize);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
+    public static <T> void setLikeDislike(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
+
+        String url = String.format("%s/api/Matrimony/SetLikeDislike", NetworkConstants.END_POINT3);
+        HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
+    }
+
+    public static <T> void getMatchedProfiles(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener, int pageIndex, int pageSize) {
+        String userId = AppPrefs.getPrefsUserId(context);
+        String url = String.format(Locale.US, "%s/api/Matrimony/GetMatchedProfiles?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT3, userId, pageIndex, pageSize);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 }
