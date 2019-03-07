@@ -47,6 +47,11 @@ public class GetReligionResponse {
         private int ReligionID;
         private String ReligionName;
 
+        public ReturnDataBean(int religionID, String religionName) {
+            ReligionID = religionID;
+            ReligionName = religionName;
+        }
+
         public int getReligionID() {
             return ReligionID;
         }

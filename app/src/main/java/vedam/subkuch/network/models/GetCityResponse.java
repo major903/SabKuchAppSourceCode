@@ -59,6 +59,11 @@ public class GetCityResponse {
         private String UpdatedDate;
         private int Countryid;
 
+        public ReturnDataBean(int cityId, String name) {
+            CityId = cityId;
+            Name = name;
+        }
+
         public int getCityId() {
             return CityId;
         }

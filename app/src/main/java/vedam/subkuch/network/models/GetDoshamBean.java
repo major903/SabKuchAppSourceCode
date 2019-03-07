@@ -47,6 +47,11 @@ public class GetDoshamBean {
         private int Doshamid;
         private String DoshamName;
 
+        public ReturnDataBean(int doshamid, String doshamName) {
+            Doshamid = doshamid;
+            DoshamName = doshamName;
+        }
+
         public int getDoshamid() {
             return Doshamid;
         }

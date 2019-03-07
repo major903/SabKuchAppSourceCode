@@ -238,7 +238,7 @@ public class EditProfileActivity extends BaseActivity {
     private void updateUser() {
 
         UiUtil.showProgressDialog(this, getString(R.string.please_wait));
-        DataFetcher.editProfile(this, new Gson().toJson(profile), onRegisterUserSuccessListener, ProfileResponse.class, onErrorListener);
+        DataFetcher.editProfileMain(this, new Gson().toJson(profile), onRegisterUserSuccessListener, ProfileResponse.class, onErrorListener);
     }
 
     private Response.Listener<ProfileResponse> onRegisterUserSuccessListener = response -> {

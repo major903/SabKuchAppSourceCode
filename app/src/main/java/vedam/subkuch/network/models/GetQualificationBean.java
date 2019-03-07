@@ -47,6 +47,11 @@ public class GetQualificationBean {
         private int qualificationid;
         private String qualificationname;
 
+        public ReturnDataBean(int qualificationid, String qualificationname) {
+            this.qualificationid = qualificationid;
+            this.qualificationname = qualificationname;
+        }
+
         public int getQualificationid() {
             return qualificationid;
         }

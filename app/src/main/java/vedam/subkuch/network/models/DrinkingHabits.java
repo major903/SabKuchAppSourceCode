@@ -5,6 +5,11 @@ public class DrinkingHabits {
 
     private String DrinkingStatus_Name;
 
+    public DrinkingHabits(int drinkingStatus_Id, String drinkingStatus_Name) {
+        DrinkingStatus_Id = drinkingStatus_Id;
+        DrinkingStatus_Name = drinkingStatus_Name;
+    }
+
     public int getDrinkingStatus_Id() {
         return DrinkingStatus_Id;
     }

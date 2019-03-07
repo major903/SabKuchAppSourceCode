@@ -171,9 +171,9 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
 
     private void setViewStubChildViews() {
 
-        Button btEditProfile = vEmptyInflated.findViewById(R.id.bt_edit_preference);
+        Button btEditProfile = vEmptyInflated.findViewById(R.id.bt_edit_profile);
         btEditProfile.setOnClickListener(v -> {
-
+            addFragmentWithAnimation(R.id.content_frame, EditProfileFragment.newInstance(), null, true);
         });
     }
 

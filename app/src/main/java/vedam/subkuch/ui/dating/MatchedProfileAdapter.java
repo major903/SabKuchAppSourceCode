@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import vedam.subkuch.R;
+import vedam.subkuch.interfaces.OnListViewItemClickListener;
 import vedam.subkuch.ui.dating.models.DatingProfile;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.ImageSetter;
@@ -21,11 +22,13 @@ public class MatchedProfileAdapter extends RecyclerView.Adapter<MatchedProfileAd
 
     private Context context;
     private ArrayList<DatingProfile> datingProfiles;
+    OnListViewItemClickListener listViewItemClickListener;
 
-    MatchedProfileAdapter(Context context, ArrayList<DatingProfile> datingProfiles) {
+    MatchedProfileAdapter(Context context, ArrayList<DatingProfile> datingProfiles, OnListViewItemClickListener listViewItemClickListener) {
 
         this.context = context;
         this.datingProfiles = datingProfiles;
+        this.listViewItemClickListener = listViewItemClickListener;
     }
 
     @NonNull
@@ -49,6 +52,7 @@ public class MatchedProfileAdapter extends RecyclerView.Adapter<MatchedProfileAd
                 .setErrorResource(R.drawable.white)
                 .setTarget(holder.ivProfile)
                 .build());
+        holder.bind(datingProfile, position, listViewItemClickListener);
     }
 
     @Override
@@ -67,12 +71,12 @@ public class MatchedProfileAdapter extends RecyclerView.Adapter<MatchedProfileAd
             ivProfile = itemView.findViewById(R.id.iv_profile);
         }
 
-        /*public <E> void bind(final E item, final int position, final OnListViewItemClickListener listener) {
+        public <E> void bind(final E item, final int position, final OnListViewItemClickListener listener) {
 
             itemView.setOnClickListener(v -> {
                 if (listener != null)
                     listener.onItemClick(item, position, itemView, null);
             });
-        }*/
+        }
     }
 }

@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import vedam.subkuch.BuildConfig;
-import vedam.subkuch.SubKuchApplication;
+import vedam.subkuch.SabkuchApplication;
 import vedam.subkuch.utils.AppPrefs;
 
 /**
@@ -51,7 +51,7 @@ public class HelperVolley<T> {
 
     public static void cancelRequest(Context context, String tag) {
 
-        RequestQueue mRequestQueue = ((SubKuchApplication) context.getApplicationContext()).getRequestQueue();
+        RequestQueue mRequestQueue = ((SabkuchApplication) context.getApplicationContext()).getRequestQueue();
         mRequestQueue.cancelAll(tag);
     }
 
@@ -110,7 +110,7 @@ public class HelperVolley<T> {
             }
         };
 
-        RequestQueue mRequestQueue = ((SubKuchApplication) context.getApplicationContext()).getRequestQueue();
+        RequestQueue mRequestQueue = ((SabkuchApplication) context.getApplicationContext()).getRequestQueue();
         myReq.setTag(API);
         mRequestQueue.add(myReq);
 
@@ -160,7 +160,7 @@ public class HelperVolley<T> {
             }
         };
 
-        RequestQueue mRequestQueue = ((SubKuchApplication) context.getApplicationContext()).getRequestQueue();
+        RequestQueue mRequestQueue = ((SabkuchApplication) context.getApplicationContext()).getRequestQueue();
         myReq.setTag(API);
         mRequestQueue.add(myReq);
 
@@ -198,7 +198,7 @@ public class HelperVolley<T> {
             }
         };
 
-        RequestQueue mRequestQueue = ((SubKuchApplication) context.getApplicationContext()).getRequestQueue();
+        RequestQueue mRequestQueue = ((SabkuchApplication) context.getApplicationContext()).getRequestQueue();
         myReq.setTag(API);
         mRequestQueue.add(myReq);
 
@@ -243,7 +243,7 @@ public class HelperVolley<T> {
             }
         };
 
-        RequestQueue mRequestQueue = ((SubKuchApplication) context.getApplicationContext()).getRequestQueue();
+        RequestQueue mRequestQueue = ((SabkuchApplication) context.getApplicationContext()).getRequestQueue();
         myReq.setTag(API);
         mRequestQueue.add(myReq);
 
@@ -324,7 +324,7 @@ public class HelperVolley<T> {
             }
         };
 
-        RequestQueue mRequestQueue = ((SubKuchApplication) context.getApplicationContext()).getRequestQueue();
+        RequestQueue mRequestQueue = ((SabkuchApplication) context.getApplicationContext()).getRequestQueue();
         myReq.setTag(API);
         mRequestQueue.add(myReq);
 

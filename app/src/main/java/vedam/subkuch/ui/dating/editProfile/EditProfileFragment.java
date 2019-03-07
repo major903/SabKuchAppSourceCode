@@ -154,12 +154,6 @@ public class EditProfileFragment extends BaseAddImageFragment implements AllLoca
     TextView textViewMothertouge;
     @BindView(R.id.textViewAnnualIncome)
     TextView textViewAnnualIncome;
-    @BindView(R.id.editTextAge)
-    EditText editTextAge;
-    @BindView(R.id.editTextFirstName)
-    EditText editTextFirstName;
-    @BindView(R.id.editTextLastName)
-    EditText editTextLastName;
     @BindView(R.id.et_about_me)
     EditText etAboutMe;
 
@@ -230,26 +224,20 @@ public class EditProfileFragment extends BaseAddImageFragment implements AllLoca
     @OnClick({R.id.btnUpdate})
     public void btnUpdateClick(View view) {
         FrequentFunctions.hideKeyBoard(context, view);
-        if (Validations.isFieldEmpty(editTextFirstName.getText().toString())) {
-            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_first_name));
-        } else if (Validations.isFieldEmpty(editTextLastName.getText().toString())) {
-            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_lst_name));
-        } else if (getImageUri() == null) {
+        if (getImageUri() == null) {
             baseshowFeedbackMessage(rootLayout, getString(R.string.add_profile_pricture));
         } else if (selectedReligionId == -1) {
             baseshowFeedbackMessage(rootLayout, getString(R.string.empty_religion));
         } else if (selectedMaterCastId == -1) {
             baseshowFeedbackMessage(rootLayout, getString(R.string.empty_cast));
         } else if (Validations.isFieldEmpty(textViewGotra.getText().toString())) {
-            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_sub_cast));
+            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_gothra));
         } else if (selectedLivingId == -1) {
             baseshowFeedbackMessage(rootLayout, getString(R.string.empty_living_with));
         } else if (Validations.isFieldEmpty(editTextHeight.getText().toString())) {
             baseshowFeedbackMessage(rootLayout, getString(R.string.empty_height));
         } else if (Validations.isFieldEmpty(editTextWeight.getText().toString())) {
             baseshowFeedbackMessage(rootLayout, getString(R.string.empty_weight));
-        } else if (Validations.isFieldEmpty(editTextAge.getText().toString())) {
-            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_age));
         } else if (selectedMatirialStatusId == -1) {
             baseshowFeedbackMessage(rootLayout, getString(R.string.empty_matrialstatus));
         } else {
@@ -265,8 +253,6 @@ public class EditProfileFragment extends BaseAddImageFragment implements AllLoca
 
             UpdateProfileRequest updateProfileRequest = new UpdateProfileRequest();
             updateProfileRequest.setProfileId(Integer.parseInt(AppPrefs.getPrefsUserId(context)));
-            updateProfileRequest.setFirstName(editTextFirstName.getText().toString());
-            updateProfileRequest.setLastName(editTextLastName.getText().toString());
             updateProfileRequest.setAboutMe(AppUtil.deNull(etAboutMe.getText()));
             updateProfileRequest.setEMail(mEmail);
             updateProfileRequest.setUserTypeId(1);
@@ -283,7 +269,6 @@ public class EditProfileFragment extends BaseAddImageFragment implements AllLoca
             updateProfileRequest.setMatrimonial(switchMatrimonial.isChecked());
             updateProfileRequest.setHeight(editTextHeight.getText().toString());
             updateProfileRequest.setWeight(editTextWeight.getText().toString());
-            updateProfileRequest.setAge(editTextAge.getText().toString());
             updateProfileRequest.setGotraid(selectedSubCastId);
             updateProfileRequest.setNakshakraid(selectedNakshakraId);
             updateProfileRequest.setBodyTypeid(selectedBodytypeId);
@@ -550,10 +535,6 @@ public class EditProfileFragment extends BaseAddImageFragment implements AllLoca
         mDeviceID = returnDataBean.getDeviceId();
         mUpdatedDate = FrequentFunctions.getCurrentDateTime();
 
-        editTextFirstName.setText(returnDataBean.getFirstName());
-
-        editTextLastName.setText(returnDataBean.getLastName());
-
         etAboutMe.setText(returnDataBean.getAboutMe());
         textViewCast.setText(returnDataBean.getMasterCastName());
         selectedMaterCastId = returnDataBean.getCasteId();
@@ -604,7 +585,6 @@ public class EditProfileFragment extends BaseAddImageFragment implements AllLoca
         selectedMatirialStatusId = returnDataBean.getMatrialStatusid();
         textViewMatrialStatus.setText(returnDataBean.getMaritalStatusName());
         editTextHeight.setText(returnDataBean.getHeight());
-        editTextAge.setText(returnDataBean.getAge());
         editTextWeight.setText(returnDataBean.getWeight());
         textViewReligion.setText(returnDataBean.getReligionName());
         selectedReligionId = returnDataBean.getReligionId();
@@ -786,7 +766,7 @@ public class EditProfileFragment extends BaseAddImageFragment implements AllLoca
     }
 
     public void initializeAdapter() {
-        ItemAdapter adapter = new ItemAdapter(getActivity(), items);
+        ItemAdapter adapter = new ItemAdapter(items);
         adapter.OnItemClickListener(this);
         showPopWindow(view, adapter);
     }

@@ -53,10 +53,33 @@
         </FrameLayout>
 
 
-        <TextView
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/interested_in_matrimonial"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/sp_eighteen" />
+
+            <Switch
+                android:id="@+id/switchMatrimonial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                app:theme="@style/MyCheckBoxTheme" />
+        </RelativeLayout>
+
+        <!--<TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/first_name"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -71,7 +94,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/last_name"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -81,12 +104,12 @@
             style="@style/EditTextStyle2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName" />-->
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/about_me"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -101,7 +124,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/selectreligion"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -133,7 +156,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/select_cast"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -165,7 +188,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/select_gotra"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -196,7 +219,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/select_nakshakra"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -229,7 +252,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/select_bodytype"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -263,7 +286,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/select_complexion"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -297,7 +320,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/select_occupation"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -331,7 +354,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/select_qualification"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -365,7 +388,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/select_food_habits"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -398,7 +421,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/select_drinking_habits"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -431,7 +454,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/select_physical_status"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -465,7 +488,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/select_dosham"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -499,7 +522,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/select_mothertouge"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -533,7 +556,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/select_living_with"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -567,7 +590,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/marital_status"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -600,7 +623,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/annual_income"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -630,6 +653,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:layout_marginTop="@dimen/margin_8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -637,29 +661,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginTop="@dimen/dp_ten"
-                android:text="@string/matrimonial"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/sp_eighteen" />
-
-            <Switch
-                android:id="@+id/switchMatrimonial"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                app:theme="@style/MyCheckBoxTheme" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="@dimen/dp_ten"
+                android:layout_marginTop="@dimen/margin_16dp"
                 android:text="@string/own_car"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
@@ -674,6 +676,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:layout_marginTop="@dimen/margin_8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -681,7 +684,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginTop="@dimen/dp_ten"
+                android:layout_marginTop="@dimen/margin_16dp"
                 android:text="@string/own_house"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
@@ -696,6 +699,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:layout_marginTop="@dimen/margin_8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -703,7 +707,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginTop="@dimen/dp_ten"
+                android:layout_marginTop="@dimen/margin_16dp"
                 android:text="@string/is_smoking"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
@@ -717,27 +721,27 @@
                 app:theme="@style/MyCheckBoxTheme" />
         </RelativeLayout>
 
+        <!-- <TextView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="@dimen/margin_16dp"
+             android:text="@string/age"
+             android:textColor="@android:color/black"
+             android:textSize="@dimen/sp_eighteen" />
+
+
+         <EditText
+             android:id="@+id/editTextAge"
+             style="@style/EditTextStyle2"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:inputType="phone" />-->
+
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
-            android:text="@string/age"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-
-        <EditText
-            android:id="@+id/editTextAge"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="phone" />
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/height"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -754,7 +758,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/weight"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -772,7 +776,7 @@
             android:id="@+id/btnUpdate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:background="@color/colorPrimary"
             android:text="@string/update"
             android:textColor="@android:color/white" />

@@ -23,9 +23,9 @@ public class DataFetcher {
         HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
     }
 
-    public static <T> void editProfile(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
+    public static <T> void editProfileMain(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
 
-        String url = String.format("%s/api/UserProfile/EditProfile", NetworkConstants.END_POINT3);
+        String url = String.format("%s/api/UserProfile/EditProfileMain", NetworkConstants.END_POINT3);
         HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
     }
 

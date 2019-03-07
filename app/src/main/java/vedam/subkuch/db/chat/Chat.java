@@ -1,0 +1,91 @@
+package vedam.subkuch.db.chat;
+
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
+@Entity
+public class Chat {
+
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+    private String SocketType;
+    private String FromProfileId;
+    private String ToProfileId;
+    private String Message;
+    private String Uuid;
+    private String TimeStamp;
+    private String senderName;
+    private int Status;
+
+    public String getFromProfileId() {
+        return FromProfileId;
+    }
+
+    public void setFromProfileId(String fromProfileId) {
+        this.FromProfileId = fromProfileId;
+    }
+
+    public String getToProfileId() {
+        return ToProfileId;
+    }
+
+    public void setToProfileId(String toProfileId) {
+        this.ToProfileId = toProfileId;
+    }
+
+    public String getMessage() {
+        return Message;
+    }
+
+    public void setMessage(String message) {
+        this.Message = message;
+    }
+
+    public String getUuid() {
+        return Uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.Uuid = uuid;
+    }
+
+    public String getTimeStamp() {
+        return TimeStamp;
+    }
+
+    public void setTimeStamp(String timeStamp) {
+        this.TimeStamp = timeStamp;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public int getStatus() {
+        return Status;
+    }
+
+    public void setStatus(int status) {
+        this.Status = status;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getSocketType() {
+        return SocketType;
+    }
+
+    public void setSocketType(String socketType) {
+        SocketType = socketType;
+    }
+}

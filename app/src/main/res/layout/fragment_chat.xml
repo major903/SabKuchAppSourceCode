@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_chat"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:transcriptMode="alwaysScroll"
+            app:reverseLayout="true"
+            tools:listitem="@layout/fragment_chat_list_item" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutSend"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+            <View
+                android:id="@+id/divider_comment"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@android:color/darker_gray" />
+
+            <EditText
+                android:id="@+id/et_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/sendMessageButton"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:hint="@string/type_a_message"
+                android:imeOptions="actionSend"
+                android:inputType="textShortMessage|textCapSentences|textMultiLine"
+                android:maxLines="4"
+                android:minLines="2"
+                android:paddingLeft="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:textColor="#222222"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/sendMessageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:src="@drawable/selector_image" />
+        </RelativeLayout>
+
+    </LinearLayout>
+</layout>

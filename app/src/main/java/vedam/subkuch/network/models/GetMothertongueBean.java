@@ -47,6 +47,11 @@ public class GetMothertongueBean {
         private int mothertongueid;
         private String mothertongueName;
 
+        public ReturnDataBean(int mothertongueid, String mothertongueName) {
+            this.mothertongueid = mothertongueid;
+            this.mothertongueName = mothertongueName;
+        }
+
         public int getMothertongueid() {
             return mothertongueid;
         }

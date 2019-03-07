@@ -62,13 +62,14 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/network/models/searchProfile/SearchProfile.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/network/models/updateMatrimonial/MatrimonialRequest.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/network/models/updateMatrimonial/UpdateMatrimonialResponse.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/chat/ChatAdapter.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/chat/ChatFragment.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/cropImage/CropImageActivity.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/dating/editProfile/EditProfileFragment.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/dating/editProfile/adapter/ImagesAdapter.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/dating/editProfile/presenter/EditProfileFragmentPresenter.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/dating/editProfile/presenter/EditProfileFragmentPresenterHandler.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/dating/editProfile/view/EditProfileFragmentView.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/dating/menu/share.xml" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/dating/preference/ItemAdapter.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/dating/preference/PreferenceFragment.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/dating/preference/presenter/PerferenceFragmentPresenter.java" charset="UTF-8" />
@@ -77,6 +78,15 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/utils/FilesFunctions.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/utils/FrequentFunctions.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/utils/Validations.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_done_all_black_18dp.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_done_black_18dp.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_send_black_36dp.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_done_all_black_18dp.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_done_black_18dp.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_send_black_36dp.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_done_all_black_18dp.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_done_black_18dp.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_send_black_36dp.png" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/background_black_gradation.xml" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/background_white_circle.xml" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/bg_blue_top_corner_eight_dp.xml" charset="UTF-8" />
@@ -99,7 +109,6 @@
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/popup_camera_gallery.xml" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/view_pop_window.xml" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/view_progress_dialog.xml" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/view_tool_bar_with_back.xml" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/menu/share.xml" charset="UTF-8" />
     <file url="PROJECT" charset="ISO-8859-1" />
   </component>

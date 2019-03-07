@@ -23,7 +23,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseFragment;
-import vedam.subkuch.helpers.Constants;
+import vedam.subkuch.network.models.DrinkingHabits;
 import vedam.subkuch.network.models.GetBodyTypeBean;
 import vedam.subkuch.network.models.GetCityResponse;
 import vedam.subkuch.network.models.GetComplexionBean;
@@ -47,9 +47,9 @@ import vedam.subkuch.ui.dating.preference.presenter.PerferenceFragmentPresenter;
 import vedam.subkuch.ui.dating.preference.presenter.PerferenceFragmentPresenterHandler;
 import vedam.subkuch.ui.dating.preference.view.PerferenceFragmentView;
 import vedam.subkuch.utils.AppPrefs;
+import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.FrequentFunctions;
 import vedam.subkuch.utils.UiUtil;
-import vedam.subkuch.utils.Validations;
 
 public class PreferenceFragment extends BaseFragment implements PerferenceFragmentView, ItemAdapter.ItemClickHandler {
 
@@ -100,8 +100,6 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     TextView textViewDosham;
     @BindView(R.id.checkBoxSmoking)
     AppCompatCheckBox checkBoxSmoking;
-    @BindView(R.id.checkBoxMatrimonial)
-    AppCompatCheckBox checkBoxMatrimonial;
     @BindView(R.id.checkBoxOwncar)
     AppCompatCheckBox checkBoxOwncar;
     @BindView(R.id.ceheckBoxHouse)
@@ -123,27 +121,26 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     private String minAge;
     private String maxAge;
     List<String> items = new ArrayList<>();
-    int selectedMaterCastId = -1;
-    int selectedSubCastId = -1;
-    int selectedReligionId = -1;
-    int selectedLivingId = -1;
-    int selectedCityId = -1;
-    int selectedNakshatraId = -1;
-    int selectedBodyTypeId = -1;
-    int selectedComplexionId = -1;
-    int selectedOccupationId = -1;
-    int selectedQualificationId = -1;
-    int selectedFoodHabitesId = -1;
-    int selectedMothertoungeId = -1;
-    int selectedPhysicalstatusId = -1;
-    int selectedDoshamId = -1;
-    int selectedMaritalStatusId = -1;
-    int selectedDrinkingStatusId = -1;
+    int selectedMaterCastId = 0;
+    int selectedSubCastId = 0;
+    int selectedReligionId = 0;
+    int selectedLivingId = 0;
+    int selectedCityId = 0;
+    int selectedNakshatraId = 0;
+    int selectedBodyTypeId = 0;
+    int selectedComplexionId = 0;
+    int selectedOccupationId = 0;
+    int selectedQualificationId = 0;
+    int selectedFoodHabitesId = 0;
+    int selectedMothertoungeId = 0;
+    int selectedPhysicalstatusId = 0;
+    int selectedDoshamId = 0;
+    int selectedMaritalStatusId = 0;
+    int selectedDrinkingStatusId = 0;
     String clickedItem = "";
     boolean ownHouse;
     boolean smoking;
     boolean car;
-    boolean matermonial;
 
 
     GetMasterCastResponse masterCastResponse;
@@ -276,6 +273,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     @Override
     public void onSuccessfullyGetMasterCast(GetMasterCastResponse response) {
         masterCastResponse = response;
+        response.getReturnData().add(0, new GetMasterCastResponse.ReturnDataBean(0, getString(R.string.any)));
         items.clear();
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getMasterCastName());
@@ -286,6 +284,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     @Override
     public void onSuccessfullyGetReligion(GetReligionResponse response) {
         getReligionResponse = response;
+        response.getReturnData().add(0, new GetReligionResponse.ReturnDataBean(0, getString(R.string.any)));
         items.clear();
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getReligionName());
@@ -296,6 +295,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     @Override
     public void onSuccessfullyGetLiving(GetLivingResponse response) {
         getLivingResponse = response;
+        response.getReturnData().add(0, new GetLivingResponse.ReturnDataBean(0, getString(R.string.any)));
         items.clear();
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getLivingWithName());
@@ -311,6 +311,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     @Override
     public void onSuccessfullyGetGotra(GetGotrasBean response) {
         gotraResponse = response;
+        response.getReturnData().add(0, new GetGotrasBean.ReturnDataBean(0, getString(R.string.any)));
         items.clear();
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getName());
@@ -321,6 +322,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     @Override
     public void onSuccessfullyGetComplexion(GetComplexionBean response) {
         getComplexionBean = response;
+        response.getReturnData().add(0, new GetComplexionBean.ReturnDataBean(0, getString(R.string.any)));
         items.clear();
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getComplexionname());
@@ -332,6 +334,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     @Override
     public void onSuccessfullyGetOccupation(GetOccupationBean response) {
         getOccupationBean = response;
+        response.getReturnData().add(0, new GetOccupationBean.ReturnDataBean(0, getString(R.string.any)));
         items.clear();
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getOccupationname());
@@ -343,6 +346,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     @Override
     public void onSuccessfullyGetQualification(GetQualificationBean response) {
         getQualificationBean = response;
+        response.getReturnData().add(0, new GetQualificationBean.ReturnDataBean(0, getString(R.string.any)));
         items.clear();
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getQualificationname());
@@ -354,6 +358,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     @Override
     public void onSuccessfullyGetFoodHabits(GetFoodHabitsBean response) {
         getFoodHabitsBean = response;
+        response.getReturnData().add(0, new GetFoodHabitsBean.ReturnDataBean(0, getString(R.string.any)));
         items.clear();
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getFoodHabitsName());
@@ -365,6 +370,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     @Override
     public void onSuccessfullyGetDrinkingHabits(GetDrinkingHabits response) {
         getDrinkingHabits = response;
+        response.getReturnData().add(0, new DrinkingHabits(0, getString(R.string.any)));
         items.clear();
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getDrinkingStatus_Name());
@@ -376,6 +382,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     @Override
     public void onSuccessfullyGetPhysicalstatus(GetPhysicalStatusBean response) {
         getPhysicalStatusBean = response;
+        response.getReturnData().add(0, new GetPhysicalStatusBean.ReturnDataBean(0, getString(R.string.any)));
         items.clear();
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getPhysicalStatusName());
@@ -387,6 +394,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     @Override
     public void onSuccessfullyGetDosham(GetDoshamBean response) {
         getDoshamBean = response;
+        response.getReturnData().add(0, new GetDoshamBean.ReturnDataBean(0, getString(R.string.any)));
         items.clear();
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getDoshamName());
@@ -398,6 +406,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     @Override
     public void onSuccessfullyGetNakshatras(GetNakshatrasBean response) {
         getNakshatrasBean = response;
+        response.getReturnData().add(0, new GetNakshatrasBean.ReturnDataBean(0, getString(R.string.any)));
         items.clear();
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getNakshatraname());
@@ -409,6 +418,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     @Override
     public void onSuccessfullyGetBodyType(GetBodyTypeBean response) {
         getBodyTypeBean = response;
+        response.getReturnData().add(0, new GetBodyTypeBean.ReturnDataBean(0, getString(R.string.any)));
         items.clear();
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getBodytypename());
@@ -419,6 +429,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     @Override
     public void onSuccessfullyGetMothertongue(GetMothertongueBean response) {
         getMothertongueBean = response;
+        response.getReturnData().add(0, new GetMothertongueBean.ReturnDataBean(0, getString(R.string.any)));
         items.clear();
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getMothertongueName());
@@ -430,6 +441,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     @Override
     public void onSuccessfullyGetCity(GetCityResponse response) {
         getCityResponse = response;
+        response.getReturnData().add(0, new GetCityResponse.ReturnDataBean(0, getString(R.string.any)));
         items.clear();
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getName());
@@ -440,6 +452,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     @Override
     public void onSuccessfullyGetMaritalStatus(GetMaritalStatusResponse response) {
         getMaritalStatusResponse = response;
+        response.getReturnData().add(0, new GetMaritalStatusResponse.ReturnDataBean(0, getString(R.string.any)));
         items.clear();
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getMaritalStatus_Name());
@@ -449,22 +462,23 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
 
     private void setData() {
 
-        textViewReligion.setText(response.getReturnData().getReligionName());
-        textViewCast.setText(response.getReturnData().getMasterCastName());
-        textViewLivingWith.setText(response.getReturnData().getLivingWithName());
-        textViewSubCast.setText(response.getReturnData().getGotraName());
-        textViewBodytype.setText(response.getReturnData().getBodyTypeName());
-        textViewCity.setText(response.getReturnData().getCityName());
-        textViewComplexion.setText(response.getReturnData().getComplexionName());
-        textViewDosham.setText(response.getReturnData().getDoshamName());
-        textViewFoodhabits.setText(response.getReturnData().getFoodHabitsName());
-        textViewMothertouge.setText(response.getReturnData().getMothertongueName());
-        textViewNakshatra.setText(response.getReturnData().getNakshatraName());
-        textViewOccupation.setText(response.getReturnData().getOccupationName());
-        textViewPhysicalstatus.setText(response.getReturnData().getPhysicalStatusName());
-        textViewQualification.setText(response.getReturnData().getQualificationName());
-        textViewMatrialstatus.setText(response.getReturnData().getMaritalStatusName());
-        textViewDrinkingStatus.setText(response.getReturnData().getDrinkingStatusName());
+        setText(textViewReligion, response.getReturnData().getReligionName());
+        setText(textViewCast, response.getReturnData().getMasterCastName());
+        setText(textViewLivingWith, response.getReturnData().getLivingWithName());
+        setText(textViewSubCast, response.getReturnData().getGotraName());
+        setText(textViewBodytype, response.getReturnData().getBodyTypeName());
+        setText(textViewCity, response.getReturnData().getCityName());
+        setText(textViewComplexion, response.getReturnData().getComplexionName());
+        setText(textViewDosham, response.getReturnData().getDoshamName());
+        setText(textViewFoodhabits, response.getReturnData().getFoodHabitsName());
+        setText(textViewMothertouge, response.getReturnData().getMothertongueName());
+        setText(textViewNakshatra, response.getReturnData().getNakshatraName());
+        setText(textViewOccupation, response.getReturnData().getOccupationName());
+        setText(textViewPhysicalstatus, response.getReturnData().getPhysicalStatusName());
+        setText(textViewQualification, response.getReturnData().getQualificationName());
+        setText(textViewMatrialstatus, response.getReturnData().getMaritalStatusName());
+        setText(textViewDrinkingStatus, response.getReturnData().getDrinkingStatusName());
+
 
         if (response.getReturnData().isOwnHouse()) {
             ceheckBoxHouse.setChecked(true);
@@ -478,10 +492,6 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
             checkBoxOwncar.setChecked(true);
         }
 
-        if (response.getReturnData().isMatrimonial()) {
-            checkBoxMatrimonial.setChecked(true);
-        }
-
        /* if (!response.getReturnData().getFromLocation().isEmpty()&&!response.getReturnData().getToLocation().isEmpty()){
             seekBarDistance.setMinStartValue(Float.parseFloat(response.getReturnData().getFromLocation())).setMaxStartValue(Float.parseFloat(response.getReturnData().getToLocation())).apply();
         }*/
@@ -492,6 +502,12 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         seekBarIncome.setMinStartValue(Float.parseFloat(response.getReturnData().getMinIncome())).setMaxStartValue(Float.parseFloat(response.getReturnData().getMaxIncome())).apply();
     }
 
+    private void setText(TextView tv, String value) {
+        if (AppUtil.deNull(value).isEmpty())
+            tv.setText(getString(R.string.any));
+        else
+            tv.setText(value);
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -534,21 +550,10 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         mPresenter.getMasterCast(selectedReligionId + "");
     }
 
-   /* @OnClick(R.id.relativeLayoutPrefferd)
-    public void relativeLayoutPreffedClick(View view) {
-        clickedItem = "prefferd";
-        this.view = view;
-
-        items.clear();
-        for (int i = 0; i < getResources().getStringArray(R.array.prefferd_type).length; i++) {
-            items.add(getResources().getStringArray(R.array.prefferd_type)[i]);
-        }
-        initializeAdapter();
-    }*/
 
     @OnClick(R.id.relativeLayoutSubCast)
     public void relativeLayoutSubCastClick(View view) {
-        if (selectedMaterCastId == -1) {
+        if (selectedMaterCastId == 0) {
             baseshowFeedbackMessage(view, getString(R.string.select_master_cast_first));
         } else {
             clickedItem = "subCast";
@@ -628,7 +633,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     }
 
     public void intilizeAdapter() {
-        ItemAdapter adapter = new ItemAdapter(getActivity(), items);
+        ItemAdapter adapter = new ItemAdapter(items);
         adapter.OnItemClickListener(this);
         showPopWindow(view, adapter);
     }
@@ -652,9 +657,6 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         } else if (clickedItem.equalsIgnoreCase("mothertouge")) {
             selectedMothertoungeId = getMothertongueBean.getReturnData().get(position).getMothertongueid();
             textViewMothertouge.setText(getMothertongueBean.getReturnData().get(position).getMothertongueName());
-        } else if (clickedItem.equalsIgnoreCase("nakshatra")) {
-            selectedNakshatraId = getNakshatrasBean.getReturnData().get(position).getNakshatraid();
-            textViewNakshatra.setText(getNakshatrasBean.getReturnData().get(position).getNakshatraname());
         } else if (clickedItem.equalsIgnoreCase("bodytype")) {
             selectedBodyTypeId = getBodyTypeBean.getReturnData().get(position).getBodytypeid();
             textViewBodytype.setText(getBodyTypeBean.getReturnData().get(position).getBodytypename());
@@ -694,35 +696,33 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
 
     @OnClick({R.id.btnUpdate})
     public void btnUpdateClick(View view) {
-        if (selectedReligionId == -1) {
-            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_religion));
-        } else if (selectedMaterCastId == -1) {
-            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_cast));
-        } else if (Validations.isFieldEmpty(textViewSubCast.getText().toString())) {
-            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_sub_cast));
-        } else if (selectedLivingId == -1) {
-            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_living_with));
-        } else {
+//        if (selectedReligionId == 0) {
+//            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_religion));
+//        } else if (selectedMaterCastId == 0) {
+//            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_cast));
+//        } else if (Validations.isFieldEmpty(textViewSubCast.getText().toString())) {
+//            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_gothra));
+//        } else if (selectedLivingId == 0) {
+//            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_living_with));
+//        } else {
 
             ownHouse = ceheckBoxHouse.isChecked();
             smoking = checkBoxSmoking.isChecked();
 
             car = checkBoxOwncar.isChecked();
 
-            matermonial = checkBoxMatrimonial.isChecked();
             FrequentFunctions.hideKeyBoard(context, view);
 
 
             MatrimonialRequest matrimonialRequest = new MatrimonialRequest();
             matrimonialRequest.setProfileId(Integer.parseInt(AppPrefs.getPrefsUserId(context)));
             matrimonialRequest.setCityId(selectedCityId);
-            matrimonialRequest.setCountryId(Constants.COUNTRY_ID);
+//            matrimonialRequest.setCountryId(Constants.COUNTRY_ID);
             matrimonialRequest.setReligionId(selectedReligionId);
             matrimonialRequest.setCasteId(selectedMaterCastId);
             matrimonialRequest.setOwnCar(car);
             matrimonialRequest.setOwnHouse(ownHouse);
             matrimonialRequest.setLivingWithId(selectedLivingId);
-            matrimonialRequest.setMatrimonial(matermonial);
             matrimonialRequest.setMinHeight(minHeight);
             matrimonialRequest.setMaxHeight(maxHeight);
             matrimonialRequest.setMinWeight(minWeight);
@@ -760,6 +760,6 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
                     smoking, drinking, selectedFoodHabitesId + "", selectedMothertoungeId + "",
                     selectedPhysicalstatusId + "", selectedMaritalStatusId + "", selectedDoshamId + "");
         */
-        }
+//        }
     }
 }

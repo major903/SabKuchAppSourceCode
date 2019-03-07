@@ -19,7 +19,7 @@
         <!-- <TextView
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:layout_marginTop="@dimen/dp_ten"
+             android:layout_marginTop="@dimen/margin_16dp"
              android:text="@string/about_me"
              android:textColor="@android:color/black"
              android:textSize="@dimen/sp_eighteen" />
@@ -40,7 +40,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/marital_status"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -73,7 +73,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/mothertouge"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -106,7 +106,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/occupation"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -139,7 +139,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/qualification"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -172,7 +172,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/body_type"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -205,7 +205,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/complextion"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -238,7 +238,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/selectreligion"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -272,7 +272,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/select_cast"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -307,7 +307,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/select_sub_cast"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -341,7 +341,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/select_living_with"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -375,8 +375,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
-            android:text="@string/city"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:text="@string/living_in_city"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
 
@@ -409,7 +409,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/nakshatra"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -442,7 +442,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/dosham"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -475,7 +475,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/foodhabits"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -508,8 +508,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
-            android:text="@string/select_drinking_habits"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:text="@string/drinking_habits"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
 
@@ -540,7 +540,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/physicalstatus"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -579,7 +579,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginTop="@dimen/dp_ten"
+                android:layout_marginTop="@dimen/margin_16dp"
                 android:text="@string/smoking"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
@@ -593,7 +593,6 @@
                 app:theme="@style/RadioButtonStyle" />
         </RelativeLayout>
 
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -602,30 +601,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginTop="@dimen/dp_ten"
-                android:text="@string/matrimonial"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/sp_eighteen" />
-
-            <CheckBox
-                android:id="@+id/checkBoxMatrimonial"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                app:theme="@style/RadioButtonStyle" />
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="@dimen/dp_ten"
+                android:layout_marginTop="@dimen/margin_16dp"
                 android:text="@string/own_car"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
@@ -648,7 +624,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginTop="@dimen/dp_ten"
+                android:layout_marginTop="@dimen/margin_16dp"
                 android:text="@string/own_house"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
@@ -676,7 +652,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginTop="@dimen/dp_ten"
+                    android:layout_marginTop="@dimen/margin_16dp"
                     android:text="@string/income_range"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/sp_eighteen" />
@@ -724,7 +700,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginTop="@dimen/dp_ten"
+                    android:layout_marginTop="@dimen/margin_16dp"
                     android:text="@string/age_range"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/sp_eighteen" />
@@ -772,7 +748,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginTop="@dimen/dp_ten"
+                    android:layout_marginTop="@dimen/margin_16dp"
                     android:text="@string/height_range"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/sp_eighteen" />
@@ -820,7 +796,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginTop="@dimen/dp_ten"
+                    android:layout_marginTop="@dimen/margin_16dp"
                     android:text="@string/weight_range"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/sp_eighteen" />
@@ -867,7 +843,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginTop="@dimen/dp_ten"
+                    android:layout_marginTop="@dimen/margin_16dp"
                     android:text="@string/distance_range"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/sp_eighteen" />
@@ -906,7 +882,7 @@
             android:id="@+id/btnUpdate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_ten"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:background="@color/colorPrimary"
             android:text="Update"
             android:textColor="@android:color/white" />

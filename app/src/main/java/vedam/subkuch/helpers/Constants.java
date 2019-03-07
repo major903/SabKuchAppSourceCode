@@ -23,9 +23,11 @@ public class Constants {
     public static final String EXTRA_SUB_CATEGORY_ID = "EXTRA_SUB_CATEGORY_ID";
     public static final String EXTRA_IMAGE_ITEMS = "EXTRA_IMAGE_ITEMS";
     public static final String EXTRA_DATA = "EXTRA_DATA";
+    public static final String EXTRA_NAME = "EXTRA_NAME";
     public static final String EXTRA_URL = "EXTRA_URL";
     public static final String EXTRA_POSITION = "EXTRA_POSITION";
     public static final String EXTRA_IS_IMAGE_URLS = "EXTRA_IS_IMAGE_URLS";
+    public static final String EXTRA_CHAT_TO_ID = "EXTRA_CHAT_TO_ID";
     public static final int PERMISSIONS_REQUEST_STORAGE = 2;
     public static final int PERMISSIONS_REQUEST_CAMERA = 3;
 
@@ -52,6 +54,9 @@ public class Constants {
     public static final int PERMISSION_REQUEST_READ_LOCATION = 1;
     public static final String FRESHER = "1";
     public static final int COUNTRY_ID = 1;
+    public
+
+    static final int NORMAL_CLOSURE_STATUS = 1000;
     public static String COUNTRY_CODE = "91";
 
     public static final int PERMISSIONS_REQUEST_SMS = 4;
@@ -125,4 +130,14 @@ public class Constants {
     public final static int CROP_IMAGE_INTENT = 5;
 
 
+    //SOCKET_TYPE
+    public final static String SOCKET_TYPE_MESSAGE = "Msg";
+    public final static String SOCKET_TYPE_ACKNOWLEDGEMENT = "Ack";
+
+    //CHAT status
+    public final static int CHAT_STATUS_NOT_SENT = -1;
+    public final static int CHAT_STATUS_NOT_DELIVERED = 0;
+    public final static int CHAT_STATUS_DELIVERED = 1;
+    public final static int CHAT_STATUS_READ = 2;
+    public final static int CHAT_STATUS_ACKNOWLEDGED = 3;
 }

@@ -1,6 +1,7 @@
 package vedam.subkuch.network;
 
 import android.content.Context;
+import android.content.Intent;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -9,6 +10,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import vedam.subkuch.R;
 import vedam.subkuch.network.handler.DeleteImageHandler;
 import vedam.subkuch.network.handler.GetAllCityHandler;
 import vedam.subkuch.network.handler.GetAnnualIncomeHandler;
@@ -62,7 +64,9 @@ import vedam.subkuch.network.models.insertImage.InsertImageResponse;
 import vedam.subkuch.network.models.searchProfile.SearchProfile;
 import vedam.subkuch.network.models.updateMatrimonial.MatrimonialRequest;
 import vedam.subkuch.network.models.updateMatrimonial.UpdateMatrimonialResponse;
+import vedam.subkuch.ui.profile.RegisterUserActivity;
 import vedam.subkuch.utils.AppPrefs;
+import vedam.subkuch.utils.UiUtil;
 
 /**
  * Created by Mobile on 3/15/2017.
@@ -72,10 +76,12 @@ public class WebServices {
     private final WebApi api;
     private static WebServices mInstance;
     private String bearer;
+    private Context context;
 
 
     public WebServices(Context context) {
         mInstance = this;
+        this.context = context;
         bearer = AppPrefs.getPrefsToken(context);
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -94,6 +100,10 @@ public class WebServices {
         return mInstance;
     }
 
+    public void setBearer(String bearer) {
+        this.bearer = bearer;
+    }
+
     public void getMasterCast(final GetMasterCastHandler handler, String religionID) {
         Call<GetMasterCastResponse> callback = api.getMasterCast(bearer);
         callback.enqueue(new Callback<GetMasterCastResponse>() {
@@ -102,6 +112,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -122,6 +133,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -141,6 +153,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -160,6 +173,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -180,6 +194,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -200,6 +215,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -220,6 +236,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -240,6 +257,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -266,6 +284,7 @@ public class WebServices {
                 if (response!=null && response.body()!=null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -287,6 +306,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -307,6 +327,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -327,6 +348,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -347,6 +369,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -366,6 +389,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -385,6 +409,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -404,6 +429,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -423,6 +449,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -442,6 +469,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -461,6 +489,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -480,6 +509,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -499,6 +529,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -518,6 +549,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -538,6 +570,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -557,6 +590,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -576,6 +610,7 @@ public class WebServices {
                 if (response!=null && response.body()!=null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -595,6 +630,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -615,6 +651,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -634,6 +671,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -655,6 +693,7 @@ public class WebServices {
                 if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
+                    handleError(response);
                     handler.onError("Something went wrong");
                 }
             }
@@ -664,5 +703,20 @@ public class WebServices {
                 handler.onError(t.getMessage());
             }
         });
+    }
+
+    private <T> void handleError(Response<T> response) {
+        if (response != null && response.code() == NetworkConstants.CODE_UNAUTHORIZED) {
+            logout();
+        }
+    }
+
+    private void logout() {
+        if(context==null)
+            return;
+        AppPrefs.getInstance(context).getSharedPreferences().edit().clear().apply();
+        int flags = Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK;
+        context.startActivity(new Intent(context, RegisterUserActivity.class).addFlags(flags));
+        UiUtil.showToast(context, context.getString(R.string.err_unauthorized));
     }
 }

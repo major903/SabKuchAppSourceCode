@@ -47,6 +47,11 @@ public class GetGotrasBean {
         private int gotrasid;
         private String Name;
 
+        public ReturnDataBean(int gotrasid, String name) {
+            this.gotrasid = gotrasid;
+            Name = name;
+        }
+
         public int getGotrasid() {
             return gotrasid;
         }

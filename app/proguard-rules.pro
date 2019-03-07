@@ -35,6 +35,9 @@
 -keepattributes *Annotation*, EnclosingMethod
 -keep class org.codehaus.** { *; }
 
+-keep class vedam.subkuch.db.** { *; }
+-keepclassmembers public class vedam.subkuch.db.** { *; }
+
 -keep class vedam.subkuch.network.models.** { *; }
 -keepclassmembers public class vedam.subkuch.network.models.** { *; }
 

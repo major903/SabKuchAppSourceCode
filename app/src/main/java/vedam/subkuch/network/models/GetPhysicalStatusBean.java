@@ -47,6 +47,11 @@ public class GetPhysicalStatusBean {
         private int PhysicalStatusid;
         private String PhysicalStatusName;
 
+        public ReturnDataBean(int physicalStatusid, String physicalStatusName) {
+            PhysicalStatusid = physicalStatusid;
+            PhysicalStatusName = physicalStatusName;
+        }
+
         public int getPhysicalStatusid() {
             return PhysicalStatusid;
         }

@@ -1,6 +1,7 @@
 package vedam.subkuch.ui.dating;
 
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,15 +21,19 @@ import vedam.subkuch.R;
 import vedam.subkuch.base.BaseFragment;
 import vedam.subkuch.databinding.FragmentMatchedProfileBinding;
 import vedam.subkuch.helpers.Constants;
+import vedam.subkuch.interfaces.OnListViewItemClickListener;
 import vedam.subkuch.network.DataFetcher;
+import vedam.subkuch.ui.chat.ChatActivity;
 import vedam.subkuch.ui.dating.models.DatingProfile;
 import vedam.subkuch.ui.dating.models.DatingProfileResponse;
+import vedam.subkuch.utils.AppUtil;
+import vedam.subkuch.utils.ListItemClickAction;
 import vedam.subkuch.utils.UiUtil;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MatchedProfileFragment extends BaseFragment {
+public class MatchedProfileFragment extends BaseFragment implements OnListViewItemClickListener {
 
     private FragmentMatchedProfileBinding fragmentMatchedProfileBinding;
     private MatchedProfileAdapter adapter;
@@ -75,7 +80,7 @@ public class MatchedProfileFragment extends BaseFragment {
         linearLayoutManager = new LinearLayoutManager(context);
         fragmentMatchedProfileBinding.rvMatchedProfile.setLayoutManager(linearLayoutManager);
         fragmentMatchedProfileBinding.rvMatchedProfile.setHasFixedSize(true);
-        adapter = new MatchedProfileAdapter(context, datingProfiles);
+        adapter = new MatchedProfileAdapter(context, datingProfiles, this);
         fragmentMatchedProfileBinding.rvMatchedProfile.setAdapter(adapter);
         fragmentMatchedProfileBinding.rvMatchedProfile.addOnScrollListener(new ProfilesOnScrollListener());
     }
@@ -96,7 +101,7 @@ public class MatchedProfileFragment extends BaseFragment {
                     loading = true;
                     loadValues(response.getReturnData());
                 } else
-                    UiUtil.showToast(context, getString(R.string.no_events_found));
+                    UiUtil.showToast(context, getString(R.string.no_matches_found));
             } else
                 UiUtil.showToast(context, getString(R.string.err_occurred));
     };
@@ -107,6 +112,17 @@ public class MatchedProfileFragment extends BaseFragment {
             pageNo++;
             datingProfiles.addAll(response);
             adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public <E> void onItemClick(E item, int position, View view, ListItemClickAction action) {
+        if (item != null) {
+            DatingProfile datingProfile = (DatingProfile) item;
+            Intent intent = new Intent(context, ChatActivity.class);
+            intent.putExtra(Constants.EXTRA_NAME, AppUtil.getFullName(datingProfile.getFirstName(), datingProfile.getLastName()));
+            intent.putExtra(Constants.EXTRA_CHAT_TO_ID, datingProfile.getProfileId());
+            startActivity(intent);
         }
     }
 

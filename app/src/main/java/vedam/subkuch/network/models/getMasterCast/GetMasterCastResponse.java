@@ -49,6 +49,11 @@ public class GetMasterCastResponse {
         private String MasterCastName;
         private int Religionid;
 
+        public ReturnDataBean(int masterCasteID, String masterCastName) {
+            MasterCasteID = masterCasteID;
+            MasterCastName = masterCastName;
+        }
+
         public int getMasterCasteID() {
             return MasterCasteID;
         }

@@ -48,6 +48,12 @@ public class GetLivingResponse {
         private int LivingWithId;
         private String LivingWithName;
 
+
+        public ReturnDataBean(int livingWithId, String livingWithName) {
+            LivingWithId = livingWithId;
+            LivingWithName = livingWithName;
+        }
+
         public int getLivingWithId() {
             return LivingWithId;
         }

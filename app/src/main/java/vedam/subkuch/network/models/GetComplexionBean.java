@@ -47,6 +47,11 @@ public class GetComplexionBean {
         private int Complexionid;
         private String Complexionname;
 
+        public ReturnDataBean(int complexionid, String complexionname) {
+            Complexionid = complexionid;
+            Complexionname = complexionname;
+        }
+
         public int getComplexionid() {
             return Complexionid;
         }

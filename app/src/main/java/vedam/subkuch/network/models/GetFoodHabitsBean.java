@@ -47,6 +47,11 @@ public class GetFoodHabitsBean {
         private int FoodHabitsid;
         private String FoodHabitsName;
 
+        public ReturnDataBean(int foodHabitsid, String foodHabitsName) {
+            FoodHabitsid = foodHabitsid;
+            FoodHabitsName = foodHabitsName;
+        }
+
         public int getFoodHabitsid() {
             return FoodHabitsid;
         }

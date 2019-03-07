@@ -44,7 +44,6 @@ public class MatrimonialRequest {
     private boolean OwnCar;
     private boolean OwnHouse;
     private int LivingWithId;
-    private boolean Matrimonial;
     private String MinHeight;
     private String MaxHeight;
     private String MinWeight;
@@ -148,14 +147,6 @@ public class MatrimonialRequest {
 
     public void setLivingWithId(int LivingWithId) {
         this.LivingWithId = LivingWithId;
-    }
-
-    public boolean isMatrimonial() {
-        return Matrimonial;
-    }
-
-    public void setMatrimonial(boolean Matrimonial) {
-        this.Matrimonial = Matrimonial;
     }
 
     public String getMinHeight() {

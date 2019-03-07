@@ -97,7 +97,7 @@ public interface WebApi {
     @GET("Master/GetMotherTounges")
     Call<GetMothertongueBean> getMothertongue(@Header("Authorization") String bearer);
 
-    @POST("UserProfile/EditProfile")
+    @POST("UserProfile/EditProfileMatrimonial")
     Call<UpdateMatrimonialResponse> updateProfile(@Header("Authorization") String bearer, @Body UpdateProfileRequest profileRequest);
 
    /* @GET("UserProfile/EditProfile")

@@ -47,6 +47,11 @@ public class GetBodyTypeBean {
         private int bodytypeid;
         private String bodytypename;
 
+        public ReturnDataBean(int bodytypeid, String bodytypename) {
+            this.bodytypeid = bodytypeid;
+            this.bodytypename = bodytypename;
+        }
+
         public int getBodytypeid() {
             return bodytypeid;
         }

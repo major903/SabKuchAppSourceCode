@@ -12,14 +12,14 @@ import vedam.subkuch.network.WebServices;
 /**
  * Created by naddy on 27/12/15.
  */
-public class SubKuchApplication extends Application {
+public class SabkuchApplication extends Application {
 
-    public static final String TAG = SubKuchApplication.class
+    public static final String TAG = SabkuchApplication.class
             .getSimpleName();
 
     private RequestQueue mRequestQueue;
 
-    private static SubKuchApplication mInstance;
+    private static SabkuchApplication mInstance;
 
     @Override
     public void onCreate() {
@@ -28,7 +28,7 @@ public class SubKuchApplication extends Application {
         new WebServices(getApplicationContext());
     }
 
-    public static synchronized SubKuchApplication getInstance() {
+    public static synchronized SabkuchApplication getInstance() {
         return mInstance;
     }
 

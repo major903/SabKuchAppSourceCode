@@ -226,7 +226,7 @@
     <string name="update">Update</string>
     <string name="warning">Warning!</string>
     <string name="warning_message">If you forget the PIN, you can never access this section</string>
-    <string name="pin_not_set">Pin not set</string>
+    <string name="pin_not_set">{\"Message\":\"pin not set\"}</string>
     <string name="set_pin">Set PIN</string>
     <string name="re_enter_pin">Re-Enter PIN</string>
     <string name="enter_pin">Enter PIN</string>
@@ -266,8 +266,8 @@
     <string name="weight">Weight(Kg)</string>
     <string name="empty_preffered_type">Please select the preferred type</string>
     <string name="empty_religion">Please select the religion</string>
-    <string name="empty_cast">Please select the cast</string>
-    <string name="empty_sub_cast">Please select the Subcast</string>
+    <string name="empty_cast">Please select cast</string>
+    <string name="empty_gothra">Please select gothra</string>
     <string name="empty_living_with">Please select living with</string>
     <string name="empty_height">Please enter your height</string>
     <string name="empty_weight">Please enter the weight</string>
@@ -316,6 +316,12 @@
     <string name="profile_updated">Profile updated Successfully!</string>
     <string name="add_profile_pricture">Please add profile picture</string>
     <string name="select_drinking_habits">Select Drinking Habits</string>
+    <string name="type_a_message">Type a message</string>
+    <string name="no_matches_found">No matches found</string>
+    <string name="any">Any</string>
+    <string name="interested_in_matrimonial">Interested in Matrimonial</string>
+    <string name="living_in_city">Living in (City)</string>
+    <string name="drinking_habits">Drinking Habits</string>
     <string-array name="preffered_type">
         <item>Matrimonial</item>
         <item>Dating</item>

@@ -47,6 +47,11 @@ public class GetOccupationBean {
         private int occupationid;
         private String occupationname;
 
+        public ReturnDataBean(int occupationid, String occupationname) {
+            this.occupationid = occupationid;
+            this.occupationname = occupationname;
+        }
+
         public int getOccupationid() {
             return occupationid;
         }

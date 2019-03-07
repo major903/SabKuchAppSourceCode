@@ -47,6 +47,11 @@ public class GetMaritalStatusResponse {
         private int MaritalStatus_Id;
         private String MaritalStatus_Name;
 
+        public ReturnDataBean(int maritalStatus_Id, String maritalStatus_Name) {
+            MaritalStatus_Id = maritalStatus_Id;
+            MaritalStatus_Name = maritalStatus_Name;
+        }
+
         public int getMaritalStatus_Id() {
             return MaritalStatus_Id;
         }

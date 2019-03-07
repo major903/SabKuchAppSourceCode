@@ -47,6 +47,11 @@ public class GetNakshatrasBean {
         private int nakshatraid;
         private String nakshatraname;
 
+        public ReturnDataBean(int nakshatraid, String nakshatraname) {
+            this.nakshatraid = nakshatraid;
+            this.nakshatraname = nakshatraname;
+        }
+
         public int getNakshatraid() {
             return nakshatraid;
         }
