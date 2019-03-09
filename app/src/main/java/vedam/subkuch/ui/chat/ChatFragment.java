@@ -1,17 +1,20 @@
 package vedam.subkuch.ui.chat;
 
 
-import android.app.Fragment;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.WebSocket;
@@ -35,11 +38,10 @@ public class ChatFragment extends BaseFragment implements OnInsertUpdateDoneList
     private FragmentChatBinding fragmentChatBinding;
     public ChatAdapter chatAdapter;
     public static String TAG = "TAG_CHAT";
-    private String toName, chatToId;
+    private String senderName, chatToId;
     private WebSocket webSocket;
     private ChatRepository chatRepository;
     private boolean isConnected;
-    private Chat chat;
 
     public ChatFragment() {
         // Required empty public constructor
@@ -56,8 +58,9 @@ public class ChatFragment extends BaseFragment implements OnInsertUpdateDoneList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            toName = getArguments().getString(Constants.EXTRA_NAME);
             chatToId = getArguments().getString(Constants.EXTRA_CHAT_TO_ID);
+            senderName = getArguments().getString(Constants.EXTRA_NAME);
+            setTitle(senderName);
         }
     }
 
@@ -87,7 +90,6 @@ public class ChatFragment extends BaseFragment implements OnInsertUpdateDoneList
         fragmentChatBinding.rvChat.setAdapter(chatAdapter);
         fragmentChatBinding.rvChat.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true));
         chatRepository = new ChatRepository(context, this);
-        connectSocket();
     }
 
     private void bindCallbacks() {
@@ -112,14 +114,19 @@ public class ChatFragment extends BaseFragment implements OnInsertUpdateDoneList
 
     private void bindData() {
 
-        chatRepository.getIndividualChat(AppPrefs.getPrefsUserId(context), chatToId).observe(this, chats -> {
-            chatAdapter.setChat(chats);
-        });
+        chatRepository.getIndividualChat(AppPrefs.getPrefsUserId(context), chatToId)
+                .observe(this, chats -> chatAdapter.setChat(chats));
     }
 
     public void setIsConnected(boolean isConnected) {
-        LogUtils.LOGI(TAG, String.valueOf(isConnected));
+        LogUtils.LOGD(TAG, String.valueOf(isConnected));
         this.isConnected = isConnected;
+        if (isConnected || webSocket == null) {
+            fragmentChatBinding.flInternetConnection.setVisibility(View.GONE);
+            connectWebSocket();
+        } else
+            fragmentChatBinding.flInternetConnection.setVisibility(View.VISIBLE);
+
     }
 
     private void storeMessage(String message) {
@@ -129,19 +136,28 @@ public class ChatFragment extends BaseFragment implements OnInsertUpdateDoneList
         chat.setFromProfileId(AppPrefs.getPrefsUserId(context));
         chat.setToProfileId(chatToId);
         chat.setMessage(message);
-        chat.setTimeStamp(String.valueOf(System.currentTimeMillis()));
+        String time = String.valueOf(System.currentTimeMillis());
+        chat.setTimeStamp(time);
         chat.setStatus(Constants.CHAT_STATUS_NOT_SENT);
-        this.chat = chat;
+        chat.setSenderName(senderName);
+//        this.chat = chat;
         chatRepository.insert(chat, true);
     }
 
+
     @Override
-    public void onInsertUpdateDone(long rowId, boolean isOwnMessage) {
-        if (rowId != -1 && chat != null)
-            sendMessage((int) rowId);
+    public void onInsertDone(Chat chat, boolean isOwnMessage) {
+        if (chat != null && chat.getId() != -1 && isOwnMessage)
+            sendMessage(chat);
     }
 
-    private void connectSocket() {
+    @Override
+    public void onUpdateDone(int updatedRowsCount, boolean isOwnMessage) {
+        LogUtils.LOGD(TAG, " " + updatedRowsCount);
+    }
+
+
+    private void connectWebSocket() {
 
         okhttp3.Request request = new okhttp3.Request.Builder().url("ws://sabkuch2.sabkuchworld.com/api/SabkuchChat/Get")
                 .addHeader("Authorization", AppPrefs.getPrefsToken(context)).build();
@@ -151,14 +167,16 @@ public class ChatFragment extends BaseFragment implements OnInsertUpdateDoneList
         okHttpClient.dispatcher().executorService().shutdown();
     }
 
-    private void sendMessage(final int id) {
+    private void sendMessage(Chat chat) {
 
         String chatJson = new Gson().toJson(chat);
-        boolean isSent = webSocket.send(chatJson);
-        if (isSent) {
-            chat.setId(id);
-            chat.setStatus(Constants.CHAT_STATUS_NOT_DELIVERED);
-            chatRepository.update(chat, true);
+        if (webSocket != null) {
+            boolean isSent = webSocket.send(chatJson);
+            LogUtils.LOGD(TAG, chatJson + "\n Sent " + isSent);
+            if (isSent) {
+                chat.setStatus(Constants.CHAT_STATUS_SENT_BUT_NOT_DELIVERED);
+                chatRepository.update(chat, true);
+            }
         }
     }
 
@@ -171,42 +189,123 @@ public class ChatFragment extends BaseFragment implements OnInsertUpdateDoneList
     @Override
     public void onDestroy() {
         super.onDestroy();
-        webSocket.close(Constants.NORMAL_CLOSURE_STATUS, null);
+        if (webSocket != null)
+            webSocket.close(Constants.NORMAL_CLOSURE_STATUS, null);
     }
-
     // WebSocket
     private final class EchoWebSocketListener extends WebSocketListener {
 
         @Override
         public void onOpen(WebSocket webSocket, okhttp3.Response response) {
-            LogUtils.LOGI(TAG, "WebSocket connected");
+            LogUtils.LOGD(TAG, "WebSocket connected");
+            sendPendingMessages();
+            sendPendingAcknowledgement();
         }
 
         @Override
         public void onMessage(WebSocket webSocket, String text) {
-            LogUtils.LOGI(TAG, "Rx: " + text);
+            LogUtils.LOGD(TAG, "Rx: " + text);
             handleMessage(text);
         }
 
         @Override
         public void onClosing(WebSocket webSocket, int code, String reason) {
             webSocket.close(Constants.NORMAL_CLOSURE_STATUS, null);
-            LogUtils.LOGI(TAG, "Closed: " + code + " / " + reason);
+            ChatFragment.this.webSocket = null;
+            LogUtils.LOGD(TAG, "Closed: " + code + " / " + reason);
         }
 
         @Override
         public void onFailure(WebSocket webSocket, Throwable t, okhttp3.Response response) {
+            ChatFragment.this.webSocket = null;
             t.printStackTrace();
-            LogUtils.LOGI(TAG, "Error: " + t.getMessage());
+            LogUtils.LOGD(TAG, "Error: " + t.getMessage());
+            connectWebSocket();
         }
+    }
+
+    private void sendPendingMessages() {
+
+        handlePendingChats(chatRepository.getPendingChat());
+    }
+
+    private void handlePendingChats(List<Chat> pendingChats) {
+        for (Chat chat : pendingChats)
+            sendMessage(chat);
+    }
+
+    private void sendPendingAcknowledgement() {
+
+        chatRepository.getPendingAckChat(AppPrefs.getPrefsUserId(context), chatToId)
+                .observe(this, this::handlePendingAckChats);
+    }
+
+    private void handlePendingAckChats(List<Chat> pendingAckChats) {
+
+        String myId = AppPrefs.getPrefsUserId(context);
+        for (Chat chat : pendingAckChats) {
+            if (myId != null && myId.equals(chat.getToProfileId()))
+                handleChatToBeRead(chat);
+            else
+                handleChatToBeAcknowledged(chat);
+        }
+    }
+
+    private void handleChatToBeRead(Chat chat) {
+        if (webSocket != null) {
+            chat.setStatus(Constants.CHAT_STATUS_READ);
+            chat.setSocketType(Constants.SOCKET_TYPE_ACKNOWLEDGEMENT);
+            String chatJson = new Gson().toJson(chat);
+            boolean isSent = webSocket.send(chatJson);
+            LogUtils.LOGD(TAG, chatJson + "Ack read " + isSent);
+            if (isSent)
+            chatRepository.update(chat, false);
+        } else
+            connectWebSocket();
+    }
+
+    private void handleChatToBeAcknowledged(Chat chat) {
+        if (webSocket != null) {
+            chat.setStatus(Constants.CHAT_STATUS_ACKNOWLEDGED);
+            chat.setSocketType(Constants.SOCKET_TYPE_ACKNOWLEDGEMENT);
+            String chatJson = new Gson().toJson(chat);
+            boolean isSent = webSocket.send(chatJson);
+            LogUtils.LOGD(TAG, chatJson + "Ack Acknow " + isSent);
+            if (isSent)
+                chatRepository.update(chat, false);
+        } else
+            connectWebSocket();
     }
 
     private void handleMessage(String text) {
 
         Chat chat = new Gson().fromJson(text, Chat.class);
-        if (chat != null && chat.getSocketType().equals(Constants.SOCKET_TYPE_MESSAGE)) {
-            chatRepository.insert(chat, false);
-        } else if (chat != null && chat.getSocketType().equals(Constants.SOCKET_TYPE_ACKNOWLEDGEMENT)) {
+        if (chat != null && Constants.SOCKET_TYPE_MESSAGE.equals(chat.getSocketType())) {
+            String uuid = chat.getUuid();
+            if (!TextUtils.isEmpty(uuid)) {
+                Chat existingChat = chatRepository.getChatByUUID(uuid);
+                if (existingChat != null) {
+                    existingChat.setStatus(chat.getStatus());
+                    chatRepository.update(existingChat, false);
+                } else {
+                    chat.setTimeStamp(String.valueOf(System.currentTimeMillis()));
+                    chatRepository.insert(chat, false);
+                }
+            }
+        } else if (chat != null && Constants.SOCKET_TYPE_ACKNOWLEDGEMENT.equals(chat.getSocketType())) {
+            String uniqueId = chat.getUuid();
+            Chat existingChat = chatRepository.getChatByUUID(uniqueId);
+            if (existingChat != null) {
+                existingChat.setStatus(chat.getStatus());
+                chatRepository.update(existingChat, false);
+            }
+        } else if (chat != null && Constants.SOCKET_TYPE_READ.equals(chat.getSocketType())) {
+            long id = chat.getId();
+            Chat existingChat = chatRepository.getChatById(id);
+            if (existingChat != null) {
+                existingChat.setUuid(chat.getUuid());
+                chatRepository.update(existingChat, false);
+            }
         }
     }
 }

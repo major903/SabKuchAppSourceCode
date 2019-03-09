@@ -59,7 +59,9 @@ public class LogUtils {
     }
 
     public static void LOGI(final String tag, String message) {
-        Log.i(tag, message);
+        if (BuildConfig.DEBUG || Log.isLoggable(tag, Log.DEBUG)) {
+            Log.i(tag, message);
+        }
     }
 
     public static void LOGI(final String tag, String message, Throwable cause) {

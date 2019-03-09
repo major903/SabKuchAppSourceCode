@@ -134,7 +134,8 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
 
     private String getNameAndAge(DatingProfile datingProfile) {
 
-        String fullName = AppUtil.getFullName(datingProfile.getFirstName(), datingProfile.getLastName());
+//        String fullName = AppUtil.getFullName(datingProfile.getFirstName(), datingProfile.getLastName());
+        String fullName = AppUtil.deNull(datingProfile.getFirstName());
         String age = AppUtil.deNull(datingProfile.getAge());
         if (!TextUtils.isEmpty(age))
             return fullName + ", " + age;

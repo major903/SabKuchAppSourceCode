@@ -8,12 +8,16 @@
 
     <ListView
         android:id="@android:id/list"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
-        android:padding="@dimen/margin_8dp"
+        android:dividerHeight="@dimen/margin_8dp"
+        android:paddingLeft="@dimen/margin_8dp"
+        android:paddingTop="@dimen/margin_8dp"
+        android:paddingRight="@dimen/margin_8dp"
         android:cacheColorHint="@android:color/transparent"
         tools:listitem="@layout/fragment_movies_list_item"
+        android:paddingBottom="@dimen/margin_8dp"
         android:divider="@android:color/transparent">
 
     </ListView>

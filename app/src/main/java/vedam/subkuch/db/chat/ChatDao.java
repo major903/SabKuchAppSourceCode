@@ -12,14 +12,26 @@ import java.util.List;
 @Dao
 public interface ChatDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(Chat chat);
 
-    @Update(onConflict = OnConflictStrategy.IGNORE)
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     int update(Chat chat);
 
-    @Query("SELECT * FROM Chat where FromProfileId =  :fromId AND ToProfileId = :toId ORDER BY TimeStamp ASC")
+    @Query("SELECT * FROM Chat where (FromProfileId =  :fromId AND ToProfileId = :toId) OR (FromProfileId =  :toId AND ToProfileId = :fromId) ORDER BY TimeStamp DESC")
     LiveData<List<Chat>> getIndividualChat(String fromId, String toId);
+
+    @Query("SELECT * FROM Chat where Uuid = :uuid ORDER BY TimeStamp DESC LIMIT 1")
+    Chat getChatByUUID(String uuid);
+
+    @Query("SELECT * FROM Chat where id = :id ORDER BY TimeStamp DESC LIMIT 1")
+    Chat getChatById(long id);
+
+    @Query("SELECT * FROM Chat where (FromProfileId = :fromId AND Status = :readStatus) OR (FromProfileId = :toId AND Status != :readStatus)")
+    LiveData<List<Chat>> getPendingAckChat(String fromId, String toId, int readStatus);
+
+    @Query("SELECT * FROM Chat where Status = :notSentStatus")
+    List<Chat> getPendingChat(int notSentStatus);
 
 //    @Query("SELECT * FROM Chat GROUP BY senderName ORDER BY TimeStamp DESC")
 //    LiveData<List<Chat>> getChatList(String fromId, String toId);

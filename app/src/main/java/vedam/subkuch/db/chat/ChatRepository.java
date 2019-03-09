@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 
 import java.util.List;
 
+import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.interfaces.OnInsertUpdateDoneListener;
 import vedam.subkuch.interfaces.RowIdListener;
 
@@ -24,51 +25,93 @@ public class ChatRepository implements RowIdListener {
         return chatDao.getIndividualChat(fromId, toId);
     }
 
-    /*public LiveData<List<Chat>> getChatList(String fromId, String toId) {
-        return chatDao.getChatList(fromId, toId);
-    }*/
+    public List<Chat> getPendingChat() {
+        return chatDao.getPendingChat(Constants.CHAT_STATUS_NOT_SENT);
+    }
 
+    public LiveData<List<Chat>> getPendingAckChat(String fromId, String toId) {
+        return chatDao.getPendingAckChat(fromId, toId, Constants.CHAT_STATUS_READ);
+    }
+
+    public Chat getChatByUUID(String UUID) {
+        return chatDao.getChatByUUID(UUID);
+    }
+
+    public Chat getChatById(long id) {
+        return chatDao.getChatById(id);
+    }
 
     public void insert(Chat chat, boolean isOwnMessage) {
-        new insertAsyncTask(chatDao, true, this, isOwnMessage).execute(chat);
+        new InsertAsyncTask(chatDao, this, isOwnMessage).execute(chat);
     }
 
     public void update(Chat chat, boolean isOwnMessage) {
-        new insertAsyncTask(chatDao, false, this, isOwnMessage).execute(chat);
+        new UpdateAsyncTask(chatDao, this, isOwnMessage).execute(chat);
     }
 
     @Override
-    public void onGetId(long id, boolean isOwnMessage) {
+    public void onGetChat(Chat chat, boolean isOwnMessage) {
         if (onInsertUpdateDoneListener != null)
-            onInsertUpdateDoneListener.onInsertUpdateDone(id, isOwnMessage);
+            onInsertUpdateDoneListener.onInsertDone(chat, isOwnMessage);
     }
 
-    private static class insertAsyncTask extends AsyncTask<Chat, Long, Long> {
+    @Override
+    public void onGetUpdatedRowsCount(int updatedRowsCount, boolean isOwnMessage) {
+        if (onInsertUpdateDoneListener != null)
+            onInsertUpdateDoneListener.onUpdateDone(updatedRowsCount, isOwnMessage);
+    }
+
+    private static class InsertAsyncTask extends AsyncTask<Chat, Void, Chat> {
 
         private ChatDao mAsyncTaskDao;
-        private boolean isInsert;
         private RowIdListener rowIdListener;
         private boolean isOwnMessage;
 
-        insertAsyncTask(ChatDao dao, boolean isInsert, RowIdListener rowIdListener, boolean isOwnMessage) {
+        InsertAsyncTask(ChatDao dao, RowIdListener rowIdListener, boolean isOwnMessage) {
             mAsyncTaskDao = dao;
-            this.isInsert = isInsert;
             this.rowIdListener = rowIdListener;
             this.isOwnMessage = isOwnMessage;
         }
 
         @Override
-        protected Long doInBackground(final Chat... params) {
-            if (isInsert)
-                return mAsyncTaskDao.insert(params[0]);
-            return (long) mAsyncTaskDao.update(params[0]);
+        protected Chat doInBackground(final Chat... params) {
+            Chat chat = params[0];
+            long id = mAsyncTaskDao.insert(chat);
+            chat.setId(id);
+            return chat;
         }
 
         @Override
-        protected void onPostExecute(Long id) {
-            super.onPostExecute(id);
+        protected void onPostExecute(Chat chat) {
+            super.onPostExecute(chat);
+            if (rowIdListener != null) {
+                rowIdListener.onGetChat(chat, isOwnMessage);
+            }
+        }
+    }
+
+    private static class UpdateAsyncTask extends AsyncTask<Chat, Void, Integer> {
+
+        private ChatDao mAsyncTaskDao;
+        private RowIdListener rowIdListener;
+        private boolean isOwnMessage;
+
+        UpdateAsyncTask(ChatDao dao, RowIdListener rowIdListener, boolean isOwnMessage) {
+            mAsyncTaskDao = dao;
+            this.rowIdListener = rowIdListener;
+            this.isOwnMessage = isOwnMessage;
+        }
+
+        @Override
+        protected Integer doInBackground(final Chat... params) {
+            return mAsyncTaskDao.update(params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Integer updatedRowsCount) {
+            super.onPostExecute(updatedRowsCount);
             if (rowIdListener != null)
-                rowIdListener.onGetId(id, isOwnMessage);
+                rowIdListener.onGetUpdatedRowsCount(updatedRowsCount, isOwnMessage);
         }
     }
 }

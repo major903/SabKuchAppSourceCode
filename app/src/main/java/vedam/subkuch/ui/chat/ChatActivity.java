@@ -21,7 +21,6 @@ public class ChatActivity extends BaseActivity {
         setContentView(R.layout.activity_directory);
 
         setToolbarBackButton();
-        setTitle(R.string.directory);
 
         addFragment(R.id.content_frame, ChatFragment.newInstance(getIntent().getExtras()));
     }

@@ -2,11 +2,27 @@
 <layout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:background="@color/light_grey"
         android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/fl_internet_connection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/black_translucent"
+                android:gravity="center_horizontal"
+                android:text="@string/internet_not_connected"
+                android:textColor="@color/white" />
+        </FrameLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_chat"
@@ -14,7 +30,6 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:transcriptMode="alwaysScroll"
-            app:reverseLayout="true"
             tools:listitem="@layout/fragment_chat_list_item" />
 
         <RelativeLayout

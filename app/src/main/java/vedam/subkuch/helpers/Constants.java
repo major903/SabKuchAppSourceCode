@@ -133,10 +133,11 @@ public class Constants {
     //SOCKET_TYPE
     public final static String SOCKET_TYPE_MESSAGE = "Msg";
     public final static String SOCKET_TYPE_ACKNOWLEDGEMENT = "Ack";
+    public final static String SOCKET_TYPE_READ = "Read";
 
     //CHAT status
     public final static int CHAT_STATUS_NOT_SENT = -1;
-    public final static int CHAT_STATUS_NOT_DELIVERED = 0;
+    public final static int CHAT_STATUS_SENT_BUT_NOT_DELIVERED = 0;
     public final static int CHAT_STATUS_DELIVERED = 1;
     public final static int CHAT_STATUS_READ = 2;
     public final static int CHAT_STATUS_ACKNOWLEDGED = 3;

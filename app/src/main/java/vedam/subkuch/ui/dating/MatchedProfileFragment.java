@@ -83,6 +83,7 @@ public class MatchedProfileFragment extends BaseFragment implements OnListViewIt
         adapter = new MatchedProfileAdapter(context, datingProfiles, this);
         fragmentMatchedProfileBinding.rvMatchedProfile.setAdapter(adapter);
         fragmentMatchedProfileBinding.rvMatchedProfile.addOnScrollListener(new ProfilesOnScrollListener());
+
     }
 
     public void getMatchedProfiles() {

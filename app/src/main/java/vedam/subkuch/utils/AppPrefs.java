@@ -29,6 +29,10 @@ public class AppPrefs {
         return getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_TOKEN, "");
     }
 
+    public static String getPrefsUserName(Context context) {
+        return getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_NAME, "");
+    }
+
     public static AppPrefs getInstance(Context context) {
         if (instance == null) {
             instance = new AppPrefs(context);

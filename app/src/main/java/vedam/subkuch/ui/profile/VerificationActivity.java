@@ -22,6 +22,7 @@ import vedam.subkuch.network.models.Profile;
 import vedam.subkuch.network.models.ProfileResponse;
 import vedam.subkuch.ui.home.HomeActivity;
 import vedam.subkuch.utils.AppPrefs;
+import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.UiUtil;
 
 import static vedam.subkuch.utils.AppPrefs.PREFS_IF_USER_LOGGED_IN;
@@ -132,12 +133,13 @@ public class VerificationActivity extends BaseActivity {
         UiUtil.cancelProgressDialog();
         if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)
                 && response.getReturnData() != null) {
+            Profile receivedProfile = response.getReturnData().get(0);
             SharedPreferences.Editor editor = AppPrefs.getInstance(VerificationActivity.this).getSharedPreferences().edit();
             editor.putBoolean(PREFS_IF_USER_LOGGED_IN, true);
-            editor.putString(PREFS_USER_ID, response.getReturnData().get(0).getProfileId());
-            String bearer = "Bearer " + response.getReturnData().get(0).getAuthToken();
+            editor.putString(PREFS_USER_ID, receivedProfile.getProfileId());
+            String bearer = "Bearer " + receivedProfile.getAuthToken();
             editor.putString(PREFS_TOKEN, bearer);
-            editor.putString(PREFS_USER_NAME, getFullName());
+            editor.putString(PREFS_USER_NAME, AppUtil.getFullName(receivedProfile.getFirstName(), receivedProfile.getLastName()));
             editor.apply();
             WebServices.getInstance().setBearer(bearer);
             Intent intent = new Intent(VerificationActivity.this, HomeActivity.class);
@@ -147,11 +149,6 @@ public class VerificationActivity extends BaseActivity {
         } else
             UiUtil.showToast(VerificationActivity.this, getString(R.string.err_occurred));
     };
-
-    private String getFullName() {
-        String fullName = profile.getFirstName() + " " + profile.getLastName();
-        return fullName.trim();
-    }
 
 //    private Response.ErrorListener onErrorListener = error -> {
 //

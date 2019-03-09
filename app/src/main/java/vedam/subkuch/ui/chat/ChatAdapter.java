@@ -2,7 +2,6 @@ package vedam.subkuch.ui.chat;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -41,7 +40,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.fragment_jobs_list_item, parent, false);
+        View view = layoutInflater.inflate(R.layout.fragment_chat_list_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -54,14 +53,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         String myId = AppPrefs.getPrefsUserId(context);
         if (status == Constants.CHAT_STATUS_DELIVERED)
             holder.ivSent.setImageResource(R.drawable.ic_done_all_black_18dp);
-        else if (status == Constants.CHAT_STATUS_NOT_DELIVERED) {
+        else if (status == Constants.CHAT_STATUS_SENT_BUT_NOT_DELIVERED) {
             holder.ivSent.setImageResource(R.drawable.ic_done_black_18dp);
         } else if (status == Constants.CHAT_STATUS_NOT_SENT) {
-            holder.ivSent.setImageResource(R.drawable.ic_done_black_18dp);
-            holder.ivSent.setColorFilter(ContextCompat.getColor(context, R.color.white));
+            holder.ivSent.setImageResource(R.drawable.baseline_schedule_black_18);
         } else {
             holder.ivSent.setImageResource(R.drawable.ic_done_all_black_18dp);
-            holder.ivSent.setColorFilter(ContextCompat.getColor(context, R.color.blue));
         }
 
         String fromId = chat.getFromProfileId();
@@ -74,8 +71,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             holder.llLayout.setGravity(Gravity.END);
             holder.llRow.setGravity(Gravity.END);
         } else {
-            holder.ivSent.setVisibility(View.INVISIBLE);
+            holder.ivSent.setVisibility(View.GONE);
             holder.llAlignment.setGravity(Gravity.START);
+            holder.llAlignment.setBackgroundResource(R.drawable.white_layer);
             holder.llLayout.setGravity(Gravity.START);
             holder.llRow.setGravity(Gravity.START);
         }
@@ -106,8 +104,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            llAlignment = itemView.findViewById(R.id.message_alignment_box);
-            llLayout = itemView.findViewById(R.id.message_text_layout);
+            llAlignment = itemView.findViewById(R.id.ll_alignment);
+            llLayout = itemView.findViewById(R.id.ll_container);
             llRow = itemView.findViewById(R.id.message_row_layout);
             ivSent = itemView.findViewById(R.id.chat_row_sent);
             tvMessage = itemView.findViewById(R.id.message_text);

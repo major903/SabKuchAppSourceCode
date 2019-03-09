@@ -160,7 +160,7 @@ public class RegisterUserActivity extends BaseActivity implements DatePickerFrag
                 profile.setFirstName(activityRegisterUserBinding.etFirstName.getText().toString());
                 profile.setLastName(AppUtil.deNull(activityRegisterUserBinding.etLastName.getText()));
                 profile.setMobile(activityRegisterUserBinding.etMobileNumber.getText().toString());
-                profile.setEMail(activityRegisterUserBinding.etEmail.getText().toString());
+//                profile.setEMail(activityRegisterUserBinding.etEmail.getText().toString());
                 profile.setDOB(DateTimeUtils.getFormattedDate(activityRegisterUserBinding.etDob.getText().toString(),
                         DateTimeUtils.DATE_FORMAT_3, DateTimeUtils.DEFAULT_DATE_FORMAT));
                 profile.setGender(gender);
@@ -231,10 +231,10 @@ public class RegisterUserActivity extends BaseActivity implements DatePickerFrag
         int errorMessage = 0;
         if (TextUtils.isEmpty(activityRegisterUserBinding.etFirstName.getText()))
             errorMessage = R.string.enter_first_name;
-        else if (TextUtils.isEmpty(activityRegisterUserBinding.etEmail.getText()))
+        /*else if (TextUtils.isEmpty(activityRegisterUserBinding.etEmail.getText()))
             errorMessage = R.string.enter_email;
         else if (!AppUtil.validateEmail(activityRegisterUserBinding.etEmail.getText().toString()))
-            errorMessage = R.string.enter_valid_email;
+            errorMessage = R.string.enter_valid_email;*/
         else if (TextUtils.isEmpty(activityRegisterUserBinding.etMobileNumber.getText()))
             errorMessage = R.string.enter_mobile;
         else if (activityRegisterUserBinding.etMobileNumber.getText().toString().length() != 10 ||

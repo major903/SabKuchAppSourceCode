@@ -13,8 +13,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
-            android:padding="@dimen/margin_8dp"
-            tools:listitem="@layout/fragment_jobs_list_item" />
+            android:paddingLeft="@dimen/margin_8dp"
+            android:paddingTop="@dimen/margin_4dp"
+            android:paddingRight="@dimen/margin_8dp"
+            android:paddingBottom="@dimen/margin_4dp"
+            tools:listitem="@layout/fragment_event_list_item" />
 
     </FrameLayout>
 </layout>
