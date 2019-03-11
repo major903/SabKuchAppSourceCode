@@ -38,7 +38,7 @@ import vedam.subkuch.interfaces.OnFragmentInteractionListener;
 import vedam.subkuch.interfaces.ScreenChangeListener;
 import vedam.subkuch.network.NetworkConstants;
 import vedam.subkuch.network.models.Image;
-import vedam.subkuch.ui.dating.preference.ItemAdapter;
+import vedam.subkuch.ui.matrimonial.preference.ItemAdapter;
 import vedam.subkuch.uicomponent.SlideShowDialogFragment;
 import vedam.subkuch.utils.LogUtils;
 import vedam.subkuch.utils.UiUtil;

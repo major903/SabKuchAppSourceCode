@@ -57,7 +57,6 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/network/models/getReligion/GetReligionResponse.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/network/models/getReligion/ReturnDatum.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/network/models/insertImage/InsertImageResponse.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/network/models/insertImage/ReturnData.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/network/models/insertProfileSearchResponse/InsertProfilePreferenceResponse.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/network/models/searchProfile/SearchProfile.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/network/models/updateMatrimonial/MatrimonialRequest.java" charset="UTF-8" />
@@ -65,16 +64,16 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/chat/ChatAdapter.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/chat/ChatFragment.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/cropImage/CropImageActivity.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/dating/editProfile/EditProfileFragment.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/dating/editProfile/adapter/ImagesAdapter.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/dating/editProfile/presenter/EditProfileFragmentPresenter.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/dating/editProfile/presenter/EditProfileFragmentPresenterHandler.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/dating/editProfile/view/EditProfileFragmentView.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/dating/preference/ItemAdapter.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/dating/preference/PreferenceFragment.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/dating/preference/presenter/PerferenceFragmentPresenter.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/dating/preference/presenter/PerferenceFragmentPresenterHandler.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/dating/preference/view/PerferenceFragmentView.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/matrimonial/editProfile/EditProfileFragment.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/matrimonial/editProfile/adapter/ImagesAdapter.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/matrimonial/editProfile/presenter/EditProfileFragmentPresenter.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/matrimonial/editProfile/presenter/EditProfileFragmentPresenterHandler.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/matrimonial/editProfile/view/EditProfileFragmentView.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/matrimonial/preference/ItemAdapter.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/matrimonial/preference/PreferenceFragment.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/matrimonial/preference/presenter/PerferenceFragmentPresenter.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/matrimonial/preference/presenter/PerferenceFragmentPresenterHandler.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/matrimonial/preference/view/PerferenceFragmentView.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/utils/FilesFunctions.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/utils/FrequentFunctions.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/utils/Validations.java" charset="UTF-8" />

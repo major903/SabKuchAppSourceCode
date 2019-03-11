@@ -27,7 +27,7 @@ import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.network.models.AddEventResponse;
 import vedam.subkuch.network.models.Feature;
 import vedam.subkuch.ui.ask.AskCategoryActivity;
-import vedam.subkuch.ui.dating.PinActivity;
+import vedam.subkuch.ui.matrimonial.PinActivity;
 import vedam.subkuch.ui.directory.DirectoryActivity;
 import vedam.subkuch.ui.events.EventActivity;
 import vedam.subkuch.ui.inbox.InboxActivity;
@@ -62,7 +62,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
         activityHomeBinding.navView.setNavigationItemSelectedListener(this);
         TextView tvName = activityHomeBinding.navView.getHeaderView(0).findViewById(R.id.tv_name);
-        tvName.setText(AppPrefs.getInstance(this).getSharedPreferences().getString(AppPrefs.PREFS_USER_NAME, ""));
+        tvName.setText(AppPrefs.getPrefsUserName(this));
     }
 
     @Override

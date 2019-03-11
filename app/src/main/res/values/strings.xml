@@ -328,4 +328,12 @@
         <item>Dating</item>
 
     </string-array>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="chats">Chats</string>
+    <string name="select_car_status">Select Car Status</string>
+    <string name="select_house_status">Select House Status</string>
+    <string name="select_smoking_status">Select Smoking Status</string>
+    <string name="select_height">Select Height</string>
+    <string name="select_weight">Select Weight</string>
 </resources>

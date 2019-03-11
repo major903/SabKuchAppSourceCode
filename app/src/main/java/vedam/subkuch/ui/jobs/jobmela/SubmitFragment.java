@@ -139,6 +139,7 @@ public class SubmitFragment extends BaseAddImagesFragment implements AdapterView
         params.put(NetworkConstants.ProfileImage, new DataPart(AppUtil.getUniqueFileName(),
                 AppUtil.getBytesFromBitmap(AppUtil.getSingleBitmap(context, getImageItemMap()))
                 , NetworkConstants.JPEG_MIME_TYPE));
+
         DataFetcher.uploadJobProfileImage(context, params, onImageUploadSuccessListener, GeneralResponse.class, onErrorListener);
     }
 

@@ -188,6 +188,12 @@ public abstract class BaseActivity extends AppCompatActivity implements ScreenCh
         replaceFragment(containerId, fragment, null, false, 0, 0, 0, 0);
     }
 
+    protected void addFragmentWithAnimation(final int containerId, Fragment fragment, String tag, boolean addToBackStack) {
+
+        addFragment(containerId, fragment, tag, addToBackStack,
+                R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
     public void addFragment(final int containerId, Fragment fragment) {
 
         addFragment(containerId, fragment, null, false, 0, 0, 0, 0);

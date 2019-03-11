@@ -29,10 +29,10 @@
             android:name=".ui.chat.ChatActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.dating.ShowProfilesActivity"
+            android:name=".ui.matrimonial.ShowProfilesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.dating.PinActivity"
+            android:name=".ui.matrimonial.PinActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.inbox.InboxActivity"
@@ -155,7 +155,9 @@
         <activity
             android:name=".ui.ask.ConversationActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.cropImage.CropImageActivity" />
+        <activity
+            android:name=".ui.cropImage.CropImageActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

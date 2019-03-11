@@ -35,6 +35,7 @@ import vedam.subkuch.network.handler.GetReligionHandler;
 import vedam.subkuch.network.handler.GetSearchProfileHandler;
 import vedam.subkuch.network.handler.GetUserDetailHandler;
 import vedam.subkuch.network.handler.InsertImageHandler;
+import vedam.subkuch.network.handler.ResponseHandler;
 import vedam.subkuch.network.handler.UpdateMaterimonialHandler;
 import vedam.subkuch.network.handler.UpdatePreferencesHandler;
 import vedam.subkuch.network.models.GetAllCountries;
@@ -516,6 +517,51 @@ public class WebServices {
 
             @Override
             public void onFailure(Call<GetAnnualIncome> call, Throwable t) {
+                handler.onError(t.getMessage());
+            }
+        });
+    }
+
+    public <T> void getHeight(final ResponseHandler<T> handler) {
+        Call<T> callback = api.getHeight(bearer);
+        call(callback, handler);
+    }
+
+    public <T> void getWeight(final ResponseHandler<T> handler) {
+        Call<T> callback = api.getWeight(bearer);
+        call(callback, handler);
+    }
+
+    public <T> void getOwnCar(final ResponseHandler<T> handler) {
+        Call<T> callback = api.getOwnCar(bearer);
+        call(callback, handler);
+    }
+
+    public <T> void getOwnHouse(final ResponseHandler<T> handler) {
+        Call<T> callback = api.getOwnHouse(bearer);
+        call(callback, handler);
+    }
+
+    public <T> void getSmoking(final ResponseHandler<T> handler) {
+        Call<T> callback = api.getSmoking(bearer);
+        call(callback, handler);
+    }
+
+    private <T> void call(Call<T> callback, ResponseHandler<T> handler) {
+
+        callback.enqueue(new Callback<T>() {
+            @Override
+            public void onResponse(Call<T> call, Response<T> response) {
+                if (response != null && response.body() != null) {
+                    handler.onSuccess(response.body());
+                } else {
+                    handleError(response);
+                    handler.onError("Something went wrong");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<T> call, Throwable t) {
                 handler.onError(t.getMessage());
             }
         });

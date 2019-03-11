@@ -141,4 +141,13 @@ public class Constants {
     public final static int CHAT_STATUS_DELIVERED = 1;
     public final static int CHAT_STATUS_READ = 2;
     public final static int CHAT_STATUS_ACKNOWLEDGED = 3;
+
+    public final static String CODE_PIN_NOT_SET = "2";
+
+    public final static String TAG_HOME_FRAGMENT = "Home";
+    public final static String TAG_PROFILE_FRAGMENT = "Profile";
+    public final static String TAG_PREFERENCES_FRAGMENT = "Preferences";
+    public final static String TAG_MATCHES_FRAGMENT = "Matches";
+    public final static String TAG_CHATS_FRAGMENT = "Chats";
+    public final static String TAG_SHOW_PROFILES_FRAGMENT = "Profiles";
 }

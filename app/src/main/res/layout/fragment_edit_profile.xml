@@ -652,133 +652,164 @@
                 app:srcCompat="@drawable/ic_drop_down" />
         </RelativeLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:text="@string/select_car_status"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/sp_eighteen" />
+
+
         <RelativeLayout
-            android:layout_marginTop="@dimen/margin_8dp"
+            android:id="@+id/relativeOwnCar"
+            style="@style/EditTextStyle2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/textViewOwnCar"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="@dimen/margin_16dp"
-                android:text="@string/own_car"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
 
-            <Switch
-                android:id="@+id/switchCar"
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                app:theme="@style/MyCheckBoxTheme" />
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/dp_sixteen"
+                app:srcCompat="@drawable/ic_drop_down" />
         </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_marginTop="@dimen/margin_8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="@dimen/margin_16dp"
-                android:text="@string/own_house"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/sp_eighteen" />
-
-            <Switch
-                android:id="@+id/switchHouse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                app:theme="@style/MyCheckBoxTheme" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_marginTop="@dimen/margin_8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="@dimen/margin_16dp"
-                android:text="@string/is_smoking"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/sp_eighteen" />
-
-            <Switch
-                android:id="@+id/switchIsSmoke"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                app:theme="@style/MyCheckBoxTheme" />
-        </RelativeLayout>
-
-        <!-- <TextView
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_marginTop="@dimen/margin_16dp"
-             android:text="@string/age"
-             android:textColor="@android:color/black"
-             android:textSize="@dimen/sp_eighteen" />
-
-
-         <EditText
-             android:id="@+id/editTextAge"
-             style="@style/EditTextStyle2"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:inputType="phone" />-->
-
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/height"
+            android:text="@string/select_house_status"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
 
 
-        <EditText
-            android:id="@+id/editTextHeight"
+        <RelativeLayout
+            android:id="@+id/relativeOwnHouse"
             style="@style/EditTextStyle2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal" />
+            android:layout_height="wrap_content">
 
+            <TextView
+                android:id="@+id/textViewOwnHouse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/sp_eighteen" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/dp_sixteen"
+                app:srcCompat="@drawable/ic_drop_down" />
+        </RelativeLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/weight"
+            android:text="@string/select_smoking_status"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
 
 
-        <EditText
-            android:id="@+id/editTextWeight"
+        <RelativeLayout
+            android:id="@+id/relativeSmoking"
             style="@style/EditTextStyle2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal" />
+            android:layout_height="wrap_content">
 
+            <TextView
+                android:id="@+id/textViewSmoking"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/sp_eighteen" />
 
-        <Button
-            android:id="@+id/btnUpdate"
-            android:layout_width="match_parent"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/dp_sixteen"
+                app:srcCompat="@drawable/ic_drop_down" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
-            android:background="@color/colorPrimary"
-            android:text="@string/update"
-            android:textColor="@android:color/white" />
+            android:text="@string/select_height"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/sp_eighteen" />
+
+
+        <RelativeLayout
+            android:id="@+id/relativeHeight"
+            style="@style/EditTextStyle2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textViewHeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/sp_eighteen" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/dp_sixteen"
+                app:srcCompat="@drawable/ic_drop_down" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:text="@string/select_weight"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/sp_eighteen" />
+
+
+        <RelativeLayout
+            android:id="@+id/relativeWeight"
+            style="@style/EditTextStyle2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textViewWeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/sp_eighteen" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/dp_sixteen"
+                app:srcCompat="@drawable/ic_drop_down" />
+        </RelativeLayout>
     </LinearLayout>
 </ScrollView>

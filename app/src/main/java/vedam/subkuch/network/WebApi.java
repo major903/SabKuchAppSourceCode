@@ -1,5 +1,13 @@
 package vedam.subkuch.network;
 
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
 import vedam.subkuch.network.models.GetAllCountries;
 import vedam.subkuch.network.models.GetAnnualIncome;
 import vedam.subkuch.network.models.GetBodyTypeBean;
@@ -28,15 +36,6 @@ import vedam.subkuch.network.models.insertProfileSearchResponse.InsertProfilePre
 import vedam.subkuch.network.models.searchProfile.SearchProfile;
 import vedam.subkuch.network.models.updateMatrimonial.MatrimonialRequest;
 import vedam.subkuch.network.models.updateMatrimonial.UpdateMatrimonialResponse;
-
-import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.POST;
-import retrofit2.http.Query;
 
 /**
  * Created by Mobile on 3/15/2017.
@@ -96,6 +95,21 @@ public interface WebApi {
 
     @GET("Master/GetMotherTounges")
     Call<GetMothertongueBean> getMothertongue(@Header("Authorization") String bearer);
+
+    @GET("Master/GetHeight")
+    <T> Call<T> getHeight(@Header("Authorization") String bearer);
+
+    @GET("Master/GetWeight")
+    <T> Call<T> getWeight(@Header("Authorization") String bearer);
+
+    @GET("Master/GetSmoking")
+    <T> Call<T> getSmoking(@Header("Authorization") String bearer);
+
+    @GET("Master/GetOwnCar")
+    <T> Call<T> getOwnCar(@Header("Authorization") String bearer);
+
+    @GET("Master/GetOWnHouse")
+    <T> Call<T> getOwnHouse(@Header("Authorization") String bearer);
 
     @POST("UserProfile/EditProfileMatrimonial")
     Call<UpdateMatrimonialResponse> updateProfile(@Header("Authorization") String bearer, @Body UpdateProfileRequest profileRequest);
