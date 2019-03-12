@@ -26,6 +26,9 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
         <activity
+            android:name=".ui.matrimonial.viewProfile.ViewProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.chat.ChatActivity"
             android:screenOrientation="portrait" />
         <activity

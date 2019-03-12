@@ -97,8 +97,6 @@ public class GetPreferenceResponse {
         private int countryid;
         private int ReligionId;
         private int CasteId;
-        private boolean OwnCar;
-        private boolean OwnHouse;
         private int LivingWithId;
         private boolean Dating;
         private boolean Matrimonial;
@@ -119,7 +117,6 @@ public class GetPreferenceResponse {
         private int Occupationid;
         private int Qualificationid;
         private int AnualIncomeid;
-        private boolean IsSmoking;
         private int DrinkingStatusid;
         private int FoodHabitsid;
         private int MotherTougeid;
@@ -145,6 +142,36 @@ public class GetPreferenceResponse {
         private String PhysicalStatusName;
         private String MaritalStatusName;
         private String DoshamName;
+        private int OwnCarId;
+        private int OwnHouseId;
+        private int SmokingId;
+        private String OwnCarType;
+        private String OwnHouseType;
+        private String SmokingType;
+
+        public int getOwnCarId() {
+            return OwnCarId;
+        }
+
+        public int getOwnHouseId() {
+            return OwnHouseId;
+        }
+
+        public int getSmokingId() {
+            return SmokingId;
+        }
+
+        public String getOwnCarType() {
+            return OwnCarType;
+        }
+
+        public String getOwnHouseType() {
+            return OwnHouseType;
+        }
+
+        public String getSmokingType() {
+            return SmokingType;
+        }
 
         public String getMinDistance() {
             return MinDistance;
@@ -192,22 +219,6 @@ public class GetPreferenceResponse {
 
         public void setCasteId(int CasteId) {
             this.CasteId = CasteId;
-        }
-
-        public boolean isOwnCar() {
-            return OwnCar;
-        }
-
-        public void setOwnCar(boolean OwnCar) {
-            this.OwnCar = OwnCar;
-        }
-
-        public boolean isOwnHouse() {
-            return OwnHouse;
-        }
-
-        public void setOwnHouse(boolean OwnHouse) {
-            this.OwnHouse = OwnHouse;
         }
 
         public int getLivingWithId() {
@@ -352,14 +363,6 @@ public class GetPreferenceResponse {
 
         public void setAnualIncomeid(int AnualIncomeid) {
             this.AnualIncomeid = AnualIncomeid;
-        }
-
-        public boolean isIsSmoking() {
-            return IsSmoking;
-        }
-
-        public void setIsSmoking(boolean IsSmoking) {
-            this.IsSmoking = IsSmoking;
         }
 
         public int getDrinkingStatusid() {

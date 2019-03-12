@@ -6,6 +6,11 @@ public class OwnHouse {
 
     private int OwnHouseId;
 
+    public OwnHouse(int ownHouseId, String ownHouseType) {
+        OwnHouseType = ownHouseType;
+        OwnHouseId = ownHouseId;
+    }
+
     public String getOwnHouseType() {
         return OwnHouseType;
     }

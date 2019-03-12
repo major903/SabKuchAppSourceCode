@@ -1,5 +1,7 @@
 package vedam.subkuch.ui.matrimonial.preference.presenter;
 
+import vedam.subkuch.helpers.Constants;
+import vedam.subkuch.network.GetSmokingResponse;
 import vedam.subkuch.network.WebServices;
 import vedam.subkuch.network.handler.GetAllCityHandler;
 import vedam.subkuch.network.handler.GetBodyTypeHandler;
@@ -18,6 +20,7 @@ import vedam.subkuch.network.handler.GetPhysicalStatusHandler;
 import vedam.subkuch.network.handler.GetPreferenceHandler;
 import vedam.subkuch.network.handler.GetQualificationHandler;
 import vedam.subkuch.network.handler.GetReligionHandler;
+import vedam.subkuch.network.handler.ResponseHandler;
 import vedam.subkuch.network.handler.UpdatePreferencesHandler;
 import vedam.subkuch.network.models.GetBodyTypeBean;
 import vedam.subkuch.network.models.GetCityResponse;
@@ -30,6 +33,8 @@ import vedam.subkuch.network.models.GetMaritalStatusResponse;
 import vedam.subkuch.network.models.GetMothertongueBean;
 import vedam.subkuch.network.models.GetNakshatrasBean;
 import vedam.subkuch.network.models.GetOccupationBean;
+import vedam.subkuch.network.models.GetOwnCarResponse;
+import vedam.subkuch.network.models.GetOwnHouseResponse;
 import vedam.subkuch.network.models.GetPhysicalStatusBean;
 import vedam.subkuch.network.models.GetQualificationBean;
 import vedam.subkuch.network.models.getLiving.GetLivingResponse;
@@ -402,5 +407,81 @@ public class PerferenceFragmentPresenter implements PerferenceFragmentPresenterH
         });
     }
 
+    @Override
+    public void getOwnCar() {
+
+        view.showProgressBar();
+
+        WebServices.getInstance().getOwnCar(new ResponseHandler() {
+
+            @Override
+            public void onSuccess(Object object) {
+                view.hideProgressBar();
+                GetOwnCarResponse response = (GetOwnCarResponse) object;
+                if (response.getReturnMessage().equals(Constants.SUCCESS))
+                    view.onSuccessfullyGetOwnCar(response);
+                else
+                    showError("Something went wrong");
+            }
+
+            @Override
+            public void onError(String message) {
+                showError(message);
+            }
+        });
+    }
+
+    @Override
+    public void getOwnHouse() {
+
+        view.showProgressBar();
+
+        WebServices.getInstance().getOwnHouse(new ResponseHandler() {
+
+            @Override
+            public void onSuccess(Object object) {
+                view.hideProgressBar();
+                GetOwnHouseResponse response = (GetOwnHouseResponse) object;
+                if (response.getReturnMessage().equals(Constants.SUCCESS))
+                    view.onSuccessfullyGetOwnHouse(response);
+                else
+                    showError("Something went wrong");
+            }
+
+            @Override
+            public void onError(String message) {
+                showError(message);
+            }
+        });
+    }
+
+    @Override
+    public void getSmoking() {
+
+        view.showProgressBar();
+
+        WebServices.getInstance().getSmoking(new ResponseHandler() {
+
+            @Override
+            public void onSuccess(Object object) {
+                view.hideProgressBar();
+                GetSmokingResponse response = (GetSmokingResponse) object;
+                if (response.getReturnMessage().equals(Constants.SUCCESS))
+                    view.onSuccessfullyGetSmoking(response);
+                else
+                    showError("Something went wrong");
+            }
+
+            @Override
+            public void onError(String message) {
+                showError(message);
+            }
+        });
+    }
+
+    private void showError(String message) {
+        view.hideProgressBar();
+        view.showFeedBackMessage(message);
+    }
 
 }

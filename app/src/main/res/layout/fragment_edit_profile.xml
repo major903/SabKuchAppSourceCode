@@ -811,5 +811,14 @@
                 android:layout_marginRight="@dimen/dp_sixteen"
                 app:srcCompat="@drawable/ic_drop_down" />
         </RelativeLayout>
+
+        <Button
+            android:id="@+id/btnUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:background="@color/colorPrimary"
+            android:text="@string/update"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 </ScrollView>

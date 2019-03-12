@@ -336,4 +336,5 @@
     <string name="select_smoking_status">Select Smoking Status</string>
     <string name="select_height">Select Height</string>
     <string name="select_weight">Select Weight</string>
+    <string name="fail_to_crop">Failed to crop</string>
 </resources>

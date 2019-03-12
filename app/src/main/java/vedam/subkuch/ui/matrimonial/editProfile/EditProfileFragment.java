@@ -34,7 +34,6 @@ import vedam.subkuch.network.DataPart;
 import vedam.subkuch.network.GetSmokingResponse;
 import vedam.subkuch.network.GetWeightResponse;
 import vedam.subkuch.network.NetworkConstants;
-import vedam.subkuch.network.handler.AllLocalHandler;
 import vedam.subkuch.network.models.GeneralResponse;
 import vedam.subkuch.network.models.GetAnnualIncome;
 import vedam.subkuch.network.models.GetBodyTypeBean;
@@ -52,7 +51,6 @@ import vedam.subkuch.network.models.GetOwnCarResponse;
 import vedam.subkuch.network.models.GetOwnHouseResponse;
 import vedam.subkuch.network.models.GetPhysicalStatusBean;
 import vedam.subkuch.network.models.GetQualificationBean;
-import vedam.subkuch.network.models.ImageIdRequest;
 import vedam.subkuch.network.models.UserDetail.GetUserDetailResponse;
 import vedam.subkuch.network.models.UserDetail.UpdateProfileRequest;
 import vedam.subkuch.network.models.getLiving.GetLivingResponse;
@@ -69,7 +67,7 @@ import vedam.subkuch.utils.ImageSetter;
 import vedam.subkuch.utils.UiUtil;
 import vedam.subkuch.utils.Validations;
 
-public class EditProfileFragment extends BaseAddImageFragment implements AllLocalHandler, EditProfileFragmentView, ItemAdapter.ItemClickHandler {
+public class EditProfileFragment extends BaseAddImageFragment implements EditProfileFragmentView, ItemAdapter.ItemClickHandler {
 
     @BindView(R.id.rootLayout)
     ScrollView rootLayout;
@@ -190,6 +188,7 @@ public class EditProfileFragment extends BaseAddImageFragment implements AllLoca
     private String latitude;
     private String longitude;
     private Stack<Object> object = new Stack<>();
+    private boolean isImageLinkPresent;
 
     public static EditProfileFragment newInstance() {
 
@@ -231,7 +230,7 @@ public class EditProfileFragment extends BaseAddImageFragment implements AllLoca
     @OnClick({R.id.btnUpdate})
     public void btnUpdateClick(View view) {
         FrequentFunctions.hideKeyBoard(context, view);
-        if (getImageUri() == null) {
+        if (!isImageLinkPresent && getImageUri() == null) {
             baseshowFeedbackMessage(rootLayout, getString(R.string.add_profile_pricture));
         } else if (selectedReligionId == -1) {
             baseshowFeedbackMessage(rootLayout, getString(R.string.empty_religion));
@@ -257,12 +256,12 @@ public class EditProfileFragment extends BaseAddImageFragment implements AllLoca
             updateProfileRequest.setCountryid(Constants.COUNTRY_ID);
             updateProfileRequest.setReligionId(selectedReligionId);
             updateProfileRequest.setCasteId(selectedMaterCastId);
-            updateProfileRequest.setOwnCar(ownCar);
-            updateProfileRequest.setOwnHouse(ownHouse);
+            updateProfileRequest.setOwnCarId(selectedOwnCarId);
+            updateProfileRequest.setOwnHouseId(selectedOwnHouseId);
             updateProfileRequest.setLivingWithId(selectedLivingId);
             updateProfileRequest.setMatrimonial(switchMatrimonial.isChecked());
-            updateProfileRequest.setHeight(editTextHeight.getText().toString());
-            updateProfileRequest.setWeight(editTextWeight.getText().toString());
+            updateProfileRequest.setHeightId(selectedHeightId);
+            updateProfileRequest.setWeightId(selectedWeightId);
             updateProfileRequest.setGotraid(selectedSubCastId);
             updateProfileRequest.setNakshakraid(selectedNakshakraId);
             updateProfileRequest.setBodyTypeid(selectedBodytypeId);
@@ -270,14 +269,13 @@ public class EditProfileFragment extends BaseAddImageFragment implements AllLoca
             updateProfileRequest.setOccupationid(selectedOccupationId);
             updateProfileRequest.setQualificationid(selectedQualificationId);
             updateProfileRequest.setAnualIncomeid(selectedAnnualIncomeId);
-            updateProfileRequest.setIsSmoking(smokingstatus);
+            updateProfileRequest.setSmokingId(selectedSmokingStatusId);
             updateProfileRequest.setDrinkingStatusid(selectedDrinkingStatusId);
             updateProfileRequest.setFoodHabitsid(selectedFoodhabitsId);
             updateProfileRequest.setMotherTougeid(selectedMothertougeId);
             updateProfileRequest.setPhysicalStatusid(selectedPhysicalstatusId);
             updateProfileRequest.setMatrialStatusid(selectedMatirialStatusId);
             updateProfileRequest.setDoshamid(selectedDoshamId);
-            updateProfileRequest.setOccupationOther("");
             updateProfileRequest.setUpdatedDate(mUpdatedDate);
             object.add(new Object());
 
@@ -297,7 +295,7 @@ public class EditProfileFragment extends BaseAddImageFragment implements AllLoca
                 AppUtil.getBytesFromBitmap(AppUtil.getBitmap(context, getImageUri()))
                 , NetworkConstants.JPEG_MIME_TYPE));
 
-        ImageIdRequest imageIdRequest = new ImageIdRequest();
+//        ImageIdRequest imageIdRequest = new ImageIdRequest();
        /* ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("1");
         arrayList.add("2");
@@ -560,13 +558,19 @@ public class EditProfileFragment extends BaseAddImageFragment implements AllLoca
 
         GetUserDetailResponse.ReturnDataBean returnDataBean = response.getReturnData().get(0);
 
-        String imageLink = returnDataBean.getImage();
-        if (TextUtils.isEmpty(imageLink))
-            imageLink = "junk";
-        UiUtil.setImageView(new ImageSetter.ImageBuilder(context)
-                .setImageLink(imageLink)
-                .setDefaults()
-                .setTarget(ivPicture).build());
+        if (returnDataBean.getImagesList() != null && returnDataBean.getImagesList().length > 0) {
+            String imageLink = returnDataBean.getImagesList()[0].getImage();
+            isImageLinkPresent = true;
+            if (TextUtils.isEmpty(imageLink)) {
+                imageLink = "junk";
+                isImageLinkPresent = false;
+            }
+            UiUtil.setImageView(new ImageSetter.ImageBuilder(context)
+                    .setImageLink(imageLink)
+                    .setDefaults()
+                    .setTarget(ivPicture).build());
+        } else
+            isImageLinkPresent = false;
 
         mEmail = returnDataBean.getEMail();
         mTokenID = returnDataBean.getTokenId();
@@ -578,44 +582,59 @@ public class EditProfileFragment extends BaseAddImageFragment implements AllLoca
         selectedMaterCastId = returnDataBean.getCasteId();
 
         textViewGotra.setText(returnDataBean.getGotraName());
-        selectedSubCastId = Integer.parseInt(returnDataBean.getGotraid() + "");
+        selectedSubCastId = returnDataBean.getGotraid();
 
         textViewNakshakra.setText(returnDataBean.getNakshatraName());
-        selectedNakshakraId = Integer.parseInt(returnDataBean.getNakshakraid() + "");
+        selectedNakshakraId = returnDataBean.getNakshakraid();
 
         textViewBodytype.setText(returnDataBean.getBodyTypeName());
-        selectedBodytypeId = Integer.parseInt(returnDataBean.getBodyTypeid() + "");
+        selectedBodytypeId = returnDataBean.getBodyTypeid();
 
         textViewComplexion.setText(returnDataBean.getComplexionName());
-        selectedComplexionId = Integer.parseInt(returnDataBean.getComplexionid() + "");
+        selectedComplexionId = returnDataBean.getComplexionid();
 
         textViewOccupation.setText(returnDataBean.getOccupationName());
-        selectedOccupationId = Integer.parseInt(returnDataBean.getOccupationid() + "");
+        selectedOccupationId = returnDataBean.getOccupationid();
 
         textViewQualification.setText(returnDataBean.getQualificationName());
-        selectedQualificationId = Integer.parseInt(returnDataBean.getQualificationid() + "");
+        selectedQualificationId = returnDataBean.getQualificationid();
 
         textViewFoodhabits.setText(returnDataBean.getFoodHabitsName());
-        selectedFoodhabitsId = Integer.parseInt(returnDataBean.getFoodHabitsid() + "");
+        selectedFoodhabitsId = returnDataBean.getFoodHabitsid();
 
         textViewDrinkingStatus.setText(returnDataBean.getDrinkingStatusName());
-        selectedDrinkingStatusId = Integer.parseInt(returnDataBean.getDrinkingStatusid() + "");
+        selectedDrinkingStatusId = returnDataBean.getDrinkingStatusid();
 
         textViewPhysicalstatus.setText(returnDataBean.getPhysicalStatusName());
-        selectedPhysicalstatusId = Integer.parseInt(returnDataBean.getPhysicalStatusid() + "");
+        selectedPhysicalstatusId = returnDataBean.getPhysicalStatusid();
 
         textViewDosham.setText(returnDataBean.getDoshamName());
-        selectedDoshamId = Integer.parseInt(returnDataBean.getDoshamid() + "");
+        selectedDoshamId = returnDataBean.getDoshamid();
 
         textViewMothertouge.setText(returnDataBean.getMothertongueName());
-        selectedMothertougeId = Integer.parseInt(returnDataBean.getMotherTougeid() + "");
+        selectedMothertougeId = returnDataBean.getMotherTougeid();
 
 
         textViewLivingWith.setText(returnDataBean.getLivingWithName());
         selectedLivingId = returnDataBean.getLivingWithId();
 
         textViewAnnualIncome.setText(returnDataBean.getIncome());
-        selectedAnnualIncomeId = Integer.parseInt(returnDataBean.getAnualIncomeid() + "");
+        selectedAnnualIncomeId = returnDataBean.getAnualIncomeid();
+
+        textViewHeight.setText(returnDataBean.getHeight());
+        selectedHeightId = returnDataBean.getHeightId();
+
+        textViewWeight.setText(returnDataBean.getWeight());
+        selectedWeightId = returnDataBean.getWeightId();
+
+        textViewOwnCar.setText(returnDataBean.getOwnCarType());
+        selectedOwnCarId = returnDataBean.getOwnCarId();
+
+        textViewOwnHouse.setText(returnDataBean.getOwnHouseType());
+        selectedOwnHouseId = returnDataBean.getOwnHouseId();
+
+        textViewSmoking.setText(returnDataBean.getSmokingType());
+        selectedSmokingStatusId = returnDataBean.getSmokingId();
         //textViewPreperdType.setText(response.getReturnData().getPrefferedtype());
         //selectedPreffedType = response.getReturnData().getPrefferedtype();
 

@@ -122,14 +122,10 @@ public class GetUserDetailResponse {
         private int countryid;
         private int ReligionId;
         private int CasteId;
-        private boolean OwnCar;
-        private boolean OwnHouse;
         private int LivingWithId;
         private String AccessPin;
         private boolean Dating;
         private boolean Matrimonial;
-        private String height;
-        private String Weight;
         private String age;
         private int Gotraid;
         private int Nakshakraid;
@@ -138,7 +134,6 @@ public class GetUserDetailResponse {
         private int Occupationid;
         private int Qualificationid;
         private int AnualIncomeid;
-        private boolean IsSmoking;
         private int DrinkingStatusid;
         private int FoodHabitsid;
         private int MotherTougeid;
@@ -166,7 +161,65 @@ public class GetUserDetailResponse {
         private String PhysicalStatusName;
         private String MaritalStatusName;
         private String DoshamName;
-        private String Image;
+        private ImageObject[] ImagesList;
+        private int HeightId;
+        private int WeightId;
+        private int OwnCarId;
+        private int OwnHouseId;
+        private int SmokingId;
+        private String Height;
+        private String Weight;
+        private String OwnCarType;
+        private String OwnHouseType;
+        private String SmokingType;
+
+        public int getHeightId() {
+            return HeightId;
+        }
+
+        public int getWeightId() {
+            return WeightId;
+        }
+
+        public int getOwnCarId() {
+            return OwnCarId;
+        }
+
+        public int getOwnHouseId() {
+            return OwnHouseId;
+        }
+
+        public int getSmokingId() {
+            return SmokingId;
+        }
+
+        public String getHeight() {
+            return Height;
+        }
+
+        public String getWeight() {
+            return Weight;
+        }
+
+        public String getOwnCarType() {
+            return OwnCarType;
+        }
+
+        public String getOwnHouseType() {
+            return OwnHouseType;
+        }
+
+        public String getSmokingType() {
+            return SmokingType;
+        }
+
+        public ImageObject[] getImagesList() {
+            return ImagesList;
+        }
+
+        public void setImagesList(ImageObject[] imagesList) {
+            ImagesList = imagesList;
+        }
 
         public int getProfileId() {
             return ProfileId;
@@ -312,22 +365,6 @@ public class GetUserDetailResponse {
             this.CasteId = CasteId;
         }
 
-        public boolean isOwnCar() {
-            return OwnCar;
-        }
-
-        public void setOwnCar(boolean OwnCar) {
-            this.OwnCar = OwnCar;
-        }
-
-        public boolean isOwnHouse() {
-            return OwnHouse;
-        }
-
-        public void setOwnHouse(boolean OwnHouse) {
-            this.OwnHouse = OwnHouse;
-        }
-
         public int getLivingWithId() {
             return LivingWithId;
         }
@@ -358,22 +395,6 @@ public class GetUserDetailResponse {
 
         public void setMatrimonial(boolean Matrimonial) {
             this.Matrimonial = Matrimonial;
-        }
-
-        public String getHeight() {
-            return height;
-        }
-
-        public void setHeight(String height) {
-            this.height = height;
-        }
-
-        public String getWeight() {
-            return Weight;
-        }
-
-        public void setWeight(String Weight) {
-            this.Weight = Weight;
         }
 
         public String getAge() {
@@ -438,14 +459,6 @@ public class GetUserDetailResponse {
 
         public void setAnualIncomeid(int AnualIncomeid) {
             this.AnualIncomeid = AnualIncomeid;
-        }
-
-        public boolean isIsSmoking() {
-            return IsSmoking;
-        }
-
-        public void setIsSmoking(boolean IsSmoking) {
-            this.IsSmoking = IsSmoking;
         }
 
         public int getDrinkingStatusid() {
@@ -662,10 +675,6 @@ public class GetUserDetailResponse {
 
         public void setDoshamName(String DoshamName) {
             this.DoshamName = DoshamName;
-        }
-
-        public String getImage() {
-            return Image;
         }
     }
 }

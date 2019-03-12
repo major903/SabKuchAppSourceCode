@@ -1,10 +1,13 @@
 package vedam.subkuch.ui.matrimonial.models;
 
-public class DatingProfile {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import vedam.subkuch.network.models.UserDetail.ImageObject;
+
+public class DatingProfile implements Parcelable {
 
     private String ProfileId;
-
-    private String OwnCar;
 
     private String ComplexionName;
 
@@ -16,8 +19,6 @@ public class DatingProfile {
 
     private String Gender;
 
-    private String Image;
-
     private String MothertongueName;
 
     private String AccessPin;
@@ -25,8 +26,6 @@ public class DatingProfile {
     private String DOB;
 
     private String Dating;
-
-    private String height;
 
     private String DoshamName;
 
@@ -48,8 +47,6 @@ public class DatingProfile {
 
     private String countryid;
 
-    private String Weight;
-
     private String ReligionName;
 
     private String MotherTougeid;
@@ -57,8 +54,6 @@ public class DatingProfile {
     private String GotraName;
 
     private String CreatedDate;
-
-    private String OwnHouse;
 
     private String LastName;
 
@@ -91,8 +86,6 @@ public class DatingProfile {
     private String Matrimonial;
 
     private String TokenId;
-
-    private String IsSmoking;
 
     private String NakshatraName;
 
@@ -128,20 +121,193 @@ public class DatingProfile {
 
     private String age;
 
+    private String Height;
+    private String Weight;
+    private String OwnCarType;
+    private String OwnHouseType;
+    private String SmokingType;
+    private ImageObject[] ImagesList;
+
+    protected DatingProfile(Parcel in) {
+        ProfileId = in.readString();
+        ComplexionName = in.readString();
+        UpdatedDate = in.readString();
+        Income = in.readString();
+        Latitude = in.readString();
+        Gender = in.readString();
+        MothertongueName = in.readString();
+        AccessPin = in.readString();
+        DOB = in.readString();
+        Dating = in.readString();
+        DoshamName = in.readString();
+        BodyTypeid = in.readString();
+        MasterCastName = in.readString();
+        AnualIncomeid = in.readString();
+        QualificationName = in.readString();
+        Gotraid = in.readString();
+        Nakshakraid = in.readString();
+        CityName = in.readString();
+        Longitude = in.readString();
+        countryid = in.readString();
+        ReligionName = in.readString();
+        MotherTougeid = in.readString();
+        GotraName = in.readString();
+        CreatedDate = in.readString();
+        LastName = in.readString();
+        FoodHabitsName = in.readString();
+        BodyTypeName = in.readString();
+        UserTypeName = in.readString();
+        CountryName = in.readString();
+        DeviceId = in.readString();
+        DrinkingStatusid = in.readString();
+        DrinkingStatusName = in.readString();
+        OccupationOther = in.readString();
+        Doshamid = in.readString();
+        CityId = in.readString();
+        PhysicalStatusName = in.readString();
+        Occupationid = in.readString();
+        MaritalStatusName = in.readString();
+        Matrimonial = in.readString();
+        TokenId = in.readString();
+        NakshatraName = in.readString();
+        Complexionid = in.readString();
+        FoodHabitsid = in.readString();
+        FirstName = in.readString();
+        LivingWithId = in.readString();
+        AboutMe = in.readString();
+        Qualificationid = in.readString();
+        EMail = in.readString();
+        Mobile = in.readString();
+        OccupationName = in.readString();
+        UserTypeId = in.readString();
+        CasteId = in.readString();
+        MatrialStatusid = in.readString();
+        PhysicalStatusid = in.readString();
+        LivingWithName = in.readString();
+        ReligionId = in.readString();
+        age = in.readString();
+        Height = in.readString();
+        Weight = in.readString();
+        OwnCarType = in.readString();
+        OwnHouseType = in.readString();
+        SmokingType = in.readString();
+        ImagesList = in.createTypedArray(ImageObject.CREATOR);
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(ProfileId);
+        dest.writeString(ComplexionName);
+        dest.writeString(UpdatedDate);
+        dest.writeString(Income);
+        dest.writeString(Latitude);
+        dest.writeString(Gender);
+        dest.writeString(MothertongueName);
+        dest.writeString(AccessPin);
+        dest.writeString(DOB);
+        dest.writeString(Dating);
+        dest.writeString(DoshamName);
+        dest.writeString(BodyTypeid);
+        dest.writeString(MasterCastName);
+        dest.writeString(AnualIncomeid);
+        dest.writeString(QualificationName);
+        dest.writeString(Gotraid);
+        dest.writeString(Nakshakraid);
+        dest.writeString(CityName);
+        dest.writeString(Longitude);
+        dest.writeString(countryid);
+        dest.writeString(ReligionName);
+        dest.writeString(MotherTougeid);
+        dest.writeString(GotraName);
+        dest.writeString(CreatedDate);
+        dest.writeString(LastName);
+        dest.writeString(FoodHabitsName);
+        dest.writeString(BodyTypeName);
+        dest.writeString(UserTypeName);
+        dest.writeString(CountryName);
+        dest.writeString(DeviceId);
+        dest.writeString(DrinkingStatusid);
+        dest.writeString(DrinkingStatusName);
+        dest.writeString(OccupationOther);
+        dest.writeString(Doshamid);
+        dest.writeString(CityId);
+        dest.writeString(PhysicalStatusName);
+        dest.writeString(Occupationid);
+        dest.writeString(MaritalStatusName);
+        dest.writeString(Matrimonial);
+        dest.writeString(TokenId);
+        dest.writeString(NakshatraName);
+        dest.writeString(Complexionid);
+        dest.writeString(FoodHabitsid);
+        dest.writeString(FirstName);
+        dest.writeString(LivingWithId);
+        dest.writeString(AboutMe);
+        dest.writeString(Qualificationid);
+        dest.writeString(EMail);
+        dest.writeString(Mobile);
+        dest.writeString(OccupationName);
+        dest.writeString(UserTypeId);
+        dest.writeString(CasteId);
+        dest.writeString(MatrialStatusid);
+        dest.writeString(PhysicalStatusid);
+        dest.writeString(LivingWithName);
+        dest.writeString(ReligionId);
+        dest.writeString(age);
+        dest.writeString(Height);
+        dest.writeString(Weight);
+        dest.writeString(OwnCarType);
+        dest.writeString(OwnHouseType);
+        dest.writeString(SmokingType);
+        dest.writeTypedArray(ImagesList, flags);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<DatingProfile> CREATOR = new Creator<DatingProfile>() {
+        @Override
+        public DatingProfile createFromParcel(Parcel in) {
+            return new DatingProfile(in);
+        }
+
+        @Override
+        public DatingProfile[] newArray(int size) {
+            return new DatingProfile[size];
+        }
+    };
+
+    public ImageObject[] getImagesList() {
+        return ImagesList;
+    }
+
+    public String getHeight() {
+        return Height;
+    }
+
+    public String getWeight() {
+        return Weight;
+    }
+
+    public String getOwnCarType() {
+        return OwnCarType;
+    }
+
+    public String getOwnHouseType() {
+        return OwnHouseType;
+    }
+
+    public String getSmokingType() {
+        return SmokingType;
+    }
+
     public String getProfileId() {
         return ProfileId;
     }
 
     public void setProfileId(String ProfileId) {
         this.ProfileId = ProfileId;
-    }
-
-    public String getOwnCar() {
-        return OwnCar;
-    }
-
-    public void setOwnCar(String OwnCar) {
-        this.OwnCar = OwnCar;
     }
 
     public String getComplexionName() {
@@ -184,14 +350,6 @@ public class DatingProfile {
         this.Gender = Gender;
     }
 
-    public String getImage() {
-        return Image;
-    }
-
-    public void setImage(String Image) {
-        this.Image = Image;
-    }
-
     public String getMothertongueName() {
         return MothertongueName;
     }
@@ -222,14 +380,6 @@ public class DatingProfile {
 
     public void setDating(String Dating) {
         this.Dating = Dating;
-    }
-
-    public String getHeight() {
-        return height;
-    }
-
-    public void setHeight(String height) {
-        this.height = height;
     }
 
     public String getDoshamName() {
@@ -312,14 +462,6 @@ public class DatingProfile {
         this.countryid = countryid;
     }
 
-    public String getWeight() {
-        return Weight;
-    }
-
-    public void setWeight(String Weight) {
-        this.Weight = Weight;
-    }
-
     public String getReligionName() {
         return ReligionName;
     }
@@ -350,14 +492,6 @@ public class DatingProfile {
 
     public void setCreatedDate(String CreatedDate) {
         this.CreatedDate = CreatedDate;
-    }
-
-    public String getOwnHouse() {
-        return OwnHouse;
-    }
-
-    public void setOwnHouse(String OwnHouse) {
-        this.OwnHouse = OwnHouse;
     }
 
     public String getLastName() {
@@ -486,14 +620,6 @@ public class DatingProfile {
 
     public void setTokenId(String TokenId) {
         this.TokenId = TokenId;
-    }
-
-    public String getIsSmoking() {
-        return IsSmoking;
-    }
-
-    public void setIsSmoking(String IsSmoking) {
-        this.IsSmoking = IsSmoking;
     }
 
     public String getNakshatraName() {

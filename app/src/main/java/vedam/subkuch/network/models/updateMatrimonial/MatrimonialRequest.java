@@ -41,8 +41,6 @@ public class MatrimonialRequest {
     private int CountryId;
     private int ReligionId;
     private int CasteId;
-    private boolean OwnCar;
-    private boolean OwnHouse;
     private int LivingWithId;
     private String MinHeight;
     private String MaxHeight;
@@ -61,13 +59,27 @@ public class MatrimonialRequest {
     private int Occupationid;
     private int Qualificationid;
     private int AnualIncomeid;
-    private boolean IsSmoking;
     private int DrinkingStatusid;
     private int FoodHabitsid;
     private int MotherTougeid;
     private int PhysicalStatusid;
     private int MatrialStatusid;
     private int Doshamid;
+    private int OwnCarId;
+    private int OwnHouseId;
+    private int SmokingId;
+
+    public void setOwnCarId(int ownCarId) {
+        OwnCarId = ownCarId;
+    }
+
+    public void setOwnHouseId(int ownHouseId) {
+        OwnHouseId = ownHouseId;
+    }
+
+    public void setSmokingId(int smokingId) {
+        SmokingId = smokingId;
+    }
 
     public String getMinDistance() {
         return MinDistance;
@@ -123,22 +135,6 @@ public class MatrimonialRequest {
 
     public void setCasteId(int CasteId) {
         this.CasteId = CasteId;
-    }
-
-    public boolean isOwnCar() {
-        return OwnCar;
-    }
-
-    public void setOwnCar(boolean OwnCar) {
-        this.OwnCar = OwnCar;
-    }
-
-    public boolean isOwnHouse() {
-        return OwnHouse;
-    }
-
-    public void setOwnHouse(boolean OwnHouse) {
-        this.OwnHouse = OwnHouse;
     }
 
     public int getLivingWithId() {
@@ -267,14 +263,6 @@ public class MatrimonialRequest {
 
     public void setAnualIncomeid(int AnualIncomeid) {
         this.AnualIncomeid = AnualIncomeid;
-    }
-
-    public boolean isIsSmoking() {
-        return IsSmoking;
-    }
-
-    public void setIsSmoking(boolean IsSmoking) {
-        this.IsSmoking = IsSmoking;
     }
 
     public int getDrinkingStatusid() {

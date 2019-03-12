@@ -320,11 +320,12 @@ public class EditProfileFragmentPresenter implements EditProfileFragmentPresente
     public void getHeight() {
         view.showProgressBar();
 
-        WebServices.getInstance().getHeight(new ResponseHandler<GetHeightResponse>() {
+        WebServices.getInstance().getHeight(new ResponseHandler() {
 
             @Override
-            public void onSuccess(GetHeightResponse response) {
+            public void onSuccess(Object object) {
                 view.hideProgressBar();
+                GetHeightResponse response = (GetHeightResponse) object;
                 if (response.getReturnMessage().equals(Constants.SUCCESS))
                     view.onSuccessfullyGetHeight(response);
                 else
@@ -342,10 +343,11 @@ public class EditProfileFragmentPresenter implements EditProfileFragmentPresente
     public void getWeight() {
         view.showProgressBar();
 
-        WebServices.getInstance().getWeight(new ResponseHandler<GetWeightResponse>() {
+        WebServices.getInstance().getWeight(new ResponseHandler() {
 
             @Override
-            public void onSuccess(GetWeightResponse response) {
+            public void onSuccess(Object object) {
+                GetWeightResponse response = (GetWeightResponse) object;
                 view.hideProgressBar();
                 if (response.getReturnMessage().equals(Constants.SUCCESS))
                     view.onSuccessfullyGetWeight(response);
@@ -365,11 +367,12 @@ public class EditProfileFragmentPresenter implements EditProfileFragmentPresente
 
         view.showProgressBar();
 
-        WebServices.getInstance().getOwnCar(new ResponseHandler<GetOwnCarResponse>() {
+        WebServices.getInstance().getOwnCar(new ResponseHandler() {
 
             @Override
-            public void onSuccess(GetOwnCarResponse response) {
+            public void onSuccess(Object object) {
                 view.hideProgressBar();
+                GetOwnCarResponse response = (GetOwnCarResponse) object;
                 if (response.getReturnMessage().equals(Constants.SUCCESS))
                     view.onSuccessfullyGetOwnCar(response);
                 else
@@ -388,11 +391,12 @@ public class EditProfileFragmentPresenter implements EditProfileFragmentPresente
 
         view.showProgressBar();
 
-        WebServices.getInstance().getOwnHouse(new ResponseHandler<GetOwnHouseResponse>() {
+        WebServices.getInstance().getOwnHouse(new ResponseHandler() {
 
             @Override
-            public void onSuccess(GetOwnHouseResponse response) {
+            public void onSuccess(Object object) {
                 view.hideProgressBar();
+                GetOwnHouseResponse response = (GetOwnHouseResponse) object;
                 if (response.getReturnMessage().equals(Constants.SUCCESS))
                     view.onSuccessfullyGetOwnHouse(response);
                 else
@@ -411,11 +415,12 @@ public class EditProfileFragmentPresenter implements EditProfileFragmentPresente
 
         view.showProgressBar();
 
-        WebServices.getInstance().getSmoking(new ResponseHandler<GetSmokingResponse>() {
+        WebServices.getInstance().getSmoking(new ResponseHandler() {
 
             @Override
-            public void onSuccess(GetSmokingResponse response) {
+            public void onSuccess(Object object) {
                 view.hideProgressBar();
+                GetSmokingResponse response = (GetSmokingResponse) object;
                 if (response.getReturnMessage().equals(Constants.SUCCESS))
                     view.onSuccessfullyGetSmoking(response);
                 else

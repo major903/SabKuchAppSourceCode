@@ -109,13 +109,13 @@ public class ShowProfilesActivity extends BaseActivity
         if (id == R.id.nav_home) {
             startHomeActivity();
         } else if (id == R.id.nav_matches) {
-            changeFragment(MatchedProfileFragment.newInstance(), TAG_MATCHES_FRAGMENT);
+            changeFragment(MatchedProfileFragment.newInstance(false), TAG_MATCHES_FRAGMENT);
         } else if (id == R.id.nav_profile) {
             changeFragment(EditProfileFragment.newInstance(), TAG_PROFILE_FRAGMENT);
         } else if (id == R.id.nav_preferences) {
             changeFragment(PreferenceFragment.newInstance(), TAG_PREFERENCES_FRAGMENT);
         } else if (id == R.id.nav_chats) {
-            changeFragment(MatchedProfileFragment.newInstance(), TAG_CHATS_FRAGMENT);
+            changeFragment(MatchedProfileFragment.newInstance(true), TAG_CHATS_FRAGMENT);
         }
 
         activityShowProfilesBinding.drawerLayout.closeDrawer(GravityCompat.START);
@@ -167,7 +167,7 @@ public class ShowProfilesActivity extends BaseActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_chats:
-                changeFragment(MatchedProfileFragment.newInstance(), TAG_CHATS_FRAGMENT);
+                changeFragment(MatchedProfileFragment.newInstance(true), TAG_CHATS_FRAGMENT);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

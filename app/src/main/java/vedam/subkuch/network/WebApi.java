@@ -17,10 +17,13 @@ import vedam.subkuch.network.models.GetDoshamBean;
 import vedam.subkuch.network.models.GetDrinkingHabits;
 import vedam.subkuch.network.models.GetFoodHabitsBean;
 import vedam.subkuch.network.models.GetGotrasBean;
+import vedam.subkuch.network.models.GetHeightResponse;
 import vedam.subkuch.network.models.GetMaritalStatusResponse;
 import vedam.subkuch.network.models.GetMothertongueBean;
 import vedam.subkuch.network.models.GetNakshatrasBean;
 import vedam.subkuch.network.models.GetOccupationBean;
+import vedam.subkuch.network.models.GetOwnCarResponse;
+import vedam.subkuch.network.models.GetOwnHouseResponse;
 import vedam.subkuch.network.models.GetPhysicalStatusBean;
 import vedam.subkuch.network.models.GetQualificationBean;
 import vedam.subkuch.network.models.UserDetail.GetUserDetailResponse;
@@ -97,19 +100,19 @@ public interface WebApi {
     Call<GetMothertongueBean> getMothertongue(@Header("Authorization") String bearer);
 
     @GET("Master/GetHeight")
-    <T> Call<T> getHeight(@Header("Authorization") String bearer);
+    Call<GetHeightResponse> getHeight(@Header("Authorization") String bearer);
 
     @GET("Master/GetWeight")
-    <T> Call<T> getWeight(@Header("Authorization") String bearer);
+    Call<GetWeightResponse> getWeight(@Header("Authorization") String bearer);
 
     @GET("Master/GetSmoking")
-    <T> Call<T> getSmoking(@Header("Authorization") String bearer);
+    Call<GetSmokingResponse> getSmoking(@Header("Authorization") String bearer);
 
     @GET("Master/GetOwnCar")
-    <T> Call<T> getOwnCar(@Header("Authorization") String bearer);
+    Call<GetOwnCarResponse> getOwnCar(@Header("Authorization") String bearer);
 
     @GET("Master/GetOWnHouse")
-    <T> Call<T> getOwnHouse(@Header("Authorization") String bearer);
+    Call<GetOwnHouseResponse> getOwnHouse(@Header("Authorization") String bearer);
 
     @POST("UserProfile/EditProfileMatrimonial")
     Call<UpdateMatrimonialResponse> updateProfile(@Header("Authorization") String bearer, @Body UpdateProfileRequest profileRequest);

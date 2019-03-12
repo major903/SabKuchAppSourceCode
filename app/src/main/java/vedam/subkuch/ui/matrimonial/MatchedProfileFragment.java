@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +27,7 @@ import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.ui.chat.ChatActivity;
 import vedam.subkuch.ui.matrimonial.models.DatingProfile;
 import vedam.subkuch.ui.matrimonial.models.DatingProfileResponse;
+import vedam.subkuch.ui.matrimonial.viewProfile.ViewProfileActivity;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.ListItemClickAction;
 import vedam.subkuch.utils.UiUtil;
@@ -43,14 +45,26 @@ public class MatchedProfileFragment extends BaseFragment implements OnListViewIt
     private int pageNo = 1;
     private int pageSize = 20;
     private boolean hasMoreProjects = true;
+    private boolean isChats;
 
     public MatchedProfileFragment() {
         // Required empty public constructor
     }
 
-    public static MatchedProfileFragment newInstance() {
+    public static MatchedProfileFragment newInstance(boolean isChats) {
 
-        return new MatchedProfileFragment();
+        MatchedProfileFragment matchedProfileFragment = new MatchedProfileFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(Constants.EXTRA_IS_CHATS, isChats);
+        matchedProfileFragment.setArguments(bundle);
+        return matchedProfileFragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null)
+            isChats = getArguments().getBoolean(Constants.EXTRA_IS_CHATS);
     }
 
     @Override
@@ -120,11 +134,27 @@ public class MatchedProfileFragment extends BaseFragment implements OnListViewIt
     public <E> void onItemClick(E item, int position, View view, ListItemClickAction action) {
         if (item != null) {
             DatingProfile datingProfile = (DatingProfile) item;
-            Intent intent = new Intent(context, ChatActivity.class);
-            intent.putExtra(Constants.EXTRA_NAME, AppUtil.getFullName(datingProfile.getFirstName(), datingProfile.getLastName()));
-            intent.putExtra(Constants.EXTRA_CHAT_TO_ID, datingProfile.getProfileId());
-            startActivity(intent);
+            if (isChats)
+                startChatActivity(datingProfile);
+            else
+                startViewProfileActivity(datingProfile);
         }
+    }
+
+    private void startViewProfileActivity(DatingProfile datingProfile) {
+
+        Intent intent = new Intent(context, ViewProfileActivity.class);
+        intent.putExtra(Constants.EXTRA_NAME, AppUtil.getFullName(datingProfile.getFirstName(), datingProfile.getLastName()));
+        intent.putExtra(Constants.EXTRA_DATA, datingProfile);
+        startActivity(intent);
+    }
+
+    private void startChatActivity(DatingProfile datingProfile) {
+
+        Intent intent = new Intent(context, ChatActivity.class);
+        intent.putExtra(Constants.EXTRA_NAME, AppUtil.getFullName(datingProfile.getFirstName(), datingProfile.getLastName()));
+        intent.putExtra(Constants.EXTRA_CHAT_TO_ID, datingProfile.getProfileId());
+        startActivity(intent);
     }
 
     public class ProfilesOnScrollListener extends RecyclerView.OnScrollListener {

@@ -453,4 +453,12 @@ public class AppUtil {
     public static String getFullName(String firstName, String lastName) {
         return (deNull(firstName) + " " + deNull(lastName)).trim();
     }
+
+    public static String getNameAndAge(String name, String age) {
+
+        if (!TextUtils.isEmpty(age))
+            return name + ", " + age;
+        else
+            return name;
+    }
 }

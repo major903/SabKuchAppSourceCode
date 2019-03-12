@@ -46,12 +46,13 @@ public class MatchedProfileAdapter extends RecyclerView.Adapter<MatchedProfileAd
 
         UiUtil.setTextView(holder.tvName, AppUtil.getFullName(datingProfile.getFirstName(), datingProfile.getLastName()));
 
-        UiUtil.setImageView(new ImageSetter.ImageBuilder(context)
-                .setImageLink(datingProfile.getImage())
-                .setPlaceholderResource(R.drawable.white)
-                .setErrorResource(R.drawable.white)
-                .setTarget(holder.ivProfile)
-                .build());
+        if (datingProfile.getImagesList() != null && datingProfile.getImagesList().length > 0)
+            UiUtil.setImageView(new ImageSetter.ImageBuilder(context)
+                    .setImageLink(datingProfile.getImagesList()[0].getImage())
+                    .setPlaceholderResource(R.drawable.white)
+                    .setErrorResource(R.drawable.white)
+                    .setTarget(holder.ivProfile)
+                    .build());
         holder.bind(datingProfile, position, listViewItemClickListener);
     }
 

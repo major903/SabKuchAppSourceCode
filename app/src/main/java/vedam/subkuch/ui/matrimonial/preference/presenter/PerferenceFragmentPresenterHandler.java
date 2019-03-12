@@ -47,4 +47,10 @@ public interface PerferenceFragmentPresenterHandler {
     void getMatrialStatus();
 
     void editPreferences(MatrimonialRequest matrimonialRequest);
+
+    void getOwnCar();
+
+    void getOwnHouse();
+
+    void getSmoking();
 }

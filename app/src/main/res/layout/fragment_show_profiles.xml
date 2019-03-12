@@ -99,9 +99,7 @@
                         android:id="@+id/tv_marital_status"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
                         android:layout_marginTop="@dimen/margin_8dp"
-
                         android:textSize="@dimen/text_size_17"
                         tools:text="@string/err" />
 
@@ -269,9 +267,31 @@
                         android:id="@+id/tv_physical_status"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
                         android:layout_marginTop="@dimen/margin_8dp"
+                        android:textSize="@dimen/text_size_17"
+                        tools:text="@string/err" />
 
+                    <TextView
+                        android:id="@+id/tv_living_with"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_8dp"
+                        android:textSize="@dimen/text_size_17"
+                        tools:text="@string/err" />
+
+                    <TextView
+                        android:id="@+id/tv_own_car"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_8dp"
+                        android:textSize="@dimen/text_size_17"
+                        tools:text="@string/err" />
+
+                    <TextView
+                        android:id="@+id/tv_own_house"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_8dp"
                         android:textSize="@dimen/text_size_17"
                         tools:text="@string/err" />
                 </LinearLayout>

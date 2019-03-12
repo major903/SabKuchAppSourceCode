@@ -123,8 +123,11 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
         UiUtil.setTextViewWithBoldPrefix(context, "Dosham :", datingProfile.getDoshamName(), fragmentShowProfilesBinding.tvDosham);
         UiUtil.setTextViewWithBoldPrefix(context, "Food Habit :", datingProfile.getFoodHabitsName(), fragmentShowProfilesBinding.tvFoodHabit);
         UiUtil.setTextViewWithBoldPrefix(context, "Drinking Habit :", datingProfile.getDrinkingStatusName(), fragmentShowProfilesBinding.tvDrinkingHabit);
-        UiUtil.setTextViewWithBoldPrefix(context, "Smoking Habit :", datingProfile.getIsSmoking(), fragmentShowProfilesBinding.tvSmokingHabit);
-        UiUtil.setTextViewWithBoldPrefix(context, "Physical Status", datingProfile.getPhysicalStatusName(), fragmentShowProfilesBinding.tvPhysicalStatus);
+        UiUtil.setTextViewWithBoldPrefix(context, "Smoking Habit :", datingProfile.getSmokingType(), fragmentShowProfilesBinding.tvSmokingHabit);
+        UiUtil.setTextViewWithBoldPrefix(context, "Physical Status :", datingProfile.getPhysicalStatusName(), fragmentShowProfilesBinding.tvPhysicalStatus);
+        UiUtil.setTextViewWithBoldPrefix(context, "Living With :", datingProfile.getLivingWithName(), fragmentShowProfilesBinding.tvLivingWith);
+        UiUtil.setTextViewWithBoldPrefix(context, "Car Status :", datingProfile.getOwnCarType(), fragmentShowProfilesBinding.tvOwnCar);
+        UiUtil.setTextViewWithBoldPrefix(context, "House Status :", datingProfile.getOwnHouseType(), fragmentShowProfilesBinding.tvOwnHouse);
     }
 
     private String getNameAndAge(DatingProfile datingProfile) {
@@ -169,7 +172,7 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
 
         Button btEditProfile = vEmptyInflated.findViewById(R.id.bt_edit_profile);
         btEditProfile.setOnClickListener(v -> {
-            addFragmentWithAnimation(R.id.content_frame, EditProfileFragment.newInstance(), null, true);
+            addFragmentWithAnimation(R.id.content_frame, EditProfileFragment.newInstance(), Constants.TAG_PROFILE_FRAGMENT, true);
         });
     }
 

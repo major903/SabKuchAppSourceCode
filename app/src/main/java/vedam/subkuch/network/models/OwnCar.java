@@ -6,6 +6,11 @@ public class OwnCar {
 
     private int OwnCarId;
 
+    public OwnCar(int ownCarId, String ownCarType) {
+        OwnCarType = ownCarType;
+        OwnCarId = ownCarId;
+    }
+
     public String getOwnCarType() {
         return OwnCarType;
     }

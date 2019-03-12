@@ -570,78 +570,106 @@
                 app:srcCompat="@drawable/ic_drop_down" />
         </RelativeLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:text="@string/select_car_status"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/sp_eighteen" />
 
         <RelativeLayout
+            android:id="@+id/relativeOwnCar"
+            style="@style/EditTextStyle2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/textViewOwnCar"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="@dimen/margin_16dp"
-                android:text="@string/smoking"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
 
-            <CheckBox
-                android:id="@+id/checkBoxSmoking"
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                app:theme="@style/RadioButtonStyle" />
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/dp_sixteen"
+                app:srcCompat="@drawable/ic_drop_down" />
         </RelativeLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:text="@string/select_house_status"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/sp_eighteen" />
+
+
         <RelativeLayout
+            android:id="@+id/relativeOwnHouse"
+            style="@style/EditTextStyle2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/textViewOwnHouse"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="@dimen/margin_16dp"
-                android:text="@string/own_car"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
 
-            <CheckBox
-                android:id="@+id/checkBoxOwncar"
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                app:theme="@style/RadioButtonStyle" />
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/dp_sixteen"
+                app:srcCompat="@drawable/ic_drop_down" />
         </RelativeLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:text="@string/select_smoking_status"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/sp_eighteen" />
+
 
         <RelativeLayout
+            android:id="@+id/relativeSmoking"
+            style="@style/EditTextStyle2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/textViewSmoking"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="@dimen/margin_16dp"
-                android:text="@string/own_house"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
 
-            <CheckBox
-                android:id="@+id/ceheckBoxHouse"
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                app:theme="@style/RadioButtonStyle" />
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/dp_sixteen"
+                app:srcCompat="@drawable/ic_drop_down" />
         </RelativeLayout>
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -690,6 +718,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -738,6 +767,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -786,6 +816,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -833,6 +864,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -884,7 +916,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
             android:background="@color/colorPrimary"
-            android:text="Update"
+            android:text="@string/update"
             android:textColor="@android:color/white" />
     </LinearLayout>
 </ScrollView>

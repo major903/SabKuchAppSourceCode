@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_16dp">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/iv_picture"
+                android:layout_width="@dimen/margin_136dp"
+                android:layout_height="@dimen/margin_136dp"
+                android:layout_gravity="center_horizontal"
+                android:scaleType="fitXY"
+                app:riv_border_color="@color/colorPrimary"
+                app:riv_border_width="@dimen/margin_2dp"
+                app:riv_oval="true" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                style="@style/TextViewBlackHeading2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:gravity="center_horizontal"
+                tools:text="@string/err" />
+
+            <TextView
+                android:id="@+id/tv_about"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8dp"
+                android:textSize="@dimen/text_size_17"
+                tools:text="@string/err" />
+
+            <TextView
+                android:id="@+id/tv_marital_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/margin_8dp"
+
+                android:textSize="@dimen/text_size_17"
+                tools:text="@string/err" />
+
+            <TextView
+                android:id="@+id/tv_mother_tongue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/margin_8dp"
+
+                android:textSize="@dimen/text_size_17"
+                tools:text="@string/err" />
+
+            <TextView
+                android:id="@+id/tv_occupation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/margin_8dp"
+
+                android:textSize="@dimen/text_size_17"
+                tools:text="@string/err" />
+
+            <TextView
+                android:id="@+id/tv_qualification"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/margin_8dp"
+
+                android:textSize="@dimen/text_size_17"
+                tools:text="@string/err" />
+
+            <TextView
+                android:id="@+id/tv_annual_income"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/margin_8dp"
+
+                android:textSize="@dimen/text_size_17"
+                tools:text="@string/err" />
+
+            <TextView
+                android:id="@+id/tv_body_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/margin_8dp"
+
+                android:textSize="@dimen/text_size_17"
+                tools:text="@string/err" />
+
+            <TextView
+                android:id="@+id/tv_complexion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/margin_8dp"
+
+                android:textSize="@dimen/text_size_17"
+                tools:text="@string/err" />
+
+            <TextView
+                android:id="@+id/tv_height"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/margin_8dp"
+
+                android:textSize="@dimen/text_size_17"
+                tools:text="@string/err" />
+
+            <TextView
+                android:id="@+id/tv_weight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/margin_8dp"
+
+                android:textSize="@dimen/text_size_17"
+                tools:text="@string/err" />
+
+            <TextView
+                android:id="@+id/tv_religion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/margin_8dp"
+
+                android:textSize="@dimen/text_size_17"
+                tools:text="@string/err" />
+
+            <TextView
+                android:id="@+id/tv_caste"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/margin_8dp"
+
+                android:textSize="@dimen/text_size_17"
+                tools:text="@string/err" />
+
+            <TextView
+                android:id="@+id/tv_gothra"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/margin_8dp"
+
+                android:textSize="@dimen/text_size_17"
+                tools:text="@string/err" />
+
+            <TextView
+                android:id="@+id/tv_nakshatra"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/margin_8dp"
+
+                android:textSize="@dimen/text_size_17"
+                tools:text="@string/err" />
+
+            <TextView
+                android:id="@+id/tv_dosham"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/margin_8dp"
+
+                android:textSize="@dimen/text_size_17"
+                tools:text="@string/err" />
+
+            <TextView
+                android:id="@+id/tv_food_habit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/margin_8dp"
+
+                android:textSize="@dimen/text_size_17"
+                tools:text="@string/err" />
+
+            <TextView
+                android:id="@+id/tv_drinking_habit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/margin_8dp"
+
+                android:textSize="@dimen/text_size_17"
+                tools:text="@string/err" />
+
+            <TextView
+                android:id="@+id/tv_smoking_habit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/margin_8dp"
+
+                android:textSize="@dimen/text_size_17"
+                tools:text="@string/err" />
+
+            <TextView
+                android:id="@+id/tv_physical_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/margin_8dp"
+
+                android:textSize="@dimen/text_size_17"
+                tools:text="@string/err" />
+
+            <TextView
+                android:id="@+id/tv_living_with"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8dp"
+                android:textSize="@dimen/text_size_17"
+                tools:text="@string/err" />
+
+            <TextView
+                android:id="@+id/tv_own_car"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8dp"
+                android:textSize="@dimen/text_size_17"
+                tools:text="@string/err" />
+
+            <TextView
+                android:id="@+id/tv_own_house"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8dp"
+                android:textSize="@dimen/text_size_17"
+                tools:text="@string/err" />
+        </LinearLayout>
+    </ScrollView>
+</layout>

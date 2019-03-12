@@ -29,8 +29,10 @@ import java.util.List;
 
 import vedam.subkuch.R;
 import vedam.subkuch.helpers.Constants;
+import vedam.subkuch.ui.cropImage.CropImageActivity;
 import vedam.subkuch.uicomponent.PickImageDialog;
 import vedam.subkuch.utils.AppUtil;
+import vedam.subkuch.utils.ImageUtil;
 import vedam.subkuch.utils.UiUtil;
 
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -142,7 +144,7 @@ public abstract class BaseAddImageFragment extends BaseFragment {
 
             try {
                 //Getting the Bitmap from Gallery
-                if (uri.getScheme().equals("content")) {
+                if ("content".equals(uri.getScheme())) {
                     InputStream is = context.getContentResolver().openInputStream(uri);
                     File file = File.createTempFile(String.format("image%s", new Date().getTime()), ".jpg", context.getExternalCacheDir());
                     copyInputStreamToFile(is, file);
@@ -153,7 +155,7 @@ public abstract class BaseAddImageFragment extends BaseFragment {
                     Bitmap thumbnailBitmap = UiUtil.getThumbnail(context, rotatedImage);
 
                     //Setting the Bitmap to ImageView
-                    createImageView(thumbnailBitmap, filePath);
+                    startCrop(filePath);
                 } else {
                     UiUtil.showToast(context, getString(R.string.cannot_get_image));
                     noImageAdded();
@@ -168,7 +170,7 @@ public abstract class BaseAddImageFragment extends BaseFragment {
                 Bitmap rotatedImage = UiUtil.rotateImageIfRequired(imagePath);
                 Bitmap decodedBitmap = UiUtil.getThumbnail(context, rotatedImage);
                 if (decodedBitmap != null) {
-                    createImageView(decodedBitmap, imagePath);
+                    startCrop(imagePath);
                 } else {
                     noImageAdded();
                 }
@@ -177,20 +179,40 @@ public abstract class BaseAddImageFragment extends BaseFragment {
                 e.printStackTrace();
                 noImageAdded();
             }
+        } else if (requestCode == Constants.REQUEST_CROP_IMAGE) {
+            if (resultCode == Activity.RESULT_OK) {
+                String fileName = data.getStringExtra(Constants.EXTRA_FILE_NAME);
+                Bitmap bitmap = ImageUtil.getBitmapFromInternalStorage(context, fileName);
+                setImageView(bitmap, getImageUriFromFileName(fileName));
+            }
         } else {
             noImageAdded();
         }
+    }
+
+    private String getImageUriFromFileName(String fileName) {
+        File file = new File(context.getFilesDir() + File.separator + fileName);
+        return file.getAbsolutePath();
     }
 
     protected void noImageAdded() {
 
     }
 
-    private void createImageView(final Bitmap bitmap, final String imageUri) {
+    private void setImageView(final Bitmap bitmap, final String imageUri) {
 
         this.imageUri = imageUri;
         ivPicture.setImageBitmap(bitmap);
 
+    }
+
+    private void startCrop(final String imageUri) {
+
+        if (imageUri == null)
+            return;
+        Intent intent = new Intent(context, CropImageActivity.class);
+        intent.putExtra(Constants.EXTRA_IMAGE_URI, imageUri);
+        startActivityForResult(intent, Constants.REQUEST_CROP_IMAGE);
     }
 
     private void copyInputStreamToFile(InputStream in, File file) {

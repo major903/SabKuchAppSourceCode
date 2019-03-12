@@ -47,10 +47,13 @@ import vedam.subkuch.network.models.GetDoshamBean;
 import vedam.subkuch.network.models.GetDrinkingHabits;
 import vedam.subkuch.network.models.GetFoodHabitsBean;
 import vedam.subkuch.network.models.GetGotrasBean;
+import vedam.subkuch.network.models.GetHeightResponse;
 import vedam.subkuch.network.models.GetMaritalStatusResponse;
 import vedam.subkuch.network.models.GetMothertongueBean;
 import vedam.subkuch.network.models.GetNakshatrasBean;
 import vedam.subkuch.network.models.GetOccupationBean;
+import vedam.subkuch.network.models.GetOwnCarResponse;
+import vedam.subkuch.network.models.GetOwnHouseResponse;
 import vedam.subkuch.network.models.GetPhysicalStatusBean;
 import vedam.subkuch.network.models.GetQualificationBean;
 import vedam.subkuch.network.models.UserDetail.GetUserDetailResponse;
@@ -522,36 +525,36 @@ public class WebServices {
         });
     }
 
-    public <T> void getHeight(final ResponseHandler<T> handler) {
-        Call<T> callback = api.getHeight(bearer);
-        call(callback, handler);
+    public void getHeight(final ResponseHandler handler) {
+        Call<GetHeightResponse> callback = api.getHeight(bearer);
+        callHeight(callback, handler);
     }
 
-    public <T> void getWeight(final ResponseHandler<T> handler) {
-        Call<T> callback = api.getWeight(bearer);
-        call(callback, handler);
+    public void getWeight(final ResponseHandler handler) {
+        Call<GetWeightResponse> callback = api.getWeight(bearer);
+        callWeight(callback, handler);
     }
 
-    public <T> void getOwnCar(final ResponseHandler<T> handler) {
-        Call<T> callback = api.getOwnCar(bearer);
-        call(callback, handler);
+    public void getOwnCar(final ResponseHandler handler) {
+        Call<GetOwnCarResponse> callback = api.getOwnCar(bearer);
+        callOwnCar(callback, handler);
     }
 
-    public <T> void getOwnHouse(final ResponseHandler<T> handler) {
-        Call<T> callback = api.getOwnHouse(bearer);
-        call(callback, handler);
+    public void getOwnHouse(final ResponseHandler handler) {
+        Call<GetOwnHouseResponse> callback = api.getOwnHouse(bearer);
+        callOwnHouse(callback, handler);
     }
 
-    public <T> void getSmoking(final ResponseHandler<T> handler) {
-        Call<T> callback = api.getSmoking(bearer);
-        call(callback, handler);
+    public void getSmoking(final ResponseHandler handler) {
+        Call<GetSmokingResponse> callback = api.getSmoking(bearer);
+        callSmoking(callback, handler);
     }
 
-    private <T> void call(Call<T> callback, ResponseHandler<T> handler) {
+    private void callHeight(Call<GetHeightResponse> callback, ResponseHandler handler) {
 
-        callback.enqueue(new Callback<T>() {
+        callback.enqueue(new Callback<GetHeightResponse>() {
             @Override
-            public void onResponse(Call<T> call, Response<T> response) {
+            public void onResponse(Call<GetHeightResponse> call, Response<GetHeightResponse> response) {
                 if (response != null && response.body() != null) {
                     handler.onSuccess(response.body());
                 } else {
@@ -561,7 +564,87 @@ public class WebServices {
             }
 
             @Override
-            public void onFailure(Call<T> call, Throwable t) {
+            public void onFailure(Call<GetHeightResponse> call, Throwable t) {
+                handler.onError(t.getMessage());
+            }
+        });
+    }
+
+    private void callWeight(Call<GetWeightResponse> callback, ResponseHandler handler) {
+
+        callback.enqueue(new Callback<GetWeightResponse>() {
+            @Override
+            public void onResponse(Call<GetWeightResponse> call, Response<GetWeightResponse> response) {
+                if (response != null && response.body() != null) {
+                    handler.onSuccess(response.body());
+                } else {
+                    handleError(response);
+                    handler.onError("Something went wrong");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetWeightResponse> call, Throwable t) {
+                handler.onError(t.getMessage());
+            }
+        });
+    }
+
+    private void callOwnCar(Call<GetOwnCarResponse> callback, ResponseHandler handler) {
+
+        callback.enqueue(new Callback<GetOwnCarResponse>() {
+            @Override
+            public void onResponse(Call<GetOwnCarResponse> call, Response<GetOwnCarResponse> response) {
+                if (response != null && response.body() != null) {
+                    handler.onSuccess(response.body());
+                } else {
+                    handleError(response);
+                    handler.onError("Something went wrong");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetOwnCarResponse> call, Throwable t) {
+                handler.onError(t.getMessage());
+            }
+        });
+    }
+
+    private void callOwnHouse(Call<GetOwnHouseResponse> callback, ResponseHandler handler) {
+
+        callback.enqueue(new Callback<GetOwnHouseResponse>() {
+            @Override
+            public void onResponse(Call<GetOwnHouseResponse> call, Response<GetOwnHouseResponse> response) {
+                if (response != null && response.body() != null) {
+                    handler.onSuccess(response.body());
+                } else {
+                    handleError(response);
+                    handler.onError("Something went wrong");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetOwnHouseResponse> call, Throwable t) {
+                handler.onError(t.getMessage());
+            }
+        });
+    }
+
+    private void callSmoking(Call<GetSmokingResponse> callback, ResponseHandler handler) {
+
+        callback.enqueue(new Callback<GetSmokingResponse>() {
+            @Override
+            public void onResponse(Call<GetSmokingResponse> call, Response<GetSmokingResponse> response) {
+                if (response != null && response.body() != null) {
+                    handler.onSuccess(response.body());
+                } else {
+                    handleError(response);
+                    handler.onError("Something went wrong");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetSmokingResponse> call, Throwable t) {
                 handler.onError(t.getMessage());
             }
         });

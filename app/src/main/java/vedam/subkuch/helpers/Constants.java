@@ -22,9 +22,11 @@ public class Constants {
     public static final String EXTRA_SUB_CATEGORY_NAME = "EXTRA_SUB_CATEGORY_NAME";
     public static final String EXTRA_SUB_CATEGORY_ID = "EXTRA_SUB_CATEGORY_ID";
     public static final String EXTRA_IMAGE_ITEMS = "EXTRA_IMAGE_ITEMS";
+    public static final String EXTRA_IMAGE_URI = "EXTRA_IMAGE_URI";
     public static final String EXTRA_DATA = "EXTRA_DATA";
     public static final String EXTRA_NAME = "EXTRA_NAME";
-    public static final String EXTRA_URL = "EXTRA_URL";
+    public static final String EXTRA_FILE_NAME = "EXTRA_FILE_NAME";
+    public static final String EXTRA_IS_CHATS = "EXTRA_IS_CHATS";
     public static final String EXTRA_POSITION = "EXTRA_POSITION";
     public static final String EXTRA_IS_IMAGE_URLS = "EXTRA_IS_IMAGE_URLS";
     public static final String EXTRA_CHAT_TO_ID = "EXTRA_CHAT_TO_ID";
@@ -42,6 +44,7 @@ public class Constants {
     public static final int REQUEST_PICK_IMAGE_FROM_CAMERA = 4;
     public static final int REQUEST_ADD_QUESTION = 5;
     public static final int REQUEST_PLACE_PICKER = 6;
+    public static final int REQUEST_CROP_IMAGE = 7;
 
     public static final int SUCCESS_RESULT = 0;
     public static final int FAILURE_RESULT = 1;

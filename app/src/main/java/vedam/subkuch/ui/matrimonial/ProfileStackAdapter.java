@@ -39,11 +39,12 @@ public class ProfileStackAdapter extends RecyclerView.Adapter<ProfileStackAdapte
 
         DatingProfile datingProfile = datingProfiles.get(position);
 
-        UiUtil.setImageView(new ImageSetter.ImageBuilder(context)
-                .setImageLink(datingProfile.getImage())
-                .setDefaults()
-                .setTarget(holder.ivProfile)
-                .build());
+        if (datingProfile.getImagesList() != null && datingProfile.getImagesList().length > 0)
+            UiUtil.setImageView(new ImageSetter.ImageBuilder(context)
+                    .setImageLink(datingProfile.getImagesList()[0].getImage())
+                    .setDefaults()
+                    .setTarget(holder.ivProfile)
+                    .build());
     }
 
     @Override

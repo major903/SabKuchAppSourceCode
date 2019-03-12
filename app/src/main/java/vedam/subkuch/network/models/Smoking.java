@@ -6,6 +6,11 @@ public class Smoking {
 
     private String SmokingType;
 
+    public Smoking(int smokingId, String smokingType) {
+        SmokingId = smokingId;
+        SmokingType = smokingType;
+    }
+
     public int getSmokingId() {
         return SmokingId;
     }

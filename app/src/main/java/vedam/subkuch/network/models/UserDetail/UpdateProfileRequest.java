@@ -57,14 +57,10 @@ public class UpdateProfileRequest {
     private int countryid;
     private int ReligionId;
     private int CasteId;
-    private boolean OwnCar;
-    private boolean OwnHouse;
     private int LivingWithId;
     private String AccessPin;
     private boolean Dating;
     private boolean Matrimonial;
-    private String height;
-    private String Weight;
     private String Age;
     private int Gotraid;
     private int Nakshakraid;
@@ -73,7 +69,6 @@ public class UpdateProfileRequest {
     private int Occupationid;
     private int Qualificationid;
     private int AnualIncomeid;
-    private boolean IsSmoking;
     private int DrinkingStatusid;
     private int FoodHabitsid;
     private int MotherTougeid;
@@ -83,6 +78,31 @@ public class UpdateProfileRequest {
     private String AboutMe;
     private String OccupationOther;
     private String UpdatedDate;
+    private int HeightId;
+    private int WeightId;
+    private int OwnCarId;
+    private int OwnHouseId;
+    private int SmokingId;
+
+    public void setHeightId(int heightId) {
+        HeightId = heightId;
+    }
+
+    public void setWeightId(int weightId) {
+        WeightId = weightId;
+    }
+
+    public void setOwnCarId(int ownCarId) {
+        OwnCarId = ownCarId;
+    }
+
+    public void setOwnHouseId(int ownHouseId) {
+        OwnHouseId = ownHouseId;
+    }
+
+    public void setSmokingId(int smokingId) {
+        SmokingId = smokingId;
+    }
 
     public int getProfileId() {
         return ProfileId;
@@ -188,22 +208,6 @@ public class UpdateProfileRequest {
         this.CasteId = CasteId;
     }
 
-    public boolean isOwnCar() {
-        return OwnCar;
-    }
-
-    public void setOwnCar(boolean OwnCar) {
-        this.OwnCar = OwnCar;
-    }
-
-    public boolean isOwnHouse() {
-        return OwnHouse;
-    }
-
-    public void setOwnHouse(boolean OwnHouse) {
-        this.OwnHouse = OwnHouse;
-    }
-
     public int getLivingWithId() {
         return LivingWithId;
     }
@@ -234,22 +238,6 @@ public class UpdateProfileRequest {
 
     public void setMatrimonial(boolean Matrimonial) {
         this.Matrimonial = Matrimonial;
-    }
-
-    public String getHeight() {
-        return height;
-    }
-
-    public void setHeight(String height) {
-        this.height = height;
-    }
-
-    public String getWeight() {
-        return Weight;
-    }
-
-    public void setWeight(String Weight) {
-        this.Weight = Weight;
     }
 
     public String getAge() {
@@ -314,14 +302,6 @@ public class UpdateProfileRequest {
 
     public void setAnualIncomeid(int AnualIncomeid) {
         this.AnualIncomeid = AnualIncomeid;
-    }
-
-    public boolean isIsSmoking() {
-        return IsSmoking;
-    }
-
-    public void setIsSmoking(boolean IsSmoking) {
-        this.IsSmoking = IsSmoking;
     }
 
     public int getDrinkingStatusid() {

@@ -3,7 +3,6 @@ package vedam.subkuch.ui.matrimonial.preference;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.AppCompatCheckBox;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -23,6 +22,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseFragment;
+import vedam.subkuch.network.GetSmokingResponse;
 import vedam.subkuch.network.models.DrinkingHabits;
 import vedam.subkuch.network.models.GetBodyTypeBean;
 import vedam.subkuch.network.models.GetCityResponse;
@@ -35,8 +35,13 @@ import vedam.subkuch.network.models.GetMaritalStatusResponse;
 import vedam.subkuch.network.models.GetMothertongueBean;
 import vedam.subkuch.network.models.GetNakshatrasBean;
 import vedam.subkuch.network.models.GetOccupationBean;
+import vedam.subkuch.network.models.GetOwnCarResponse;
+import vedam.subkuch.network.models.GetOwnHouseResponse;
 import vedam.subkuch.network.models.GetPhysicalStatusBean;
 import vedam.subkuch.network.models.GetQualificationBean;
+import vedam.subkuch.network.models.OwnCar;
+import vedam.subkuch.network.models.OwnHouse;
+import vedam.subkuch.network.models.Smoking;
 import vedam.subkuch.network.models.getLiving.GetLivingResponse;
 import vedam.subkuch.network.models.getMasterCast.GetMasterCastResponse;
 import vedam.subkuch.network.models.getPreferencesResponse.GetPreferenceResponse;
@@ -98,12 +103,12 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     TextView textViewPhysicalstatus;
     @BindView(R.id.textViewDosham)
     TextView textViewDosham;
-    @BindView(R.id.checkBoxSmoking)
-    AppCompatCheckBox checkBoxSmoking;
-    @BindView(R.id.checkBoxOwncar)
-    AppCompatCheckBox checkBoxOwncar;
-    @BindView(R.id.ceheckBoxHouse)
-    AppCompatCheckBox ceheckBoxHouse;
+    @BindView(R.id.textViewOwnCar)
+    TextView textViewOwnCar;
+    @BindView(R.id.textViewOwnHouse)
+    TextView textViewOwnHouse;
+    @BindView(R.id.textViewSmoking)
+    TextView textViewSmoking;
     @BindView(R.id.textViewIncome)
     TextView textViewIncome;
     @BindView(R.id.seekBarIncome)
@@ -137,10 +142,10 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     int selectedDoshamId = 0;
     int selectedMaritalStatusId = 0;
     int selectedDrinkingStatusId = 0;
+    int selectedOwnCarId = 0;
+    int selectedOwnHouseId = 0;
+    int selectedSmokingStatusId = 0;
     String clickedItem = "";
-    boolean ownHouse;
-    boolean smoking;
-    boolean car;
 
 
     GetMasterCastResponse masterCastResponse;
@@ -159,6 +164,9 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     GetQualificationBean getQualificationBean;
     GetMaritalStatusResponse getMaritalStatusResponse;
     GetDrinkingHabits getDrinkingHabits;
+    GetOwnCarResponse getOwnCarResponse;
+    GetOwnHouseResponse getOwnHouseResponse;
+    GetSmokingResponse getSmokingResponse;
 
     View view;
     private String minDistance;
@@ -265,8 +273,10 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         selectedDoshamId = response.getReturnData().getDoshamid();
         selectedMaritalStatusId = response.getReturnData().getMatrialStatusid();
         selectedDrinkingStatusId = response.getReturnData().getDrinkingStatusid();
+        selectedOwnCarId = response.getReturnData().getOwnCarId();
+        selectedOwnHouseId = response.getReturnData().getOwnHouseId();
+        selectedSmokingStatusId = response.getReturnData().getSmokingId();
 
-        ownHouse = response.getReturnData().isOwnHouse();
         setData();
     }
 
@@ -278,7 +288,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getMasterCastName());
         }
-        intilizeAdapter();
+        initializeAdapter();
     }
 
     @Override
@@ -289,7 +299,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getReligionName());
         }
-        intilizeAdapter();
+        initializeAdapter();
     }
 
     @Override
@@ -300,12 +310,16 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getLivingWithName());
         }
-        intilizeAdapter();
+        initializeAdapter();
     }
 
     @Override
     public void onSuccessfullyUpdatePreferences(UpdateMatrimonialResponse response) {
-        baseshowFeedbackMessage(rootLayout, "Updated successfully");
+
+        UiUtil.showToast(getActivity(), getString(R.string.profile_updated));
+        if (getFragmentManager() != null) {
+            getFragmentManager().popBackStack();
+        }
     }
 
     @Override
@@ -316,7 +330,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getName());
         }
-        intilizeAdapter();
+        initializeAdapter();
     }
 
     @Override
@@ -327,7 +341,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getComplexionname());
         }
-        intilizeAdapter();
+        initializeAdapter();
 
     }
 
@@ -339,7 +353,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getOccupationname());
         }
-        intilizeAdapter();
+        initializeAdapter();
 
     }
 
@@ -351,7 +365,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getQualificationname());
         }
-        intilizeAdapter();
+        initializeAdapter();
 
     }
 
@@ -363,7 +377,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getFoodHabitsName());
         }
-        intilizeAdapter();
+        initializeAdapter();
 
     }
 
@@ -375,7 +389,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getDrinkingStatus_Name());
         }
-        intilizeAdapter();
+        initializeAdapter();
 
     }
 
@@ -387,7 +401,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getPhysicalStatusName());
         }
-        intilizeAdapter();
+        initializeAdapter();
 
     }
 
@@ -399,7 +413,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getDoshamName());
         }
-        intilizeAdapter();
+        initializeAdapter();
 
     }
 
@@ -411,7 +425,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getNakshatraname());
         }
-        intilizeAdapter();
+        initializeAdapter();
 
     }
 
@@ -423,7 +437,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getBodytypename());
         }
-        intilizeAdapter();
+        initializeAdapter();
     }
 
     @Override
@@ -434,7 +448,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getMothertongueName());
         }
-        intilizeAdapter();
+        initializeAdapter();
 
     }
 
@@ -446,7 +460,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getName());
         }
-        intilizeAdapter();
+        initializeAdapter();
     }
 
     @Override
@@ -457,7 +471,40 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         for (int i = 0; i < response.getReturnData().size(); i++) {
             items.add(response.getReturnData().get(i).getMaritalStatus_Name());
         }
-        intilizeAdapter();
+        initializeAdapter();
+    }
+
+    @Override
+    public void onSuccessfullyGetOwnCar(GetOwnCarResponse response) {
+        getOwnCarResponse = response;
+        response.getReturnData().add(0, new OwnCar(0, getString(R.string.any)));
+        items.clear();
+        for (int i = 0; i < response.getReturnData().size(); i++) {
+            items.add(response.getReturnData().get(i).getOwnCarType());
+        }
+        initializeAdapter();
+    }
+
+    @Override
+    public void onSuccessfullyGetOwnHouse(GetOwnHouseResponse response) {
+        getOwnHouseResponse = response;
+        response.getReturnData().add(0, new OwnHouse(0, getString(R.string.any)));
+        items.clear();
+        for (int i = 0; i < response.getReturnData().size(); i++) {
+            items.add(response.getReturnData().get(i).getOwnHouseType());
+        }
+        initializeAdapter();
+    }
+
+    @Override
+    public void onSuccessfullyGetSmoking(GetSmokingResponse response) {
+        getSmokingResponse = response;
+        response.getReturnData().add(0, new Smoking(0, getString(R.string.any)));
+        items.clear();
+        for (int i = 0; i < response.getReturnData().size(); i++) {
+            items.add(response.getReturnData().get(i).getSmokingType());
+        }
+        initializeAdapter();
     }
 
     private void setData() {
@@ -478,19 +525,10 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         setText(textViewQualification, response.getReturnData().getQualificationName());
         setText(textViewMatrialstatus, response.getReturnData().getMaritalStatusName());
         setText(textViewDrinkingStatus, response.getReturnData().getDrinkingStatusName());
+        setText(textViewOwnCar, response.getReturnData().getOwnCarType());
+        setText(textViewOwnHouse, response.getReturnData().getOwnHouseType());
+        setText(textViewSmoking, response.getReturnData().getSmokingType());
 
-
-        if (response.getReturnData().isOwnHouse()) {
-            ceheckBoxHouse.setChecked(true);
-        }
-
-        if (response.getReturnData().isIsSmoking()) {
-            checkBoxSmoking.setChecked(true);
-        }
-
-        if (response.getReturnData().isOwnCar()) {
-            checkBoxOwncar.setChecked(true);
-        }
 
        /* if (!response.getReturnData().getFromLocation().isEmpty()&&!response.getReturnData().getToLocation().isEmpty()){
             seekBarDistance.setMinStartValue(Float.parseFloat(response.getReturnData().getFromLocation())).setMaxStartValue(Float.parseFloat(response.getReturnData().getToLocation())).apply();
@@ -632,7 +670,28 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         mPresenter.getDosham();
     }
 
-    public void intilizeAdapter() {
+    @OnClick(R.id.relativeOwnCar)
+    public void relativeOwnCarClick(View view) {
+        clickedItem = "OwnCar";
+        this.view = view;
+        mPresenter.getOwnCar();
+    }
+
+    @OnClick(R.id.relativeOwnHouse)
+    public void relativeOwnHouseClick(View view) {
+        clickedItem = "OwnHouse";
+        this.view = view;
+        mPresenter.getOwnHouse();
+    }
+
+    @OnClick(R.id.relativeSmoking)
+    public void relativeSmokingClick(View view) {
+        clickedItem = "Smoking";
+        this.view = view;
+        mPresenter.getSmoking();
+    }
+
+    public void initializeAdapter() {
         ItemAdapter adapter = new ItemAdapter(items);
         adapter.OnItemClickListener(this);
         showPopWindow(view, adapter);
@@ -690,6 +749,15 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         } else if (clickedItem.equalsIgnoreCase("nakshakra")) {
             selectedNakshatraId = getNakshatrasBean.getReturnData().get(position).getNakshatraid();
             textViewNakshatra.setText(getNakshatrasBean.getReturnData().get(position).getNakshatraname());
+        } else if (clickedItem.equalsIgnoreCase("OwnCar")) {
+            selectedOwnCarId = getOwnCarResponse.getReturnData().get(position).getOwnCarId();
+            textViewOwnCar.setText(getOwnCarResponse.getReturnData().get(position).getOwnCarType());
+        } else if (clickedItem.equalsIgnoreCase("OwnHouse")) {
+            selectedOwnHouseId = getOwnHouseResponse.getReturnData().get(position).getOwnHouseId();
+            textViewOwnHouse.setText(getOwnHouseResponse.getReturnData().get(position).getOwnHouseType());
+        } else if (clickedItem.equalsIgnoreCase("Smoking")) {
+            selectedSmokingStatusId = getSmokingResponse.getReturnData().get(position).getSmokingId();
+            textViewSmoking.setText(getSmokingResponse.getReturnData().get(position).getSmokingType());
         }
     }
 
@@ -706,12 +774,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
 //            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_living_with));
 //        } else {
 
-            ownHouse = ceheckBoxHouse.isChecked();
-            smoking = checkBoxSmoking.isChecked();
-
-            car = checkBoxOwncar.isChecked();
-
-            FrequentFunctions.hideKeyBoard(context, view);
+        FrequentFunctions.hideKeyBoard(context, view);
 
 
             MatrimonialRequest matrimonialRequest = new MatrimonialRequest();
@@ -720,8 +783,8 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
 //            matrimonialRequest.setCountryId(Constants.COUNTRY_ID);
             matrimonialRequest.setReligionId(selectedReligionId);
             matrimonialRequest.setCasteId(selectedMaterCastId);
-            matrimonialRequest.setOwnCar(car);
-            matrimonialRequest.setOwnHouse(ownHouse);
+        matrimonialRequest.setOwnCarId(selectedOwnCarId);
+        matrimonialRequest.setOwnHouseId(selectedOwnHouseId);
             matrimonialRequest.setLivingWithId(selectedLivingId);
             matrimonialRequest.setMinHeight(minHeight);
             matrimonialRequest.setMaxHeight(maxHeight);
@@ -739,7 +802,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
             matrimonialRequest.setComplexionid(selectedComplexionId);
             matrimonialRequest.setOccupationid(selectedOccupationId);
             matrimonialRequest.setQualificationid(selectedQualificationId);
-            matrimonialRequest.setIsSmoking(smoking);
+        matrimonialRequest.setSmokingId(selectedSmokingStatusId);
             matrimonialRequest.setFoodHabitsid(selectedFoodHabitesId);
             matrimonialRequest.setDrinkingStatusid(selectedDrinkingStatusId);
             matrimonialRequest.setMotherTougeid(selectedMothertoungeId);

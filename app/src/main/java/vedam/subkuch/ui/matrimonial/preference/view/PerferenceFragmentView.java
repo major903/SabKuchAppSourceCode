@@ -1,5 +1,6 @@
 package vedam.subkuch.ui.matrimonial.preference.view;
 
+import vedam.subkuch.network.GetSmokingResponse;
 import vedam.subkuch.network.models.GetBodyTypeBean;
 import vedam.subkuch.network.models.GetCityResponse;
 import vedam.subkuch.network.models.GetComplexionBean;
@@ -11,6 +12,8 @@ import vedam.subkuch.network.models.GetMaritalStatusResponse;
 import vedam.subkuch.network.models.GetMothertongueBean;
 import vedam.subkuch.network.models.GetNakshatrasBean;
 import vedam.subkuch.network.models.GetOccupationBean;
+import vedam.subkuch.network.models.GetOwnCarResponse;
+import vedam.subkuch.network.models.GetOwnHouseResponse;
 import vedam.subkuch.network.models.GetPhysicalStatusBean;
 import vedam.subkuch.network.models.GetQualificationBean;
 import vedam.subkuch.network.models.getLiving.GetLivingResponse;
@@ -62,4 +65,10 @@ public interface PerferenceFragmentView {
     void onSuccessfullyGetCity(GetCityResponse response);
 
     void onSuccessfullyGetMaritalStatus(GetMaritalStatusResponse response);
+
+    void onSuccessfullyGetOwnCar(GetOwnCarResponse response);
+
+    void onSuccessfullyGetOwnHouse(GetOwnHouseResponse response);
+
+    void onSuccessfullyGetSmoking(GetSmokingResponse response);
 }
