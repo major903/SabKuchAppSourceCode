@@ -335,7 +335,9 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
     @OnClick({R.id.btnUpdate})
     public void btnUpdateClick(View view) {
         FrequentFunctions.hideKeyBoard(context, view);
-        if (!isImageLinkPresent && getImageUri() == null) {
+        if (!switchDatingOrMatrimonial.isChecked())
+            baseshowFeedbackMessage(rootLayout, getNotInterestedString());
+        else if (!isImageLinkPresent && getImageUri() == null) {
             baseshowFeedbackMessage(rootLayout, getString(R.string.add_profile_pricture));
         } else if (selectedReligionId == -1) {
             baseshowFeedbackMessage(rootLayout, getString(R.string.empty_religion));
@@ -393,6 +395,14 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
                 uploadProfileImage();
             //mPresenter.updateMaterimonial(Constants.USER_ID, selectedReligionId + "", selectedMaterCastId + "", selectedSubCastId + "", ownCar, ownHouse, selectedLivingId + "", "123", selectedPreffedType, editTextHeight.getText().toString(), editTextWeight.getText().toString(), editTextAge.getText().toString(), "2121.212", "65656.2212", selectedNakshakraId + "", selectedBodytypeId + "", selectedComplexionId + "", selectedOccupationId + "", selectedQualificationId + "", editTextIncome.getText().toString(), smokingstatus, drinkingstatus, selectedFoodhabitsId + "", selectedMothertougeId + "", selectedPhysicalstatusId + "", selectedMatirialStatusId + "", selectedDoshamId + "");
         }
+    }
+
+    private String getNotInterestedString() {
+
+        if (isDating)
+            return getString(R.string.no_interest_dating);
+        else
+            return getString(R.string.no_interest_matrimonial);
     }
 
     private void uploadProfileImage() {
@@ -671,15 +681,17 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
 
         if (returnDataBean.getImagesList() != null && returnDataBean.getImagesList().length > 0) {
             String imageLink = returnDataBean.getImagesList()[0].getImage();
-            isImageLinkPresent = true;
-            if (TextUtils.isEmpty(imageLink)) {
-                imageLink = "junk";
+            if (!TextUtils.isEmpty(imageLink)) {
+                isImageLinkPresent = true;
+                UiUtil.setImageView(new ImageSetter.ImageBuilder(context)
+                        .setImageLink(imageLink)
+                        .setPlaceholderResource(R.drawable.placeholder_small)
+                        .setErrorResource(R.drawable.placeholder_small)
+                        .setTarget(ivPicture).build());
+            } else {
                 isImageLinkPresent = false;
+                ivPicture.setBackgroundResource(R.drawable.placeholder_small);
             }
-            UiUtil.setImageView(new ImageSetter.ImageBuilder(context)
-                    .setImageLink(imageLink)
-                    .setDefaults()
-                    .setTarget(ivPicture).build());
         } else
             isImageLinkPresent = false;
 

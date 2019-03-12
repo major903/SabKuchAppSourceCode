@@ -1,6 +1,7 @@
 package vedam.subkuch.ui.matrimonial.viewProfile;
 
 
+import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,11 +11,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.Response;
+import com.google.gson.Gson;
+
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseFragment;
 import vedam.subkuch.databinding.FragmentViewProfileBinding;
 import vedam.subkuch.helpers.Constants;
+import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.ui.matrimonial.models.DatingProfile;
+import vedam.subkuch.ui.matrimonial.models.LikeDislike;
+import vedam.subkuch.ui.matrimonial.models.LikeDislikeResponse;
+import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.ImageSetter;
 import vedam.subkuch.utils.UiUtil;
@@ -26,6 +34,7 @@ public class ViewProfileFragment extends BaseFragment {
 
     private DatingProfile datingProfile;
     private FragmentViewProfileBinding fragmentViewProfileBinding;
+    private boolean isDating;
 
     public ViewProfileFragment() {
         // Required empty public constructor
@@ -42,8 +51,10 @@ public class ViewProfileFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null)
+        if (getArguments() != null) {
             datingProfile = getArguments().getParcelable(Constants.EXTRA_DATA);
+            isDating = getArguments().getBoolean(Constants.EXTRA_IS_DATING);
+        }
     }
 
     @Override
@@ -58,6 +69,17 @@ public class ViewProfileFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initUI();
+        bindCallback();
+    }
+
+    private void bindCallback() {
+
+        fragmentViewProfileBinding.fabDislike.setOnClickListener(v -> showWarning());
+    }
+
+    private void showWarning() {
+
+        UiUtil.showConfirmationDialog(context, getString(R.string.are_you_sure_unmatch), (dialog, which) -> setUnmatch(), (dialog, which) -> dialog.dismiss(), true);
     }
 
     private void initUI() {
@@ -66,11 +88,12 @@ public class ViewProfileFragment extends BaseFragment {
             String imageLink = datingProfile.getImagesList()[0].getImage();
             UiUtil.setImageView(new ImageSetter.ImageBuilder(context)
                     .setImageLink(imageLink)
-                    .setDefaults()
-                    .setTarget(fragmentViewProfileBinding.ivPicture)
+                    .setPlaceholderResource(R.drawable.placeholder)
+                    .setErrorResource(R.drawable.placeholder)
+                    .setTarget(fragmentViewProfileBinding.ivProfile)
                     .build());
         } else
-            fragmentViewProfileBinding.ivPicture.setVisibility(View.GONE);
+            fragmentViewProfileBinding.ivProfile.setBackgroundResource(R.drawable.placeholder);
 
         String fullName = AppUtil.getFullName(datingProfile.getFirstName(), datingProfile.getLastName());
         fragmentViewProfileBinding.tvName.setText(AppUtil.getNameAndAge(fullName, datingProfile.getAge()));
@@ -98,4 +121,33 @@ public class ViewProfileFragment extends BaseFragment {
         UiUtil.setTextViewWithBoldPrefix(context, "Car Status :", datingProfile.getOwnCarType(), fragmentViewProfileBinding.tvOwnCar);
         UiUtil.setTextViewWithBoldPrefix(context, "House Status :", datingProfile.getOwnHouseType(), fragmentViewProfileBinding.tvOwnHouse);
     }
+
+    private void setUnmatch() {
+        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
+
+        LikeDislike likeDislike = new LikeDislike();
+        String userId = AppPrefs.getPrefsUserId(context);
+        likeDislike.setProfileId(userId);
+        likeDislike.setReactionType(Constants.REACTION_TYPE_UN_MATCH);
+        likeDislike.setTargetProfileId(datingProfile.getProfileId());
+
+        if (isDating)
+            DataFetcher.setDatingLikeDislike(context, new Gson().toJson(likeDislike), onLikeDislikeSuccessListener,
+                    LikeDislikeResponse.class, onErrorListener);
+        else
+            DataFetcher.setMatrimonyLikeDislike(context, new Gson().toJson(likeDislike), onLikeDislikeSuccessListener,
+                    LikeDislikeResponse.class, onErrorListener);
+    }
+
+    private Response.Listener<LikeDislikeResponse> onLikeDislikeSuccessListener = response -> {
+
+        UiUtil.cancelProgressDialog();
+        if (getActivity() != null)
+            if (response != null && response.getReturnMessage().equals(Constants.SUCCESS) && response.getLikeDislike() != null) {
+                UiUtil.showToast(context, getString(R.string.unmatched));
+                if (getGlobalFragmentInteractionListener() != null)
+                    getGlobalFragmentInteractionListener().setFragmentResult(Activity.RESULT_OK, null);
+            } else
+                UiUtil.showToast(context, getString(R.string.err_occurred));
+    };
 }

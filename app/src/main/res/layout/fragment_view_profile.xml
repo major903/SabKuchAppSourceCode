@@ -13,15 +13,42 @@
             android:orientation="vertical"
             android:padding="@dimen/margin_16dp">
 
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/iv_picture"
-                android:layout_width="@dimen/margin_136dp"
-                android:layout_height="@dimen/margin_136dp"
-                android:layout_gravity="center_horizontal"
-                android:scaleType="fitXY"
-                app:riv_border_color="@color/colorPrimary"
-                app:riv_border_width="@dimen/margin_2dp"
-                app:riv_oval="true" />
+            <android.support.design.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".ui.matrimonial.ShowProfilesFragment">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cv_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/margin_432dp"
+                    android:layout_marginBottom="@dimen/margin_28dp"
+                    app:cardBackgroundColor="@color/grey"
+                    app:cardCornerRadius="8dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="true">
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/iv_profile"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        app:riv_corner_radius="8dp"
+                        tools:src="@drawable/placeholder" />
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab_dislike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_96dp"
+                    android:src="@drawable/baseline_thumb_down_white_24"
+                    app:backgroundTint="@color/red"
+                    app:layout_anchor="@+id/cv_image"
+                    app:layout_anchorGravity="center_horizontal|bottom" />
+
+            </android.support.design.widget.CoordinatorLayout>
 
             <TextView
                 android:id="@+id/tv_name"

@@ -8,6 +8,9 @@ import android.Manifest;
 
 public class Constants {
 
+    Constants() {
+    }
+
     public static final String EXTRA_IMAGE_URL = "EXTRA_IMAGE_URL";
     public static final String EXTRA_RECEIVER = "EXTRA_RECEIVER";
     public static final String EXTRA_DIRECTORY_DETAIL = "EXTRA_DIRECTORY_DETAIL";
@@ -46,6 +49,7 @@ public class Constants {
     public static final int REQUEST_ADD_QUESTION = 5;
     public static final int REQUEST_PLACE_PICKER = 6;
     public static final int REQUEST_CROP_IMAGE = 7;
+    public static final int REQUEST_VIEW_PROFILE = 7;
 
     public static final int SUCCESS_RESULT = 0;
     public static final int FAILURE_RESULT = 1;
@@ -122,6 +126,7 @@ public class Constants {
     public static final int SET_PIN_CODE = 1;
     public static final int RE_ENTER_PIN_CODE = 2;
 
+    public static final int REACTION_TYPE_UN_MATCH = 0;
     public static final int REACTION_TYPE_LIKE = 1;
     public static final int REACTION_TYPE_DISLIKE = 2;
 

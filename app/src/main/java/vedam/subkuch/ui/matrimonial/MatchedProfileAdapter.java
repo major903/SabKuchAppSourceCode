@@ -22,7 +22,7 @@ public class MatchedProfileAdapter extends RecyclerView.Adapter<MatchedProfileAd
 
     private Context context;
     private ArrayList<DatingProfile> datingProfiles;
-    OnListViewItemClickListener listViewItemClickListener;
+    private OnListViewItemClickListener listViewItemClickListener;
 
     MatchedProfileAdapter(Context context, ArrayList<DatingProfile> datingProfiles, OnListViewItemClickListener listViewItemClickListener) {
 
@@ -49,10 +49,12 @@ public class MatchedProfileAdapter extends RecyclerView.Adapter<MatchedProfileAd
         if (datingProfile.getImagesList() != null && datingProfile.getImagesList().length > 0)
             UiUtil.setImageView(new ImageSetter.ImageBuilder(context)
                     .setImageLink(datingProfile.getImagesList()[0].getImage())
-                    .setPlaceholderResource(R.drawable.white)
-                    .setErrorResource(R.drawable.white)
+                    .setPlaceholderResource(R.drawable.placeholder_small)
+                    .setErrorResource(R.drawable.placeholder_small)
                     .setTarget(holder.ivProfile)
                     .build());
+        else
+            holder.ivProfile.setImageResource(R.drawable.placeholder_small);
         holder.bind(datingProfile, position, listViewItemClickListener);
     }
 

@@ -1,6 +1,7 @@
 package vedam.subkuch.ui.matrimonial;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -153,7 +154,8 @@ public class MatchedProfileFragment extends BaseFragment implements OnListViewIt
         Intent intent = new Intent(context, ViewProfileActivity.class);
         intent.putExtra(Constants.EXTRA_NAME, AppUtil.getFullName(datingProfile.getFirstName(), datingProfile.getLastName()));
         intent.putExtra(Constants.EXTRA_DATA, datingProfile);
-        startActivity(intent);
+        intent.putExtra(Constants.EXTRA_IS_DATING, isDating);
+        startActivityForResult(intent, Constants.REQUEST_VIEW_PROFILE);
     }
 
     private void startChatActivity(DatingProfile datingProfile) {
@@ -197,4 +199,25 @@ public class MatchedProfileFragment extends BaseFragment implements OnListViewIt
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case Constants.REQUEST_VIEW_PROFILE:
+                if (resultCode == Activity.RESULT_OK) {
+                    refreshData();
+                }
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    private void refreshData() {
+        pageNo = 1;
+        hasMoreProjects = true;
+        loading = true;
+        datingProfiles.clear();
+        adapter.notifyDataSetChanged();
+        getMatchedProfiles();
+    }
 }

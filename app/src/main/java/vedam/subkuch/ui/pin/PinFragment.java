@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
 import vedam.subkuch.R;
@@ -180,6 +181,15 @@ public class PinFragment extends BaseFragment {
                 UiUtil.showToast(context, getString(R.string.incorrect_pin));
     };
 
+
+    @Override
+    protected void parseAndShowError(VolleyError error) {
+        String errorMessage = error.getMessage();
+        if (!TextUtils.isEmpty(errorMessage))
+            UiUtil.showToast(context, errorMessage);
+        else
+            super.parseAndShowError(error);
+    }
 
     private boolean validateError() {
 

@@ -110,7 +110,7 @@
     <dimen name="margin_96dp">96dp</dimen>
     <dimen name="profile_fab_margin">96dp</dimen>
     <dimen name="fab_half_margin">12dp</dimen>
-    <dimen name="margin_480dp">480dp</dimen>
+    <dimen name="margin_432dp">432dp</dimen>
     <dimen name="dp_four">4dp</dimen>
     <dimen name="dp_ten">10dp</dimen>
     <dimen name="dp_twenty">20dp</dimen>
@@ -126,4 +126,5 @@
     <dimen name="dp_twenty_five">25dp</dimen>
     <dimen name="dp_four_hundered">400dp</dimen>
     <dimen name="margin_136dp">136dp</dimen>
+    <dimen name="margin_28dp">28dp</dimen>
 </resources>

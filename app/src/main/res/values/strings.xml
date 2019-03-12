@@ -233,7 +233,7 @@
     <string name="please_enter_pin">Please enter PIN</string>
     <string name="incorrect_pin">Incorrect Pin</string>
     <string name="pin_mismatch">Pin mismatch</string>
-    <string name="no_profiles_reason">Reason 1 : You have not updated your preference\nReason 2 : You are male. You can only see women\'s profile who have clicked on Like</string>
+    <string name="no_profiles_reason">Reason 1 : You have not updated your profile\nReason 2 : You are male. You can only see women\'s profile who have clicked on Like\nReason 3 : No more profiles to show</string>
     <string name="edit_preference">Edit Preference</string>
     <string name="profile_image">Profile Image</string>
     <string name="reaction_posted">Reaction posted</string>
@@ -338,4 +338,8 @@
     <string name="select_weight">Select Weight</string>
     <string name="fail_to_crop">Failed to crop</string>
     <string name="interested_in_dating">Interested in Dating</string>
+    <string name="unmatched">Unmatched</string>
+    <string name="are_you_sure_unmatch">Are you sure you want to unmatch?</string>
+    <string name="no_interest_dating">You have switched off interest in Dating</string>
+    <string name="no_interest_matrimonial">You have switched off interest in Matrimonial</string>
 </resources>

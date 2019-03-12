@@ -42,9 +42,12 @@ public class ProfileStackAdapter extends RecyclerView.Adapter<ProfileStackAdapte
         if (datingProfile.getImagesList() != null && datingProfile.getImagesList().length > 0)
             UiUtil.setImageView(new ImageSetter.ImageBuilder(context)
                     .setImageLink(datingProfile.getImagesList()[0].getImage())
-                    .setDefaults()
+                    .setErrorResource(R.drawable.placeholder)
+                    .setPlaceholderResource(R.drawable.placeholder)
                     .setTarget(holder.ivProfile)
                     .build());
+        else
+            holder.ivProfile.setImageResource(R.drawable.placeholder);
     }
 
     @Override

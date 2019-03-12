@@ -16,7 +16,7 @@
         android:layout_height="@dimen/margin_64dp"
         android:layout_marginLeft="@dimen/margin_16dp"
         android:scaleType="fitXY"
-        android:src="@color/grey"
+        tools:src="@drawable/placeholder_small"
         app:riv_oval="true" />
 
     <TextView

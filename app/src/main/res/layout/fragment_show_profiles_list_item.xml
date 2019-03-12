@@ -15,7 +15,7 @@
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/iv_profile"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/margin_480dp"
+        android:layout_height="@dimen/margin_432dp"
         android:scaleType="centerCrop"
         app:riv_corner_radius="8dp"
         tools:src="@drawable/whynot" />

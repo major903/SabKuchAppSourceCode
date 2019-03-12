@@ -151,7 +151,7 @@ public class UiUtil {
                 .show();
 
         Typeface font = getTypeface(context, context.getString(R.string.typeface_regular));
-        TextView textView = (TextView) dialog.findViewById(android.R.id.message);
+        TextView textView = dialog.findViewById(android.R.id.message);
         if (textView != null) {
             textView.setTypeface(font);
         }
@@ -162,18 +162,13 @@ public class UiUtil {
                 .setCancelable(cancelable)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
+                .setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss())
                 .show();
 
         Typeface font1 = getTypeface(context, context.getString(R.string.typeface_bold));
         Typeface font2 = getTypeface(context, context.getString(R.string.typeface_regular));
-        TextView tvTitle = (TextView) dialog.findViewById(android.R.id.title);
-        TextView tvMessage = (TextView) dialog.findViewById(android.R.id.message);
+        TextView tvTitle = dialog.findViewById(android.R.id.title);
+        TextView tvMessage = dialog.findViewById(android.R.id.message);
         setTypeface(tvTitle, font1);
         setTypeface(tvMessage, font2);
     }
@@ -182,17 +177,12 @@ public class UiUtil {
         AlertDialog dialog = new AlertDialog.Builder(context)
                 .setCancelable(cancelable)
                 .setMessage(message)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
+                .setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss())
                 .show();
 
 
         Typeface font2 = getTypeface(context, context.getString(R.string.typeface_regular));
-        TextView tvMessage = (TextView) dialog.findViewById(android.R.id.message);
+        TextView tvMessage = dialog.findViewById(android.R.id.message);
         setTypeface(tvMessage, font2);
     }
 
@@ -209,12 +199,7 @@ public class UiUtil {
                 .setPositiveButton(context.getString(R.string.yes), yesListener);
 
         if (noListener == null)
-            builder.setNegativeButton(context.getString(R.string.no), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            });
+            builder.setNegativeButton(context.getString(R.string.no), (dialogInterface, i) -> dialogInterface.dismiss());
         else
             builder.setNegativeButton(context.getString(R.string.no), noListener);
 
