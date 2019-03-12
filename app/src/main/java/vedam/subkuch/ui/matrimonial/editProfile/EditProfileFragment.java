@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -96,12 +97,14 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
     TextView textViewOwnHouse;
     @BindView(R.id.textViewSmoking)
     TextView textViewSmoking;
+    @BindView(R.id.tv_interested_in)
+    TextView tvInterestedIn;
 
     @BindView(R.id.btnUpdate)
     TextView btnUpdate;
 
     @BindView(R.id.switchMatrimonial)
-    Switch switchMatrimonial;
+    Switch switchDatingOrMatrimonial;
 
     String clickedItem = "";
 
@@ -178,6 +181,62 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
     int selectedOwnCarId = -1;
     int selectedOwnHouseId = -1;
     int selectedSmokingStatusId = -1;
+    @BindView(R.id.tv_religion_heading)
+    TextView tvReligionHeading;
+    @BindView(R.id.relativeLayoutReligion)
+    RelativeLayout relativeLayoutReligion;
+    @BindView(R.id.tv_caste_heading)
+    TextView tvCasteHeading;
+    @BindView(R.id.relativeLayoutMasterCast)
+    RelativeLayout relativeLayoutMasterCast;
+    @BindView(R.id.tv_gotra_heading)
+    TextView tvGotraHeading;
+    @BindView(R.id.relativeLayoutGotra)
+    RelativeLayout relativeLayoutGotra;
+    @BindView(R.id.tv_nakshatra_heading)
+    TextView tvNakshatraHeading;
+    @BindView(R.id.relativeLayoutNakshakra)
+    RelativeLayout relativeLayoutNakshakra;
+    @BindView(R.id.tv_complexion_heading)
+    TextView tvComplexionHeading;
+    @BindView(R.id.relativeLayoutComplexion)
+    RelativeLayout relativeLayoutComplexion;
+    @BindView(R.id.tv_qualification_heading)
+    TextView tvQualificationHeading;
+    @BindView(R.id.relativeLayoutQualification)
+    RelativeLayout relativeLayoutQualification;
+    @BindView(R.id.tv_physical_status_heading)
+    TextView tvPhysicalStatusHeading;
+    @BindView(R.id.relativeLayoutPhysicalstatus)
+    RelativeLayout relativeLayoutPhysicalstatus;
+    @BindView(R.id.tv_dosham_heading)
+    TextView tvDoshamHeading;
+    @BindView(R.id.relativeLayoutDosham)
+    RelativeLayout relativeLayoutDosham;
+    @BindView(R.id.tv_mother_tongue_heading)
+    TextView tvMotherTongueHeading;
+    @BindView(R.id.relativeLayoutMothertouge)
+    RelativeLayout relativeLayoutMothertouge;
+    @BindView(R.id.tv_living_with_heading)
+    TextView tvLivingWithHeading;
+    @BindView(R.id.relativeLayoutLiving)
+    RelativeLayout relativeLayoutLiving;
+    @BindView(R.id.tv_marital_status_heading)
+    TextView tvMaritalStatusHeading;
+    @BindView(R.id.relativeMatrialStatus)
+    RelativeLayout relativeMatrialStatus;
+    @BindView(R.id.tv_annual_income_heading)
+    TextView tvAnnualIncomeHeading;
+    @BindView(R.id.relativeAnnualIncome)
+    RelativeLayout relativeAnnualIncome;
+    @BindView(R.id.tv_car_heading)
+    TextView tvCarHeading;
+    @BindView(R.id.relativeOwnCar)
+    RelativeLayout relativeOwnCar;
+    @BindView(R.id.tv_house_heading)
+    TextView tvHouseHeading;
+    @BindView(R.id.relativeOwnHouse)
+    RelativeLayout relativeOwnHouse;
 
 
     private Unbinder unbinder;
@@ -189,10 +248,22 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
     private String longitude;
     private Stack<Object> object = new Stack<>();
     private boolean isImageLinkPresent;
+    private boolean isDating;
 
-    public static EditProfileFragment newInstance() {
+    public static EditProfileFragment newInstance(boolean isDating) {
 
-        return new EditProfileFragment();
+        EditProfileFragment fragment = new EditProfileFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(Constants.EXTRA_IS_DATING, isDating);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null)
+            isDating = getArguments().getBoolean(Constants.EXTRA_IS_DATING);
     }
 
     @Nullable
@@ -203,15 +274,49 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
         unbinder = ButterKnife.bind(this, view);
         setTitle(getString(R.string.edit_profile));
         mPresenter = new EditProfileFragmentPresenter(this);
-        mPresenter.getUserDetail(AppPrefs.getPrefsUserId(context));
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (isDating)
+            hideFields();
+        mPresenter.getUserDetail(AppPrefs.getPrefsUserId(context), isDating);
         requestLocation();
         setImagesLayout(view);
+    }
+
+    private void hideFields() {
+        tvInterestedIn.setText(getString(R.string.interested_in_dating));
+        tvReligionHeading.setVisibility(View.GONE);
+        relativeLayoutReligion.setVisibility(View.GONE);
+        tvCasteHeading.setVisibility(View.GONE);
+        relativeLayoutMasterCast.setVisibility(View.GONE);
+        tvGotraHeading.setVisibility(View.GONE);
+        relativeLayoutGotra.setVisibility(View.GONE);
+        tvNakshatraHeading.setVisibility(View.GONE);
+        relativeLayoutNakshakra.setVisibility(View.GONE);
+        tvComplexionHeading.setVisibility(View.GONE);
+        relativeLayoutComplexion.setVisibility(View.GONE);
+        tvQualificationHeading.setVisibility(View.GONE);
+        relativeLayoutQualification.setVisibility(View.GONE);
+        tvPhysicalStatusHeading.setVisibility(View.GONE);
+        relativeLayoutPhysicalstatus.setVisibility(View.GONE);
+        tvDoshamHeading.setVisibility(View.GONE);
+        relativeLayoutDosham.setVisibility(View.GONE);
+        tvMotherTongueHeading.setVisibility(View.GONE);
+        relativeLayoutMothertouge.setVisibility(View.GONE);
+        tvLivingWithHeading.setVisibility(View.GONE);
+        relativeLayoutLiving.setVisibility(View.GONE);
+        tvMaritalStatusHeading.setVisibility(View.GONE);
+        relativeMatrialStatus.setVisibility(View.GONE);
+        tvAnnualIncomeHeading.setVisibility(View.GONE);
+        relativeAnnualIncome.setVisibility(View.GONE);
+        tvCarHeading.setVisibility(View.GONE);
+        relativeOwnCar.setVisibility(View.GONE);
+        tvHouseHeading.setVisibility(View.GONE);
+        relativeOwnHouse.setVisibility(View.GONE);
     }
 
     @Override
@@ -259,7 +364,10 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
             updateProfileRequest.setOwnCarId(selectedOwnCarId);
             updateProfileRequest.setOwnHouseId(selectedOwnHouseId);
             updateProfileRequest.setLivingWithId(selectedLivingId);
-            updateProfileRequest.setMatrimonial(switchMatrimonial.isChecked());
+            if (isDating)
+                updateProfileRequest.setDating(switchDatingOrMatrimonial.isChecked());
+            else
+                updateProfileRequest.setMatrimonial(switchDatingOrMatrimonial.isChecked());
             updateProfileRequest.setHeightId(selectedHeightId);
             updateProfileRequest.setWeightId(selectedWeightId);
             updateProfileRequest.setGotraid(selectedSubCastId);
@@ -279,7 +387,7 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
             updateProfileRequest.setUpdatedDate(mUpdatedDate);
             object.add(new Object());
 
-            mPresenter.updateProfile(updateProfileRequest);
+            mPresenter.updateProfile(isDating, updateProfileRequest);
 
             if (getImageUri() != null)
                 uploadProfileImage();
@@ -303,7 +411,10 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
         imageIdRequest.setImageIds(arrayList);
         System.out.println(new Gson().toJson(imageIdRequest));*/
 
-        DataFetcher.uploadProfileImage(context, params, onImageUploadSuccessListener, GeneralResponse.class, onErrorListener);
+        if (isDating)
+            DataFetcher.uploadDatingProfileImage(context, params, onImageUploadSuccessListener, GeneralResponse.class, onErrorListener);
+        else
+            DataFetcher.uploadMatrimonialProfileImage(context, params, onImageUploadSuccessListener, GeneralResponse.class, onErrorListener);
     }
 
     private Response.Listener<GeneralResponse> onImageUploadSuccessListener = response -> {
@@ -644,7 +755,10 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
         textViewReligion.setText(returnDataBean.getReligionName());
         selectedReligionId = returnDataBean.getReligionId();
 
-        switchMatrimonial.setChecked(returnDataBean.isMatrimonial());
+        if (isDating)
+            switchDatingOrMatrimonial.setChecked(returnDataBean.isDating());
+        else
+            switchDatingOrMatrimonial.setChecked(returnDataBean.isMatrimonial());
         //setData(response);
     }
 

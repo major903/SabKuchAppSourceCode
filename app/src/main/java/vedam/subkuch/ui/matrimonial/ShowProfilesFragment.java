@@ -49,15 +49,26 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
     ArrayList<DatingProfile> datingProfiles = new ArrayList<>();
     private View vEmptyInflated;
     private CardStackLayoutManager manager;
-    private boolean isManual;
+    private boolean isManual, isDating;
 
     public ShowProfilesFragment() {
         // Required empty public constructor
     }
 
-    public static ShowProfilesFragment newInstance() {
+    public static ShowProfilesFragment newInstance(boolean isDating) {
 
-        return new ShowProfilesFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(Constants.EXTRA_IS_DATING, isDating);
+        ShowProfilesFragment fragment = new ShowProfilesFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null)
+            isDating = getArguments().getBoolean(Constants.EXTRA_IS_DATING);
     }
 
     @Override
@@ -76,7 +87,10 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
 
     private void getProfiles() {
         UiUtil.showProgressDialog(context, getString(R.string.please_wait));
-        DataFetcher.getDatingProfile(context, onProfileSuccessListener, DatingProfileResponse.class, onErrorListener, pageNo, pageSize);
+        if (isDating)
+            DataFetcher.getDatingProfile(context, onProfileSuccessListener, DatingProfileResponse.class, onErrorListener, pageNo, pageSize);
+        else
+            DataFetcher.getMatrimonialProfile(context, onProfileSuccessListener, DatingProfileResponse.class, onErrorListener, pageNo, pageSize);
     }
 
     private Response.Listener<DatingProfileResponse> onProfileSuccessListener = response -> {
@@ -171,9 +185,8 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
     private void setViewStubChildViews() {
 
         Button btEditProfile = vEmptyInflated.findViewById(R.id.bt_edit_profile);
-        btEditProfile.setOnClickListener(v -> {
-            addFragmentWithAnimation(R.id.content_frame, EditProfileFragment.newInstance(), Constants.TAG_PROFILE_FRAGMENT, true);
-        });
+        btEditProfile.setOnClickListener(v -> addFragmentWithAnimation(R.id.content_frame,
+                EditProfileFragment.newInstance(isDating), Constants.TAG_PROFILE_FRAGMENT, true));
     }
 
     private void bindCallbacks() {
@@ -201,7 +214,11 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
         likeDislike.setReactionType(reactionType);
         likeDislike.setTargetProfileId(datingProfiles.get(profileNo).getProfileId());
 
-        DataFetcher.setLikeDislike(context, new Gson().toJson(likeDislike), onLikeDislikeSuccessListener,
+        if (isDating)
+            DataFetcher.setDatingLikeDislike(context, new Gson().toJson(likeDislike), onLikeDislikeSuccessListener,
+                    LikeDislikeResponse.class, onErrorListener);
+        else
+            DataFetcher.setMatrimonyLikeDislike(context, new Gson().toJson(likeDislike), onLikeDislikeSuccessListener,
                 LikeDislikeResponse.class, onErrorListener);
     }
 

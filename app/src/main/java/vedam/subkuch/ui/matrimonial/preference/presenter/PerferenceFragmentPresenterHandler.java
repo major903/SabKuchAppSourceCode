@@ -4,7 +4,7 @@ import vedam.subkuch.network.models.updateMatrimonial.MatrimonialRequest;
 
 public interface PerferenceFragmentPresenterHandler {
 
-    void getPerference(String userId);
+    void getPerference(String userId, boolean isDating);
 
     void getMasterCast(String religionId);
 
@@ -46,7 +46,7 @@ public interface PerferenceFragmentPresenterHandler {
 
     void getMatrialStatus();
 
-    void editPreferences(MatrimonialRequest matrimonialRequest);
+    void editPreferences(MatrimonialRequest matrimonialRequest, boolean isDating);
 
     void getOwnCar();
 

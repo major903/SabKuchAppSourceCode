@@ -1,4 +1,4 @@
-package vedam.subkuch.ui.matrimonial;
+package vedam.subkuch.ui.pin;
 
 
 import android.content.Intent;
@@ -23,6 +23,7 @@ import vedam.subkuch.databinding.FragmentPinBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.network.models.GeneralResponse;
+import vedam.subkuch.ui.matrimonial.ShowProfilesActivity;
 import vedam.subkuch.ui.matrimonial.models.PinRequest;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.UiUtil;
@@ -35,7 +36,7 @@ public class PinFragment extends BaseFragment {
     private FragmentPinBinding fragmentPinBinding;
     private int code;
     private String previousPin;
-
+    private boolean isDating;
     public PinFragment() {
         // Required empty public constructor
     }
@@ -53,6 +54,7 @@ public class PinFragment extends BaseFragment {
         if (getArguments() != null) {
             code = getArguments().getInt(Constants.EXTRA_CODE);
             previousPin = getArguments().getString(Constants.EXTRA_PIN);
+            isDating = getArguments().getBoolean(Constants.EXTRA_IS_DATING);
         }
     }
 
@@ -122,6 +124,7 @@ public class PinFragment extends BaseFragment {
             Bundle bundle = new Bundle();
             bundle.putInt(Constants.EXTRA_CODE, Constants.RE_ENTER_PIN_CODE);
             bundle.putString(Constants.EXTRA_PIN, getPin());
+            bundle.putBoolean(Constants.EXTRA_IS_DATING, isDating);
             addFragmentWithAnimation(R.id.content_frame, PinFragment.newInstance(bundle), null, true);
         } else
             UiUtil.showToast(context, getString(R.string.please_enter_pin));
@@ -171,7 +174,7 @@ public class PinFragment extends BaseFragment {
         UiUtil.cancelProgressDialog();
         if (getActivity() != null)
             if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
-                startActivity(new Intent(context, ShowProfilesActivity.class));
+                startActivity(new Intent(context, ShowProfilesActivity.class).putExtra(Constants.EXTRA_IS_DATING, isDating));
                 getActivity().finish();
             } else
                 UiUtil.showToast(context, getString(R.string.incorrect_pin));

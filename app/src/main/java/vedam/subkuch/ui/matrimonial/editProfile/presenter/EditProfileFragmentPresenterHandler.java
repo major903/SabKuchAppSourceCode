@@ -16,7 +16,7 @@ public interface EditProfileFragmentPresenterHandler {
 
     void updateMaterimonial(String UserID, String ReligionId, String CasteId, String gotraId, String OwnCar, String OwnHouse, String LivingWithId, String AccessPin, String Prefferdtype, String height, String Weight, String age, String firstaLocationLatitudes, String firstalocationlongitudes, String nakshakra, String bodytype, String complexion, String occupation, String qualification, String anualIncome, String isSmoking, String isDrinking, String foodhabits, String mothertouge, String physicalstatus, String matrialstatus, String dosham);
 
-    void getUserDetail(String userId);
+    void getUserDetail(String userId, boolean isDating);
 
     void getBodytype();
 
@@ -50,5 +50,5 @@ public interface EditProfileFragmentPresenterHandler {
 
     void getAnnualIncome();
 
-    void updateProfile(UpdateProfileRequest updateProfileRequest);
+    void updateProfile(boolean isDating, UpdateProfileRequest updateProfileRequest);
 }

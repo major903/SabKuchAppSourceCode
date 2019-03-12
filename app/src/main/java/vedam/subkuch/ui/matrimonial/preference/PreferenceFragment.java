@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseFragment;
+import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.GetSmokingResponse;
 import vedam.subkuch.network.models.DrinkingHabits;
 import vedam.subkuch.network.models.GetBodyTypeBean;
@@ -123,6 +125,61 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     CrystalRangeSeekbar seekBarWeight;
     @BindView(R.id.textViewMatrialstatus)
     TextView textViewMatrialstatus;
+    @BindView(R.id.tv_marital_status_heading)
+    TextView tvMaritalStatusHeading;
+    @BindView(R.id.relativeLayoutMatrialstatus)
+    RelativeLayout relativeLayoutMatrialstatus;
+    @BindView(R.id.tv_mother_tongue_heading)
+    TextView tvMotherTongueHeading;
+    @BindView(R.id.relativeLayoutMothertouge)
+    RelativeLayout relativeLayoutMothertouge;
+    @BindView(R.id.tv_qualification_heading)
+    TextView tvQualificationHeading;
+    @BindView(R.id.relativeLayoutQualification)
+    RelativeLayout relativeLayoutQualification;
+    @BindView(R.id.tv_complexion_heading)
+    TextView tvComplexionHeading;
+    @BindView(R.id.relativeLayoutComplexion)
+    RelativeLayout relativeLayoutComplexion;
+    @BindView(R.id.tv_religion_heading)
+    TextView tvReligionHeading;
+    @BindView(R.id.relativeLayoutReligion)
+    RelativeLayout relativeLayoutReligion;
+    @BindView(R.id.tv_caste_heading)
+    TextView tvCasteHeading;
+    @BindView(R.id.relativeLayoutMasterCast)
+    RelativeLayout relativeLayoutMasterCast;
+    @BindView(R.id.tv_gotra_heading)
+    TextView tvGotraHeading;
+    @BindView(R.id.relativeLayoutSubCast)
+    RelativeLayout relativeLayoutSubCast;
+    @BindView(R.id.tv_nakshatra_heading)
+    TextView tvNakshatraHeading;
+    @BindView(R.id.relativeLayoutNakshakra)
+    RelativeLayout relativeLayoutNakshakra;
+    @BindView(R.id.tv_dosham_heading)
+    TextView tvDoshamHeading;
+    @BindView(R.id.relativeLayoutDosham)
+    RelativeLayout relativeLayoutDosham;
+    @BindView(R.id.tv_living_with_heading)
+    TextView tvLivingWithHeading;
+    @BindView(R.id.relativeLayoutLiving)
+    RelativeLayout relativeLayoutLiving;
+    @BindView(R.id.tv_physical_status_heading)
+    TextView tvPhysicalStatusHeading;
+    @BindView(R.id.relativeLayoutPhysicalstatus)
+    RelativeLayout relativeLayoutPhysicalstatus;
+    @BindView(R.id.tv_car_heading)
+    TextView tvCarHeading;
+    @BindView(R.id.relativeOwnCar)
+    RelativeLayout relativeOwnCar;
+    @BindView(R.id.tv_house_heading)
+    TextView tvHouseHeading;
+    @BindView(R.id.relativeOwnHouse)
+    RelativeLayout relativeOwnHouse;
+    @BindView(R.id.rl_income)
+    RelativeLayout rlIncome;
+
     private String minAge;
     private String maxAge;
     List<String> items = new ArrayList<>();
@@ -180,10 +237,22 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
 
     private String minIncome;
     private String maxMaxIncome;
+    private boolean isDating;
 
-    public static PreferenceFragment newInstance() {
+    public static PreferenceFragment newInstance(boolean isDating) {
 
-        return new PreferenceFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(Constants.EXTRA_IS_DATING, isDating);
+        PreferenceFragment fragment = new PreferenceFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null)
+            isDating = getArguments().getBoolean(Constants.EXTRA_IS_DATING);
     }
 
     @Nullable
@@ -193,8 +262,47 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_preference, container, false);
         setTitle(getString(R.string.preferences));
         unbinder = ButterKnife.bind(this, view);
-        init();
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if (isDating)
+            hideFields();
+        init();
+
+    }
+
+    private void hideFields() {
+        tvReligionHeading.setVisibility(View.GONE);
+        relativeLayoutReligion.setVisibility(View.GONE);
+        tvCasteHeading.setVisibility(View.GONE);
+        relativeLayoutMasterCast.setVisibility(View.GONE);
+        tvGotraHeading.setVisibility(View.GONE);
+        relativeLayoutSubCast.setVisibility(View.GONE);
+        tvNakshatraHeading.setVisibility(View.GONE);
+        relativeLayoutNakshakra.setVisibility(View.GONE);
+        tvComplexionHeading.setVisibility(View.GONE);
+        relativeLayoutComplexion.setVisibility(View.GONE);
+        tvQualificationHeading.setVisibility(View.GONE);
+        relativeLayoutQualification.setVisibility(View.GONE);
+        tvPhysicalStatusHeading.setVisibility(View.GONE);
+        relativeLayoutPhysicalstatus.setVisibility(View.GONE);
+        tvDoshamHeading.setVisibility(View.GONE);
+        relativeLayoutDosham.setVisibility(View.GONE);
+        tvMotherTongueHeading.setVisibility(View.GONE);
+        relativeLayoutMothertouge.setVisibility(View.GONE);
+        tvLivingWithHeading.setVisibility(View.GONE);
+        relativeLayoutLiving.setVisibility(View.GONE);
+        tvMaritalStatusHeading.setVisibility(View.GONE);
+        relativeLayoutMatrialstatus.setVisibility(View.GONE);
+        rlIncome.setVisibility(View.GONE);
+        tvCarHeading.setVisibility(View.GONE);
+        relativeOwnCar.setVisibility(View.GONE);
+        tvHouseHeading.setVisibility(View.GONE);
+        relativeOwnHouse.setVisibility(View.GONE);
     }
 
     @Override
@@ -235,7 +343,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         });
 
         mPresenter = new PerferenceFragmentPresenter(this);
-        mPresenter.getPerference(AppPrefs.getPrefsUserId(context));
+        mPresenter.getPerference(AppPrefs.getPrefsUserId(context), isDating);
     }
 
 
@@ -546,6 +654,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         else
             tv.setText(value);
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -777,41 +886,41 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         FrequentFunctions.hideKeyBoard(context, view);
 
 
-            MatrimonialRequest matrimonialRequest = new MatrimonialRequest();
-            matrimonialRequest.setProfileId(Integer.parseInt(AppPrefs.getPrefsUserId(context)));
-            matrimonialRequest.setCityId(selectedCityId);
+        MatrimonialRequest matrimonialRequest = new MatrimonialRequest();
+        matrimonialRequest.setProfileId(Integer.parseInt(AppPrefs.getPrefsUserId(context)));
+        matrimonialRequest.setCityId(selectedCityId);
 //            matrimonialRequest.setCountryId(Constants.COUNTRY_ID);
-            matrimonialRequest.setReligionId(selectedReligionId);
-            matrimonialRequest.setCasteId(selectedMaterCastId);
+        matrimonialRequest.setReligionId(selectedReligionId);
+        matrimonialRequest.setCasteId(selectedMaterCastId);
         matrimonialRequest.setOwnCarId(selectedOwnCarId);
         matrimonialRequest.setOwnHouseId(selectedOwnHouseId);
-            matrimonialRequest.setLivingWithId(selectedLivingId);
-            matrimonialRequest.setMinHeight(minHeight);
-            matrimonialRequest.setMaxHeight(maxHeight);
-            matrimonialRequest.setMinWeight(minWeight);
-            matrimonialRequest.setMaxWeight(maxWeight);
-            matrimonialRequest.setMinAge(minAge);
-            matrimonialRequest.setMaxAge(maxAge);
-            matrimonialRequest.setMinDistance(minDistance);
-            matrimonialRequest.setMaxDistance(maxDistance);
-            matrimonialRequest.setMinIncome(Integer.parseInt(minIncome));
-            matrimonialRequest.setMaxIncome(Integer.parseInt(maxMaxIncome));
-            matrimonialRequest.setGotraId(selectedSubCastId);
-            matrimonialRequest.setNakshakraid(selectedNakshatraId);
-            matrimonialRequest.setBodyTypeid(selectedBodyTypeId);
-            matrimonialRequest.setComplexionid(selectedComplexionId);
-            matrimonialRequest.setOccupationid(selectedOccupationId);
-            matrimonialRequest.setQualificationid(selectedQualificationId);
+        matrimonialRequest.setLivingWithId(selectedLivingId);
+        matrimonialRequest.setMinHeight(minHeight);
+        matrimonialRequest.setMaxHeight(maxHeight);
+        matrimonialRequest.setMinWeight(minWeight);
+        matrimonialRequest.setMaxWeight(maxWeight);
+        matrimonialRequest.setMinAge(minAge);
+        matrimonialRequest.setMaxAge(maxAge);
+        matrimonialRequest.setMinDistance(minDistance);
+        matrimonialRequest.setMaxDistance(maxDistance);
+        matrimonialRequest.setMinIncome(Integer.parseInt(minIncome));
+        matrimonialRequest.setMaxIncome(Integer.parseInt(maxMaxIncome));
+        matrimonialRequest.setGotraId(selectedSubCastId);
+        matrimonialRequest.setNakshakraid(selectedNakshatraId);
+        matrimonialRequest.setBodyTypeid(selectedBodyTypeId);
+        matrimonialRequest.setComplexionid(selectedComplexionId);
+        matrimonialRequest.setOccupationid(selectedOccupationId);
+        matrimonialRequest.setQualificationid(selectedQualificationId);
         matrimonialRequest.setSmokingId(selectedSmokingStatusId);
-            matrimonialRequest.setFoodHabitsid(selectedFoodHabitesId);
-            matrimonialRequest.setDrinkingStatusid(selectedDrinkingStatusId);
-            matrimonialRequest.setMotherTougeid(selectedMothertoungeId);
-            matrimonialRequest.setPhysicalStatusid(selectedPhysicalstatusId);
-            matrimonialRequest.setMatrialStatusid(selectedMaritalStatusId);
-            matrimonialRequest.setDoshamid(selectedDoshamId);
+        matrimonialRequest.setFoodHabitsid(selectedFoodHabitesId);
+        matrimonialRequest.setDrinkingStatusid(selectedDrinkingStatusId);
+        matrimonialRequest.setMotherTougeid(selectedMothertoungeId);
+        matrimonialRequest.setPhysicalStatusid(selectedPhysicalstatusId);
+        matrimonialRequest.setMatrialStatusid(selectedMaritalStatusId);
+        matrimonialRequest.setDoshamid(selectedDoshamId);
 
 
-            mPresenter.editPreferences(matrimonialRequest);
+        mPresenter.editPreferences(matrimonialRequest, isDating);
 
 /*
             mPresenter.updatePreferences(Constants.USER_ID, maxAge.toString(), minAge.toString(), selectedReligionId + "",

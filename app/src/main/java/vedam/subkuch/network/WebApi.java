@@ -115,7 +115,10 @@ public interface WebApi {
     Call<GetOwnHouseResponse> getOwnHouse(@Header("Authorization") String bearer);
 
     @POST("UserProfile/EditProfileMatrimonial")
-    Call<UpdateMatrimonialResponse> updateProfile(@Header("Authorization") String bearer, @Body UpdateProfileRequest profileRequest);
+    Call<UpdateMatrimonialResponse> updateMatrimonialProfile(@Header("Authorization") String bearer, @Body UpdateProfileRequest profileRequest);
+
+    @POST("UserProfile/EditProfileDating")
+    Call<UpdateMatrimonialResponse> updateDatingProfile(@Header("Authorization") String bearer, @Body UpdateProfileRequest profileRequest);
 
    /* @GET("UserProfile/EditProfile")
     Call<UpdateMatrimonialResponse> updateMatrimonial(@Query("ProfileId") String UserID, @Query("ReligionId") String ReligionId,
@@ -139,7 +142,10 @@ public interface WebApi {
 
 
     @GET("UserProfile/ViewProfile")
-    Call<GetUserDetailResponse> getUserDetail(@Header("Authorization") String bearer, @Query("ProfileId") String userid);
+    Call<GetUserDetailResponse> getMatrimonyUserDetail(@Header("Authorization") String bearer, @Query("ProfileId") String userid);
+
+    @GET("Dating/ViewProfile")
+    Call<GetUserDetailResponse> getDatingUserDetail(@Header("Authorization") String bearer, @Query("ProfileId") String userid);
 
     @GET("deleteimge")
     Call<DeleteImageResponse> deleteImage(@Query("imageid") String imageid);
@@ -149,11 +155,17 @@ public interface WebApi {
     Call<InsertImageResponse> insertUpdateImage(@Field("userid") String userid, @Field("imageid") String imageid, @Field("imegedata") String imegedata);
 
     @GET("Matrimony/ViewPreference")
-    Call<GetPreferenceResponse> getPreference(@Header("Authorization") String bearer, @Query("ProfileId") String userid);
+    Call<GetPreferenceResponse> getMatrimonialPreference(@Header("Authorization") String bearer, @Query("ProfileId") String userid);
+
+    @GET("Dating/ViewPreference")
+    Call<GetPreferenceResponse> getDatingPreference(@Header("Authorization") String bearer, @Query("ProfileId") String userid);
 
 
     @POST("Matrimony/EditPreference")
-    Call<UpdateMatrimonialResponse> editPreference(@Header("Authorization") String bearer, @Body MatrimonialRequest profileRequest);
+    Call<UpdateMatrimonialResponse> editMatrimonialPreference(@Header("Authorization") String bearer, @Body MatrimonialRequest profileRequest);
+
+    @POST("Dating/EditPreference")
+    Call<UpdateMatrimonialResponse> editDatingPreference(@Header("Authorization") String bearer, @Body MatrimonialRequest profileRequest);
 
     @GET("editPreferences")
     Call<InsertProfilePreferenceResponse> updatePreferences(@Query("userid") String userid, @Query("Toage") String minage, @Query("FromAge") String maxage, @Query("Religion") String Religion,

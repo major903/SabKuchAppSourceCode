@@ -35,7 +35,7 @@
             android:name=".ui.matrimonial.ShowProfilesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.matrimonial.PinActivity"
+            android:name=".ui.pin.PinActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.inbox.InboxActivity"

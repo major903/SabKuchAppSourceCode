@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="@dimen/dp_twenty">
+        android:padding="@dimen/margin_16dp">
 
         <!-- <TextView
              android:layout_width="wrap_content"
@@ -37,10 +37,11 @@
 
          -->
 
+
         <TextView
+            android:id="@+id/tv_marital_status_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/marital_status"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
@@ -71,6 +72,7 @@
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/tv_mother_tongue_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -137,6 +139,7 @@
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/tv_qualification_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -203,6 +206,7 @@
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/tv_complexion_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -236,6 +240,7 @@
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/tv_religion_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -270,10 +275,11 @@
 
 
         <TextView
+            android:id="@+id/tv_caste_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/select_cast"
+            android:text="@string/select_caste"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_eighteen" />
 
@@ -305,6 +311,7 @@
 
 
         <TextView
+            android:id="@+id/tv_gotra_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -337,8 +344,76 @@
                 app:srcCompat="@drawable/ic_drop_down" />
         </RelativeLayout>
 
+        <TextView
+            android:id="@+id/tv_nakshatra_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:text="@string/nakshatra"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/sp_eighteen" />
+
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutNakshakra"
+            style="@style/EditTextStyle2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textViewNakshatra"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/sp_eighteen" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/dp_sixteen"
+                app:srcCompat="@drawable/ic_drop_down" />
+        </RelativeLayout>
 
         <TextView
+            android:id="@+id/tv_dosham_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:text="@string/dosham"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/sp_eighteen" />
+
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutDosham"
+            style="@style/EditTextStyle2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textViewDosham"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/sp_eighteen" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/dp_sixteen"
+                app:srcCompat="@drawable/ic_drop_down" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_living_with_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -389,73 +464,6 @@
 
             <TextView
                 android:id="@+id/textViewCity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/sp_eighteen" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/dp_sixteen"
-                app:srcCompat="@drawable/ic_drop_down" />
-        </RelativeLayout>
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/nakshatra"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-
-        <RelativeLayout
-            android:id="@+id/relativeLayoutNakshakra"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textViewNakshatra"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/sp_eighteen" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/dp_sixteen"
-                app:srcCompat="@drawable/ic_drop_down" />
-        </RelativeLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/dosham"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-
-        <RelativeLayout
-            android:id="@+id/relativeLayoutDosham"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textViewDosham"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
@@ -538,6 +546,7 @@
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/tv_physical_status_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -571,6 +580,7 @@
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/tv_car_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -602,6 +612,7 @@
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/tv_house_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -665,42 +676,26 @@
                 app:srcCompat="@drawable/ic_drop_down" />
         </RelativeLayout>
 
-
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/rl_income"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:orientation="vertical">
+            android:layout_marginTop="@dimen/margin_16dp">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="@dimen/margin_16dp"
-                    android:text="@string/income_range"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/sp_eighteen" />
-
-                <TextView
-                    android:id="@+id/textViewIncome"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/dp_four"
-                    android:text="100000-200000"
-                    android:textColor="@android:color/black" />
-
-            </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_income_range"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/income_range"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/sp_eighteen" />
 
             <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
                 android:id="@+id/seekBarIncome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
+                android:layout_below="@+id/tv_income_range"
+                android:layout_marginTop="@dimen/margin_8dp"
                 app:bar_color="@color/grey"
                 app:bar_highlight_color="@color/colorPrimary"
                 app:data_type="_integer"
@@ -712,44 +707,39 @@
                 app:right_thumb_color="@color/colorPrimary"
                 app:right_thumb_color_pressed="@color/colorPrimary"
                 app:steps="1" />
-        </LinearLayout>
 
+            <TextView
+                android:id="@+id/textViewIncome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/seekBarIncome"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/margin_4dp"
+                android:layout_marginRight="@dimen/dp_four"
+                android:text="100000-200000"
+                android:textColor="@android:color/black" />
 
-        <LinearLayout
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:orientation="vertical">
+            android:layout_marginTop="@dimen/margin_16dp">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="@dimen/margin_16dp"
-                    android:text="@string/age_range"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/sp_eighteen" />
-
-                <TextView
-                    android:id="@+id/textViewAge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/dp_four"
-                    android:text="18-40"
-                    android:textColor="@android:color/black" />
-
-            </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_age"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/age_range"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/sp_eighteen" />
 
             <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
                 android:id="@+id/seekBarAge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
+                android:layout_below="@+id/tv_age"
+                android:layout_marginTop="@dimen/margin_8dp"
                 app:bar_color="@color/grey"
                 app:bar_highlight_color="@color/colorPrimary"
                 app:data_type="_integer"
@@ -761,44 +751,39 @@
                 app:right_thumb_color="@color/colorPrimary"
                 app:right_thumb_color_pressed="@color/colorPrimary"
                 app:steps="1" />
-        </LinearLayout>
 
+            <TextView
+                android:id="@+id/textViewAge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/seekBarAge"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/margin_4dp"
+                android:layout_marginRight="@dimen/dp_four"
+                android:text="18-40"
+                android:textColor="@android:color/black" />
 
-        <LinearLayout
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:orientation="vertical">
+            android:layout_marginTop="@dimen/margin_16dp">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="@dimen/margin_16dp"
-                    android:text="@string/height_range"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/sp_eighteen" />
-
-                <TextView
-                    android:id="@+id/textViewHeight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/dp_four"
-                    android:text="3-12"
-                    android:textColor="@android:color/black" />
-
-            </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_height"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/height_range"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/sp_eighteen" />
 
             <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
                 android:id="@+id/seekBarHeight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
+                android:layout_below="@+id/tv_height"
+                android:layout_marginTop="@dimen/margin_8dp"
                 app:bar_color="@color/grey"
                 app:bar_highlight_color="@color/colorPrimary"
                 app:data_type="_integer"
@@ -810,44 +795,40 @@
                 app:right_thumb_color="@color/colorPrimary"
                 app:right_thumb_color_pressed="@color/colorPrimary"
                 app:steps="1" />
-        </LinearLayout>
+
+            <TextView
+                android:id="@+id/textViewHeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/seekBarHeight"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/margin_4dp"
+                android:layout_marginRight="@dimen/dp_four"
+                android:text="3-12"
+                android:textColor="@android:color/black" />
+
+        </RelativeLayout>
 
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:orientation="vertical">
+            android:layout_marginTop="@dimen/margin_16dp">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="@dimen/margin_16dp"
-                    android:text="@string/weight_range"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/sp_eighteen" />
-
-                <TextView
-                    android:id="@+id/textViewWeight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/dp_four"
-                    android:text="10-60"
-                    android:textColor="@android:color/black" />
-
-            </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/weight_range"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/sp_eighteen" />
 
             <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
                 android:id="@+id/seekBarWeight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
+                android:layout_below="@+id/tv_weight"
+                android:layout_marginTop="@dimen/margin_8dp"
                 app:bar_color="@color/grey"
                 app:bar_highlight_color="@color/colorPrimary"
                 app:data_type="_integer"
@@ -859,55 +840,63 @@
                 app:right_thumb_color="@color/colorPrimary"
                 app:right_thumb_color_pressed="@color/colorPrimary"
                 app:steps="1" />
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:orientation="vertical">
+            <TextView
+                android:id="@+id/textViewWeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/seekBarWeight"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/margin_4dp"
+                android:layout_marginRight="@dimen/dp_four"
+                android:text="10-60"
+                android:textColor="@android:color/black" />
+
+        </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16dp">
 
                 <TextView
+                    android:id="@+id/tv_distance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="@dimen/margin_16dp"
                     android:text="@string/distance_range"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/sp_eighteen" />
+
+                <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                    android:id="@+id/seekBarDistance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_distance"
+                    android:layout_marginTop="@dimen/margin_8dp"
+                    app:bar_color="@color/grey"
+                    app:bar_highlight_color="@color/colorPrimary"
+                    app:data_type="_integer"
+                    app:gap="1"
+                    app:left_thumb_color="@color/colorPrimary"
+                    app:left_thumb_color_pressed="@color/colorPrimary"
+                    app:max_value="1000"
+                    app:min_value="0"
+                    app:right_thumb_color="@color/colorPrimary"
+                    app:right_thumb_color_pressed="@color/colorPrimary"
+                    app:steps="1" />
 
                 <TextView
                     android:id="@+id/textViewDistance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/seekBarDistance"
                     android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/margin_4dp"
                     android:layout_marginRight="@dimen/dp_four"
                     android:text="18-40"
                     android:textColor="@android:color/black" />
 
             </RelativeLayout>
-
-            <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
-                android:id="@+id/seekBarDistance"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                app:bar_color="@color/grey"
-                app:bar_highlight_color="@color/colorPrimary"
-                app:data_type="_integer"
-                app:gap="1"
-                app:left_thumb_color="@color/colorPrimary"
-                app:left_thumb_color_pressed="@color/colorPrimary"
-                app:max_value="1000"
-                app:min_value="0"
-                app:right_thumb_color="@color/colorPrimary"
-                app:right_thumb_color_pressed="@color/colorPrimary"
-                app:steps="1" />
-        </LinearLayout>
 
 
         <Button

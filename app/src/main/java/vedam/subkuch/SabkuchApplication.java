@@ -1,6 +1,6 @@
 package vedam.subkuch;
 
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
 import com.android.volley.Request;
@@ -12,7 +12,7 @@ import vedam.subkuch.network.WebServices;
 /**
  * Created by naddy on 27/12/15.
  */
-public class SabkuchApplication extends Application {
+public class SabkuchApplication extends MultiDexApplication {
 
     public static final String TAG = SabkuchApplication.class
             .getSimpleName();

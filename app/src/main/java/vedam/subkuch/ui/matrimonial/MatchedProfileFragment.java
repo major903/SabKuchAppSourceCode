@@ -45,17 +45,18 @@ public class MatchedProfileFragment extends BaseFragment implements OnListViewIt
     private int pageNo = 1;
     private int pageSize = 20;
     private boolean hasMoreProjects = true;
-    private boolean isChats;
+    private boolean isChats, isDating;
 
     public MatchedProfileFragment() {
         // Required empty public constructor
     }
 
-    public static MatchedProfileFragment newInstance(boolean isChats) {
+    public static MatchedProfileFragment newInstance(boolean isChats, boolean isDating) {
 
         MatchedProfileFragment matchedProfileFragment = new MatchedProfileFragment();
         Bundle bundle = new Bundle();
         bundle.putBoolean(Constants.EXTRA_IS_CHATS, isChats);
+        bundle.putBoolean(Constants.EXTRA_IS_DATING, isDating);
         matchedProfileFragment.setArguments(bundle);
         return matchedProfileFragment;
     }
@@ -63,8 +64,10 @@ public class MatchedProfileFragment extends BaseFragment implements OnListViewIt
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null)
+        if (getArguments() != null) {
             isChats = getArguments().getBoolean(Constants.EXTRA_IS_CHATS);
+            isDating = getArguments().getBoolean(Constants.EXTRA_IS_DATING);
+        }
     }
 
     @Override
@@ -102,7 +105,11 @@ public class MatchedProfileFragment extends BaseFragment implements OnListViewIt
 
     public void getMatchedProfiles() {
         UiUtil.showProgressDialog(context, getString(R.string.please_wait));
-        DataFetcher.getMatchedProfiles(context, onMatchedProfilesSuccessListener, DatingProfileResponse.class, onErrorListener, pageNo, pageSize);
+        if (isDating)
+            DataFetcher.getDatingMatchedProfiles(context, onMatchedProfilesSuccessListener, DatingProfileResponse.class, onErrorListener, pageNo, pageSize);
+        else
+            DataFetcher.getMatrimonialMatchedProfiles(context, onMatchedProfilesSuccessListener, DatingProfileResponse.class, onErrorListener, pageNo, pageSize);
+
 
     }
 

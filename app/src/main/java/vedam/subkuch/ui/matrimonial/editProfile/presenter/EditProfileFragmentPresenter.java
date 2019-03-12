@@ -129,9 +129,9 @@ public class EditProfileFragmentPresenter implements EditProfileFragmentPresente
 
 
     @Override
-    public void getUserDetail(String userId) {
+    public void getUserDetail(String userId, boolean isDating) {
         view.showProgressBar();
-        WebServices.getInstance().getUserDetail(userId, new GetUserDetailHandler() {
+        WebServices.getInstance().getUserDetail(userId, isDating, new GetUserDetailHandler() {
             @Override
             public void onSuccess(GetUserDetailResponse response) {
                 view.hideProgressBar();
@@ -511,9 +511,9 @@ public class EditProfileFragmentPresenter implements EditProfileFragmentPresente
     }
 
     @Override
-    public void updateProfile(UpdateProfileRequest updateProfileRequest) {
+    public void updateProfile(boolean isDating, UpdateProfileRequest updateProfileRequest) {
         view.showProgressBar();
-        WebServices.getInstance().updateProfile(new UpdateMaterimonialHandler() {
+        WebServices.getInstance().updateProfile(isDating, new UpdateMaterimonialHandler() {
             @Override
             public void onSuccess(UpdateMatrimonialResponse response) {
                 view.hideProgressBar();

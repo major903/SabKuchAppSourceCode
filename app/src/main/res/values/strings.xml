@@ -252,7 +252,7 @@
     <string name="discard">discard</string>
     <string name="Crop">Crop</string>
     <string name="selectreligion">Select Religion</string>
-    <string name="select_cast">Select Cast</string>
+    <string name="select_caste">Select Caste</string>
     <string name="select_sub_cast">Select Gothra</string>
     <string name="select_living_with">Select Living With</string>
     <string name="select_master_cast_first">Please select the mast cast first</string>
@@ -261,7 +261,7 @@
     <string name="own_house">Own House</string>
     <string name="start_age">Start Age</string>
     <string name="end_age">End Age</string>
-    <string name="age_range">Age Range</string>
+    <string name="age_range">Age</string>
     <string name="height">Height(cm)</string>
     <string name="weight">Weight(Kg)</string>
     <string name="empty_preffered_type">Please select the preferred type</string>
@@ -298,7 +298,7 @@
     <string name="qualification">Qualification</string>
     <string name="smoking">Smoking</string>
     <string name="drinking">Drinking</string>
-    <string name="income_range">Income (Lac)</string>
+    <string name="income_range">Income</string>
     <string name="foodhabits">Food Habits</string>
     <string name="mothertouge">Mother tongue</string>
     <string name="physicalstatus">Physical Status</string>
@@ -337,4 +337,5 @@
     <string name="select_height">Select Height</string>
     <string name="select_weight">Select Weight</string>
     <string name="fail_to_crop">Failed to crop</string>
+    <string name="interested_in_dating">Interested in Dating</string>
 </resources>

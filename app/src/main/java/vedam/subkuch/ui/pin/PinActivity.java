@@ -1,4 +1,4 @@
-package vedam.subkuch.ui.matrimonial;
+package vedam.subkuch.ui.pin;
 
 import android.os.Bundle;
 
@@ -16,13 +16,15 @@ import vedam.subkuch.utils.UiUtil;
 
 public class PinActivity extends BaseActivity {
 
+    private boolean isDating;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_directory);
         setTitle(R.string.app_name);
         setToolbarBackButton();
-
+        isDating = getIntent().getBooleanExtra(Constants.EXTRA_IS_DATING, false);
         isPinSet();
     }
 
@@ -39,6 +41,7 @@ public class PinActivity extends BaseActivity {
 
         Bundle bundle = new Bundle();
         bundle.putInt(Constants.EXTRA_CODE, Constants.SET_PIN_CODE);
+        bundle.putBoolean(Constants.EXTRA_IS_DATING, isDating);
         addFragment(R.id.content_frame, PinFragment.newInstance(bundle));
     }
 
@@ -46,6 +49,7 @@ public class PinActivity extends BaseActivity {
 
         Bundle bundle = new Bundle();
         bundle.putInt(Constants.EXTRA_CODE, Constants.ENTER_PIN_CODE);
+        bundle.putBoolean(Constants.EXTRA_IS_DATING, isDating);
         addFragment(R.id.content_frame, PinFragment.newInstance(bundle));
     }
 

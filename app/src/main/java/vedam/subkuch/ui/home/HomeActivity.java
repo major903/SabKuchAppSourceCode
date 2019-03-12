@@ -27,11 +27,11 @@ import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.network.models.AddEventResponse;
 import vedam.subkuch.network.models.Feature;
 import vedam.subkuch.ui.ask.AskCategoryActivity;
-import vedam.subkuch.ui.matrimonial.PinActivity;
 import vedam.subkuch.ui.directory.DirectoryActivity;
 import vedam.subkuch.ui.events.EventActivity;
 import vedam.subkuch.ui.inbox.InboxActivity;
 import vedam.subkuch.ui.jobs.JobCategoryActivity;
+import vedam.subkuch.ui.pin.PinActivity;
 import vedam.subkuch.ui.movies.MoviesActivity;
 import vedam.subkuch.ui.offers.OffersActivity;
 import vedam.subkuch.ui.phonebook.PhoneBookActivity;
@@ -72,10 +72,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 , String.valueOf(location.getLongitude()));
     }
 
-    private Response.Listener<AddEventResponse> onUpdateLocationSuccessListener = response -> {
-
-        LogUtils.LOGD("Update Location", response.toString());
-    };
+    private Response.Listener<AddEventResponse> onUpdateLocationSuccessListener =
+            response -> LogUtils.LOGD("Update Location", response.toString());
 
     private void getFeatures() {
 
@@ -151,6 +149,9 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 case Constants.Dating:
                     activityHomeBinding.getRoot().findViewById(R.id.iv_dating).setVisibility(View.VISIBLE);
                     break;
+                case Constants.Matrimonial:
+                    activityHomeBinding.getRoot().findViewById(R.id.iv_matrimonial).setVisibility(View.VISIBLE);
+                    break;
                 case Constants.Ask_Me:
                     activityHomeBinding.getRoot().findViewById(R.id.iv_ask_me).setVisibility(View.VISIBLE);
                     break;
@@ -206,7 +207,11 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     public void datingClick(View v) {
-        startActivity(new Intent(this, PinActivity.class));
+        startActivity(new Intent(this, PinActivity.class).putExtra(Constants.EXTRA_IS_DATING, true));
+    }
+
+    public void matrimonialClick(View v) {
+        startActivity(new Intent(this, PinActivity.class).putExtra(Constants.EXTRA_IS_DATING, false));
     }
 
     public void askClick(View v) {

@@ -190,8 +190,13 @@ public class WebServices {
     }
 
 
-    public void getUserDetail(String UserID, final GetUserDetailHandler handler) {
-        Call<GetUserDetailResponse> callback = api.getUserDetail(bearer, UserID);
+    public void getUserDetail(String UserID, boolean isDating, final GetUserDetailHandler handler) {
+        Call<GetUserDetailResponse> callback;
+        if (isDating)
+            callback = api.getDatingUserDetail(bearer, UserID);
+        else
+            callback = api.getMatrimonyUserDetail(bearer, UserID);
+
         callback.enqueue(new Callback<GetUserDetailResponse>() {
             @Override
             public void onResponse(Call<GetUserDetailResponse> call, Response<GetUserDetailResponse> response) {
@@ -252,9 +257,13 @@ public class WebServices {
         });
     }
 
-    public void getPreference(final GetPreferenceHandler handler, String userId) {
+    public void getPreference(boolean isDating, final GetPreferenceHandler handler, String userId) {
 
-        Call<GetPreferenceResponse> callback = api.getPreference(bearer, userId);
+        Call<GetPreferenceResponse> callback;
+        if (isDating)
+            callback = api.getDatingPreference(bearer, userId);
+        else
+            callback = api.getMatrimonialPreference(bearer, userId);
         callback.enqueue(new Callback<GetPreferenceResponse>() {
             @Override
             public void onResponse(Call<GetPreferenceResponse> call, Response<GetPreferenceResponse> response) {
@@ -771,9 +780,13 @@ public class WebServices {
         });
     }
 
-    public void updateProfile(final UpdateMaterimonialHandler handler, UpdateProfileRequest updateProfileRequest) {
+    public void updateProfile(boolean isDating, final UpdateMaterimonialHandler handler, UpdateProfileRequest updateProfileRequest) {
+        Call<UpdateMatrimonialResponse> callback;
+        if (isDating)
+            callback = api.updateDatingProfile(bearer, updateProfileRequest);
+        else
+            callback = api.updateMatrimonialProfile(bearer, updateProfileRequest);
 
-        Call<UpdateMatrimonialResponse> callback = api.updateProfile(bearer, updateProfileRequest);
         callback.enqueue(new Callback<UpdateMatrimonialResponse>() {
             @Override
             public void onResponse(Call<UpdateMatrimonialResponse> call, Response<UpdateMatrimonialResponse> response) {
@@ -813,9 +826,13 @@ public class WebServices {
 
     }
 
-    public void editPreferences(MatrimonialRequest matrimonialRequest, final UpdatePreferencesHandler handler) {
+    public void editPreferences(boolean isDating, MatrimonialRequest matrimonialRequest, final UpdatePreferencesHandler handler) {
 
-        Call<UpdateMatrimonialResponse> callback = api.editPreference(bearer, matrimonialRequest);
+        Call<UpdateMatrimonialResponse> callback;
+        if (isDating)
+            callback = api.editDatingPreference(bearer, matrimonialRequest);
+        else
+            callback = api.editMatrimonialPreference(bearer, matrimonialRequest);
         callback.enqueue(new Callback<UpdateMatrimonialResponse>() {
             @Override
             public void onResponse(Call<UpdateMatrimonialResponse> call, Response<UpdateMatrimonialResponse> response) {

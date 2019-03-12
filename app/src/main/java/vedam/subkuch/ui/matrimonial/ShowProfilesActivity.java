@@ -21,9 +21,9 @@ import vedam.subkuch.R;
 import vedam.subkuch.base.BaseActivity;
 import vedam.subkuch.databinding.ActivityShowProfilesBinding;
 import vedam.subkuch.helpers.Constants;
+import vedam.subkuch.ui.home.HomeActivity;
 import vedam.subkuch.ui.matrimonial.editProfile.EditProfileFragment;
 import vedam.subkuch.ui.matrimonial.preference.PreferenceFragment;
-import vedam.subkuch.ui.home.HomeActivity;
 import vedam.subkuch.utils.AppPrefs;
 
 import static vedam.subkuch.helpers.Constants.TAG_CHATS_FRAGMENT;
@@ -37,6 +37,7 @@ public class ShowProfilesActivity extends BaseActivity
 
     private ActivityShowProfilesBinding activityShowProfilesBinding;
     private HashMap<String, Integer> hmNavigationIds;
+    private boolean isDating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +53,13 @@ public class ShowProfilesActivity extends BaseActivity
 
     private void initUI() {
 
+        isDating = getIntent().getBooleanExtra(Constants.EXTRA_IS_DATING, false);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, activityShowProfilesBinding.drawerLayout, getToolbar(), R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         activityShowProfilesBinding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        addFragment(R.id.content_frame, ShowProfilesFragment.newInstance(), TAG_SHOW_PROFILES_FRAGMENT, true, 0, 0, 0, 0);
+        addFragment(R.id.content_frame, ShowProfilesFragment.newInstance(isDating), TAG_SHOW_PROFILES_FRAGMENT, true, 0, 0, 0, 0);
     }
 
 
@@ -109,13 +111,13 @@ public class ShowProfilesActivity extends BaseActivity
         if (id == R.id.nav_home) {
             startHomeActivity();
         } else if (id == R.id.nav_matches) {
-            changeFragment(MatchedProfileFragment.newInstance(false), TAG_MATCHES_FRAGMENT);
+            changeFragment(MatchedProfileFragment.newInstance(false, isDating), TAG_MATCHES_FRAGMENT);
         } else if (id == R.id.nav_profile) {
-            changeFragment(EditProfileFragment.newInstance(), TAG_PROFILE_FRAGMENT);
+            changeFragment(EditProfileFragment.newInstance(isDating), TAG_PROFILE_FRAGMENT);
         } else if (id == R.id.nav_preferences) {
-            changeFragment(PreferenceFragment.newInstance(), TAG_PREFERENCES_FRAGMENT);
+            changeFragment(PreferenceFragment.newInstance(isDating), TAG_PREFERENCES_FRAGMENT);
         } else if (id == R.id.nav_chats) {
-            changeFragment(MatchedProfileFragment.newInstance(true), TAG_CHATS_FRAGMENT);
+            changeFragment(MatchedProfileFragment.newInstance(true, isDating), TAG_CHATS_FRAGMENT);
         }
 
         activityShowProfilesBinding.drawerLayout.closeDrawer(GravityCompat.START);
@@ -167,7 +169,7 @@ public class ShowProfilesActivity extends BaseActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_chats:
-                changeFragment(MatchedProfileFragment.newInstance(true), TAG_CHATS_FRAGMENT);
+                changeFragment(MatchedProfileFragment.newInstance(true, isDating), TAG_CHATS_FRAGMENT);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

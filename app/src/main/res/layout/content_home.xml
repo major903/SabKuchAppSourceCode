@@ -91,8 +91,20 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="@dimen/margin_16dp"
                         android:adjustViewBounds="true"
-                        android:background="@drawable/matri"
+                        android:background="@drawable/dating"
                         android:onClick="datingClick"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                    <ImageView
+                        android:id="@+id/iv_matrimonial"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/margin_16dp"
+                        android:adjustViewBounds="true"
+                        android:background="@drawable/matri"
+                        android:onClick="matrimonialClick"
                         android:visibility="gone"
                         tools:visibility="visible" />
 

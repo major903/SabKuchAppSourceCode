@@ -49,16 +49,23 @@ public class EditProfileActivity extends BaseActivity {
 
         activityEditProfileBinding = DataBindingUtil.setContentView(
                 this, R.layout.activity_edit_profile);
-        profile = new Profile();
-        setTitle(getString(R.string.edit_profile));
-        setToolbarBackButton();
-        bindData();
+        initUI();
+        bindCallbacks();
 //        requestStack.add(new Object());
         requestStack.add(new Object());
         UiUtil.showProgressDialog(this, getString(R.string.loading));
         getCities();
 //        getCountries();
         requestLocation(true);
+    }
+
+    private void initUI() {
+
+        profile = new Profile();
+        setTitle(getString(R.string.edit_profile));
+        setToolbarBackButton();
+        activityEditProfileBinding.etFirstName.setKeyListener(null);
+        activityEditProfileBinding.etFirstName.setEnabled(false);
     }
 
     private void getCities() {
@@ -175,13 +182,13 @@ public class EditProfileActivity extends BaseActivity {
         UiUtil.setTextView(activityEditProfileBinding.etEmail, profile.getEMail());
         UiUtil.setTextView(activityEditProfileBinding.etFirstName, profile.getFirstName());
         UiUtil.setTextView(activityEditProfileBinding.etLastName, profile.getLastName());
-
+        if (activityEditProfileBinding.etLastName.getText() != null)
+            activityEditProfileBinding.etLastName.setSelection(activityEditProfileBinding.etLastName.getText().length());
         /*int indexOfCurrentCountry = getIndexOfCurrentCountry(profile.getCountryid());
         activityEditProfileBinding.spCountry.setSelection(indexOfCurrentCountry);*/
 
         int indexOfCurrentCity = getIndexOfCurrentCity(profile.getCityId());
         activityEditProfileBinding.spCity.setSelection(indexOfCurrentCity);
-
     }
 
 //    private int getIndexOfCurrentCountry(String countryid) {
@@ -211,7 +218,7 @@ public class EditProfileActivity extends BaseActivity {
         longitude = String.valueOf(location.getLongitude());
     }
 
-    private void bindData() {
+    private void bindCallbacks() {
 
         activityEditProfileBinding.btSubmit.setOnClickListener(v -> {
             int errorMessage = validateErrorMessage();

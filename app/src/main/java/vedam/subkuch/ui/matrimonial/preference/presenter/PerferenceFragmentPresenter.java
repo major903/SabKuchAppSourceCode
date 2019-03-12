@@ -55,9 +55,9 @@ public class PerferenceFragmentPresenter implements PerferenceFragmentPresenterH
 
 
     @Override
-    public void getPerference(String userid) {
+    public void getPerference(String userid, boolean isDating) {
         view.showProgressBar();
-        WebServices.getInstance().getPreference(new GetPreferenceHandler() {
+        WebServices.getInstance().getPreference(isDating, new GetPreferenceHandler() {
             @Override
             public void onSuccess(GetPreferenceResponse response) {
                 view.hideProgressBar();
@@ -390,9 +390,9 @@ public class PerferenceFragmentPresenter implements PerferenceFragmentPresenterH
     }
 
     @Override
-    public void editPreferences(MatrimonialRequest matrimonialRequest) {
+    public void editPreferences(MatrimonialRequest matrimonialRequest, boolean isDating) {
         view.showProgressBar();
-        WebServices.getInstance().editPreferences(matrimonialRequest, new UpdatePreferencesHandler() {
+        WebServices.getInstance().editPreferences(isDating, matrimonialRequest, new UpdatePreferencesHandler() {
             @Override
             public void onSuccess(UpdateMatrimonialResponse response) {
                 view.hideProgressBar();

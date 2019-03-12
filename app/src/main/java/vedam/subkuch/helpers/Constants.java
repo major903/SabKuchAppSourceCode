@@ -27,6 +27,7 @@ public class Constants {
     public static final String EXTRA_NAME = "EXTRA_NAME";
     public static final String EXTRA_FILE_NAME = "EXTRA_FILE_NAME";
     public static final String EXTRA_IS_CHATS = "EXTRA_IS_CHATS";
+    public static final String EXTRA_IS_DATING = "EXTRA_IS_DATING";
     public static final String EXTRA_POSITION = "EXTRA_POSITION";
     public static final String EXTRA_IS_IMAGE_URLS = "EXTRA_IS_IMAGE_URLS";
     public static final String EXTRA_CHAT_TO_ID = "EXTRA_CHAT_TO_ID";
@@ -89,7 +90,8 @@ public class Constants {
     public static final String Jobs = "Jobs";
     public static final String Movies = "Movies Timings";
     public static final String Phone_book = "Phonebook";
-    public static final String Dating = "Matrimonial";
+    public static final String Dating = "Dating";
+    public static final String Matrimonial = "Matrimonial";
     public static final String Ask_Me = "Ask Me";
     public static final String Transport = "Public Transport Timings";
     public static final String Offers = "Offers";
