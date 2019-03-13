@@ -24,7 +24,7 @@ import butterknife.Unbinder;
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseFragment;
 import vedam.subkuch.helpers.Constants;
-import vedam.subkuch.network.GetSmokingResponse;
+import vedam.subkuch.network.models.GetSmokingResponse;
 import vedam.subkuch.network.models.DrinkingHabits;
 import vedam.subkuch.network.models.GetBodyTypeBean;
 import vedam.subkuch.network.models.GetCityResponse;

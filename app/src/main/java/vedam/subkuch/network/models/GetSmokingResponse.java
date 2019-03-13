@@ -1,8 +1,6 @@
-package vedam.subkuch.network;
+package vedam.subkuch.network.models;
 
 import java.util.ArrayList;
-
-import vedam.subkuch.network.models.Smoking;
 
 public class GetSmokingResponse {
 

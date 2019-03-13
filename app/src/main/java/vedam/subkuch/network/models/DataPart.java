@@ -1,4 +1,4 @@
-package vedam.subkuch.network;
+package vedam.subkuch.network.models;
 
 /**
  * Simple data container use for passing byte file

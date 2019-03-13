@@ -24,6 +24,7 @@ import java.util.Map;
 
 import vedam.subkuch.BuildConfig;
 import vedam.subkuch.SabkuchApplication;
+import vedam.subkuch.network.models.DataPart;
 import vedam.subkuch.utils.AppPrefs;
 
 /**

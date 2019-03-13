@@ -56,6 +56,8 @@ import vedam.subkuch.network.models.GetOwnCarResponse;
 import vedam.subkuch.network.models.GetOwnHouseResponse;
 import vedam.subkuch.network.models.GetPhysicalStatusBean;
 import vedam.subkuch.network.models.GetQualificationBean;
+import vedam.subkuch.network.models.GetSmokingResponse;
+import vedam.subkuch.network.models.GetWeightResponse;
 import vedam.subkuch.network.models.UserDetail.GetUserDetailResponse;
 import vedam.subkuch.network.models.UserDetail.UpdateProfileRequest;
 import vedam.subkuch.network.models.deleteImage.DeleteImageResponse;

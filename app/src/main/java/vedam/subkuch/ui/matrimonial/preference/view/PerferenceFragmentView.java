@@ -1,6 +1,6 @@
 package vedam.subkuch.ui.matrimonial.preference.view;
 
-import vedam.subkuch.network.GetSmokingResponse;
+import vedam.subkuch.network.models.GetSmokingResponse;
 import vedam.subkuch.network.models.GetBodyTypeBean;
 import vedam.subkuch.network.models.GetCityResponse;
 import vedam.subkuch.network.models.GetComplexionBean;

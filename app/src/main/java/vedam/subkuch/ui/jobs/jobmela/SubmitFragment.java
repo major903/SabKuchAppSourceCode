@@ -25,7 +25,7 @@ import vedam.subkuch.base.BaseAddImagesFragment;
 import vedam.subkuch.databinding.FragmentSubmitBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
-import vedam.subkuch.network.DataPart;
+import vedam.subkuch.network.models.DataPart;
 import vedam.subkuch.network.NetworkConstants;
 import vedam.subkuch.network.models.GeneralResponse;
 import vedam.subkuch.ui.jobs.models.JobMelaRequest;

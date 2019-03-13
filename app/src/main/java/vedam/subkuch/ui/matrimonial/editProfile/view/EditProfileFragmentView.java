@@ -1,7 +1,7 @@
 package vedam.subkuch.ui.matrimonial.editProfile.view;
 
-import vedam.subkuch.network.GetSmokingResponse;
-import vedam.subkuch.network.GetWeightResponse;
+import vedam.subkuch.network.models.GetSmokingResponse;
+import vedam.subkuch.network.models.GetWeightResponse;
 import vedam.subkuch.network.models.GetAnnualIncome;
 import vedam.subkuch.network.models.GetBodyTypeBean;
 import vedam.subkuch.network.models.GetComplexionBean;

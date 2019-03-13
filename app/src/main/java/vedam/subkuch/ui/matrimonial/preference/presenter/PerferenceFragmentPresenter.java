@@ -1,7 +1,7 @@
 package vedam.subkuch.ui.matrimonial.preference.presenter;
 
 import vedam.subkuch.helpers.Constants;
-import vedam.subkuch.network.GetSmokingResponse;
+import vedam.subkuch.network.models.GetSmokingResponse;
 import vedam.subkuch.network.WebServices;
 import vedam.subkuch.network.handler.GetAllCityHandler;
 import vedam.subkuch.network.handler.GetBodyTypeHandler;

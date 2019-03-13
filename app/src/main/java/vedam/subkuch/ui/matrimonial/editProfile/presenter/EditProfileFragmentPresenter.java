@@ -1,8 +1,8 @@
 package vedam.subkuch.ui.matrimonial.editProfile.presenter;
 
 import vedam.subkuch.helpers.Constants;
-import vedam.subkuch.network.GetSmokingResponse;
-import vedam.subkuch.network.GetWeightResponse;
+import vedam.subkuch.network.models.GetSmokingResponse;
+import vedam.subkuch.network.models.GetWeightResponse;
 import vedam.subkuch.network.WebServices;
 import vedam.subkuch.network.handler.GetAnnualIncomeHandler;
 import vedam.subkuch.network.handler.GetBodyTypeHandler;
