@@ -35,8 +35,8 @@
 -keepattributes *Annotation*, EnclosingMethod
 -keep class org.codehaus.** { *; }
 
--keep class vedam.subkuch.db.** { *; }
--keepclassmembers public class vedam.subkuch.db.** { *; }
+-keep class vedam.subkuch.db.chat.** { *; }
+-keepclassmembers public class vedam.subkuch.db.chat.** { *; }
 
 -keep class vedam.subkuch.network.models.** { *; }
 -keepclassmembers public class vedam.subkuch.network.models.** { *; }
@@ -149,3 +149,19 @@
 -keep class * implements com.google.gson.JsonDeserializer
 
 ##---------------End: proguard configuration for Gson  ----------
+
+# Retain generated class which implement Unbinder.
+-keep public class * implements butterknife.Unbinder { public <init>(**, android.view.View); }
+
+# Prevent obfuscation of types which use ButterKnife annotations since the simple name
+# is used to reflectively look up the generated ViewBinding.
+-keep class butterknife.*
+-keepclasseswithmembernames class * { @butterknife.* <methods>; }
+-keepclasseswithmembernames class * { @butterknife.* <fields>; }
+
+-dontwarn retrofit2.**
+
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception
+
