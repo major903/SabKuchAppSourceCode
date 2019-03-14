@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -31,10 +30,8 @@ import vedam.subkuch.R;
 import vedam.subkuch.base.BaseAddImageFragment;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
-import vedam.subkuch.network.models.DataPart;
-import vedam.subkuch.network.models.GetSmokingResponse;
-import vedam.subkuch.network.models.GetWeightResponse;
 import vedam.subkuch.network.NetworkConstants;
+import vedam.subkuch.network.models.DataPart;
 import vedam.subkuch.network.models.GeneralResponse;
 import vedam.subkuch.network.models.GetAnnualIncome;
 import vedam.subkuch.network.models.GetBodyTypeBean;
@@ -52,6 +49,8 @@ import vedam.subkuch.network.models.GetOwnCarResponse;
 import vedam.subkuch.network.models.GetOwnHouseResponse;
 import vedam.subkuch.network.models.GetPhysicalStatusBean;
 import vedam.subkuch.network.models.GetQualificationBean;
+import vedam.subkuch.network.models.GetSmokingResponse;
+import vedam.subkuch.network.models.GetWeightResponse;
 import vedam.subkuch.network.models.UserDetail.GetUserDetailResponse;
 import vedam.subkuch.network.models.UserDetail.UpdateProfileRequest;
 import vedam.subkuch.network.models.getLiving.GetLivingResponse;
@@ -66,7 +65,6 @@ import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.FrequentFunctions;
 import vedam.subkuch.utils.ImageSetter;
 import vedam.subkuch.utils.UiUtil;
-import vedam.subkuch.utils.Validations;
 
 public class EditProfileFragment extends BaseAddImageFragment implements EditProfileFragmentView, ItemAdapter.ItemClickHandler {
 
@@ -269,7 +267,7 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
+
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_edit_profile, container, false);
         unbinder = ButterKnife.bind(this, view);
         setTitle(getString(R.string.edit_profile));
@@ -319,12 +317,6 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
         relativeOwnHouse.setVisibility(View.GONE);
     }
 
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        menu.clear();
-    }
-
    /* public void setAdapter() {
         adapter = new ImagesAdapter(listOfPhots, getActivity());
         adapter.itemClickHandler(this);
@@ -335,66 +327,95 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
     @OnClick({R.id.btnUpdate})
     public void btnUpdateClick(View view) {
         FrequentFunctions.hideKeyBoard(context, view);
-        if (!switchDatingOrMatrimonial.isChecked())
-            baseshowFeedbackMessage(rootLayout, getNotInterestedString());
-        else if (!isImageLinkPresent && getImageUri() == null) {
+        if (!isImageLinkPresent && getImageUri() == null) {
             baseshowFeedbackMessage(rootLayout, getString(R.string.add_profile_pricture));
-        } else if (selectedReligionId == -1) {
-            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_religion));
-        } else if (selectedMaterCastId == -1) {
-            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_cast));
-        } else if (Validations.isFieldEmpty(textViewGotra.getText().toString())) {
-            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_gothra));
-        } else if (selectedLivingId == -1) {
-            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_living_with));
-        } else if (selectedMatirialStatusId == -1) {
-            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_matrialstatus));
-        } else {
+        } else if (selectedBodytypeId == -1) {
+            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_body_type));
+        } else if (selectedOccupationId == -1) {
+            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_occupation));
+        } else if (selectedFoodhabitsId == -1) {
+            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_food_habits));
+        } else if (selectedDrinkingStatusId == -1) {
+            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_drinking_habits));
+        } else if (selectedSmokingStatusId == -1) {
+            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_smoking_status));
+        } else if (selectedHeightId == -1) {
+            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_height));
+        } else if (selectedWeightId == -1) {
+            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_weight));
+        } else if (!isDating) {
+            if (selectedReligionId == -1) {
+                baseshowFeedbackMessage(rootLayout, getString(R.string.empty_religion));
+            } else if (selectedMaterCastId == -1) {
+                baseshowFeedbackMessage(rootLayout, getString(R.string.empty_cast));
+            } else if (selectedComplexionId == -1) {
+                baseshowFeedbackMessage(rootLayout, getString(R.string.empty_complexion));
+            } else if (selectedQualificationId == -1) {
+                baseshowFeedbackMessage(rootLayout, getString(R.string.empty_qualification));
+            } else if (selectedPhysicalstatusId == -1) {
+                baseshowFeedbackMessage(rootLayout, getString(R.string.empty_physical_status));
+            } else if (selectedMothertougeId == -1) {
+                baseshowFeedbackMessage(rootLayout, getString(R.string.empty_mother_tongue));
+            } else if (selectedAnnualIncomeId == -1) {
+                baseshowFeedbackMessage(rootLayout, getString(R.string.empty_annual_income));
+            } else if (selectedOwnCarId == -1) {
+                baseshowFeedbackMessage(rootLayout, getString(R.string.empty_car_status));
+            } else if (selectedOwnHouseId == -1) {
+                baseshowFeedbackMessage(rootLayout, getString(R.string.empty_house_status));
+            } else if (selectedLivingId == -1) {
+                baseshowFeedbackMessage(rootLayout, getString(R.string.empty_living_with));
+            } else if (selectedMatirialStatusId == -1) {
+                baseshowFeedbackMessage(rootLayout, getString(R.string.empty_matrialstatus));
+            } else
+                updateProfile();
+        } else
+            updateProfile();
+    }
 
-            UpdateProfileRequest updateProfileRequest = new UpdateProfileRequest();
-            updateProfileRequest.setProfileId(Integer.parseInt(AppPrefs.getPrefsUserId(context)));
-            updateProfileRequest.setAboutMe(AppUtil.deNull(etAboutMe.getText()));
-            updateProfileRequest.setEMail(mEmail);
-            updateProfileRequest.setUserTypeId(1);
-            updateProfileRequest.setTokenId(mTokenID);
-            updateProfileRequest.setDeviceId(mDeviceID);
-            updateProfileRequest.setLatitude(AppUtil.deNull(latitude));
-            updateProfileRequest.setLongitude(AppUtil.deNull(longitude));
-            updateProfileRequest.setCountryid(Constants.COUNTRY_ID);
-            updateProfileRequest.setReligionId(selectedReligionId);
-            updateProfileRequest.setCasteId(selectedMaterCastId);
-            updateProfileRequest.setOwnCarId(selectedOwnCarId);
-            updateProfileRequest.setOwnHouseId(selectedOwnHouseId);
-            updateProfileRequest.setLivingWithId(selectedLivingId);
-            if (isDating)
-                updateProfileRequest.setDating(switchDatingOrMatrimonial.isChecked());
-            else
-                updateProfileRequest.setMatrimonial(switchDatingOrMatrimonial.isChecked());
-            updateProfileRequest.setHeightId(selectedHeightId);
-            updateProfileRequest.setWeightId(selectedWeightId);
-            updateProfileRequest.setGotraid(selectedSubCastId);
-            updateProfileRequest.setNakshakraid(selectedNakshakraId);
-            updateProfileRequest.setBodyTypeid(selectedBodytypeId);
-            updateProfileRequest.setComplexionid(selectedComplexionId);
-            updateProfileRequest.setOccupationid(selectedOccupationId);
-            updateProfileRequest.setQualificationid(selectedQualificationId);
-            updateProfileRequest.setAnualIncomeid(selectedAnnualIncomeId);
-            updateProfileRequest.setSmokingId(selectedSmokingStatusId);
-            updateProfileRequest.setDrinkingStatusid(selectedDrinkingStatusId);
-            updateProfileRequest.setFoodHabitsid(selectedFoodhabitsId);
-            updateProfileRequest.setMotherTougeid(selectedMothertougeId);
-            updateProfileRequest.setPhysicalStatusid(selectedPhysicalstatusId);
-            updateProfileRequest.setMatrialStatusid(selectedMatirialStatusId);
-            updateProfileRequest.setDoshamid(selectedDoshamId);
-            updateProfileRequest.setUpdatedDate(mUpdatedDate);
-            object.add(new Object());
+    private void updateProfile() {
 
-            mPresenter.updateProfile(isDating, updateProfileRequest);
+        UpdateProfileRequest updateProfileRequest = new UpdateProfileRequest();
+        updateProfileRequest.setProfileId(Integer.parseInt(AppPrefs.getPrefsUserId(context)));
+        updateProfileRequest.setAboutMe(AppUtil.deNull(etAboutMe.getText()));
+        updateProfileRequest.setEMail(mEmail);
+        updateProfileRequest.setUserTypeId(1);
+        updateProfileRequest.setTokenId(mTokenID);
+        updateProfileRequest.setDeviceId(mDeviceID);
+        updateProfileRequest.setLatitude(AppUtil.deNull(latitude));
+        updateProfileRequest.setLongitude(AppUtil.deNull(longitude));
+        updateProfileRequest.setCountryid(Constants.COUNTRY_ID);
+        updateProfileRequest.setReligionId(selectedReligionId);
+        updateProfileRequest.setCasteId(selectedMaterCastId);
+        updateProfileRequest.setOwnCarId(selectedOwnCarId);
+        updateProfileRequest.setOwnHouseId(selectedOwnHouseId);
+        updateProfileRequest.setLivingWithId(selectedLivingId);
+        if (isDating)
+            updateProfileRequest.setDating(switchDatingOrMatrimonial.isChecked());
+        else
+            updateProfileRequest.setMatrimonial(switchDatingOrMatrimonial.isChecked());
+        updateProfileRequest.setHeightId(selectedHeightId);
+        updateProfileRequest.setWeightId(selectedWeightId);
+        updateProfileRequest.setGotraid(selectedSubCastId);
+        updateProfileRequest.setNakshakraid(selectedNakshakraId);
+        updateProfileRequest.setBodyTypeid(selectedBodytypeId);
+        updateProfileRequest.setComplexionid(selectedComplexionId);
+        updateProfileRequest.setOccupationid(selectedOccupationId);
+        updateProfileRequest.setQualificationid(selectedQualificationId);
+        updateProfileRequest.setAnualIncomeid(selectedAnnualIncomeId);
+        updateProfileRequest.setSmokingId(selectedSmokingStatusId);
+        updateProfileRequest.setDrinkingStatusid(selectedDrinkingStatusId);
+        updateProfileRequest.setFoodHabitsid(selectedFoodhabitsId);
+        updateProfileRequest.setMotherTougeid(selectedMothertougeId);
+        updateProfileRequest.setPhysicalStatusid(selectedPhysicalstatusId);
+        updateProfileRequest.setMatrialStatusid(selectedMatirialStatusId);
+        updateProfileRequest.setDoshamid(selectedDoshamId);
+        updateProfileRequest.setUpdatedDate(mUpdatedDate);
+        object.add(new Object());
 
-            if (getImageUri() != null)
-                uploadProfileImage();
-            //mPresenter.updateMaterimonial(Constants.USER_ID, selectedReligionId + "", selectedMaterCastId + "", selectedSubCastId + "", ownCar, ownHouse, selectedLivingId + "", "123", selectedPreffedType, editTextHeight.getText().toString(), editTextWeight.getText().toString(), editTextAge.getText().toString(), "2121.212", "65656.2212", selectedNakshakraId + "", selectedBodytypeId + "", selectedComplexionId + "", selectedOccupationId + "", selectedQualificationId + "", editTextIncome.getText().toString(), smokingstatus, drinkingstatus, selectedFoodhabitsId + "", selectedMothertougeId + "", selectedPhysicalstatusId + "", selectedMatirialStatusId + "", selectedDoshamId + "");
-        }
+        mPresenter.updateProfile(isDating, updateProfileRequest);
+
+        if (getImageUri() != null)
+            uploadProfileImage();
     }
 
     private String getNotInterestedString() {

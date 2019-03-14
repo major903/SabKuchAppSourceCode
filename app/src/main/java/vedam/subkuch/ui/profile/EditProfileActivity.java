@@ -179,9 +179,9 @@ public class EditProfileActivity extends BaseActivity {
     };
 
     private void setValues(Profile profile) {
-        UiUtil.setTextView(activityEditProfileBinding.etEmail, profile.getEMail());
-        UiUtil.setTextView(activityEditProfileBinding.etFirstName, profile.getFirstName());
-        UiUtil.setTextView(activityEditProfileBinding.etLastName, profile.getLastName());
+        UiUtil.setTextViewWithVisibility(activityEditProfileBinding.etEmail, profile.getEMail());
+        UiUtil.setTextViewWithVisibility(activityEditProfileBinding.etFirstName, profile.getFirstName());
+        UiUtil.setTextViewWithVisibility(activityEditProfileBinding.etLastName, profile.getLastName());
         if (activityEditProfileBinding.etLastName.getText() != null)
             activityEditProfileBinding.etLastName.setSelection(activityEditProfileBinding.etLastName.getText().length());
         /*int indexOfCurrentCountry = getIndexOfCurrentCountry(profile.getCountryid());
@@ -270,7 +270,14 @@ public class EditProfileActivity extends BaseActivity {
     private int validateErrorMessage() {
         int errorMessage = 0;
         if (TextUtils.isEmpty(activityEditProfileBinding.etFirstName.getText()))
-            errorMessage = R.string.enter_first_name;
+            errorMessage = R.string.enter_given_name;
+        else if (TextUtils.isEmpty(activityEditProfileBinding.etLastName.getText()))
+            errorMessage = R.string.enter_surname;
+        else if (activityEditProfileBinding.etFirstName.getText().length() < 3)
+            errorMessage = R.string.minimum_3_characters_first_name;
+        else if (!AppUtil.isStringOnlyAlphabet(activityEditProfileBinding.etFirstName.getText().toString()) ||
+                !AppUtil.isStringName(activityEditProfileBinding.etLastName.getText().toString()))
+            errorMessage = R.string.no_special_characters_allowed_in_name;
         else if (TextUtils.isEmpty(activityEditProfileBinding.etEmail.getText()))
             errorMessage = R.string.enter_email;
         else if (!AppUtil.validateEmail(activityEditProfileBinding.etEmail.getText().toString()))

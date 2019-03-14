@@ -221,6 +221,7 @@ public class PinFragment extends BaseFragment {
             } else if (fragmentPinBinding.etPin3.getText().hashCode() == s.hashCode()) {
                 fragmentPinBinding.etPin4.requestFocus();
             } else if (fragmentPinBinding.etPin4.getText().hashCode() == s.hashCode()) {
+                fragmentPinBinding.etPin4.clearFocus();
                 UiUtil.hideKeyBoard(context, fragmentPinBinding.etPin4);
             }
         }

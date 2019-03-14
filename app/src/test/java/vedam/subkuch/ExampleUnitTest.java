@@ -1,8 +1,7 @@
 package vedam.subkuch;
 
-import org.junit.Test;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -12,6 +11,12 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+        System.out.println(isStringName("F A ."));
+    }
+
+    public static boolean isStringName(String str) {
+        return ((str != null)
+                && (!str.equals(""))
+                && (str.matches("^[a-zA-Z.\\s]*$")));
     }
 }

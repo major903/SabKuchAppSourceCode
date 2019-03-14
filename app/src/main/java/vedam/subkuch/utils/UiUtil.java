@@ -257,12 +257,9 @@ public class UiUtil {
             return;
 
         if (imageSetter.isDefaultsSet()) {
-            try {
-                requestCreator.placeholder(R.drawable.grey);
-                requestCreator.error(R.drawable.grey);
-            } catch (Exception e) {
-                Crashlytics.logException(e);
-            }
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+//                requestCreator.placeholder(R.drawable.grey);
+//                requestCreator.error(R.drawable.grey);
         } else {
             if (imageSetter.getPlaceholderResource() != 0)
                 requestCreator.placeholder(imageSetter.getPlaceholderResource());
@@ -549,6 +546,12 @@ public class UiUtil {
         if (TextUtils.isEmpty(value))
             tv.setVisibility(View.GONE);
         else
+            tv.setText(value);
+    }
+
+    public static void setTextViewWithVisibility(TextView tv, CharSequence value) {
+
+        if (!TextUtils.isEmpty(value))
             tv.setText(value);
     }
 

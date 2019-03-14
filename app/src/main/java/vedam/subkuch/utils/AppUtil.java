@@ -67,6 +67,18 @@ public class AppUtil {
         return true;
     }
 
+    public static boolean isStringOnlyAlphabet(String str) {
+        return ((str != null)
+                && (!str.equals(""))
+                && (str.matches("^[a-zA-Z\\s]*$")));
+    }
+
+    public static boolean isStringName(String str) {
+        return ((str != null)
+                && (!str.equals(""))
+                && (str.matches("^[a-zA-Z.\\s]*$")));
+    }
+
     public static boolean isNumeric(String str) {
         return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
     }
@@ -347,10 +359,10 @@ public class AppUtil {
     /**
      * Makes the first letter caps and the rest lowercase.
      *
-     * @param data deCapitalize this
+     * @param data capitalize this
      * @return String
      */
-    public static String deCapitalize(String data) {
+    public static String capitalize(String data) {
 
         if (TextUtils.isEmpty(data))
             return null;

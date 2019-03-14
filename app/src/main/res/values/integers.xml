@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="default_pro_rating">0</integer>
+    <integer name="name_length">20</integer>
+    <integer name="surname_length">30</integer>
 </resources>

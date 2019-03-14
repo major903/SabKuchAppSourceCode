@@ -35,7 +35,7 @@
                         style="@style/TextViewBlueHeading"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/first_name" />
+                        android:text="@string/given_name" />
 
                     <EditText
                         android:id="@+id/et_first_name"
@@ -43,10 +43,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_4dp"
-                        android:hint="@string/first_name"
+                        android:hint="@string/given_name"
                         android:imeOptions="actionNext"
                         android:textColor="@color/dark_grey"
                         tools:text="@string/err"
+                        android:inputType="textPersonName|textCapWords"
+                        android:maxLength="@integer/name_length"
                         android:maxLines="1"
                         android:padding="@dimen/margin_8dp" />
 
@@ -55,7 +57,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_16dp"
-                        android:text="@string/last_name" />
+                        android:text="@string/surname" />
 
                     <EditText
                         android:id="@+id/et_last_name"
@@ -63,10 +65,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_4dp"
-                        android:hint="@string/last_name"
+                        android:hint="@string/surname"
                         android:imeOptions="actionNext"
                         android:inputType="textPersonName|textCapWords"
                         android:maxLines="1"
+                        android:maxLength="@integer/surname_length"
                         android:padding="@dimen/margin_8dp" />
 
                    <!-- <TextView

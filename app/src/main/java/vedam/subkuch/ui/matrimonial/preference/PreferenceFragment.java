@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -24,7 +23,6 @@ import butterknife.Unbinder;
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseFragment;
 import vedam.subkuch.helpers.Constants;
-import vedam.subkuch.network.models.GetSmokingResponse;
 import vedam.subkuch.network.models.DrinkingHabits;
 import vedam.subkuch.network.models.GetBodyTypeBean;
 import vedam.subkuch.network.models.GetCityResponse;
@@ -41,6 +39,7 @@ import vedam.subkuch.network.models.GetOwnCarResponse;
 import vedam.subkuch.network.models.GetOwnHouseResponse;
 import vedam.subkuch.network.models.GetPhysicalStatusBean;
 import vedam.subkuch.network.models.GetQualificationBean;
+import vedam.subkuch.network.models.GetSmokingResponse;
 import vedam.subkuch.network.models.OwnCar;
 import vedam.subkuch.network.models.OwnHouse;
 import vedam.subkuch.network.models.Smoking;
@@ -258,7 +257,6 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_preference, container, false);
         setTitle(getString(R.string.preferences));
         unbinder = ButterKnife.bind(this, view);
@@ -303,12 +301,6 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         relativeOwnCar.setVisibility(View.GONE);
         tvHouseHeading.setVisibility(View.GONE);
         relativeOwnHouse.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        menu.clear();
     }
 
     private void init() {
@@ -424,7 +416,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     @Override
     public void onSuccessfullyUpdatePreferences(UpdateMatrimonialResponse response) {
 
-        UiUtil.showToast(getActivity(), getString(R.string.profile_updated));
+        UiUtil.showToast(getActivity(), getString(R.string.preference_updated));
         if (getFragmentManager() != null) {
             getFragmentManager().popBackStack();
         }

@@ -2,12 +2,16 @@ package vedam.subkuch.ui.matrimonial.viewProfile;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -19,6 +23,7 @@ import vedam.subkuch.base.BaseFragment;
 import vedam.subkuch.databinding.FragmentViewProfileBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
+import vedam.subkuch.ui.chat.ChatActivity;
 import vedam.subkuch.ui.matrimonial.models.DatingProfile;
 import vedam.subkuch.ui.matrimonial.models.LikeDislike;
 import vedam.subkuch.ui.matrimonial.models.LikeDislikeResponse;
@@ -60,6 +65,7 @@ public class ViewProfileFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
         fragmentViewProfileBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_view_profile, container, false);
         return fragmentViewProfileBinding.getRoot();
@@ -150,4 +156,24 @@ public class ViewProfileFragment extends BaseFragment {
             } else
                 UiUtil.showToast(context, getString(R.string.err_occurred));
     };
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.chat, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_chats:
+                Intent intent = new Intent(context, ChatActivity.class);
+                intent.putExtra(Constants.EXTRA_NAME, AppUtil.getFullName(datingProfile.getFirstName(), datingProfile.getLastName()));
+                intent.putExtra(Constants.EXTRA_CHAT_TO_ID, datingProfile.getProfileId());
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }

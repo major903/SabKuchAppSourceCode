@@ -157,8 +157,8 @@ public class RegisterUserActivity extends BaseActivity implements DatePickerFrag
                 Intent intent = new Intent(RegisterUserActivity.this, VerificationActivity.class);
 
                 Profile profile = new Profile();
-                profile.setFirstName(activityRegisterUserBinding.etFirstName.getText().toString());
-                profile.setLastName(AppUtil.deNull(activityRegisterUserBinding.etLastName.getText()));
+                profile.setFirstName(AppUtil.capitalize(activityRegisterUserBinding.etFirstName.getText().toString()));
+                profile.setLastName(AppUtil.capitalize(activityRegisterUserBinding.etLastName.getText().toString()));
                 profile.setMobile(activityRegisterUserBinding.etMobileNumber.getText().toString());
 //                profile.setEMail(activityRegisterUserBinding.etEmail.getText().toString());
                 profile.setDOB(DateTimeUtils.getFormattedDate(activityRegisterUserBinding.etDob.getText().toString(),
@@ -230,7 +230,14 @@ public class RegisterUserActivity extends BaseActivity implements DatePickerFrag
     private int validateErrorMessage() {
         int errorMessage = 0;
         if (TextUtils.isEmpty(activityRegisterUserBinding.etFirstName.getText()))
-            errorMessage = R.string.enter_first_name;
+            errorMessage = R.string.enter_given_name;
+        else if (TextUtils.isEmpty(activityRegisterUserBinding.etLastName.getText()))
+            errorMessage = R.string.enter_surname;
+        else if (activityRegisterUserBinding.etFirstName.getText().length() < 3)
+            errorMessage = R.string.minimum_3_characters_first_name;
+        else if (!AppUtil.isStringOnlyAlphabet(activityRegisterUserBinding.etFirstName.getText().toString()) ||
+                !AppUtil.isStringName(activityRegisterUserBinding.etLastName.getText().toString()))
+            errorMessage = R.string.no_special_characters_allowed_in_name;
         /*else if (TextUtils.isEmpty(activityRegisterUserBinding.etEmail.getText()))
             errorMessage = R.string.enter_email;
         else if (!AppUtil.validateEmail(activityRegisterUserBinding.etEmail.getText().toString()))

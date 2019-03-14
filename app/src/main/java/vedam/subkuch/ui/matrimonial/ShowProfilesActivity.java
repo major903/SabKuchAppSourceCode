@@ -38,6 +38,7 @@ public class ShowProfilesActivity extends BaseActivity
     private ActivityShowProfilesBinding activityShowProfilesBinding;
     private HashMap<String, Integer> hmNavigationIds;
     private boolean isDating;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,12 +157,25 @@ public class ShowProfilesActivity extends BaseActivity
             setTitle(tag);
             if (!Constants.TAG_SHOW_PROFILES_FRAGMENT.equals(tag))
                 activityShowProfilesBinding.navView.setCheckedItem(hmNavigationIds.get(tag));
+            if (tag.equals(Constants.TAG_CHATS_FRAGMENT))
+                setMenuItemVisibility(false);
+            else
+                setMenuItemVisibility(true);
+        }
+    }
+
+    private void setMenuItemVisibility(boolean visibility) {
+        if (menu != null) {
+            MenuItem menuItem = menu.findItem(R.id.action_chats);
+            if (menuItem != null)
+                menuItem.setVisible(visibility);
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.chat, menu);
+        this.menu = menu;
         return super.onCreateOptionsMenu(menu);
     }
 

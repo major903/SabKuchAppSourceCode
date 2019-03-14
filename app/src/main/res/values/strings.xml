@@ -18,12 +18,12 @@
     <string name="retry">Retry</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="first_name">First Name</string>
-    <string name="last_name">Last Name</string>
+    <string name="given_name">Given Name</string>
+    <string name="surname">Surname</string>
     <string name="mobile_number">Mobile Number</string>
     <string name="email_id">Email Id</string>
     <string name="submit">Submit</string>
-    <string name="enter_first_name">Enter first name</string>
+    <string name="enter_given_name">Enter given name</string>
     <string name="enter_email">Enter email id</string>
     <string name="enter_valid_email">Enter valid email id</string>
     <string name="enter_mobile">Enter 10 digit mobile number</string>
@@ -269,8 +269,8 @@
     <string name="empty_cast">Please select cast</string>
     <string name="empty_gothra">Please select gothra</string>
     <string name="empty_living_with">Please select living with</string>
-    <string name="empty_height">Please enter your height</string>
-    <string name="empty_weight">Please enter the weight</string>
+    <string name="empty_height">Please select height</string>
+    <string name="empty_weight">Please select weight</string>
     <string name="distance_range">Distance(K.m)</string>
     <string name="preferences">Preferences</string>
     <string name="is_smoking">Smoking</string>
@@ -314,6 +314,7 @@
     <string name="dating">Dating</string>
     <string name="annual_income">Annual Income</string>
     <string name="profile_updated">Profile updated Successfully!</string>
+    <string name="preference_updated">Preference updated Successfully!</string>
     <string name="add_profile_pricture">Please add profile picture</string>
     <string name="select_drinking_habits">Select Drinking Habits</string>
     <string name="type_a_message">Type a message</string>
@@ -342,4 +343,19 @@
     <string name="are_you_sure_unmatch">Are you sure you want to unmatch?</string>
     <string name="no_interest_dating">You have switched off interest in Dating</string>
     <string name="no_interest_matrimonial">You have switched off interest in Matrimonial</string>
+    <string name="minimum_3_characters_first_name">Minimum 3 characters needed in given name</string>
+    <string name="no_special_characters_allowed_in_name">Special characters are not allowed in name</string>
+    <string name="enter_surname">Enter surname</string>
+    <string name="empty_body_type">Please select body type</string>
+    <string name="empty_occupation">Please select occupation</string>
+    <string name="empty_food_habits">Please select food habits</string>
+    <string name="empty_drinking_habits">Please select drinking habits</string>
+    <string name="empty_smoking_status">Please select smoking status</string>
+    <string name="empty_complexion">Please select complexion</string>
+    <string name="empty_qualification">Please select qualification</string>
+    <string name="empty_physical_status">Please select physical status</string>
+    <string name="empty_mother_tongue">Please select mother tongue</string>
+    <string name="empty_annual_income">Please select annual income</string>
+    <string name="empty_car_status">Please select car status</string>
+    <string name="empty_house_status">Please select house status</string>
 </resources>

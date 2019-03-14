@@ -98,7 +98,7 @@ public class VerificationActivity extends BaseActivity {
 
     private void sendVerifyOtpRequest(String otp) {
 
-        if (sentOtp.equalsIgnoreCase(otp)) {
+        if (otp.equalsIgnoreCase(sentOtp)) {
             registerUser();
         } else {
             noOfAttempts++;
