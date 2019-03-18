@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.google.gson.Gson;
@@ -185,6 +186,10 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
     private void setViewStubChildViews() {
 
         Button btEditProfile = vEmptyInflated.findViewById(R.id.bt_edit_profile);
+        if (!isDating) {
+            TextView tvReasons = vEmptyInflated.findViewById(R.id.tv_reasons);
+            tvReasons.setText(R.string.no_profiles_reason_matrimonial);
+        }
         btEditProfile.setOnClickListener(v -> addFragmentWithAnimation(R.id.content_frame,
                 EditProfileFragment.newInstance(isDating), Constants.TAG_PROFILE_FRAGMENT, true));
     }

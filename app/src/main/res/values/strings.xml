@@ -233,7 +233,8 @@
     <string name="please_enter_pin">Please enter PIN</string>
     <string name="incorrect_pin">Incorrect Pin</string>
     <string name="pin_mismatch">Pin mismatch</string>
-    <string name="no_profiles_reason">Reason 1 : You have not updated your profile\nReason 2 : You are male. You can only see women\'s profile who have clicked on Like\nReason 3 : No more profiles to show</string>
+    <string name="no_profiles_reason_dating">Reason 1 : You have not enabled Dating. Go to profile\nReason 2 : You are male. You can only see women\'s profile who have clicked on Like\nReason 3 : No more profiles to show</string>
+    <string name="no_profiles_reason_matrimonial">Reason 1 : You have not enabled Matrimonial. Go to profile\nReason 2 : You are male. You can only see women\'s profile who have clicked on Like\nReason 3 : No more profiles to show</string>
     <string name="edit_preference">Edit Preference</string>
     <string name="profile_image">Profile Image</string>
     <string name="reaction_posted">Reaction posted</string>
@@ -320,7 +321,7 @@
     <string name="type_a_message">Type a message</string>
     <string name="no_matches_found">No matches found</string>
     <string name="any">Any</string>
-    <string name="interested_in_matrimonial">Interested in Matrimonial</string>
+    <string name="interested_in_matrimonial">Enable/Disable Matrimonial</string>
     <string name="living_in_city">Living in (City)</string>
     <string name="drinking_habits">Drinking Habits</string>
     <string name="internet_not_connected">Internet not connected</string>
@@ -338,7 +339,7 @@
     <string name="select_height">Select Height</string>
     <string name="select_weight">Select Weight</string>
     <string name="fail_to_crop">Failed to crop</string>
-    <string name="interested_in_dating">Interested in Dating</string>
+    <string name="interested_in_dating">Enable/Disable Dating</string>
     <string name="unmatched">Unmatched</string>
     <string name="are_you_sure_unmatch">Are you sure you want to unmatch?</string>
     <string name="no_interest_dating">You have switched off interest in Dating</string>
