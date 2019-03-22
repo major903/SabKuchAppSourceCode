@@ -107,7 +107,7 @@
             android:layout_height="wrap_content"
             android:inputType="textPersonName" />-->
 
-        <TextView
+        <vedam.subkuch.uicomponent.OptionalTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -122,7 +122,7 @@
             android:layout_height="wrap_content"
             android:inputType="textMultiLine" />
 
-        <TextView
+        <vedam.subkuch.uicomponent.RequiredTextView
             android:id="@+id/tv_religion_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -155,7 +155,7 @@
         </RelativeLayout>
 
 
-        <TextView
+        <vedam.subkuch.uicomponent.RequiredTextView
             android:id="@+id/tv_caste_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -188,7 +188,7 @@
         </RelativeLayout>
 
 
-        <TextView
+        <vedam.subkuch.uicomponent.OptionalTextView
             android:id="@+id/tv_gotra_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -220,7 +220,7 @@
                 app:srcCompat="@drawable/ic_drop_down" />
         </RelativeLayout>
 
-        <TextView
+        <vedam.subkuch.uicomponent.OptionalTextView
             android:id="@+id/tv_nakshatra_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -235,7 +235,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
+            <vedam.subkuch.uicomponent.RequiredTextView
                 android:id="@+id/textViewNakshakra"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -254,7 +254,7 @@
         </RelativeLayout>
 
 
-        <TextView
+        <vedam.subkuch.uicomponent.RequiredTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -288,7 +288,7 @@
         </RelativeLayout>
 
 
-        <TextView
+        <vedam.subkuch.uicomponent.RequiredTextView
             android:id="@+id/tv_complexion_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -323,7 +323,7 @@
         </RelativeLayout>
 
 
-        <TextView
+        <vedam.subkuch.uicomponent.RequiredTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -357,7 +357,7 @@
         </RelativeLayout>
 
 
-        <TextView
+        <vedam.subkuch.uicomponent.RequiredTextView
             android:id="@+id/tv_qualification_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -392,7 +392,7 @@
         </RelativeLayout>
 
 
-        <TextView
+        <vedam.subkuch.uicomponent.RequiredTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -425,7 +425,7 @@
                 app:srcCompat="@drawable/ic_drop_down" />
         </RelativeLayout>
 
-        <TextView
+        <vedam.subkuch.uicomponent.RequiredTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -458,7 +458,7 @@
         </RelativeLayout>
 
 
-        <TextView
+        <vedam.subkuch.uicomponent.RequiredTextView
             android:id="@+id/tv_physical_status_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -493,7 +493,7 @@
         </RelativeLayout>
 
 
-        <TextView
+        <vedam.subkuch.uicomponent.OptionalTextView
             android:id="@+id/tv_dosham_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -528,7 +528,7 @@
         </RelativeLayout>
 
 
-        <TextView
+        <vedam.subkuch.uicomponent.RequiredTextView
             android:id="@+id/tv_mother_tongue_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -563,7 +563,7 @@
         </RelativeLayout>
 
 
-        <TextView
+        <vedam.subkuch.uicomponent.RequiredTextView
             android:id="@+id/tv_living_with_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -598,7 +598,7 @@
         </RelativeLayout>
 
 
-        <TextView
+        <vedam.subkuch.uicomponent.RequiredTextView
             android:id="@+id/tv_marital_status_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -632,7 +632,7 @@
                 app:srcCompat="@drawable/ic_drop_down" />
         </RelativeLayout>
 
-        <TextView
+        <vedam.subkuch.uicomponent.RequiredTextView
             android:id="@+id/tv_annual_income_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -665,7 +665,7 @@
                 app:srcCompat="@drawable/ic_drop_down" />
         </RelativeLayout>
 
-        <TextView
+        <vedam.subkuch.uicomponent.RequiredTextView
             android:id="@+id/tv_car_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -698,7 +698,7 @@
                 app:srcCompat="@drawable/ic_drop_down" />
         </RelativeLayout>
 
-        <TextView
+        <vedam.subkuch.uicomponent.RequiredTextView
             android:id="@+id/tv_house_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -731,7 +731,7 @@
                 app:srcCompat="@drawable/ic_drop_down" />
         </RelativeLayout>
 
-        <TextView
+        <vedam.subkuch.uicomponent.RequiredTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -763,7 +763,7 @@
                 app:srcCompat="@drawable/ic_drop_down" />
         </RelativeLayout>
 
-        <TextView
+        <vedam.subkuch.uicomponent.RequiredTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -795,7 +795,7 @@
                 app:srcCompat="@drawable/ic_drop_down" />
         </RelativeLayout>
 
-        <TextView
+        <vedam.subkuch.uicomponent.RequiredTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"

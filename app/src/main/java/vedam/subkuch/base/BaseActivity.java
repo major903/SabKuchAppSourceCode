@@ -199,6 +199,11 @@ public abstract class BaseActivity extends AppCompatActivity implements ScreenCh
         addFragment(containerId, fragment, null, false, 0, 0, 0, 0);
     }
 
+    public void addFragmentWithStateLoss(final int containerId, Fragment fragment) {
+
+        addFragmentWithStateLoss(containerId, fragment, null, false, 0, 0, 0, 0);
+    }
+
     public void addFragment(final int containerId, Fragment fragment, String tag) {
 
         addFragment(containerId, fragment, tag, false, 0, 0, 0, 0);
@@ -218,6 +223,23 @@ public abstract class BaseActivity extends AppCompatActivity implements ScreenCh
             ft.addToBackStack(tag);
         }
         ft.commit();
+
+    }
+
+    public void addFragmentWithStateLoss(final int containerId, Fragment fragment, String tag, boolean addToBackStack,
+                            @AnimRes int enterAnim, @AnimRes int exitAnim,
+                            @AnimRes int enterAnimPop, @AnimRes int exitAnimPop) {
+
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction ft = manager.beginTransaction();
+        if (enterAnim != 0 || exitAnim != 0 || enterAnimPop != 0 || exitAnimPop != 0) {
+            ft.setCustomAnimations(enterAnim, exitAnim, enterAnimPop, exitAnimPop);
+        }
+        ft.add(containerId, fragment, tag);
+        if (addToBackStack) {
+            ft.addToBackStack(tag);
+        }
+        ft.commitAllowingStateLoss();
 
     }
 

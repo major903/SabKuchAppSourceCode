@@ -5,16 +5,19 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 import com.yuyakaido.android.cardstackview.CardStackListener;
@@ -161,9 +164,24 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
         manager = new CardStackLayoutManager(context, this);
         manager.setCanScrollVertical(false);
         ProfileStackAdapter adapter = new ProfileStackAdapter(context, datingProfiles);
+        fragmentShowProfilesBinding.csvProfile.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                fragmentShowProfilesBinding.csvProfile.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                ShowProfilesFragment.this.setLayoutParams();
+            }
+        });
         fragmentShowProfilesBinding.csvProfile.setLayoutManager(manager);
         fragmentShowProfilesBinding.csvProfile.setNestedScrollingEnabled(false);
         fragmentShowProfilesBinding.csvProfile.setAdapter(adapter);
+    }
+
+    @SuppressWarnings("SuspiciousNameCombination")
+    private void setLayoutParams() {
+
+        int width = fragmentShowProfilesBinding.csvProfile.getMeasuredWidth();
+        CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(width, width);
+        fragmentShowProfilesBinding.csvProfile.setLayoutParams(params);
     }
 
     private void hideViewStub() {
@@ -244,6 +262,11 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
         fragmentShowProfilesBinding.csvProfile.swipe();
     }
 
+    private void rewind() {
+
+        fragmentShowProfilesBinding.csvProfile.rewind();
+    }
+
     private Response.Listener<LikeDislikeResponse> onLikeDislikeSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
@@ -251,9 +274,17 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
             if (response != null && response.getReturnMessage().equals(Constants.SUCCESS) && response.getLikeDislike() != null) {
                 UiUtil.showToast(context, getReactionString(response.getLikeDislike().getReactionType()));
                 changeUI();
-            } else
+            } else {
+                rewind();
                 UiUtil.showToast(context, getString(R.string.err_occurred));
+            }
     };
+
+    @Override
+    protected void onErrorReceived(VolleyError error) {
+        super.onErrorReceived(error);
+        rewind();
+    }
 
     private String getReactionString(int reactionType) {
         if (reactionType == Constants.REACTION_TYPE_LIKE)

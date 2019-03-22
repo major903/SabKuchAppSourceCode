@@ -42,7 +42,7 @@ public class PinActivity extends BaseActivity {
         Bundle bundle = new Bundle();
         bundle.putInt(Constants.EXTRA_CODE, Constants.SET_PIN_CODE);
         bundle.putBoolean(Constants.EXTRA_IS_DATING, isDating);
-        addFragment(R.id.content_frame, PinFragment.newInstance(bundle));
+        addFragmentWithStateLoss(R.id.content_frame, PinFragment.newInstance(bundle));
     }
 
     private void showEnterScreen() {
@@ -50,7 +50,7 @@ public class PinActivity extends BaseActivity {
         Bundle bundle = new Bundle();
         bundle.putInt(Constants.EXTRA_CODE, Constants.ENTER_PIN_CODE);
         bundle.putBoolean(Constants.EXTRA_IS_DATING, isDating);
-        addFragment(R.id.content_frame, PinFragment.newInstance(bundle));
+        addFragmentWithStateLoss(R.id.content_frame, PinFragment.newInstance(bundle));
     }
 
     private Response.Listener<GeneralResponse> onPinSuccessListener = response -> {

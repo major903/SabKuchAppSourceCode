@@ -7,6 +7,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
 import com.android.volley.Response;
 import com.google.gson.Gson;
@@ -101,6 +103,14 @@ public class ViewProfileFragment extends BaseFragment {
         } else
             fragmentViewProfileBinding.ivProfile.setBackgroundResource(R.drawable.placeholder);
 
+        fragmentViewProfileBinding.cvImage.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                fragmentViewProfileBinding.cvImage.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                setLayoutParams();
+            }
+        });
+
         String fullName = AppUtil.getFullName(datingProfile.getFirstName(), datingProfile.getLastName());
         fragmentViewProfileBinding.tvName.setText(AppUtil.getNameAndAge(fullName, datingProfile.getAge()));
 
@@ -126,6 +136,15 @@ public class ViewProfileFragment extends BaseFragment {
         UiUtil.setTextViewWithBoldPrefix(context, "Living With :", datingProfile.getLivingWithName(), fragmentViewProfileBinding.tvLivingWith);
         UiUtil.setTextViewWithBoldPrefix(context, "Car Status :", datingProfile.getOwnCarType(), fragmentViewProfileBinding.tvOwnCar);
         UiUtil.setTextViewWithBoldPrefix(context, "House Status :", datingProfile.getOwnHouseType(), fragmentViewProfileBinding.tvOwnHouse);
+    }
+
+    @SuppressWarnings("SuspiciousNameCombination")
+    private void setLayoutParams() {
+
+        int width = fragmentViewProfileBinding.cvImage.getMeasuredWidth();
+        CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(width, width);
+        params.bottomMargin = AppUtil.dpToPx(context, 28);
+        fragmentViewProfileBinding.cvImage.setLayoutParams(params);
     }
 
     private void setUnmatch() {

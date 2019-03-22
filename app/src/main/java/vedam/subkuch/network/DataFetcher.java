@@ -33,7 +33,7 @@ public class DataFetcher {
     public static <T> void sendOtp(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener,
                                    String countryCode, String phoneNumber) {
 
-        String url = String.format("%s/api/login/otps/get/%s/%s", NetworkConstants.END_POINT, countryCode, phoneNumber);
+        String url = String.format("%s/api/login/otps/get/%s/%s", NetworkConstants.END_POINT3, countryCode, phoneNumber);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 

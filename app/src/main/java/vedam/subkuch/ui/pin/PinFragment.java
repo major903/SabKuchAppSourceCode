@@ -13,6 +13,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -212,19 +213,28 @@ public class PinFragment extends BaseFragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (TextUtils.isEmpty(s))
-                return;
             if (fragmentPinBinding.etPin1.getText().hashCode() == s.hashCode()) {
-                fragmentPinBinding.etPin2.requestFocus();
+                setEditText(s, null, fragmentPinBinding.etPin2);
             } else if (fragmentPinBinding.etPin2.getText().hashCode() == s.hashCode()) {
-                fragmentPinBinding.etPin3.requestFocus();
+                setEditText(s, fragmentPinBinding.etPin1, fragmentPinBinding.etPin3);
             } else if (fragmentPinBinding.etPin3.getText().hashCode() == s.hashCode()) {
-                fragmentPinBinding.etPin4.requestFocus();
+                setEditText(s, fragmentPinBinding.etPin2, fragmentPinBinding.etPin4);
             } else if (fragmentPinBinding.etPin4.getText().hashCode() == s.hashCode()) {
-                fragmentPinBinding.etPin4.clearFocus();
-                UiUtil.hideKeyBoard(context, fragmentPinBinding.etPin4);
+                setEditText(s, fragmentPinBinding.etPin3, null);
+                if (!TextUtils.isEmpty(s)) {
+                    fragmentPinBinding.etPin4.clearFocus();
+                    UiUtil.hideKeyBoard(context, fragmentPinBinding.etPin4);
+                }
             }
         }
 
     };
+
+    private void setEditText(Editable s, EditText et1, EditText et2) {
+
+        if (TextUtils.isEmpty(s) && et1 != null)
+            et1.requestFocus();
+        else if (!TextUtils.isEmpty(s) && et2 != null)
+            et2.requestFocus();
+    }
 }

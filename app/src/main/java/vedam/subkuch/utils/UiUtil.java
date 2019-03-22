@@ -3,6 +3,7 @@ package vedam.subkuch.utils;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -257,9 +258,8 @@ public class UiUtil {
             return;
 
         if (imageSetter.isDefaultsSet()) {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-//                requestCreator.placeholder(R.drawable.grey);
-//                requestCreator.error(R.drawable.grey);
+            requestCreator.placeholder(R.drawable.grey);
+            requestCreator.error(R.drawable.grey);
         } else {
             if (imageSetter.getPlaceholderResource() != 0)
                 requestCreator.placeholder(imageSetter.getPlaceholderResource());
@@ -720,5 +720,25 @@ public class UiUtil {
         InputFilter[] inputFilters = new InputFilter[1];
         inputFilters[0] = new InputFilter.LengthFilter(length);
         editText.setFilters(inputFilters);
+    }
+
+
+    public static int getScreenWidth() {
+
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
+    }
+
+    public static void setRequiredTextView(@NonNull String value, TextView tv) {
+
+        String fullString = String.format("%s*", value);
+
+        tv.setText(fullString);
+    }
+
+    public static void setOptionalTextView(@NonNull String value, TextView tv) {
+
+        String fullString = String.format("%s (Optional)", value);
+
+        tv.setText(fullString);
     }
 }

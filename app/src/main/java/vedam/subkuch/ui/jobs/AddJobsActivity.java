@@ -218,7 +218,7 @@ public class AddJobsActivity extends BaseActivity {
             EditText etJobTitle = v.findViewById(R.id.et_job_title);
             EditText etJobRequirement = v.findViewById(R.id.et_job_requirement);
             post.setJobTitle(etJobTitle.getText().toString());
-            post.setRequirement(etJobRequirement.getText().toString());
+            post.setRequirement(AppUtil.deNull(etJobRequirement.getText()));
             alPosts.add(post);
         }
         jobRequest.setJobs(alPosts);
@@ -265,14 +265,15 @@ public class AddJobsActivity extends BaseActivity {
         else {
             for (View v : alJobs) {
                 EditText etJobTitle = v.findViewById(R.id.et_job_title);
-                EditText etJobRequirement = v.findViewById(R.id.et_job_requirement);
+//                EditText etJobRequirement = v.findViewById(R.id.et_job_requirement);
                 if (TextUtils.isEmpty(etJobTitle.getText())) {
                     errorMessage = R.string.enter_job_title;
                     break;
-                } else if (TextUtils.isEmpty(etJobRequirement.getText())) {
+                }
+                /*else if (TextUtils.isEmpty(etJobRequirement.getText())) {
                     errorMessage = R.string.enter_job_requirement;
                     break;
-                }
+                }*/
             }
         }
 
