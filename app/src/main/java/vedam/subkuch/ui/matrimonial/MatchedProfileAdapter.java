@@ -14,9 +14,10 @@ import java.util.ArrayList;
 import vedam.subkuch.R;
 import vedam.subkuch.interfaces.OnListViewItemClickListener;
 import vedam.subkuch.ui.matrimonial.models.DatingProfile;
-import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.ImageSetter;
 import vedam.subkuch.utils.UiUtil;
+
+import static vedam.subkuch.utils.AppUtil.deNull;
 
 public class MatchedProfileAdapter extends RecyclerView.Adapter<MatchedProfileAdapter.ViewHolder> {
 
@@ -44,7 +45,7 @@ public class MatchedProfileAdapter extends RecyclerView.Adapter<MatchedProfileAd
 
         DatingProfile datingProfile = datingProfiles.get(position);
 
-        UiUtil.setTextView(holder.tvName, AppUtil.getFullName(datingProfile.getFirstName(), datingProfile.getLastName()));
+        UiUtil.setTextView(holder.tvName, deNull(datingProfile.getFirstName()));
 
         if (datingProfile.getImagesList() != null && datingProfile.getImagesList().length > 0)
             UiUtil.setImageView(new ImageSetter.ImageBuilder(context)

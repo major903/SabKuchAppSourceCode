@@ -126,6 +126,7 @@ public class DatingProfile implements Parcelable {
     private String OwnCarType;
     private String OwnHouseType;
     private String SmokingType;
+    private String Distance;
     private ImageObject[] ImagesList;
 
     protected DatingProfile(Parcel in) {
@@ -191,6 +192,7 @@ public class DatingProfile implements Parcelable {
         OwnCarType = in.readString();
         OwnHouseType = in.readString();
         SmokingType = in.readString();
+        Distance = in.readString();
         ImagesList = in.createTypedArray(ImageObject.CREATOR);
     }
 
@@ -258,6 +260,7 @@ public class DatingProfile implements Parcelable {
         dest.writeString(OwnCarType);
         dest.writeString(OwnHouseType);
         dest.writeString(SmokingType);
+        dest.writeString(Distance);
         dest.writeTypedArray(ImagesList, flags);
     }
 
@@ -758,4 +761,7 @@ public class DatingProfile implements Parcelable {
         this.age = age;
     }
 
+    public String getDistance() {
+        return Distance;
+    }
 }

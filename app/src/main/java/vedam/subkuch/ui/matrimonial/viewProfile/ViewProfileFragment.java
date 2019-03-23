@@ -111,10 +111,10 @@ public class ViewProfileFragment extends BaseFragment {
             }
         });
 
-        String fullName = AppUtil.getFullName(datingProfile.getFirstName(), datingProfile.getLastName());
-        fragmentViewProfileBinding.tvName.setText(AppUtil.getNameAndAge(fullName, datingProfile.getAge()));
+        fragmentViewProfileBinding.tvName.setText(AppUtil.getNameAndAge(datingProfile.getFirstName(), datingProfile.getAge()));
 
         UiUtil.setTextView(fragmentViewProfileBinding.tvAbout, datingProfile.getAboutMe());
+        UiUtil.setTextView(fragmentViewProfileBinding.tvDistance, datingProfile.getDistance());
         UiUtil.setTextViewWithBoldPrefix(context, "Marital Status :", datingProfile.getMaritalStatusName(), fragmentViewProfileBinding.tvMaritalStatus);
         UiUtil.setTextViewWithBoldPrefix(context, "Mother Tongue :", datingProfile.getMothertongueName(), fragmentViewProfileBinding.tvMotherTongue);
         UiUtil.setTextViewWithBoldPrefix(context, "Occupation :", datingProfile.getOccupationName(), fragmentViewProfileBinding.tvOccupation);
@@ -134,8 +134,8 @@ public class ViewProfileFragment extends BaseFragment {
         UiUtil.setTextViewWithBoldPrefix(context, "Smoking Habit :", datingProfile.getSmokingType(), fragmentViewProfileBinding.tvSmokingHabit);
         UiUtil.setTextViewWithBoldPrefix(context, "Physical Status :", datingProfile.getPhysicalStatusName(), fragmentViewProfileBinding.tvPhysicalStatus);
         UiUtil.setTextViewWithBoldPrefix(context, "Living With :", datingProfile.getLivingWithName(), fragmentViewProfileBinding.tvLivingWith);
-        UiUtil.setTextViewWithBoldPrefix(context, "Car Status :", datingProfile.getOwnCarType(), fragmentViewProfileBinding.tvOwnCar);
-        UiUtil.setTextViewWithBoldPrefix(context, "House Status :", datingProfile.getOwnHouseType(), fragmentViewProfileBinding.tvOwnHouse);
+        UiUtil.setTextViewWithBoldPrefix(context, "Owns a Car :", datingProfile.getOwnCarType(), fragmentViewProfileBinding.tvOwnCar);
+        UiUtil.setTextViewWithBoldPrefix(context, "Owns a House :", datingProfile.getOwnHouseType(), fragmentViewProfileBinding.tvOwnHouse);
     }
 
     @SuppressWarnings("SuspiciousNameCombination")
@@ -187,7 +187,7 @@ public class ViewProfileFragment extends BaseFragment {
         switch (item.getItemId()) {
             case R.id.action_chats:
                 Intent intent = new Intent(context, ChatActivity.class);
-                intent.putExtra(Constants.EXTRA_NAME, AppUtil.getFullName(datingProfile.getFirstName(), datingProfile.getLastName()));
+                intent.putExtra(Constants.EXTRA_NAME, AppUtil.deNull(datingProfile.getFirstName()));
                 intent.putExtra(Constants.EXTRA_CHAT_TO_ID, datingProfile.getProfileId());
                 startActivity(intent);
                 return true;

@@ -58,6 +58,14 @@
                 tools:text="@string/err" />
 
             <TextView
+                android:id="@+id/tv_distance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8dp"
+                android:textSize="@dimen/text_size_17"
+                tools:text="@string/err" />
+
+            <TextView
                 android:id="@+id/tv_about"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

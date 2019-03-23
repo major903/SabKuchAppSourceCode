@@ -10,7 +10,7 @@ public class RequiredTextView extends android.support.v7.widget.AppCompatTextVie
     public RequiredTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        UiUtil.setRequiredTextView(getText().toString(), this);
+        UiUtil.setRequiredTextView(context, getText().toString(), this);
 
     }
 }

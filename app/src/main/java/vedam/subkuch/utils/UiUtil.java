@@ -728,11 +728,15 @@ public class UiUtil {
         return Resources.getSystem().getDisplayMetrics().widthPixels;
     }
 
-    public static void setRequiredTextView(@NonNull String value, TextView tv) {
+    public static void setRequiredTextView(Context context, @NonNull String value, TextView tv) {
 
-        String fullString = String.format("%s*", value);
+        String fullString = String.format("%s *", value);
 
-        tv.setText(fullString);
+        final SpannableStringBuilder str = new SpannableStringBuilder(fullString);
+        str.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.red)),
+                fullString.length() - 1, fullString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        tv.setText(str);
     }
 
     public static void setOptionalTextView(@NonNull String value, TextView tv) {

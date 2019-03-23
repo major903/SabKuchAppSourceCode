@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -123,8 +122,9 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
     private void bindValues() {
 
         DatingProfile datingProfile = datingProfiles.get(profileNo);
-        fragmentShowProfilesBinding.tvName.setText(getNameAndAge(datingProfile));
+        fragmentShowProfilesBinding.tvName.setText(AppUtil.getNameAndAge(datingProfile.getFirstName(), datingProfile.getAge()));
         UiUtil.setTextView(fragmentShowProfilesBinding.tvAbout, datingProfile.getAboutMe());
+        UiUtil.setTextView(fragmentShowProfilesBinding.tvDistance, datingProfile.getDistance());
         UiUtil.setTextViewWithBoldPrefix(context, "Marital Status :", datingProfile.getMaritalStatusName(), fragmentShowProfilesBinding.tvMaritalStatus);
         UiUtil.setTextViewWithBoldPrefix(context, "Mother Tongue :", datingProfile.getMothertongueName(), fragmentShowProfilesBinding.tvMotherTongue);
         UiUtil.setTextViewWithBoldPrefix(context, "Occupation :", datingProfile.getOccupationName(), fragmentShowProfilesBinding.tvOccupation);
@@ -144,20 +144,10 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
         UiUtil.setTextViewWithBoldPrefix(context, "Smoking Habit :", datingProfile.getSmokingType(), fragmentShowProfilesBinding.tvSmokingHabit);
         UiUtil.setTextViewWithBoldPrefix(context, "Physical Status :", datingProfile.getPhysicalStatusName(), fragmentShowProfilesBinding.tvPhysicalStatus);
         UiUtil.setTextViewWithBoldPrefix(context, "Living With :", datingProfile.getLivingWithName(), fragmentShowProfilesBinding.tvLivingWith);
-        UiUtil.setTextViewWithBoldPrefix(context, "Car Status :", datingProfile.getOwnCarType(), fragmentShowProfilesBinding.tvOwnCar);
-        UiUtil.setTextViewWithBoldPrefix(context, "House Status :", datingProfile.getOwnHouseType(), fragmentShowProfilesBinding.tvOwnHouse);
+        UiUtil.setTextViewWithBoldPrefix(context, "Owns a Car :", datingProfile.getOwnCarType(), fragmentShowProfilesBinding.tvOwnCar);
+        UiUtil.setTextViewWithBoldPrefix(context, "Owns a House :", datingProfile.getOwnHouseType(), fragmentShowProfilesBinding.tvOwnHouse);
     }
 
-    private String getNameAndAge(DatingProfile datingProfile) {
-
-//        String fullName = AppUtil.getFullName(datingProfile.getFirstName(), datingProfile.getLastName());
-        String fullName = AppUtil.deNull(datingProfile.getFirstName());
-        String age = AppUtil.deNull(datingProfile.getAge());
-        if (!TextUtils.isEmpty(age))
-            return fullName + ", " + age;
-        else
-            return fullName;
-    }
 
     private void setAdapter() {
 

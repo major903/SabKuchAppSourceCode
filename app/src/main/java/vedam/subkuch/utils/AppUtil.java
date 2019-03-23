@@ -468,9 +468,11 @@ public class AppUtil {
 
     public static String getNameAndAge(String name, String age) {
 
+        String fullName = AppUtil.deNull(name);
+
         if (!TextUtils.isEmpty(age))
-            return name + ", " + age;
+            return fullName + ", " + age;
         else
-            return name;
+            return fullName;
     }
 }

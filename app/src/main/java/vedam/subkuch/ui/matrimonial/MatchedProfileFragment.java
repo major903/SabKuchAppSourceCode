@@ -145,7 +145,7 @@ public class MatchedProfileFragment extends BaseFragment implements OnListViewIt
     private void startViewProfileActivity(DatingProfile datingProfile) {
 
         Intent intent = new Intent(context, ViewProfileActivity.class);
-        intent.putExtra(Constants.EXTRA_NAME, AppUtil.getFullName(datingProfile.getFirstName(), datingProfile.getLastName()));
+        intent.putExtra(Constants.EXTRA_NAME, AppUtil.deNull(datingProfile.getFirstName()));
         intent.putExtra(Constants.EXTRA_DATA, datingProfile);
         intent.putExtra(Constants.EXTRA_IS_DATING, isDating);
         startActivityForResult(intent, Constants.REQUEST_VIEW_PROFILE);
@@ -154,7 +154,7 @@ public class MatchedProfileFragment extends BaseFragment implements OnListViewIt
     private void startChatActivity(DatingProfile datingProfile) {
 
         Intent intent = new Intent(context, ChatActivity.class);
-        intent.putExtra(Constants.EXTRA_NAME, AppUtil.getFullName(datingProfile.getFirstName(), datingProfile.getLastName()));
+        intent.putExtra(Constants.EXTRA_NAME, AppUtil.deNull(datingProfile.getFirstName()));
         intent.putExtra(Constants.EXTRA_CHAT_TO_ID, datingProfile.getProfileId());
         startActivity(intent);
     }

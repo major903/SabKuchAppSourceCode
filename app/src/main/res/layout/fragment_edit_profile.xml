@@ -29,6 +29,7 @@
                 android:scaleType="fitXY"
                 app:riv_border_color="@color/colorPrimary"
                 app:riv_border_width="@dimen/margin_2dp"
+                android:src="@drawable/placeholder_small"
                 app:riv_oval="true" />
 
             <LinearLayout
@@ -53,29 +54,52 @@
         </FrameLayout>
 
 
-        <RelativeLayout
+        <!-- <RelativeLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="@dimen/margin_16dp">
+
+             <TextView
+                 android:id="@+id/tv_interested_in"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_centerVertical="true"
+                 android:layout_marginTop="@dimen/margin_16dp"
+                 android:text="@string/interested_in_matrimonial"
+                 android:textColor="@android:color/black"
+                 android:textSize="@dimen/sp_eighteen" />
+
+             <Switch
+                 android:id="@+id/switchMatrimonial"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentRight="true"
+                 android:layout_centerVertical="true"
+                 app:theme="@style/MyCheckBoxTheme" />
+         </RelativeLayout>-->
+
+        <TextView
+            android:id="@+id/tv_interested_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:text="@string/interested_in_matrimonial"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/sp_eighteen" />
+
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp">
+            android:layout_marginTop="@dimen/margin_4dp"
+            android:background="@drawable/edit_text_border">
 
-            <TextView
-                android:id="@+id/tv_interested_in"
-                android:layout_width="wrap_content"
+            <Spinner
+                android:id="@+id/sp_interested_in"
+                style="@style/SpinnerStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="@dimen/margin_16dp"
-                android:text="@string/interested_in_matrimonial"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/sp_eighteen" />
-
-            <Switch
-                android:id="@+id/switchMatrimonial"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                app:theme="@style/MyCheckBoxTheme" />
-        </RelativeLayout>
+                android:theme="@style/SpinnerStyle" />
+        </FrameLayout>
 
         <!--<TextView
             android:layout_width="wrap_content"
@@ -155,7 +179,7 @@
         </RelativeLayout>
 
 
-        <vedam.subkuch.uicomponent.RequiredTextView
+        <vedam.subkuch.uicomponent.OptionalTextView
             android:id="@+id/tv_caste_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -235,7 +259,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <vedam.subkuch.uicomponent.RequiredTextView
+            <TextView
                 android:id="@+id/textViewNakshakra"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

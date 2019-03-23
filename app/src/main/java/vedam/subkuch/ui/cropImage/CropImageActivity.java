@@ -38,7 +38,7 @@ public class CropImageActivity extends BaseActivity {
         String imageUri = getIntent().getStringExtra(Constants.EXTRA_IMAGE_URI);
         // Bitmap newBitMap = FilesFunctions.changeImageOrientation(imageUri, singleBitmapDetail.getBitMap());
         imageViewCrop.setImageFilePath(imageUri);
-        imageViewCrop.setAspectRatio(6, 5);
+        imageViewCrop.setAspectRatio(6, 6);
     }
 
 

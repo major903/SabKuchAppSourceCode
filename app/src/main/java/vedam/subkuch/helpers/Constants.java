@@ -8,6 +8,8 @@ import android.Manifest;
 
 public class Constants {
 
+    public static final String YES = "Yes";
+
     Constants() {
     }
 

@@ -272,7 +272,7 @@
     <string name="empty_living_with">Please select living with</string>
     <string name="empty_height">Please select height</string>
     <string name="empty_weight">Please select weight</string>
-    <string name="distance_range">Distance(K.m)</string>
+    <string name="distance_range">Distance (Km)</string>
     <string name="preferences">Preferences</string>
     <string name="is_smoking">Smoking</string>
     <string name="anual_income">Annual Income</string>
@@ -290,8 +290,8 @@
     <string name="select_mothertouge">Select Mother tongue</string>
     <string name="select_physicalstatus">Select Physical Status</string>
     <string name="age">Age (Years)</string>
-    <string name="height_range">Height (cm)</string>
-    <string name="weight_range">Weight (K.g.)</string>
+    <string name="height_range">Height (Cm)</string>
+    <string name="weight_range">Weight (Kg)</string>
     <string name="nakshatra">Nakshatra</string>
     <string name="body_type">Body Type</string>
     <string name="complextion">Complexion</string>
@@ -321,7 +321,8 @@
     <string name="type_a_message">Type a message</string>
     <string name="no_matches_found">No matches found</string>
     <string name="any">Any</string>
-    <string name="interested_in_matrimonial">Enable/Disable Matrimonial</string>
+    <string name="interested_in_matrimonial">Interested in Matrimonial</string>
+    <string name="interested_in_dating">Interested in Dating</string>
     <string name="living_in_city">Living in (City)</string>
     <string name="drinking_habits">Drinking Habits</string>
     <string name="internet_not_connected">Internet not connected</string>
@@ -333,17 +334,16 @@
     <string name="home">Home</string>
     <string name="profile">Profile</string>
     <string name="chats">Chats</string>
-    <string name="select_car_status">Select Car Status</string>
-    <string name="select_house_status">Select House Status</string>
+    <string name="select_car_status">Own a Car?</string>
+    <string name="select_house_status">Own a House?</string>
     <string name="select_smoking_status">Select Smoking Status</string>
     <string name="select_height">Select Height</string>
     <string name="select_weight">Select Weight</string>
     <string name="fail_to_crop">Failed to crop</string>
-    <string name="interested_in_dating">Enable/Disable Dating</string>
     <string name="unmatched">Unmatched</string>
     <string name="are_you_sure_unmatch">Are you sure you want to unmatch?</string>
-    <string name="no_interest_dating">You have switched off interest in Dating</string>
-    <string name="no_interest_matrimonial">You have switched off interest in Matrimonial</string>
+    <string name="no_interest_dating">Please select your interest in Dating</string>
+    <string name="no_interest_matrimonial">Please select your interest in Matrimonial</string>
     <string name="minimum_3_characters_first_name">Minimum 3 characters needed in given name</string>
     <string name="no_special_characters_allowed_in_name">Special characters are not allowed in name</string>
     <string name="enter_surname">Enter surname</string>
@@ -359,4 +359,5 @@
     <string name="empty_annual_income">Please select annual income</string>
     <string name="empty_car_status">Please select car status</string>
     <string name="empty_house_status">Please select house status</string>
+    <string name="apply">Apply</string>
 </resources>

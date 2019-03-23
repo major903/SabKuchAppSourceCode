@@ -8,10 +8,12 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.Switch;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -101,8 +103,8 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
     @BindView(R.id.btnUpdate)
     TextView btnUpdate;
 
-    @BindView(R.id.switchMatrimonial)
-    Switch switchDatingOrMatrimonial;
+    @BindView(R.id.sp_interested_in)
+    Spinner spInterestedIn;
 
     String clickedItem = "";
 
@@ -247,6 +249,7 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
     private Stack<Object> object = new Stack<>();
     private boolean isImageLinkPresent;
     private boolean isDating;
+    private boolean isInterestedIn;
 
     public static EditProfileFragment newInstance(boolean isDating) {
 
@@ -283,6 +286,27 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
         mPresenter.getUserDetail(AppPrefs.getPrefsUserId(context), isDating);
         requestLocation();
         setImagesLayout(view);
+        bindData();
+    }
+
+    private void bindData() {
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
+                android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.interested_in_list));
+        spInterestedIn.setAdapter(adapter);
+        spInterestedIn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String interestedIn = parent.getItemAtPosition(position).toString();
+                isInterestedIn = Constants.YES.equals(interestedIn);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spInterestedIn.setSelection(1);
     }
 
     private void hideFields() {
@@ -346,8 +370,6 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
         } else if (!isDating) {
             if (selectedReligionId == -1) {
                 baseshowFeedbackMessage(rootLayout, getString(R.string.empty_religion));
-            } else if (selectedMaterCastId == -1) {
-                baseshowFeedbackMessage(rootLayout, getString(R.string.empty_cast));
             } else if (selectedComplexionId == -1) {
                 baseshowFeedbackMessage(rootLayout, getString(R.string.empty_complexion));
             } else if (selectedQualificationId == -1) {
@@ -390,9 +412,9 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
         updateProfileRequest.setOwnHouseId(selectedOwnHouseId);
         updateProfileRequest.setLivingWithId(selectedLivingId);
         if (isDating)
-            updateProfileRequest.setDating(switchDatingOrMatrimonial.isChecked());
+            updateProfileRequest.setDating(isInterestedIn);
         else
-            updateProfileRequest.setMatrimonial(switchDatingOrMatrimonial.isChecked());
+            updateProfileRequest.setMatrimonial(isInterestedIn);
         updateProfileRequest.setHeightId(selectedHeightId);
         updateProfileRequest.setWeightId(selectedWeightId);
         updateProfileRequest.setGotraid(selectedSubCastId);
@@ -789,10 +811,17 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
         selectedReligionId = returnDataBean.getReligionId();
 
         if (isDating)
-            switchDatingOrMatrimonial.setChecked(returnDataBean.isDating());
+            setSelection(returnDataBean.isDating());
         else
-            switchDatingOrMatrimonial.setChecked(returnDataBean.isMatrimonial());
+            setSelection(returnDataBean.isMatrimonial());
         //setData(response);
+    }
+
+    private void setSelection(boolean datingOrMatrimonial) {
+        if (datingOrMatrimonial)
+            spInterestedIn.setSelection(0);
+        else
+            spInterestedIn.setSelection(1);
     }
 
    /* public void setData(GetUserDetailResponse response) {

@@ -12,7 +12,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="@dimen/margin_16dp">
 
@@ -879,7 +879,7 @@
                     app:gap="1"
                     app:left_thumb_color="@color/colorPrimary"
                     app:left_thumb_color_pressed="@color/colorPrimary"
-                    app:max_value="1000"
+                    app:max_value="20000"
                     app:min_value="0"
                     app:right_thumb_color="@color/colorPrimary"
                     app:right_thumb_color_pressed="@color/colorPrimary"

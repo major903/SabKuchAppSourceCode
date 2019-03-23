@@ -19,6 +19,7 @@ import java.util.List;
 import okhttp3.OkHttpClient;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
+import vedam.subkuch.BuildConfig;
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseFragment;
 import vedam.subkuch.databinding.FragmentChatBinding;
@@ -159,7 +160,7 @@ public class ChatFragment extends BaseFragment implements OnInsertUpdateDoneList
 
     private void connectWebSocket() {
 
-        okhttp3.Request request = new okhttp3.Request.Builder().url("ws://sabkuch2.sabkuchworld.com/api/SabkuchChat/Get")
+        okhttp3.Request request = new okhttp3.Request.Builder().url("ws://sabkuch4.sabkuchworld.com/api/SabkuchChat/Get")
                 .addHeader("Authorization", AppPrefs.getPrefsToken(context)).build();
         EchoWebSocketListener listener = new EchoWebSocketListener();
         OkHttpClient okHttpClient = new OkHttpClient();
@@ -218,7 +219,8 @@ public class ChatFragment extends BaseFragment implements OnInsertUpdateDoneList
         @Override
         public void onFailure(WebSocket webSocket, Throwable t, okhttp3.Response response) {
             ChatFragment.this.webSocket = null;
-            t.printStackTrace();
+            if (BuildConfig.DEBUG)
+                t.printStackTrace();
             LogUtils.LOGD(TAG, "Error: " + t.getMessage());
             connectWebSocket();
         }
