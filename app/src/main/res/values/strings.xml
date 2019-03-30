@@ -305,7 +305,7 @@
     <string name="physicalstatus">Physical Status</string>
     <string name="dosham">Dosham</string>
     <string name="matrialstatus">Matrital Status</string>
-    <string name="empty_matrialstatus">Empty Marital status.</string>
+    <string name="empty_matrialstatus">Please select Marital status.</string>
     <string name="empty_first_name">Please enter first name</string>
     <string name="empty_lst_name">Please enter last name</string>
     <string name="empty_age">Please enter age</string>

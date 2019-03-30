@@ -160,27 +160,27 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
     @BindView(R.id.et_about_me)
     EditText etAboutMe;
 
-    int selectedMaterCastId = -1;
-    int selectedSubCastId = -1;
-    int selectedReligionId = -1;
-    int selectedLivingId = -1;
-    int selectedMatirialStatusId = -1;
-    int selectedNakshakraId = -1;
-    int selectedBodytypeId = -1;
-    int selectedComplexionId = -1;
-    int selectedOccupationId = -1;
-    int selectedQualificationId = -1;
-    int selectedFoodhabitsId = -1;
-    int selectedMothertougeId = -1;
-    int selectedPhysicalstatusId = -1;
-    int selectedDoshamId = -1;
-    int selectedAnnualIncomeId = -1;
-    int selectedDrinkingStatusId = -1;
-    int selectedHeightId = -1;
-    int selectedWeightId = -1;
-    int selectedOwnCarId = -1;
-    int selectedOwnHouseId = -1;
-    int selectedSmokingStatusId = -1;
+    int selectedMaterCastId = 0;
+    int selectedSubCastId = 0;
+    int selectedReligionId = 0;
+    int selectedLivingId = 0;
+    int selectedMatirialStatusId = 0;
+    int selectedNakshakraId = 0;
+    int selectedBodytypeId = 0;
+    int selectedComplexionId = 0;
+    int selectedOccupationId = 0;
+    int selectedQualificationId = 0;
+    int selectedFoodhabitsId = 0;
+    int selectedMothertougeId = 0;
+    int selectedPhysicalstatusId = 0;
+    int selectedDoshamId = 0;
+    int selectedAnnualIncomeId = 0;
+    int selectedDrinkingStatusId = 0;
+    int selectedHeightId = 0;
+    int selectedWeightId = 0;
+    int selectedOwnCarId = 0;
+    int selectedOwnHouseId = 0;
+    int selectedSmokingStatusId = 0;
     @BindView(R.id.tv_religion_heading)
     TextView tvReligionHeading;
     @BindView(R.id.relativeLayoutReligion)
@@ -353,40 +353,40 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
         FrequentFunctions.hideKeyBoard(context, view);
         if (!isImageLinkPresent && getImageUri() == null) {
             baseshowFeedbackMessage(rootLayout, getString(R.string.add_profile_pricture));
-        } else if (selectedBodytypeId == -1) {
+        } else if (selectedBodytypeId == 0) {
             baseshowFeedbackMessage(rootLayout, getString(R.string.empty_body_type));
-        } else if (selectedOccupationId == -1) {
+        } else if (selectedOccupationId == 0) {
             baseshowFeedbackMessage(rootLayout, getString(R.string.empty_occupation));
-        } else if (selectedFoodhabitsId == -1) {
+        } else if (selectedFoodhabitsId == 0) {
             baseshowFeedbackMessage(rootLayout, getString(R.string.empty_food_habits));
-        } else if (selectedDrinkingStatusId == -1) {
+        } else if (selectedDrinkingStatusId == 0) {
             baseshowFeedbackMessage(rootLayout, getString(R.string.empty_drinking_habits));
-        } else if (selectedSmokingStatusId == -1) {
+        } else if (selectedSmokingStatusId == 0) {
             baseshowFeedbackMessage(rootLayout, getString(R.string.empty_smoking_status));
-        } else if (selectedHeightId == -1) {
+        } else if (selectedHeightId == 0) {
             baseshowFeedbackMessage(rootLayout, getString(R.string.empty_height));
-        } else if (selectedWeightId == -1) {
+        } else if (selectedWeightId == 0) {
             baseshowFeedbackMessage(rootLayout, getString(R.string.empty_weight));
         } else if (!isDating) {
-            if (selectedReligionId == -1) {
+            if (selectedReligionId == 0) {
                 baseshowFeedbackMessage(rootLayout, getString(R.string.empty_religion));
-            } else if (selectedComplexionId == -1) {
+            } else if (selectedComplexionId == 0) {
                 baseshowFeedbackMessage(rootLayout, getString(R.string.empty_complexion));
-            } else if (selectedQualificationId == -1) {
+            } else if (selectedQualificationId == 0) {
                 baseshowFeedbackMessage(rootLayout, getString(R.string.empty_qualification));
-            } else if (selectedPhysicalstatusId == -1) {
+            } else if (selectedPhysicalstatusId == 0) {
                 baseshowFeedbackMessage(rootLayout, getString(R.string.empty_physical_status));
-            } else if (selectedMothertougeId == -1) {
+            } else if (selectedMothertougeId == 0) {
                 baseshowFeedbackMessage(rootLayout, getString(R.string.empty_mother_tongue));
-            } else if (selectedAnnualIncomeId == -1) {
+            } else if (selectedAnnualIncomeId == 0) {
                 baseshowFeedbackMessage(rootLayout, getString(R.string.empty_annual_income));
-            } else if (selectedOwnCarId == -1) {
+            } else if (selectedOwnCarId == 0) {
                 baseshowFeedbackMessage(rootLayout, getString(R.string.empty_car_status));
-            } else if (selectedOwnHouseId == -1) {
+            } else if (selectedOwnHouseId == 0) {
                 baseshowFeedbackMessage(rootLayout, getString(R.string.empty_house_status));
-            } else if (selectedLivingId == -1) {
+            } else if (selectedLivingId == 0) {
                 baseshowFeedbackMessage(rootLayout, getString(R.string.empty_living_with));
-            } else if (selectedMatirialStatusId == -1) {
+            } else if (selectedMatirialStatusId == 0) {
                 baseshowFeedbackMessage(rootLayout, getString(R.string.empty_matrialstatus));
             } else
                 updateProfile();
@@ -541,7 +541,7 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
 
     @OnClick(R.id.relativeLayoutGotra)
     public void relativeLayoutGotraClick(View view) {
-        if (selectedMaterCastId == -1) {
+        if (selectedMaterCastId == 0) {
             baseshowFeedbackMessage(view, getString(R.string.select_master_cast_first));
         } else {
             clickedItem = "gotra";
