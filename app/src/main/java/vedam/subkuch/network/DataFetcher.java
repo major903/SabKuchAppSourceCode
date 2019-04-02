@@ -309,4 +309,54 @@ public class DataFetcher {
         String url = String.format(Locale.US, "%s/api/Dating/GetMatchedProfiles?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT3, userId, pageIndex, pageSize);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
+
+    public static <T> void getAllTransportBookings(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener, int pageIndex, int pageSize) {
+        String userId = AppPrefs.getPrefsUserId(context);
+        String url = String.format(Locale.US, "%s/api/Transport/GetBooking?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT3, userId, pageIndex, pageSize);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
+    public static <T> void getMyTransportBookings(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener, int pageIndex, int pageSize) {
+        String userId = AppPrefs.getPrefsUserId(context);
+        String url = String.format(Locale.US, "%s/api/Transport/GetMyBooking?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT3, userId, pageIndex, pageSize);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
+    public static <T> void getLabourRequirement(Context context, Response.Listener<T> updateSuccessListener, Type repClass, Response.ErrorListener errorListener) {
+        String url = String.format("%s/api/Master/GetTransportCoolie", NetworkConstants.END_POINT3);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
+    public static <T> void getVehicleType(Context context, Response.Listener<T> updateSuccessListener, Type repClass, Response.ErrorListener errorListener) {
+        String url = String.format("%s/api/Master/GetTransportTypes", NetworkConstants.END_POINT3);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
+    public static <T> void addTransport(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
+
+        String url = String.format("%s/api/Transport/AddTransport", NetworkConstants.END_POINT2);
+        HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
+    }
+
+    public static <T> void getShareContent(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
+        String url = String.format("%s/ShareContent?userId=%s", NetworkConstants.END_POINT4, AppPrefs.getPrefsUserId(context));
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
+    public static <T> void getWalletDetails(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
+        String url = String.format("%s/Wallet?userId=%s", NetworkConstants.END_POINT4, AppPrefs.getPrefsUserId(context));
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
+    public static <T> void addReferral(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
+
+        String url = String.format("%s/Refferal", NetworkConstants.END_POINT4);
+        HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
+    }
+
+    public static <T> void withdraw(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
+
+        String url = String.format("%s/Wallet/withdrawAmount", NetworkConstants.END_POINT4);
+        HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
+    }
 }

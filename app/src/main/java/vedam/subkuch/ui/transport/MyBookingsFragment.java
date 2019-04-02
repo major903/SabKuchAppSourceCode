@@ -1,0 +1,178 @@
+package vedam.subkuch.ui.transport;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.databinding.DataBindingUtil;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.android.volley.Response;
+
+import java.util.ArrayList;
+
+import vedam.subkuch.R;
+import vedam.subkuch.base.BaseFragment;
+import vedam.subkuch.databinding.FragmentMyBookingsBinding;
+import vedam.subkuch.helpers.Constants;
+import vedam.subkuch.network.DataFetcher;
+import vedam.subkuch.network.models.TransportBooking;
+import vedam.subkuch.network.models.TransportBookingResponse;
+import vedam.subkuch.utils.UiUtil;
+
+public class MyBookingsFragment extends BaseFragment {
+
+    private FragmentMyBookingsBinding fragmentMyBookingsBinding;
+    private MyBookingsAdapter adapter;
+    private ArrayList<TransportBooking> transportBookings = new ArrayList<>();
+    private boolean loading = true;
+    private LinearLayoutManager linearLayoutManager;
+    private int pageNo = 1;
+    private int pageSize = 20;
+    private boolean hasMoreProjects = true;
+
+    public MyBookingsFragment() {
+        // Required empty public constructor
+    }
+
+    public static MyBookingsFragment newInstance() {
+        return new MyBookingsFragment();
+    }
+
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        // Inflate the layout for this fragment
+        fragmentMyBookingsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_bookings, container, false);
+        return fragmentMyBookingsBinding.getRoot();
+    }
+
+    public void onViewCreated(@NonNull View v, Bundle savedInstanceState) {
+        super.onViewCreated(v, savedInstanceState);
+        initUI();
+        getMyBookings();
+        setTitle(getString(R.string.my_bookings));
+    }
+
+    private void initUI() {
+
+        linearLayoutManager = new LinearLayoutManager(context);
+        fragmentMyBookingsBinding.rvEvents.setLayoutManager(linearLayoutManager);
+        fragmentMyBookingsBinding.rvEvents.setHasFixedSize(true);
+        adapter = new MyBookingsAdapter(context, transportBookings);
+        fragmentMyBookingsBinding.rvEvents.setAdapter(adapter);
+        fragmentMyBookingsBinding.rvEvents.addOnScrollListener(new OnScrollListener());
+    }
+
+    public void getMyBookings() {
+        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
+        DataFetcher.getMyTransportBookings(context, onTransportBookingsSuccessListener, TransportBookingResponse.class, onErrorListener, pageNo, pageSize);
+
+    }
+
+    private Response.Listener<TransportBookingResponse> onTransportBookingsSuccessListener = response -> {
+
+        UiUtil.cancelProgressDialog();
+        if (getActivity() != null)
+            if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
+                if (response.getReturnData().size() > 0) {
+                    hasMoreProjects = response.getReturnData().size() >= pageSize;
+                    loading = true;
+                    loadValues(response.getReturnData());
+                } else
+                    UiUtil.showToast(context, getString(R.string.no_events_found));
+            } else
+                UiUtil.showToast(context, getString(R.string.err_occurred));
+    };
+
+    private void loadValues(ArrayList<TransportBooking> response) {
+
+        if (response != null && !response.isEmpty()) {
+            pageNo++;
+            transportBookings.addAll(response);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.add, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add:
+                startActivityForResult(new Intent(context, AddTransportActivity.class), Constants.REQUEST_ADD_TRANSPORT);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setDefaults() {
+        pageNo = 1;
+        hasMoreProjects = true;
+        transportBookings.clear();
+        adapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        switch (requestCode) {
+            case Constants.REQUEST_ADD_TRANSPORT:
+                if (resultCode == Activity.RESULT_OK) {
+                    setDefaults();
+                    getMyBookings();
+                }
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    public class OnScrollListener extends RecyclerView.OnScrollListener {
+
+        @Override
+        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            /*final Picasso picasso = Picasso.get();
+
+            if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                picasso.resumeTag(context);
+            } else {
+                picasso.pauseTag(context);
+            }*/
+        }
+
+        @Override
+        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+            if (dy > 0) //check for scroll down
+            {
+                int visibleItemCount = linearLayoutManager.getChildCount();
+                int totalItemCount = linearLayoutManager.getItemCount();
+                int pastVisibleItems = linearLayoutManager.findFirstVisibleItemPosition();
+
+                if (loading) {
+                    if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                        loading = false;
+                        if (hasMoreProjects) getMyBookings();
+
+                    }
+                }
+            }
+        }
+    }
+}

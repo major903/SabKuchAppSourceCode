@@ -26,6 +26,18 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
         <activity
+            android:name=".ui.wallet.WalletActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.profile.ReferralActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.transport.AddTransportActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.transport.TransportActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.matrimonial.viewProfile.ViewProfileActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -160,6 +172,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.cropImage.CropImageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.wallet.WithdrawalActivity"
             android:screenOrientation="portrait" />
     </application>
 

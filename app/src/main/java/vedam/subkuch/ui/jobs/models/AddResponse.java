@@ -3,8 +3,13 @@ package vedam.subkuch.ui.jobs.models;
 public class AddResponse {
 
     private boolean status;
-
+    private boolean success;
     private String message;
+    private String ReturnMessage;
+
+    public boolean isSuccess() {
+        return success;
+    }
 
     public boolean isStatus() {
         return status;
@@ -20,5 +25,9 @@ public class AddResponse {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getReturnMessage() {
+        return ReturnMessage;
     }
 }

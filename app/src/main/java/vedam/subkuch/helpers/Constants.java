@@ -51,7 +51,9 @@ public class Constants {
     public static final int REQUEST_ADD_QUESTION = 5;
     public static final int REQUEST_PLACE_PICKER = 6;
     public static final int REQUEST_CROP_IMAGE = 7;
-    public static final int REQUEST_VIEW_PROFILE = 7;
+    public static final int REQUEST_VIEW_PROFILE = 8;
+    public static final int REQUEST_ADD_TRANSPORT = 9;
+    public static final int REQUEST_WITHDRAW = 10;
 
     public static final int SUCCESS_RESULT = 0;
     public static final int FAILURE_RESULT = 1;
@@ -98,8 +100,9 @@ public class Constants {
     public static final String Phone_book = "Phonebook";
     public static final String Dating = "Dating";
     public static final String Matrimonial = "Matrimonial";
+    public static final String Goods_Transport = "Transport";
     public static final String Ask_Me = "Ask Me";
-    public static final String Transport = "Public Transport Timings";
+    public static final String Public_Transport_Timings = "Public Transport Timings";
     public static final String Offers = "Offers";
     public static final String Gift_A_Life = "Gift A Life";
     public static final String Events = "Events";
@@ -162,4 +165,7 @@ public class Constants {
     public final static String TAG_MATCHES_FRAGMENT = "Matches";
     public final static String TAG_CHATS_FRAGMENT = "Chats";
     public final static String TAG_SHOW_PROFILES_FRAGMENT = "Profiles";
+
+
+    public final static int USER_TYPE_TRANSPORT = 11;
 }

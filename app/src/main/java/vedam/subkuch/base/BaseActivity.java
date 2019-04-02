@@ -112,7 +112,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ScreenCh
     }
 
     @Override
-    public void setTitle(@NonNull int resourceId) {
+    public void setTitle(int resourceId) {
 
         boolean isToolbarSet = true;
 

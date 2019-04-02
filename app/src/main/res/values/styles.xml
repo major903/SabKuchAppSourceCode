@@ -148,6 +148,13 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="CardViewWallet" parent="Widget.MaterialComponents.CardView">
+        <item name="android:layout_marginTop">@dimen/margin_16dp</item>
+        <item name="cardBackgroundColor">@color/white</item>
+        <item name="cardCornerRadius">@dimen/margin_4dp</item>
+        <item name="cardElevation">@dimen/margin_2dp</item>
+    </style>
+
     <style name="DialogAnimation">
         <item name="android:windowEnterAnimation" tools:ignore="PrivateResource">
             @anim/abc_slide_in_bottom

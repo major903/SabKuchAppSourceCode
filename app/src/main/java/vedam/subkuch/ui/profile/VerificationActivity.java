@@ -20,7 +20,6 @@ import vedam.subkuch.network.WebServices;
 import vedam.subkuch.network.models.OtpResponse;
 import vedam.subkuch.network.models.Profile;
 import vedam.subkuch.network.models.ProfileResponse;
-import vedam.subkuch.ui.home.HomeActivity;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.UiUtil;
@@ -142,7 +141,7 @@ public class VerificationActivity extends BaseActivity {
             editor.putString(PREFS_USER_NAME, AppUtil.getFullName(receivedProfile.getFirstName(), receivedProfile.getLastName()));
             editor.apply();
             WebServices.getInstance().setBearer(bearer);
-            Intent intent = new Intent(VerificationActivity.this, HomeActivity.class);
+            Intent intent = new Intent(VerificationActivity.this, ReferralActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             UiUtil.showToast(VerificationActivity.this, getString(R.string.user_registered_successfully));

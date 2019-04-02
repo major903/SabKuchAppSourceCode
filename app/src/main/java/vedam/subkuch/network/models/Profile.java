@@ -69,7 +69,7 @@ public class Profile implements Parcelable {
 
     private String Weight;
 
-    private String UserTypeId = "1";
+    private int UserTypeId = 1;
 
     private String MotherTougeid;
 
@@ -129,7 +129,7 @@ public class Profile implements Parcelable {
         Longitude = in.readString();
         countryid = in.readString();
         Weight = in.readString();
-        UserTypeId = in.readString();
+        UserTypeId = in.readInt();
         MotherTougeid = in.readString();
         CasteId = in.readString();
         CreatedDate = in.readString();
@@ -177,7 +177,7 @@ public class Profile implements Parcelable {
         dest.writeString(Longitude);
         dest.writeString(countryid);
         dest.writeString(Weight);
-        dest.writeString(UserTypeId);
+        dest.writeInt(UserTypeId);
         dest.writeString(MotherTougeid);
         dest.writeString(CasteId);
         dest.writeString(CreatedDate);
@@ -464,11 +464,11 @@ public class Profile implements Parcelable {
         this.Weight = Weight;
     }
 
-    public String getUserTypeId() {
+    public int getUserTypeId() {
         return UserTypeId;
     }
 
-    public void setUserTypeId(String UserTypeId) {
+    public void setUserTypeId(int UserTypeId) {
         this.UserTypeId = UserTypeId;
     }
 

@@ -9,6 +9,10 @@
             android:icon="@drawable/ic_menu_profile"
             android:title="@string/edit_profile" />
         <item
+            android:id="@+id/nav_wallet"
+            android:icon="@android:drawable/ic_dialog_email"
+            android:title="@string/wallet" />
+        <item
             android:id="@+id/nav_inbox"
             android:icon="@drawable/ic_menu_inbox"
             android:title="@string/inbox" />

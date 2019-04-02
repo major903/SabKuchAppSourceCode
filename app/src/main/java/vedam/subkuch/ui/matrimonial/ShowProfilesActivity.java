@@ -189,4 +189,10 @@ public class ShowProfilesActivity extends BaseActivity
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        getSupportFragmentManager().removeOnBackStackChangedListener(this);
+    }
 }

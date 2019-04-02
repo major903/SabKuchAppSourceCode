@@ -8,12 +8,14 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import com.android.volley.Response;
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -26,17 +28,20 @@ import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.network.models.AddEventResponse;
 import vedam.subkuch.network.models.Feature;
+import vedam.subkuch.network.models.ShareResponse;
 import vedam.subkuch.ui.ask.AskCategoryActivity;
 import vedam.subkuch.ui.directory.DirectoryActivity;
 import vedam.subkuch.ui.events.EventActivity;
 import vedam.subkuch.ui.inbox.InboxActivity;
 import vedam.subkuch.ui.jobs.JobCategoryActivity;
-import vedam.subkuch.ui.pin.PinActivity;
 import vedam.subkuch.ui.movies.MoviesActivity;
 import vedam.subkuch.ui.offers.OffersActivity;
 import vedam.subkuch.ui.phonebook.PhoneBookActivity;
+import vedam.subkuch.ui.pin.PinActivity;
 import vedam.subkuch.ui.profile.EditProfileActivity;
+import vedam.subkuch.ui.transport.TransportActivity;
 import vedam.subkuch.ui.vehicle.VehicleActivity;
+import vedam.subkuch.ui.wallet.WalletActivity;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.LogUtils;
@@ -81,7 +86,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         Type type = new TypeToken<ArrayList<Feature>>() {
         }.getType();
         DataFetcher.getFeatures(this, onFeaturesSuccessListener, type, onErrorListener,
-                AppPrefs.getInstance(this).getSharedPreferences().getString(AppPrefs.PREFS_USER_ID, null));
+                AppPrefs.getPrefsUserId(this));
     }
 
     private Response.Listener<ArrayList<Feature>> onFeaturesSuccessListener = response -> {
@@ -89,7 +94,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         UiUtil.cancelProgressDialog();
         if (response != null) {
             enableFeatures(response);
-            activityHomeBinding.getRoot().findViewById(R.id.contentLinearLayout).setVisibility(View.VISIBLE);
+            activityHomeBinding.getRoot().findViewById(R.id.ll_container).setVisibility(View.VISIBLE);
         } else
             UiUtil.showToast(HomeActivity.this, getString(R.string.err_occurred));
     };
@@ -109,18 +114,41 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
         switch (item.getItemId()) {
             case R.id.action_share:
-                try {
-                    Intent i = new Intent(Intent.ACTION_SEND);
-                    i.setType("text/plain");
-                    i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
-                    String sAux = "https://play.google.com/store/apps/details?id=vedam.subkuch";
-                    i.putExtra(Intent.EXTRA_TEXT, sAux);
-                    startActivity(Intent.createChooser(i, "Choose one"));
-                } catch (Exception e) {
-                    return true;
-                }
+                getShareMessage();
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void getShareMessage() {
+        UiUtil.showProgressDialog(this, R.string.loading);
+        DataFetcher.getShareContent(this, onShareSuccessListener, ShareResponse.class, onErrorListener);
+
+    }
+
+    private Response.Listener<ShareResponse> onShareSuccessListener = response -> {
+
+        UiUtil.cancelProgressDialog();
+        if (response != null && response.isSuccess() && response.getData() != null) {
+            handleAppShare(response.getData().getContent());
+        } else
+            UiUtil.showToast(HomeActivity.this, getString(R.string.err_occurred));
+    };
+
+    private void handleAppShare(String data) {
+
+        if (TextUtils.isEmpty(data)) {
+            UiUtil.showToast(this, getString(R.string.no_share_content));
+            return;
+        }
+        try {
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.setType("text/plain");
+            i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+            i.putExtra(Intent.EXTRA_TEXT, data);
+            startActivity(Intent.createChooser(i, "Choose one"));
+        } catch (Exception e) {
+            Crashlytics.logException(e);
         }
     }
 
@@ -140,7 +168,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 case Constants.Movies:
                     activityHomeBinding.getRoot().findViewById(R.id.iv_movies).setVisibility(View.VISIBLE);
                     break;
-                case Constants.Transport:
+                case Constants.Public_Transport_Timings:
                     activityHomeBinding.getRoot().findViewById(R.id.iv_bus).setVisibility(View.VISIBLE);
                     break;
                 case Constants.Phone_book:
@@ -151,6 +179,9 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                     break;
                 case Constants.Matrimonial:
                     activityHomeBinding.getRoot().findViewById(R.id.iv_matrimonial).setVisibility(View.VISIBLE);
+                    break;
+                case Constants.Goods_Transport:
+                    activityHomeBinding.getRoot().findViewById(R.id.iv_transport).setVisibility(View.VISIBLE);
                     break;
                 case Constants.Ask_Me:
                     activityHomeBinding.getRoot().findViewById(R.id.iv_ask_me).setVisibility(View.VISIBLE);
@@ -230,6 +261,10 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         startActivity(new Intent(this, MoviesActivity.class));
     }
 
+    public void transportClick(View v) {
+        startActivity(new Intent(this, TransportActivity.class));
+    }
+
     public void giftALifeClick(View v) {
 //        startActivity(new Intent(this, JobCategoryActivity.class));
     }
@@ -272,6 +307,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
         if (id == R.id.nav_edit_profile) {
             startActivity(new Intent(this, EditProfileActivity.class));
+        } else if (id == R.id.nav_wallet) {
+            startActivity(new Intent(this, WalletActivity.class));
         } else if (id == R.id.nav_inbox) {
             startActivity(new Intent(this, InboxActivity.class));
         } else if (id == R.id.nav_privacy) {

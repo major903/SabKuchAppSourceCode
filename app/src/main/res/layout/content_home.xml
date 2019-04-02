@@ -1,239 +1,231 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/margin_16dp"
+        android:paddingRight="@dimen/margin_16dp"
+        android:paddingBottom="@dimen/margin_16dp">
 
         <LinearLayout
-            android:id="@+id/contentLinearLayout"
+            android:id="@+id/ll_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/margin_16dp"
-            android:paddingRight="@dimen/margin_16dp"
-            android:paddingBottom="@dimen/margin_16dp">
+            android:visibility="gone"
+            tools:visibility="visible">
 
-            <ScrollView
-                android:id="@+id/scrollView"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+            <!--<ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/news"
+                android:adjustViewBounds="true"
+                android:onClick="newsClick" />-->
 
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <!--<ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:background="@drawable/news"
-                        android:adjustViewBounds="true"
-                        android:onClick="newsClick" />-->
-
-                    <ImageView
-                        android:id="@+id/iv_directory"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/margin_16dp"
-                        android:background="@drawable/directory"
-                        android:onClick="directoryClick"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
+            <ImageView
+                android:id="@+id/iv_directory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:background="@drawable/directory"
+                android:onClick="directoryClick"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
 
-                    <ImageView
-                        android:id="@+id/iv_jobs"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/margin_16dp"
-                        android:adjustViewBounds="true"
-                        android:background="@drawable/jobs"
-                        android:onClick="jobsClick"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
+            <ImageView
+                android:id="@+id/iv_jobs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/jobs"
+                android:onClick="jobsClick"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
 
-                    <ImageView
-                        android:id="@+id/iv_events"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/margin_16dp"
-                        android:adjustViewBounds="true"
-                        android:background="@drawable/event"
-                        android:onClick="eventsClick"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
+            <ImageView
+                android:id="@+id/iv_events"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/event"
+                android:onClick="eventsClick"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
-                    <ImageView
-                        android:id="@+id/iv_movies"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/margin_16dp"
-                        android:adjustViewBounds="true"
-                        android:background="@drawable/movies"
-                        android:onClick="moviesClick"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
+            <ImageView
+                android:id="@+id/iv_movies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/movies"
+                android:onClick="moviesClick"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
-                    <ImageView
-                        android:id="@+id/iv_dating"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/margin_16dp"
-                        android:adjustViewBounds="true"
-                        android:background="@drawable/dating"
-                        android:onClick="datingClick"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
+            <ImageView
+                android:id="@+id/iv_dating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/dating"
+                android:onClick="datingClick"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
-                    <ImageView
-                        android:id="@+id/iv_matrimonial"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/margin_16dp"
-                        android:adjustViewBounds="true"
-                        android:background="@drawable/matri"
-                        android:onClick="matrimonialClick"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
+            <ImageView
+                android:id="@+id/iv_matrimonial"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/matri"
+                android:onClick="matrimonialClick"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
-                    <ImageView
-                        android:id="@+id/iv_ask_me"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/margin_16dp"
-                        android:adjustViewBounds="true"
-                        android:background="@drawable/ask"
-                        android:onClick="askClick"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
-                    <!--<ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:background="@drawable/ecommerce"
-                        android:adjustViewBounds="true"
-                        android:layout_marginTop="@dimen/margin_16dp"
-                        android:onClick="eCommerceClick" />-->
+            <ImageView
+                android:id="@+id/iv_transport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/transport"
+                android:onClick="transportClick"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
-                    <!--<ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/margin_16dp"
-                        android:adjustViewBounds="true"
-                        android:background="@drawable/map"
-                        android:onClick="offlinemapClick" />-->
+            <ImageView
+                android:id="@+id/iv_ask_me"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/ask"
+                android:onClick="askClick"
+                android:visibility="gone"
+                tools:visibility="visible" />
+            <!--<ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/ecommerce"
+                android:adjustViewBounds="true"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:onClick="eCommerceClick" />-->
 
-                    <!--<ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:background="@drawable/properties"
-                        android:adjustViewBounds="true"
-                        android:layout_marginTop="@dimen/margin_16dp"
-                        android:onClick="PropertiesClick" />-->
+            <!--<ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/map"
+                android:onClick="offlinemapClick" />-->
 
-                    <!--<ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/margin_16dp"
-                        android:adjustViewBounds="true"
-                        android:background="@drawable/ads"
-                        android:onClick="classifiedsClick" />-->
+            <!--<ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/properties"
+                android:adjustViewBounds="true"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:onClick="PropertiesClick" />-->
 
-                    <!--<ImageView
-                     android:layout_width="fill_parent"
-                     android:layout_height="wrap_content"
-                     android:layout_gravity="center_horizontal"
-                     android:background="@drawable/wheretoeat"
-                     android:adjustViewBounds="true"
-                     android:layout_marginTop="@dimen/margin_16dp"
-                     android:onClick="WheretoeatClick" />-->
+            <!--<ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/ads"
+                android:onClick="classifiedsClick" />-->
 
-                    <!-- <Button
-                     android:layout_width="fill_parent"
-                     android:layout_height="wrap_content"
-                     android:layout_gravity="center_horizontal"
-                     android:background="@drawable/wheretoshop"
-                     android:layout_marginTop="@dimen/margin_16dp"
-                     android:layout_marginBottom="5dp"
-                     android:onClick="WheretoshopClick" /> -->
+            <!--<ImageView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center_horizontal"
+             android:background="@drawable/wheretoeat"
+             android:adjustViewBounds="true"
+             android:layout_marginTop="@dimen/margin_16dp"
+             android:onClick="WheretoeatClick" />-->
 
-                    <ImageView
-                        android:id="@+id/iv_bus"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/margin_16dp"
-                        android:adjustViewBounds="true"
-                        android:background="@drawable/bus"
-                        android:onClick="busClick"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
+            <!-- <Button
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center_horizontal"
+             android:background="@drawable/wheretoshop"
+             android:layout_marginTop="@dimen/margin_16dp"
+             android:layout_marginBottom="5dp"
+             android:onClick="WheretoshopClick" /> -->
 
-                    <ImageView
-                        android:id="@+id/iv_phone_book"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/margin_16dp"
-                        android:adjustViewBounds="true"
-                        android:background="@drawable/phonebook"
-                        android:onClick="phoneBookClick"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
+            <ImageView
+                android:id="@+id/iv_bus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/bus"
+                android:onClick="busClick"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
-                    <ImageView
-                        android:id="@+id/iv_gift"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/margin_16dp"
-                        android:adjustViewBounds="true"
-                        android:background="@drawable/giftalife"
-                        android:onClick="giftALifeClick"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
+            <ImageView
+                android:id="@+id/iv_phone_book"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/phonebook"
+                android:onClick="phoneBookClick"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
-                    <ImageView
-                        android:id="@+id/iv_offer"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/margin_16dp"
-                        android:layout_marginBottom="@dimen/margin_4dp"
-                        android:adjustViewBounds="true"
-                        android:background="@drawable/specialoffer"
-                        android:onClick="specialOfferClick"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
+            <ImageView
+                android:id="@+id/iv_gift"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/giftalife"
+                android:onClick="giftALifeClick"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
-                </LinearLayout>
-
-            </ScrollView>
+            <ImageView
+                android:id="@+id/iv_offer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:layout_marginBottom="@dimen/margin_4dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/specialoffer"
+                android:onClick="specialOfferClick"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
         </LinearLayout>
 
-        <!-- <Button
-            android:id="@+id/bottomButton"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/bottom"
-            android:layout_alignParentBottom="true" />  -->
     </ScrollView>
 </layout>
