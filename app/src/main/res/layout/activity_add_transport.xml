@@ -40,7 +40,9 @@
                     android:layout_marginTop="@dimen/margin_4dp"
                     android:layout_marginRight="@dimen/margin_16dp"
                     android:hint="@string/pick_up_location"
-                    android:inputType="textMultiLine"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:maxLines="1"
                     android:padding="@dimen/margin_8dp" />
 
                 <LinearLayout
@@ -88,7 +90,9 @@
                     android:layout_marginTop="@dimen/margin_4dp"
                     android:layout_marginRight="@dimen/margin_16dp"
                     android:hint="@string/destination"
-                    android:inputType="textMultiLine"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:maxLines="1"
                     android:padding="@dimen/margin_8dp" />
 
                 <TextView
@@ -109,7 +113,9 @@
                     android:layout_marginTop="@dimen/margin_4dp"
                     android:layout_marginRight="@dimen/margin_16dp"
                     android:hint="@string/transport_material"
-                    android:inputType="textMultiLine"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:maxLines="1"
                     android:padding="@dimen/margin_8dp" />
 
                 <TextView

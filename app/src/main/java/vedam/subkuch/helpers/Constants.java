@@ -73,6 +73,8 @@ public class Constants {
 
     public static final int PERMISSIONS_REQUEST_SMS = 4;
 
+    public static final int STATUS_OPEN = 0;
+
     public static final String STATUS_SUCCESS = "1";
     public static final String SUCCESS = "success";
     public static final String TRUE = "true";

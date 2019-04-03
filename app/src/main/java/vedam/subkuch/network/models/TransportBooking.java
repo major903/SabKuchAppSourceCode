@@ -2,7 +2,7 @@ package vedam.subkuch.network.models;
 
 public class TransportBooking {
 
-    private String Status;
+    private int Status;
 
     private String VehicleTypeId;
 
@@ -38,12 +38,8 @@ public class TransportBooking {
 
     private String Date;
 
-    public String getStatus() {
+    public int getStatus() {
         return Status;
-    }
-
-    public void setStatus(String Status) {
-        this.Status = Status;
     }
 
     public String getVehicleTypeId() {

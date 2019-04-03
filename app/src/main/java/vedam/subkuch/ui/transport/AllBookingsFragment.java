@@ -87,7 +87,7 @@ public class AllBookingsFragment extends BaseFragment {
                     loading = true;
                     loadValues(response.getReturnData());
                 } else
-                    UiUtil.showToast(context, getString(R.string.no_events_found));
+                    UiUtil.showToast(context, getString(R.string.no_transport_booking_found));
             } else
                 UiUtil.showToast(context, getString(R.string.err_occurred));
     };

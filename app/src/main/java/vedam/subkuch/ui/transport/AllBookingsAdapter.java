@@ -43,9 +43,9 @@ public class AllBookingsAdapter extends RecyclerView.Adapter<AllBookingsAdapter.
 
         UiUtil.setTextView("Client Name :", transportBooking.getFirstName(), holder.tvName);
         UiUtil.setTextView(holder.tvDistance, transportBooking.getDistance());
-        UiUtil.setTextView("Mobile Number :", transportBooking.getDropLocation(), holder.tvMobileNumber);
-        UiUtil.setTextView("Pick up location :", transportBooking.getStatus(), holder.tvPickUp);
-        UiUtil.setTextView("Destination :", transportBooking.getStatus(), holder.tvDestination);
+        UiUtil.setTextView("Mobile Number :", transportBooking.getMobile(), holder.tvMobileNumber);
+        UiUtil.setTextView("Pick up location :", transportBooking.getPickupLocation(), holder.tvPickUp);
+        UiUtil.setTextView("Destination :", transportBooking.getDropLocation(), holder.tvDestination);
 
         if (!TextUtils.isEmpty(transportBooking.getLatitude()) && !TextUtils.isEmpty(transportBooking.getLongitude())) {
             holder.ibDirection.setVisibility(View.VISIBLE);
@@ -55,11 +55,6 @@ public class AllBookingsAdapter extends RecyclerView.Adapter<AllBookingsAdapter.
             });
         } else
             holder.ibDirection.setVisibility(View.GONE);
-
-    }
-
-    private void markComplete(String transportId) {
-
 
     }
 

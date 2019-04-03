@@ -338,6 +338,13 @@ public class DataFetcher {
         HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
     }
 
+    public static <T> void setTransportBookingComplete(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener, String transportId) {
+
+        String url = String.format("%s/api/Transport/MarkComplete?TransportId=%s&UserId=%s", NetworkConstants.END_POINT2,
+                transportId, AppPrefs.getPrefsUserId(context));
+        HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, null, repClass, errorListener);
+    }
+
     public static <T> void getShareContent(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
         String url = String.format("%s/ShareContent?userId=%s", NetworkConstants.END_POINT4, AppPrefs.getPrefsUserId(context));
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);

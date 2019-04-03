@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import vedam.subkuch.R;
+import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.models.TransportBooking;
 import vedam.subkuch.utils.UiUtil;
 
@@ -19,11 +20,13 @@ public class MyBookingsAdapter extends RecyclerView.Adapter<MyBookingsAdapter.Vi
 
     private Context context;
     private ArrayList<TransportBooking> transportBookings;
+    private BookingCompleteListener bookingCompleteListener;
 
-    MyBookingsAdapter(Context context, ArrayList<TransportBooking> transportBookings) {
+    MyBookingsAdapter(Context context, ArrayList<TransportBooking> transportBookings, BookingCompleteListener bookingCompleteListener) {
 
         this.context = context;
         this.transportBookings = transportBookings;
+        this.bookingCompleteListener = bookingCompleteListener;
     }
 
     @NonNull
@@ -42,14 +45,18 @@ public class MyBookingsAdapter extends RecyclerView.Adapter<MyBookingsAdapter.Vi
         UiUtil.setTextView("Date :", transportBooking.getDate(), holder.tvDate);
         UiUtil.setTextView("From :", transportBooking.getPickupLocation(), holder.tvFrom);
         UiUtil.setTextView("To :", transportBooking.getDropLocation(), holder.tvTo);
-        UiUtil.setTextView("Status :", transportBooking.getStatus(), holder.tvStatus);
+        UiUtil.setTextView("Status :", transportBooking.getCurrentStatus(), holder.tvStatus);
 
-        holder.btMarkComplete.setOnClickListener(v -> markComplete(transportBooking.getTransportId()));
-
-    }
-
-    private void markComplete(String transportId) {
-
+        if (transportBooking.getStatus() == Constants.STATUS_OPEN) {
+            holder.btMarkComplete.setVisibility(View.VISIBLE);
+            holder.btMarkComplete.setOnClickListener(v -> {
+                if (bookingCompleteListener != null)
+                    bookingCompleteListener.onBookingCompleteRequest(transportBooking.getTransportId());
+            });
+        } else {
+            holder.btMarkComplete.setOnClickListener(null);
+            holder.btMarkComplete.setVisibility(View.GONE);
+        }
 
     }
 
@@ -82,5 +89,9 @@ public class MyBookingsAdapter extends RecyclerView.Adapter<MyBookingsAdapter.Vi
                     listener.onItemClick(item, position, itemView, null);
             });
         }*/
+    }
+
+    public interface BookingCompleteListener {
+        void onBookingCompleteRequest(String transportId);
     }
 }

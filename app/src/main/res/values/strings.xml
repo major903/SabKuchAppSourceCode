@@ -162,7 +162,8 @@
     <string name="job_category">Job Category</string>
     <string name="select_a_category">Select a category</string>
     <string name="no_jobs_found">No jobs found</string>
-    <string name="no_events_found">No transportBookings found</string>
+    <string name="no_events_found">No events found</string>
+    <string name="no_transport_booking_found">No transport booking found</string>
     <string name="category">Category</string>
     <string name="sub_category">Subcategory</string>
     <string name="address">Address</string>
@@ -399,4 +400,5 @@
     <string name="withdrawal_done_successfully">Withdrawal done successfully</string>
     <string name="no_share_content">No content to share</string>
     <string name="events">Events</string>
+    <string name="booking_completed_successfully">Booking completed successfully</string>
 </resources>

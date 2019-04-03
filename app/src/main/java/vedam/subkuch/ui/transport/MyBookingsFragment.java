@@ -25,9 +25,10 @@ import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.network.models.TransportBooking;
 import vedam.subkuch.network.models.TransportBookingResponse;
+import vedam.subkuch.ui.jobs.models.AddResponse;
 import vedam.subkuch.utils.UiUtil;
 
-public class MyBookingsFragment extends BaseFragment {
+public class MyBookingsFragment extends BaseFragment implements MyBookingsAdapter.BookingCompleteListener {
 
     private FragmentMyBookingsBinding fragmentMyBookingsBinding;
     private MyBookingsAdapter adapter;
@@ -68,7 +69,7 @@ public class MyBookingsFragment extends BaseFragment {
         linearLayoutManager = new LinearLayoutManager(context);
         fragmentMyBookingsBinding.rvEvents.setLayoutManager(linearLayoutManager);
         fragmentMyBookingsBinding.rvEvents.setHasFixedSize(true);
-        adapter = new MyBookingsAdapter(context, transportBookings);
+        adapter = new MyBookingsAdapter(context, transportBookings, this);
         fragmentMyBookingsBinding.rvEvents.setAdapter(adapter);
         fragmentMyBookingsBinding.rvEvents.addOnScrollListener(new OnScrollListener());
     }
@@ -89,7 +90,7 @@ public class MyBookingsFragment extends BaseFragment {
                     loading = true;
                     loadValues(response.getReturnData());
                 } else
-                    UiUtil.showToast(context, getString(R.string.no_events_found));
+                    UiUtil.showToast(context, getString(R.string.no_transport_booking_found));
             } else
                 UiUtil.showToast(context, getString(R.string.err_occurred));
     };
@@ -143,6 +144,28 @@ public class MyBookingsFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public void onBookingCompleteRequest(String transportId) {
+        markComplete(transportId);
+    }
+
+    private void markComplete(String transportId) {
+        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
+        DataFetcher.setTransportBookingComplete(context, onTransportCompleteSuccessListener, AddResponse.class, onErrorListener, transportId);
+
+    }
+
+    private Response.Listener<AddResponse> onTransportCompleteSuccessListener = response -> {
+
+        UiUtil.cancelProgressDialog();
+        if (getActivity() != null)
+            if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
+                UiUtil.showToast(context, getString(R.string.booking_completed_successfully));
+                setDefaults();
+                getMyBookings();
+            } else
+                UiUtil.showToast(context, getString(R.string.err_occurred));
+    };
     public class OnScrollListener extends RecyclerView.OnScrollListener {
 
         @Override
