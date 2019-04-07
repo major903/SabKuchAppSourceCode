@@ -46,6 +46,9 @@ public class AllBookingsAdapter extends RecyclerView.Adapter<AllBookingsAdapter.
         UiUtil.setTextView("Mobile Number :", transportBooking.getMobile(), holder.tvMobileNumber);
         UiUtil.setTextView("Pick up location :", transportBooking.getPickupLocation(), holder.tvPickUp);
         UiUtil.setTextView("Destination :", transportBooking.getDropLocation(), holder.tvDestination);
+        UiUtil.setTextView("Transport Material :", transportBooking.getItemType(), holder.tvTransportMaterial);
+        UiUtil.setTextView("Labour Requirement :", transportBooking.getTransportCoolieName(), holder.tvLabourRequirement);
+        UiUtil.setTextView("Vehicle Type :", transportBooking.getTransportTypeName(), holder.tvVehicleType);
 
         if (!TextUtils.isEmpty(transportBooking.getLatitude()) && !TextUtils.isEmpty(transportBooking.getLongitude())) {
             holder.ibDirection.setVisibility(View.VISIBLE);
@@ -70,6 +73,9 @@ public class AllBookingsAdapter extends RecyclerView.Adapter<AllBookingsAdapter.
         private TextView tvMobileNumber;
         private TextView tvPickUp;
         private TextView tvDestination;
+        private TextView tvTransportMaterial;
+        private TextView tvLabourRequirement;
+        private TextView tvVehicleType;
         private ImageButton ibDirection;
 
         ViewHolder(@NonNull View itemView) {
@@ -80,6 +86,9 @@ public class AllBookingsAdapter extends RecyclerView.Adapter<AllBookingsAdapter.
             tvPickUp = itemView.findViewById(R.id.tv_pick_up);
             tvDestination = itemView.findViewById(R.id.tv_destination);
             ibDirection = itemView.findViewById(R.id.ib_direction);
+            tvTransportMaterial = itemView.findViewById(R.id.tv_transport_material);
+            tvLabourRequirement = itemView.findViewById(R.id.tv_labour_requirement);
+            tvVehicleType = itemView.findViewById(R.id.tv_vehicle_type);
         }
 
         /*public <E> void bind(final E item, final int position, final OnListViewItemClickListener listener) {

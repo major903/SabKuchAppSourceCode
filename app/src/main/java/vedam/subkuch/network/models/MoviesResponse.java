@@ -5,38 +5,34 @@ import java.util.ArrayList;
 
 public class MoviesResponse {
 
-    private String ReturnCode;
+    private String returnCode;
 
-    private String ReturnMessage;
+    private String returnMessage;
 
-    private ArrayList<Movie> ReturnData;
+    private ArrayList<Movie> returnData;
 
     public String getReturnCode() {
-        return ReturnCode;
+        return returnCode;
     }
 
     public void setReturnCode(String ReturnCode) {
-        this.ReturnCode = ReturnCode;
+        this.returnCode = ReturnCode;
     }
 
     public String getReturnMessage() {
-        return ReturnMessage;
+        return returnMessage;
     }
 
     public void setReturnMessage(String ReturnMessage) {
-        this.ReturnMessage = ReturnMessage;
+        this.returnMessage = ReturnMessage;
     }
 
     public ArrayList<Movie> getReturnData() {
-        return ReturnData;
+        return returnData;
     }
 
     public void setReturnData(ArrayList<Movie> ReturnData) {
-        this.ReturnData = ReturnData;
+        this.returnData = ReturnData;
     }
 
-    @Override
-    public String toString() {
-        return "ClassPojo [ReturnCode = " + ReturnCode + ", ReturnMessage = " + ReturnMessage + ", ReturnData = " + ReturnData + "]";
-    }
 }

@@ -45,6 +45,7 @@ public class MyBookingsAdapter extends RecyclerView.Adapter<MyBookingsAdapter.Vi
         UiUtil.setTextView("Date :", transportBooking.getDate(), holder.tvDate);
         UiUtil.setTextView("From :", transportBooking.getPickupLocation(), holder.tvFrom);
         UiUtil.setTextView("To :", transportBooking.getDropLocation(), holder.tvTo);
+        UiUtil.setTextView("Transport Material :", transportBooking.getItemType(), holder.tvTransportMaterial);
         UiUtil.setTextView("Status :", transportBooking.getCurrentStatus(), holder.tvStatus);
 
         if (transportBooking.getStatus() == Constants.STATUS_OPEN) {
@@ -71,6 +72,7 @@ public class MyBookingsAdapter extends RecyclerView.Adapter<MyBookingsAdapter.Vi
         private TextView tvFrom;
         private TextView tvTo;
         private TextView tvStatus;
+        private TextView tvTransportMaterial;
         private Button btMarkComplete;
 
         ViewHolder(@NonNull View itemView) {
@@ -79,6 +81,7 @@ public class MyBookingsAdapter extends RecyclerView.Adapter<MyBookingsAdapter.Vi
             tvFrom = itemView.findViewById(R.id.tv_from);
             tvTo = itemView.findViewById(R.id.tv_to);
             tvStatus = itemView.findViewById(R.id.tv_status);
+            tvTransportMaterial = itemView.findViewById(R.id.tv_transport_material);
             btMarkComplete = itemView.findViewById(R.id.bt_mark_complete);
         }
 

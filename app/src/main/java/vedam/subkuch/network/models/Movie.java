@@ -4,24 +4,24 @@ import java.util.ArrayList;
 
 public class Movie {
 
-    private String Name;
+    private String name;
 
     private ArrayList<Venue> obj_Venue;
 
-    private String Movievideo;
+    private String movievideo;
 
-    private String Movieid;
+    private String movieid;
 
-    private String Movieposter;
+    private String movieposter;
 
     private boolean isExpanded;
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String Name) {
-        this.Name = Name;
+        this.name = Name;
     }
 
     public ArrayList<Venue> getObj_Venue() {
@@ -33,32 +33,27 @@ public class Movie {
     }
 
     public String getMovievideo() {
-        return Movievideo;
+        return movievideo;
     }
 
     public void setMovievideo(String Movievideo) {
-        this.Movievideo = Movievideo;
+        this.movievideo = Movievideo;
     }
 
     public String getMovieid() {
-        return Movieid;
+        return movieid;
     }
 
     public void setMovieid(String Movieid) {
-        this.Movieid = Movieid;
+        this.movieid = Movieid;
     }
 
     public String getMovieposter() {
-        return Movieposter;
+        return movieposter;
     }
 
     public void setMovieposter(String Movieposter) {
-        this.Movieposter = Movieposter;
-    }
-
-    @Override
-    public String toString() {
-        return "Movie [Name = " + Name + ", obj_Venue = " + obj_Venue + ", Movievideo = " + Movievideo + ", Movieid = " + Movieid + ", Movieposter = " + Movieposter + "]";
+        this.movieposter = Movieposter;
     }
 
     public boolean isExpanded() {

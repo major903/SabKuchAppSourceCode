@@ -60,7 +60,6 @@ public class WalletActivity extends BaseActivity {
 
         activityWalletBinding.llContainer.setVisibility(View.VISIBLE);
         UiUtil.setTextViewWithBoldPrefix(this, "Member Name : ", data.getUserName(), activityWalletBinding.tvName);
-        UiUtil.setTextViewWithBoldPrefix(this, "Profile Id : ", data.getUserId(), activityWalletBinding.tvId);
         UiUtil.setTextViewWithBoldPrefix(this, "Phone No. : ", data.getPhoneNumber(), activityWalletBinding.tvMobile);
         UiUtil.setTextViewWithBoldPrefix(this, "Total Earnings : ", data.getTotalEarnings(), activityWalletBinding.tvTotalEarnings);
         UiUtil.setTextViewWithBoldPrefix(this, "Points Earned : ", data.getPoints(), activityWalletBinding.tvPointsEarned);
@@ -70,15 +69,10 @@ public class WalletActivity extends BaseActivity {
     }
 
     private void hideViews(Wallet data) {
-        if (TextUtils.isEmpty(data.getUserName()))
+        if (TextUtils.isEmpty(data.getUserName()) && TextUtils.isEmpty(data.getPhoneNumber()))
             activityWalletBinding.cvName.setVisibility(View.GONE);
         else
             activityWalletBinding.cvName.setVisibility(View.VISIBLE);
-
-        if (TextUtils.isEmpty(data.getUserId()) && TextUtils.isEmpty(data.getPhoneNumber()))
-            activityWalletBinding.cvId.setVisibility(View.GONE);
-        else
-            activityWalletBinding.cvId.setVisibility(View.VISIBLE);
 
         if (TextUtils.isEmpty(data.getTotalEarnings()) && TextUtils.isEmpty(data.getPoints())
                 && TextUtils.isEmpty(data.getWithdrawls()) && TextUtils.isEmpty(data.getBalance()))

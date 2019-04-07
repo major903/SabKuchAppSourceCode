@@ -1,5 +1,6 @@
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
-    <item name="ic_menu_profile" type="drawable">@android:drawable/ic_menu_myplaces</item>
-    <item name="ic_menu_info" type="drawable">@android:drawable/ic_menu_info_details</item>
-    <item name="ic_menu_inbox" type="drawable">@android:drawable/ic_menu_save</item>
+<resources>
+    <item name="ic_menu_profile" type="drawable">@drawable/baseline_account_box_black_18</item>
+    <item name="ic_menu_privacy" type="drawable">@drawable/baseline_copyright_black_18</item>
+    <item name="ic_menu_inbox" type="drawable">@drawable/baseline_inbox_black_18</item>
+    <item name="ic_menu_wallet" type="drawable">@drawable/baseline_money_black_18</item>
 </resources>

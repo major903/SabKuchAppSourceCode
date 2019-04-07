@@ -105,7 +105,7 @@ public class DataFetcher {
 
     public static <T> void getMovies(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
         String userId = AppPrefs.getPrefsUserId(context);
-        String url = String.format("%s/AllAPI/GetMovies?userid=%s", NetworkConstants.END_POINT, userId);
+        String url = String.format("%s/MovieAPI/getMovies?userid=%s", NetworkConstants.END_POINT4, userId);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
@@ -357,7 +357,7 @@ public class DataFetcher {
 
     public static <T> void addReferral(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
 
-        String url = String.format("%s/Refferal", NetworkConstants.END_POINT4);
+        String url = String.format("%s/api/UserProfile/LinkReferral", NetworkConstants.END_POINT2);
         HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
     }
 

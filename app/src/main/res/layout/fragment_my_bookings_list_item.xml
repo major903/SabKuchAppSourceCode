@@ -29,6 +29,13 @@
         tools:text="@string/err" />
 
     <TextView
+        android:id="@+id/tv_transport_material"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        tools:text="@string/err" />
+
+    <TextView
         android:id="@+id/tv_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

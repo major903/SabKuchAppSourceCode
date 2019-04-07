@@ -93,6 +93,8 @@ public class Profile implements Parcelable {
     
     private String AuthToken;
 
+    private boolean IsReferralDone;
+
     public Profile() {
     }
 
@@ -207,6 +209,10 @@ public class Profile implements Parcelable {
             return new Profile[size];
         }
     };
+
+    public boolean getIsReferralDone() {
+        return IsReferralDone;
+    }
 
     public String getOwnCar() {
         return OwnCar;

@@ -2,14 +2,14 @@ package vedam.subkuch.network.models;
 
 public class ReferralRequest {
 
-    private String whoRefferCode;
-    private String toReffer;
+    private String ReferredBy;
+    private String ProfileId;
 
-    public void setWhoRefferCode(String whoRefferCode) {
-        this.whoRefferCode = whoRefferCode;
+    public void setReferredBy(String referredBy) {
+        this.ReferredBy = referredBy;
     }
 
-    public void setToReffer(String toReffer) {
-        this.toReffer = toReffer;
+    public void setProfileId(String profileId) {
+        this.ProfileId = profileId;
     }
 }

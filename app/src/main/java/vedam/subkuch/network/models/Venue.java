@@ -13,10 +13,4 @@ public class Venue {
     {
         this.venuewithtime = venuewithtime;
     }
-
-    @Override
-    public String toString()
-    {
-        return "Venue [venuewithtime = "+venuewithtime+"]";
-    }
 }

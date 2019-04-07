@@ -20,6 +20,7 @@ import vedam.subkuch.network.WebServices;
 import vedam.subkuch.network.models.OtpResponse;
 import vedam.subkuch.network.models.Profile;
 import vedam.subkuch.network.models.ProfileResponse;
+import vedam.subkuch.ui.home.HomeActivity;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.UiUtil;
@@ -132,22 +133,32 @@ public class VerificationActivity extends BaseActivity {
         UiUtil.cancelProgressDialog();
         if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)
                 && response.getReturnData() != null) {
-            Profile receivedProfile = response.getReturnData().get(0);
-            SharedPreferences.Editor editor = AppPrefs.getInstance(VerificationActivity.this).getSharedPreferences().edit();
-            editor.putBoolean(PREFS_IF_USER_LOGGED_IN, true);
-            editor.putString(PREFS_USER_ID, receivedProfile.getProfileId());
-            String bearer = "Bearer " + receivedProfile.getAuthToken();
-            editor.putString(PREFS_TOKEN, bearer);
-            editor.putString(PREFS_USER_NAME, AppUtil.getFullName(receivedProfile.getFirstName(), receivedProfile.getLastName()));
-            editor.apply();
-            WebServices.getInstance().setBearer(bearer);
-            Intent intent = new Intent(VerificationActivity.this, ReferralActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            UiUtil.showToast(VerificationActivity.this, getString(R.string.user_registered_successfully));
+            handleResponse(response.getReturnData().get(0));
         } else
             UiUtil.showToast(VerificationActivity.this, getString(R.string.err_occurred));
     };
+
+    private void handleResponse(Profile receivedProfile) {
+
+        SharedPreferences.Editor editor = AppPrefs.getInstance(VerificationActivity.this).getSharedPreferences().edit();
+        editor.putBoolean(PREFS_IF_USER_LOGGED_IN, true);
+        editor.putString(PREFS_USER_ID, receivedProfile.getProfileId());
+        String bearer = "Bearer " + receivedProfile.getAuthToken();
+        editor.putString(PREFS_TOKEN, bearer);
+        editor.putString(PREFS_USER_NAME, AppUtil.getFullName(receivedProfile.getFirstName(), receivedProfile.getLastName()));
+        editor.apply();
+        WebServices.getInstance().setBearer(bearer);
+        boolean isReferralDone = receivedProfile.getIsReferralDone();
+
+        Intent intent;
+        if (!isReferralDone)
+            intent = new Intent(VerificationActivity.this, ReferralActivity.class);
+        else
+            intent = new Intent(VerificationActivity.this, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        UiUtil.showToast(VerificationActivity.this, getString(R.string.user_registered_successfully));
+    }
 
 //    private Response.ErrorListener onErrorListener = error -> {
 //

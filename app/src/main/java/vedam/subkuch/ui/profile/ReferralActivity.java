@@ -47,8 +47,8 @@ public class ReferralActivity extends BaseActivity {
 
         UiUtil.showProgressDialog(this, R.string.please_wait);
         ReferralRequest referralRequest = new ReferralRequest();
-        referralRequest.setToReffer(AppPrefs.getPrefsUserId(this));
-        referralRequest.setWhoRefferCode(AppUtil.deNull(activityReferralBinding.etReferralCode.getText()).trim());
+        referralRequest.setProfileId(AppPrefs.getPrefsUserId(this));
+        referralRequest.setReferredBy(AppUtil.deNull(activityReferralBinding.etReferralCode.getText()).trim());
         DataFetcher.addReferral(this, new Gson().toJson(referralRequest), onAddReferralSuccessListener, AddResponse.class, onErrorListener);
     }
 
