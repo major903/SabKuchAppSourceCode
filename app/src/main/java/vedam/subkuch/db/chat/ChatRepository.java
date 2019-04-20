@@ -21,6 +21,11 @@ public class ChatRepository implements RowIdListener {
         this.onInsertUpdateDoneListener = onInsertUpdateDoneListener;
     }
 
+    public ChatRepository(Context context) {
+        ChatRoomDatabase db = ChatRoomDatabase.getDatabase(context);
+        chatDao = db.chatDao();
+    }
+
     public LiveData<List<Chat>> getIndividualChat(String fromId, String toId) {
         return chatDao.getIndividualChat(fromId, toId);
     }
@@ -39,6 +44,10 @@ public class ChatRepository implements RowIdListener {
 
     public Chat getChatById(long id) {
         return chatDao.getChatById(id);
+    }
+
+    public LiveData<Integer> getTotalUnreadMessagesCount() {
+        return chatDao.getTotalUnreadMessagesCount(Constants.CHAT_STATUS_SENT_BUT_NOT_DELIVERED);
     }
 
     public void insert(Chat chat, boolean isOwnMessage) {

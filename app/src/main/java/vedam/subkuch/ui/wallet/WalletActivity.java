@@ -16,8 +16,12 @@ import vedam.subkuch.base.BaseActivity;
 import vedam.subkuch.databinding.ActivityWalletBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
-import vedam.subkuch.network.models.Wallet;
-import vedam.subkuch.network.models.WalletResponse;
+import vedam.subkuch.network.models.wallet.ProfileData;
+import vedam.subkuch.network.models.wallet.TermsCondition;
+import vedam.subkuch.network.models.wallet.Wallet;
+import vedam.subkuch.network.models.wallet.WalletDetails;
+import vedam.subkuch.network.models.wallet.WalletResponse;
+import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.UiUtil;
 
 public class WalletActivity extends BaseActivity {
@@ -42,10 +46,10 @@ public class WalletActivity extends BaseActivity {
     private Response.Listener<WalletResponse> onWalletSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (response != null && response.isSuccess()) {
-            if (response.getData() != null) {
-                bindData(response.getData());
-                hideViews(response.getData());
+        if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
+            if (response.getReturnData() != null) {
+                bindData(response.getReturnData());
+                hideViews(response.getReturnData());
             } else {
                 UiUtil.showToast(this, getString(R.string.no_data));
                 activityWalletBinding.llContainer.setVisibility(View.INVISIBLE);
@@ -58,27 +62,41 @@ public class WalletActivity extends BaseActivity {
 
     private void bindData(Wallet data) {
 
+        WalletDetails walletDetails = data.getWallet();
+        ProfileData profileData = data.getProfileData();
+        TermsCondition termsCondition = data.getTermsConditions();
         activityWalletBinding.llContainer.setVisibility(View.VISIBLE);
-        UiUtil.setTextViewWithBoldPrefix(this, "Member Name : ", data.getUserName(), activityWalletBinding.tvName);
-        UiUtil.setTextViewWithBoldPrefix(this, "Phone No. : ", data.getPhoneNumber(), activityWalletBinding.tvMobile);
-        UiUtil.setTextViewWithBoldPrefix(this, "Total Earnings : ", data.getTotalEarnings(), activityWalletBinding.tvTotalEarnings);
-        UiUtil.setTextViewWithBoldPrefix(this, "Points Earned : ", data.getPoints(), activityWalletBinding.tvPointsEarned);
-        UiUtil.setTextViewWithBoldPrefix(this, "Withdrawal : ", data.getWithdrawls(), activityWalletBinding.tvWithdrawal);
-        UiUtil.setTextViewWithBoldPrefix(this, "Available Amount : ", data.getBalance(), activityWalletBinding.tvAvailableAmount);
+        UiUtil.setTextViewWithBoldPrefix(this, "Member Name : ",
+                AppUtil.getFullName(profileData.getFirstName(), profileData.getLastName()), activityWalletBinding.tvName);
+        UiUtil.setTextViewWithBoldPrefix(this, "Phone No. : ", profileData.getMobile(), activityWalletBinding.tvMobile);
+        UiUtil.setTextViewWithBoldPrefix(this, "Total Earnings : ", walletDetails.getTotalReferralIncome(), activityWalletBinding.tvTotalEarnings);
+        UiUtil.setTextViewWithBoldPrefix(this, "Points Earned : ", walletDetails.getTotalPointsEarned(), activityWalletBinding.tvPointsEarned);
+        UiUtil.setTextViewWithBoldPrefix(this, "Withdrawal : ", walletDetails.getTotalWithdrawal(), activityWalletBinding.tvWithdrawal);
+        UiUtil.setTextViewWithBoldPrefix(this, "Available Amount : ", walletDetails.getAvailableBalance(), activityWalletBinding.tvAvailableAmount);
+        UiUtil.setTextView(activityWalletBinding.tvTncTitle, termsCondition.getTitle());
+        UiUtil.setTextView(activityWalletBinding.tvTnc, termsCondition.getDescription());
 
     }
 
     private void hideViews(Wallet data) {
-        if (TextUtils.isEmpty(data.getUserName()) && TextUtils.isEmpty(data.getPhoneNumber()))
+        WalletDetails walletDetails = data.getWallet();
+        ProfileData profileData = data.getProfileData();
+        TermsCondition termsCondition = data.getTermsConditions();
+        if (TextUtils.isEmpty(profileData.getFirstName()) && TextUtils.isEmpty(profileData.getMobile()))
             activityWalletBinding.cvName.setVisibility(View.GONE);
         else
             activityWalletBinding.cvName.setVisibility(View.VISIBLE);
 
-        if (TextUtils.isEmpty(data.getTotalEarnings()) && TextUtils.isEmpty(data.getPoints())
-                && TextUtils.isEmpty(data.getWithdrawls()) && TextUtils.isEmpty(data.getBalance()))
+        if (TextUtils.isEmpty(walletDetails.getTotalPointsEarned()) && TextUtils.isEmpty(walletDetails.getTotalReferralIncome())
+                && TextUtils.isEmpty(walletDetails.getTotalWithdrawal()) && TextUtils.isEmpty(walletDetails.getAvailableBalance()))
             activityWalletBinding.cvEarnings.setVisibility(View.GONE);
         else
             activityWalletBinding.cvEarnings.setVisibility(View.VISIBLE);
+
+        if (TextUtils.isEmpty(termsCondition.getDescription()))
+            activityWalletBinding.cvTnc.setVisibility(View.GONE);
+        else
+            activityWalletBinding.cvTnc.setVisibility(View.VISIBLE);
 
     }
 

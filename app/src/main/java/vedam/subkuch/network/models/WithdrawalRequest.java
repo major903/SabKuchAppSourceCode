@@ -1,19 +1,14 @@
 package vedam.subkuch.network.models;
 
 public class WithdrawalRequest {
-    private String fromUser;
-    private String vendorCode;
-    private String amount;
+    private String VendorCode;
+    private String Amount;
 
-    public void setFromUser(String fromUser) {
-        this.fromUser = fromUser;
+    public void setAmount(String amount) {
+        Amount = amount;
     }
 
     public void setVendorCode(String vendorCode) {
-        this.vendorCode = vendorCode;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
+        VendorCode = vendorCode;
     }
 }

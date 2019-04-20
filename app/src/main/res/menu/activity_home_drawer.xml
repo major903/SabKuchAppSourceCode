@@ -11,7 +11,7 @@
         <item
             android:id="@+id/nav_wallet"
             android:icon="@drawable/ic_menu_wallet"
-            android:title="@string/wallet" />
+            android:title="@string/my_wallet" />
         <item
             android:id="@+id/nav_inbox"
             android:icon="@drawable/ic_menu_inbox"

@@ -12,10 +12,10 @@ import com.google.gson.Gson;
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseActivity;
 import vedam.subkuch.databinding.ActivityWithdrawalBinding;
+import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.network.models.WithdrawalRequest;
 import vedam.subkuch.ui.jobs.models.AddResponse;
-import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.UiUtil;
 
@@ -49,7 +49,6 @@ public class WithdrawalActivity extends BaseActivity {
     private void withdraw() {
         UiUtil.showProgressDialog(this, getString(R.string.please_wait));
         WithdrawalRequest withdrawalRequest = new WithdrawalRequest();
-        withdrawalRequest.setFromUser(AppPrefs.getPrefsUserId(this));
         withdrawalRequest.setAmount(activityWithdrawalBinding.etWithdrawalAmount.getText().toString());
         withdrawalRequest.setVendorCode(activityWithdrawalBinding.etVendorCode.getText().toString());
 
@@ -59,7 +58,7 @@ public class WithdrawalActivity extends BaseActivity {
     private Response.Listener<AddResponse> onWithdrawalSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (response != null && response.isSuccess()) {
+        if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
             UiUtil.showToast(this, getString(R.string.withdrawal_done_successfully));
             setResult(Activity.RESULT_OK);
             finish();

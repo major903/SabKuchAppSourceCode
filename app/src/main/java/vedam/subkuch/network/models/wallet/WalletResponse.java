@@ -1,9 +1,9 @@
-package vedam.subkuch.network.models;
+package vedam.subkuch.network.models.wallet;
 
-public class ShareResponse {
+public class WalletResponse {
     private String ReturnCode;
 
-    private String ReturnData;
+    private Wallet ReturnData;
 
     private String ReturnMessage;
 
@@ -15,11 +15,11 @@ public class ShareResponse {
         this.ReturnCode = ReturnCode;
     }
 
-    public String getReturnData() {
+    public Wallet getReturnData() {
         return ReturnData;
     }
 
-    public void setReturnData(String ReturnData) {
+    public void setReturnData(Wallet ReturnData) {
         this.ReturnData = ReturnData;
     }
 
@@ -30,4 +30,5 @@ public class ShareResponse {
     public void setReturnMessage(String ReturnMessage) {
         this.ReturnMessage = ReturnMessage;
     }
+
 }

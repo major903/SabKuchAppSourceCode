@@ -346,12 +346,12 @@ public class DataFetcher {
     }
 
     public static <T> void getShareContent(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
-        String url = String.format("%s/ShareContent?userId=%s", NetworkConstants.END_POINT4, AppPrefs.getPrefsUserId(context));
+        String url = String.format("%s/api/Referral/ShareContent", NetworkConstants.END_POINT2);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void getWalletDetails(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
-        String url = String.format("%s/Wallet?userId=%s", NetworkConstants.END_POINT4, AppPrefs.getPrefsUserId(context));
+        String url = String.format("%s/api/Referral/GetMyWallet", NetworkConstants.END_POINT2);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
@@ -363,7 +363,7 @@ public class DataFetcher {
 
     public static <T> void withdraw(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
 
-        String url = String.format("%s/Wallet/withdrawAmount", NetworkConstants.END_POINT4);
+        String url = String.format("%s/api/Referral/Withdrawal", NetworkConstants.END_POINT2);
         HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
     }
 }

@@ -4,7 +4,6 @@ package vedam.subkuch.ui.chat;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -27,12 +26,18 @@ import vedam.subkuch.db.chat.Chat;
 import vedam.subkuch.db.chat.ChatRepository;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.interfaces.OnInsertUpdateDoneListener;
+import vedam.subkuch.network.NetworkConstants;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.LogUtils;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * A sends to B
+ * 1. A sends Message to server with SocketType Msg. Server Sends to A with SocketType Read for app to save UUID
+ * 2. Server sends message to B with SocketType Msg.
+ * 3. B receives message from server with SocketType Msg. Then sends a message to server with SocketType Ack and status = 2
+ * 4. Server sends a message to A with SocketType Ack and Status = 2.
+ * 5. A sends a message to server SocketType Ack and Status = 3
  */
 public class ChatFragment extends BaseFragment implements OnInsertUpdateDoneListener {
 
@@ -160,9 +165,9 @@ public class ChatFragment extends BaseFragment implements OnInsertUpdateDoneList
 
     private void connectWebSocket() {
 
-        okhttp3.Request request = new okhttp3.Request.Builder().url("ws://sabkuch4.sabkuchworld.com/api/SabkuchChat/Get")
-                .addHeader("Authorization", AppPrefs.getPrefsToken(context)).build();
-        EchoWebSocketListener listener = new EchoWebSocketListener();
+        okhttp3.Request request = new okhttp3.Request.Builder().url(NetworkConstants.WEB_SOCKET_END_POINT)
+                .addHeader(NetworkConstants.Authorization, AppPrefs.getPrefsToken(context)).build();
+        ChatWebSocketListener listener = new ChatWebSocketListener();
         OkHttpClient okHttpClient = new OkHttpClient();
         webSocket = okHttpClient.newWebSocket(request, listener);
         okHttpClient.dispatcher().executorService().shutdown();
@@ -182,19 +187,14 @@ public class ChatFragment extends BaseFragment implements OnInsertUpdateDoneList
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         if (webSocket != null)
             webSocket.close(Constants.NORMAL_CLOSURE_STATUS, null);
     }
+
     // WebSocket
-    private final class EchoWebSocketListener extends WebSocketListener {
+    private final class ChatWebSocketListener extends WebSocketListener {
 
         @Override
         public void onOpen(WebSocket webSocket, okhttp3.Response response) {
@@ -206,7 +206,7 @@ public class ChatFragment extends BaseFragment implements OnInsertUpdateDoneList
         @Override
         public void onMessage(WebSocket webSocket, String text) {
             LogUtils.LOGD(TAG, "Rx: " + text);
-            handleMessage(text);
+            handleIncomingMessage(text);
         }
 
         @Override
@@ -261,7 +261,7 @@ public class ChatFragment extends BaseFragment implements OnInsertUpdateDoneList
             boolean isSent = webSocket.send(chatJson);
             LogUtils.LOGD(TAG, chatJson + "Ack read " + isSent);
             if (isSent)
-            chatRepository.update(chat, false);
+                chatRepository.update(chat, false);
         } else
             connectWebSocket();
     }
@@ -279,35 +279,38 @@ public class ChatFragment extends BaseFragment implements OnInsertUpdateDoneList
             connectWebSocket();
     }
 
-    private void handleMessage(String text) {
+    private void handleIncomingMessage(String text) {
 
         Chat chat = new Gson().fromJson(text, Chat.class);
-        if (chat != null && Constants.SOCKET_TYPE_MESSAGE.equals(chat.getSocketType())) {
-            String uuid = chat.getUuid();
-            if (!TextUtils.isEmpty(uuid)) {
-                Chat existingChat = chatRepository.getChatByUUID(uuid);
+        if (chat != null)
+            /*Check if a chat message is present with same uuid. If yes, then update the status
+             * else just update the timestamp to current time and insert it. */
+            if (Constants.SOCKET_TYPE_MESSAGE.equals(chat.getSocketType())) {
+                String uuid = chat.getUuid();
+                if (!TextUtils.isEmpty(uuid)) {
+                    Chat existingChat = chatRepository.getChatByUUID(uuid);
+                    if (existingChat != null) {
+                        existingChat.setStatus(chat.getStatus());
+                        chatRepository.update(existingChat, false);
+                    } else {
+                        chat.setTimeStamp(String.valueOf(System.currentTimeMillis()));
+                        chatRepository.insert(chat, false);
+                    }
+                }
+            } else if (Constants.SOCKET_TYPE_ACKNOWLEDGEMENT.equals(chat.getSocketType())) {
+                String uniqueId = chat.getUuid();
+                Chat existingChat = chatRepository.getChatByUUID(uniqueId);
                 if (existingChat != null) {
                     existingChat.setStatus(chat.getStatus());
                     chatRepository.update(existingChat, false);
-                } else {
-                    chat.setTimeStamp(String.valueOf(System.currentTimeMillis()));
-                    chatRepository.insert(chat, false);
+                }
+            } else if (Constants.SOCKET_TYPE_READ.equals(chat.getSocketType())) {
+                long id = chat.getId();
+                Chat existingChat = chatRepository.getChatById(id);
+                if (existingChat != null) {
+                    existingChat.setUuid(chat.getUuid());
+                    chatRepository.update(existingChat, false);
                 }
             }
-        } else if (chat != null && Constants.SOCKET_TYPE_ACKNOWLEDGEMENT.equals(chat.getSocketType())) {
-            String uniqueId = chat.getUuid();
-            Chat existingChat = chatRepository.getChatByUUID(uniqueId);
-            if (existingChat != null) {
-                existingChat.setStatus(chat.getStatus());
-                chatRepository.update(existingChat, false);
-            }
-        } else if (chat != null && Constants.SOCKET_TYPE_READ.equals(chat.getSocketType())) {
-            long id = chat.getId();
-            Chat existingChat = chatRepository.getChatById(id);
-            if (existingChat != null) {
-                existingChat.setUuid(chat.getUuid());
-                chatRepository.update(existingChat, false);
-            }
-        }
     }
 }

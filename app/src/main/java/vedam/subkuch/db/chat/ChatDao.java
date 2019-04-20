@@ -33,6 +33,9 @@ public interface ChatDao {
     @Query("SELECT * FROM Chat where Status = :notSentStatus")
     List<Chat> getPendingChat(int notSentStatus);
 
+    @Query("SELECT COUNT(*) FROM Chat where Status = :SentButNotDeliveredStatus")
+    LiveData<Integer> getTotalUnreadMessagesCount(int SentButNotDeliveredStatus);
+
 //    @Query("SELECT * FROM Chat GROUP BY senderName ORDER BY TimeStamp DESC")
 //    LiveData<List<Chat>> getChatList(String fromId, String toId);
 

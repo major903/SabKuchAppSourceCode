@@ -11,20 +11,35 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
+import com.google.gson.Gson;
+
 import java.util.HashMap;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.OkHttpClient;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
+import vedam.subkuch.BuildConfig;
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseActivity;
 import vedam.subkuch.databinding.ActivityShowProfilesBinding;
+import vedam.subkuch.db.chat.Chat;
+import vedam.subkuch.db.chat.ChatRepository;
 import vedam.subkuch.helpers.Constants;
+import vedam.subkuch.network.NetworkConstants;
 import vedam.subkuch.ui.home.HomeActivity;
 import vedam.subkuch.ui.matrimonial.editProfile.EditProfileFragment;
 import vedam.subkuch.ui.matrimonial.preference.PreferenceFragment;
 import vedam.subkuch.utils.AppPrefs;
+import vedam.subkuch.utils.LogUtils;
 
 import static vedam.subkuch.helpers.Constants.TAG_CHATS_FRAGMENT;
 import static vedam.subkuch.helpers.Constants.TAG_MATCHES_FRAGMENT;
@@ -39,6 +54,9 @@ public class ShowProfilesActivity extends BaseActivity
     private HashMap<String, Integer> hmNavigationIds;
     private boolean isDating;
     private Menu menu;
+    private Disposable internetDisposable;
+    private WebSocket webSocket;
+    private ChatRepository chatRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +91,16 @@ public class ShowProfilesActivity extends BaseActivity
 
     private void bindData() {
 
+        chatRepository = new ChatRepository(this);
+        chatRepository.getTotalUnreadMessagesCount()
+                .observe(this, this::setCount);
         TextView tvName = activityShowProfilesBinding.navView.getHeaderView(0).findViewById(R.id.tv_name);
         tvName.setText(AppPrefs.getPrefsUserName(this));
+    }
+
+    private void setCount(Integer count) {
+
+        LogUtils.LOGD("Chat Count", String.valueOf(count));
     }
 
     private void setHashMap() {
@@ -194,5 +220,106 @@ public class ShowProfilesActivity extends BaseActivity
     protected void onDestroy() {
         super.onDestroy();
         getSupportFragmentManager().removeOnBackStackChangedListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        internetDisposable = ReactiveNetwork.observeInternetConnectivity()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::setConnection);
+    }
+
+    private void setConnection(Boolean isConnected) {
+
+        if (isConnected || webSocket == null) {
+            connectWebSocket();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (webSocket != null)
+            webSocket.close(Constants.NORMAL_CLOSURE_STATUS, null);
+        safelyDispose(internetDisposable);
+    }
+
+    private void safelyDispose(Disposable subscription) {
+
+        if (subscription != null && !subscription.isDisposed()) {
+            subscription.dispose();
+        }
+    }
+
+    private void connectWebSocket() {
+
+        okhttp3.Request request = new okhttp3.Request.Builder().url(NetworkConstants.WEB_SOCKET_END_POINT)
+                .addHeader(NetworkConstants.Authorization, AppPrefs.getPrefsToken(this)).build();
+        ChatWebSocketListener listener = new ChatWebSocketListener();
+        OkHttpClient okHttpClient = new OkHttpClient();
+        webSocket = okHttpClient.newWebSocket(request, listener);
+        okHttpClient.dispatcher().executorService().shutdown();
+    }
+
+
+    // WebSocket
+    private final class ChatWebSocketListener extends WebSocketListener {
+
+        @Override
+        public void onOpen(WebSocket webSocket, okhttp3.Response response) {
+            LogUtils.LOGD(TAG, "WebSocket connected");
+        }
+
+        @Override
+        public void onMessage(WebSocket webSocket, String text) {
+            LogUtils.LOGD(TAG, "Rx: " + text);
+            handleIncomingMessage(text);
+        }
+
+        @Override
+        public void onClosing(WebSocket webSocket, int code, String reason) {
+            webSocket.close(Constants.NORMAL_CLOSURE_STATUS, null);
+            ShowProfilesActivity.this.webSocket = null;
+            LogUtils.LOGD(TAG, "Closed: " + code + " / " + reason);
+        }
+
+        @Override
+        public void onFailure(WebSocket webSocket, Throwable t, okhttp3.Response response) {
+            ShowProfilesActivity.this.webSocket = null;
+            if (BuildConfig.DEBUG)
+                t.printStackTrace();
+            LogUtils.LOGD(TAG, "Error: " + t.getMessage());
+            connectWebSocket();
+        }
+    }
+
+    private void handleIncomingMessage(String text) {
+
+        Chat chat = new Gson().fromJson(text, Chat.class);
+        if (chat != null)
+            /*Check if a chat message is present with same uuid. If yes, then update the status
+             * else just update the timestamp to current time and insert it. */
+            if (Constants.SOCKET_TYPE_MESSAGE.equals(chat.getSocketType())) {
+                String uuid = chat.getUuid();
+                if (!TextUtils.isEmpty(uuid)) {
+                    Chat existingChat = chatRepository.getChatByUUID(uuid);
+                    if (existingChat != null) {
+                        existingChat.setStatus(chat.getStatus());
+                        chatRepository.update(existingChat, false);
+                    } else {
+                        chat.setTimeStamp(String.valueOf(System.currentTimeMillis()));
+                        chatRepository.insert(chat, false);
+                    }
+                }
+            } else if (Constants.SOCKET_TYPE_ACKNOWLEDGEMENT.equals(chat.getSocketType())) {
+                String uniqueId = chat.getUuid();
+                Chat existingChat = chatRepository.getChatByUUID(uniqueId);
+                if (existingChat != null) {
+                    existingChat.setStatus(chat.getStatus());
+                    chatRepository.update(existingChat, false);
+                }
+            }
     }
 }

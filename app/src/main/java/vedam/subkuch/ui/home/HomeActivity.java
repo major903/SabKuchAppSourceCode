@@ -129,8 +129,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     private Response.Listener<ShareResponse> onShareSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (response != null && response.isSuccess() && response.getData() != null) {
-            handleAppShare(response.getData().getContent());
+        if (response != null && response.getReturnMessage().equals(Constants.SUCCESS) && response.getReturnData() != null) {
+            handleAppShare(response.getReturnData());
         } else
             UiUtil.showToast(HomeActivity.this, getString(R.string.err_occurred));
     };
