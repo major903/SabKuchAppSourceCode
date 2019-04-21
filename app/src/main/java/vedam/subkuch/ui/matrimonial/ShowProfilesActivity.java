@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
@@ -21,6 +22,7 @@ import com.google.gson.Gson;
 
 import java.util.HashMap;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -34,7 +36,9 @@ import vedam.subkuch.databinding.ActivityShowProfilesBinding;
 import vedam.subkuch.db.chat.Chat;
 import vedam.subkuch.db.chat.ChatRepository;
 import vedam.subkuch.helpers.Constants;
+import vedam.subkuch.interfaces.OnInsertUpdateDoneListener;
 import vedam.subkuch.network.NetworkConstants;
+import vedam.subkuch.ui.chat.ChatListFragment;
 import vedam.subkuch.ui.home.HomeActivity;
 import vedam.subkuch.ui.matrimonial.editProfile.EditProfileFragment;
 import vedam.subkuch.ui.matrimonial.preference.PreferenceFragment;
@@ -48,7 +52,7 @@ import static vedam.subkuch.helpers.Constants.TAG_PROFILE_FRAGMENT;
 import static vedam.subkuch.helpers.Constants.TAG_SHOW_PROFILES_FRAGMENT;
 
 public class ShowProfilesActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener, FragmentManager.OnBackStackChangedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, FragmentManager.OnBackStackChangedListener, OnInsertUpdateDoneListener {
 
     private ActivityShowProfilesBinding activityShowProfilesBinding;
     private HashMap<String, Integer> hmNavigationIds;
@@ -57,6 +61,8 @@ public class ShowProfilesActivity extends BaseActivity
     private Disposable internetDisposable;
     private WebSocket webSocket;
     private ChatRepository chatRepository;
+    private TextView tvNotificationCount;
+    private View vNotificationCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,16 +97,29 @@ public class ShowProfilesActivity extends BaseActivity
 
     private void bindData() {
 
-        chatRepository = new ChatRepository(this);
-        chatRepository.getTotalUnreadMessagesCount()
-                .observe(this, this::setCount);
+        chatRepository = new ChatRepository(this, this);
+        /*chatRepository.getTotalUnreadMessagesCount()
+                .observe(this, this::setCount);*/
         TextView tvName = activityShowProfilesBinding.navView.getHeaderView(0).findViewById(R.id.tv_name);
         tvName.setText(AppPrefs.getPrefsUserName(this));
     }
 
     private void setCount(Integer count) {
 
-        LogUtils.LOGD("Chat Count", String.valueOf(count));
+        if (count == 0)
+            tvNotificationCount.setVisibility(View.GONE);
+        else if (count < 100) {
+            tvNotificationCount.setVisibility(View.VISIBLE);
+            tvNotificationCount.setText(String.valueOf(count));
+        } else {
+            tvNotificationCount.setVisibility(View.VISIBLE);
+            tvNotificationCount.setText(getString(R.string.max_notification_number));
+        }
+
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG_CHATS_FRAGMENT);
+        if (fragment != null && fragment.isAdded())
+            ((ChatListFragment) fragment).changeData();
+
     }
 
     private void setHashMap() {
@@ -138,13 +157,13 @@ public class ShowProfilesActivity extends BaseActivity
         if (id == R.id.nav_home) {
             startHomeActivity();
         } else if (id == R.id.nav_matches) {
-            changeFragment(MatchedProfileFragment.newInstance(false, isDating), TAG_MATCHES_FRAGMENT);
+            changeFragment(MatchedProfileFragment.newInstance(isDating), TAG_MATCHES_FRAGMENT);
         } else if (id == R.id.nav_profile) {
             changeFragment(EditProfileFragment.newInstance(isDating), TAG_PROFILE_FRAGMENT);
         } else if (id == R.id.nav_preferences) {
             changeFragment(PreferenceFragment.newInstance(isDating), TAG_PREFERENCES_FRAGMENT);
         } else if (id == R.id.nav_chats) {
-            changeFragment(MatchedProfileFragment.newInstance(true, isDating), TAG_CHATS_FRAGMENT);
+            changeFragment(ChatListFragment.newInstance(isDating), TAG_CHATS_FRAGMENT);
         }
 
         activityShowProfilesBinding.drawerLayout.closeDrawer(GravityCompat.START);
@@ -202,18 +221,18 @@ public class ShowProfilesActivity extends BaseActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.chat, menu);
         this.menu = menu;
+
+        setNotificationViews();
+        getUnreadMessages();
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_chats:
-                changeFragment(MatchedProfileFragment.newInstance(true, isDating), TAG_CHATS_FRAGMENT);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+    private void setNotificationViews() {
+        vNotificationCount = menu.findItem(R.id.action_chats).getActionView();
+        tvNotificationCount = vNotificationCount.findViewById(R.id.tv_notification_count);
+
+        vNotificationCount.setOnClickListener(v -> changeFragment(ChatListFragment.newInstance(isDating), TAG_CHATS_FRAGMENT));
+
     }
 
     @Override
@@ -229,6 +248,8 @@ public class ShowProfilesActivity extends BaseActivity
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::setConnection);
+        if (menu != null)
+            getUnreadMessages();
     }
 
     private void setConnection(Boolean isConnected) {
@@ -261,6 +282,24 @@ public class ShowProfilesActivity extends BaseActivity
         OkHttpClient okHttpClient = new OkHttpClient();
         webSocket = okHttpClient.newWebSocket(request, listener);
         okHttpClient.dispatcher().executorService().shutdown();
+    }
+
+    @Override
+    public void onInsertDone(Chat chat, boolean isOwnMessage) {
+        getUnreadMessages();
+    }
+
+    @Override
+    public void onUpdateDone(int updatedRowsCount, boolean isOwnMessage) {
+        getUnreadMessages();
+    }
+
+    private void getUnreadMessages() {
+
+        Observable.fromCallable(() -> chatRepository.getTotalUnreadMessagesCount(AppPrefs.getPrefsUserId(this)))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::setCount);
     }
 
 

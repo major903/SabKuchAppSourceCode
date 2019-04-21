@@ -1,4 +1,4 @@
-package vedam.subkuch.network.models;
+package vedam.subkuch.network.models.transport;
 
 public class TransportCompleteRequest {
     private String TransportId;

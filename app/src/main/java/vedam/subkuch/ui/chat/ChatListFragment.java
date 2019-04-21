@@ -1,110 +1,194 @@
 package vedam.subkuch.ui.chat;
 
-import android.content.Context;
-import android.net.Uri;
+import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.Response;
+
+import java.util.ArrayList;
+
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseFragment;
+import vedam.subkuch.databinding.FragmentChatListBinding;
+import vedam.subkuch.helpers.Constants;
+import vedam.subkuch.interfaces.OnListViewItemClickListener;
+import vedam.subkuch.network.DataFetcher;
+import vedam.subkuch.ui.matrimonial.models.DatingProfile;
+import vedam.subkuch.ui.matrimonial.models.DatingProfileResponse;
+import vedam.subkuch.utils.AppUtil;
+import vedam.subkuch.utils.ListItemClickAction;
+import vedam.subkuch.utils.UiUtil;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ChatListFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ChatListFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ChatListFragment extends BaseFragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
+public class ChatListFragment extends BaseFragment implements OnListViewItemClickListener {
+    private FragmentChatListBinding fragmentChatListBinding;
+    private ChatListAdapter adapter;
+    private ArrayList<DatingProfile> datingProfiles = new ArrayList<>();
+    private boolean loading = true;
+    private LinearLayoutManager linearLayoutManager;
+    private int pageNo = 1;
+    private int pageSize = 20;
+    private boolean hasMoreProjects = true;
+    private boolean isDating;
 
     public ChatListFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ChatListFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ChatListFragment newInstance(String param1, String param2) {
-        ChatListFragment fragment = new ChatListFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+
+    public static ChatListFragment newInstance(boolean isDating) {
+        ChatListFragment chatListFragment = new ChatListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(Constants.EXTRA_IS_DATING, isDating);
+        chatListFragment.setArguments(bundle);
+        return chatListFragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        if (getArguments() != null)
+            isDating = getArguments().getBoolean(Constants.EXTRA_IS_DATING);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chat_list, container, false);
+        fragmentChatListBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_chat_list, container, false);
+        return fragmentChatListBinding.getRoot();
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    public void onViewCreated(@NonNull View v, Bundle savedInstanceState) {
+        super.onViewCreated(v, savedInstanceState);
+        setTitle(getString(R.string.matches));
+        initUI();
+        getMatchedProfiles();
+    }
+
+    private void initUI() {
+
+        linearLayoutManager = new LinearLayoutManager(context);
+        fragmentChatListBinding.rvChatList.setLayoutManager(linearLayoutManager);
+        fragmentChatListBinding.rvChatList.setHasFixedSize(true);
+        adapter = new ChatListAdapter(context, datingProfiles, this);
+        fragmentChatListBinding.rvChatList.setAdapter(adapter);
+        fragmentChatListBinding.rvChatList.addOnScrollListener(new ProfilesOnScrollListener());
+
+    }
+
+    public void getMatchedProfiles() {
+        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
+        if (isDating)
+            DataFetcher.getDatingMatchedProfiles(context, onMatchedProfilesSuccessListener, DatingProfileResponse.class, onErrorListener, pageNo, pageSize);
+        else
+            DataFetcher.getMatrimonialMatchedProfiles(context, onMatchedProfilesSuccessListener, DatingProfileResponse.class, onErrorListener, pageNo, pageSize);
+
+
+    }
+
+    private void startChatActivity(DatingProfile datingProfile) {
+
+        Intent intent = new Intent(context, ChatActivity.class);
+        intent.putExtra(Constants.EXTRA_NAME, AppUtil.deNull(datingProfile.getFirstName()));
+        intent.putExtra(Constants.EXTRA_CHAT_TO_ID, datingProfile.getProfileId());
+        startActivityForResult(intent, Constants.REQUEST_CHAT);
+    }
+
+    private Response.Listener<DatingProfileResponse> onMatchedProfilesSuccessListener = response -> {
+
+        UiUtil.cancelProgressDialog();
+        if (getActivity() != null)
+            if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
+                if (response.getReturnData().size() > 0) {
+                    hasMoreProjects = response.getReturnData().size() >= pageSize;
+                    loading = true;
+                    loadValues(response.getReturnData());
+                } else
+                    UiUtil.showToast(context, getString(R.string.no_matches_found));
+            } else
+                UiUtil.showToast(context, getString(R.string.err_occurred));
+    };
+
+    private void loadValues(ArrayList<DatingProfile> response) {
+
+        if (response != null && !response.isEmpty()) {
+            pageNo++;
+            datingProfiles.addAll(response);
+            adapter = new ChatListAdapter(context, datingProfiles, this);
+            fragmentChatListBinding.rvChatList.setAdapter(adapter);
         }
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+    public <E> void onItemClick(E item, int position, View view, ListItemClickAction action) {
+        if (item != null) {
+            DatingProfile datingProfile = (DatingProfile) item;
+            startChatActivity(datingProfile);
+        }
+    }
+
+    public class ProfilesOnScrollListener extends RecyclerView.OnScrollListener {
+
+        @Override
+        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            /*final Picasso picasso = Picasso.get();
+
+            if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                picasso.resumeTag(context);
+            } else {
+                picasso.pauseTag(context);
+            }*/
+        }
+
+        @Override
+        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+            if (dy > 0) //check for scroll down
+            {
+                int visibleItemCount = linearLayoutManager.getChildCount();
+                int totalItemCount = linearLayoutManager.getItemCount();
+                int pastVisibleItems = linearLayoutManager.findFirstVisibleItemPosition();
+
+                if (loading) {
+                    if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                        loading = false;
+                        if (hasMoreProjects) getMatchedProfiles();
+
+                    }
+                }
+            }
         }
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case Constants.REQUEST_CHAT:
+                refreshData();
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    private void refreshData() {
+        pageNo = 1;
+        hasMoreProjects = true;
+        loading = true;
+        datingProfiles.clear();
+        getMatchedProfiles();
     }
+
+    public void changeData() {
+        adapter.notifyDataSetChanged();
+    }
+
 }

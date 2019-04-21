@@ -54,6 +54,7 @@ public class Constants {
     public static final int REQUEST_VIEW_PROFILE = 8;
     public static final int REQUEST_ADD_TRANSPORT = 9;
     public static final int REQUEST_WITHDRAW = 10;
+    public static final int REQUEST_CHAT = 11;
 
     public static final int SUCCESS_RESULT = 0;
     public static final int FAILURE_RESULT = 1;

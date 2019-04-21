@@ -46,8 +46,12 @@ public class ChatRepository implements RowIdListener {
         return chatDao.getChatById(id);
     }
 
-    public LiveData<Integer> getTotalUnreadMessagesCount() {
-        return chatDao.getTotalUnreadMessagesCount(Constants.CHAT_STATUS_SENT_BUT_NOT_DELIVERED);
+    public Chat getLatestChatMessage(String id) {
+        return chatDao.getLatestChatMessage(id);
+    }
+
+    public Integer getTotalUnreadMessagesCount(String id) {
+        return chatDao.getTotalUnreadMessagesCount(id, Constants.CHAT_STATUS_NOT_SENT, Constants.CHAT_STATUS_SENT_BUT_NOT_DELIVERED);
     }
 
     public void insert(Chat chat, boolean isOwnMessage) {

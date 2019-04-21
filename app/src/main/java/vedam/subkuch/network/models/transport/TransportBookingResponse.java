@@ -1,4 +1,4 @@
-package vedam.subkuch.network.models;
+package vedam.subkuch.network.models.transport;
 
 import java.util.ArrayList;
 

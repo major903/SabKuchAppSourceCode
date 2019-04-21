@@ -13,7 +13,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import vedam.subkuch.R;
-import vedam.subkuch.network.models.TransportBooking;
+import vedam.subkuch.network.models.transport.TransportBooking;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.UiUtil;
 

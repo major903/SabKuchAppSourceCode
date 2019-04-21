@@ -401,4 +401,6 @@
     <string name="no_share_content">No content to share</string>
     <string name="events">Events</string>
     <string name="booking_completed_successfully">Booking completed successfully</string>
+    <string name="notification_icon">Notification Icon</string>
+    <string name="max_notification_number">99+</string>
 </resources>

@@ -3,6 +3,7 @@ package vedam.subkuch.ui.profile;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import com.android.volley.Response;
 import com.google.gson.Gson;
@@ -10,6 +11,7 @@ import com.google.gson.Gson;
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseActivity;
 import vedam.subkuch.databinding.ActivityReferralBinding;
+import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.network.models.ReferralRequest;
 import vedam.subkuch.ui.home.HomeActivity;
@@ -55,8 +57,10 @@ public class ReferralActivity extends BaseActivity {
     private Response.Listener<AddResponse> onAddReferralSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (response != null) {
+        if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
             startHomeScreen();
+        } else if (response != null && !TextUtils.isEmpty(response.getReturnMessage())) {
+            UiUtil.showToast(this, response.getReturnMessage());
         } else
             UiUtil.showToast(this, getString(R.string.err_occurred));
     };

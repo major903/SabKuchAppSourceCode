@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import vedam.subkuch.R;
 import vedam.subkuch.helpers.Constants;
-import vedam.subkuch.network.models.TransportBooking;
+import vedam.subkuch.network.models.transport.TransportBooking;
 import vedam.subkuch.utils.UiUtil;
 
 public class MyBookingsAdapter extends RecyclerView.Adapter<MyBookingsAdapter.ViewHolder> {

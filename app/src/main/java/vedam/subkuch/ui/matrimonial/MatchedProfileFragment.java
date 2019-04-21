@@ -24,7 +24,6 @@ import vedam.subkuch.databinding.FragmentMatchedProfileBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.interfaces.OnListViewItemClickListener;
 import vedam.subkuch.network.DataFetcher;
-import vedam.subkuch.ui.chat.ChatActivity;
 import vedam.subkuch.ui.matrimonial.models.DatingProfile;
 import vedam.subkuch.ui.matrimonial.models.DatingProfileResponse;
 import vedam.subkuch.ui.matrimonial.viewProfile.ViewProfileActivity;
@@ -45,17 +44,16 @@ public class MatchedProfileFragment extends BaseFragment implements OnListViewIt
     private int pageNo = 1;
     private int pageSize = 20;
     private boolean hasMoreProjects = true;
-    private boolean isChats, isDating;
+    private boolean isDating;
 
     public MatchedProfileFragment() {
         // Required empty public constructor
     }
 
-    public static MatchedProfileFragment newInstance(boolean isChats, boolean isDating) {
+    public static MatchedProfileFragment newInstance(boolean isDating) {
 
         MatchedProfileFragment matchedProfileFragment = new MatchedProfileFragment();
         Bundle bundle = new Bundle();
-        bundle.putBoolean(Constants.EXTRA_IS_CHATS, isChats);
         bundle.putBoolean(Constants.EXTRA_IS_DATING, isDating);
         matchedProfileFragment.setArguments(bundle);
         return matchedProfileFragment;
@@ -64,10 +62,8 @@ public class MatchedProfileFragment extends BaseFragment implements OnListViewIt
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            isChats = getArguments().getBoolean(Constants.EXTRA_IS_CHATS);
+        if (getArguments() != null)
             isDating = getArguments().getBoolean(Constants.EXTRA_IS_DATING);
-        }
     }
 
     @Override
@@ -135,10 +131,7 @@ public class MatchedProfileFragment extends BaseFragment implements OnListViewIt
     public <E> void onItemClick(E item, int position, View view, ListItemClickAction action) {
         if (item != null) {
             DatingProfile datingProfile = (DatingProfile) item;
-            if (isChats)
-                startChatActivity(datingProfile);
-            else
-                startViewProfileActivity(datingProfile);
+            startViewProfileActivity(datingProfile);
         }
     }
 
@@ -151,13 +144,6 @@ public class MatchedProfileFragment extends BaseFragment implements OnListViewIt
         startActivityForResult(intent, Constants.REQUEST_VIEW_PROFILE);
     }
 
-    private void startChatActivity(DatingProfile datingProfile) {
-
-        Intent intent = new Intent(context, ChatActivity.class);
-        intent.putExtra(Constants.EXTRA_NAME, AppUtil.deNull(datingProfile.getFirstName()));
-        intent.putExtra(Constants.EXTRA_CHAT_TO_ID, datingProfile.getProfileId());
-        startActivity(intent);
-    }
 
     public class ProfilesOnScrollListener extends RecyclerView.OnScrollListener {
 

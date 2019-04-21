@@ -27,7 +27,7 @@ import vedam.subkuch.base.BaseActivity;
 import vedam.subkuch.databinding.ActivityAddTransportBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
-import vedam.subkuch.network.models.AddTransportRequest;
+import vedam.subkuch.network.models.transport.AddTransportRequest;
 import vedam.subkuch.network.models.BaseGetMasterModel;
 import vedam.subkuch.network.models.LabourRequirement;
 import vedam.subkuch.network.models.VehicleType;

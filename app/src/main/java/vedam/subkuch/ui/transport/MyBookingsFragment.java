@@ -23,8 +23,8 @@ import vedam.subkuch.base.BaseFragment;
 import vedam.subkuch.databinding.FragmentMyBookingsBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
-import vedam.subkuch.network.models.TransportBooking;
-import vedam.subkuch.network.models.TransportBookingResponse;
+import vedam.subkuch.network.models.transport.TransportBooking;
+import vedam.subkuch.network.models.transport.TransportBookingResponse;
 import vedam.subkuch.ui.jobs.models.AddResponse;
 import vedam.subkuch.utils.UiUtil;
 

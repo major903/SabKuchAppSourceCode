@@ -1,4 +1,4 @@
-package vedam.subkuch.network.models;
+package vedam.subkuch.network.models.transport;
 
 public class AddTransportRequest {
     private String PickupLocation;
