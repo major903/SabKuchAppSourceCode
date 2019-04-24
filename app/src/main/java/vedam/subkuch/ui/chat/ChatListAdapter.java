@@ -2,6 +2,7 @@ package vedam.subkuch.ui.chat;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,9 +13,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import vedam.subkuch.R;
 import vedam.subkuch.db.chat.Chat;
 import vedam.subkuch.db.chat.ChatRepository;
@@ -31,7 +29,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
     private Context context;
     private ArrayList<DatingProfile> datingProfiles;
     private OnListViewItemClickListener listViewItemClickListener;
-    private ChatRepository chatRepository;
+    private static ChatRepository chatRepository;
 
     ChatListAdapter(Context context, ArrayList<DatingProfile> datingProfiles, OnListViewItemClickListener listViewItemClickListener) {
 
@@ -56,10 +54,11 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
         /*chatRepository.getLatestChatMessage(datingProfile.getProfileId()).observe(lifecycleOwner,
                 latestChatMessage -> bindValues(latestChatMessage, holder, datingProfile));*/
 
-        Observable.fromCallable(() -> chatRepository.getLatestChatMessage(datingProfile.getProfileId()))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(latestChatMessage -> bindValues(latestChatMessage, holder, datingProfile));
+        new ChatAsyncTask(holder, datingProfile).execute();
+//        Observable.fromCallable(() -> chatRepository.getLatestChatMessage(datingProfile.getProfileId()))
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(latestChatMessage -> bindValues(latestChatMessage, holder, datingProfile), Crashlytics::logException);
 
         if (datingProfile.getImagesList() != null && datingProfile.getImagesList().length > 0)
             UiUtil.setImageView(new ImageSetter.ImageBuilder(context)
@@ -73,7 +72,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
         holder.bind(datingProfile, position, listViewItemClickListener);
     }
 
-    private void bindValues(Chat latestChatMessage, ViewHolder holder, DatingProfile datingProfile) {
+    private static void bindValues(Chat latestChatMessage, ViewHolder holder, DatingProfile datingProfile) {
 
         UiUtil.setTextView(holder.tvName, deNull(datingProfile.getFirstName()));
         if (latestChatMessage != null) {
@@ -119,6 +118,28 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
                 if (listener != null)
                     listener.onItemClick(item, position, itemView, null);
             });
+        }
+    }
+
+    private static class ChatAsyncTask extends AsyncTask<Void, Void, Chat> {
+
+        private ViewHolder viewHolder;
+        private DatingProfile datingProfile;
+
+        ChatAsyncTask(ViewHolder viewHolder, DatingProfile datingProfile) {
+            this.viewHolder = viewHolder;
+            this.datingProfile = datingProfile;
+        }
+
+        @Override
+        protected Chat doInBackground(final Void... params) {
+            return chatRepository.getLatestChatMessage(datingProfile.getProfileId());
+        }
+
+        @Override
+        protected void onPostExecute(Chat latestChatMessage) {
+            super.onPostExecute(latestChatMessage);
+            bindValues(latestChatMessage, viewHolder, datingProfile);
         }
     }
 }

@@ -3,6 +3,7 @@ package vedam.subkuch.ui.chat;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.crashlytics.android.Crashlytics;
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -31,7 +32,7 @@ public class ChatActivity extends BaseActivity {
         internetDisposable = ReactiveNetwork.observeInternetConnectivity()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::setConnection);
+                .subscribe(this::setConnection, Crashlytics::logException);
     }
 
     private void setConnection(Boolean isConnected) {

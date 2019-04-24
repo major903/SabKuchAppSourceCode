@@ -33,8 +33,8 @@ public interface ChatDao {
     @Query("SELECT * FROM Chat where Status = :notSentStatus")
     List<Chat> getPendingChat(int notSentStatus);
 
-    @Query("SELECT COUNT(*) FROM Chat where (ToProfileId = :toId AND Status = :notSentStatus) OR (ToProfileId = :toId AND Status = :SentButNotDeliveredStatus)")
-    Integer getTotalUnreadMessagesCount(String toId, int notSentStatus, int SentButNotDeliveredStatus);
+    @Query("SELECT COUNT(*) FROM Chat where (ToProfileId = :toId AND Status = :notSentStatus) AND (ToProfileId = :toId OR Status = :SentButNotDeliveredStatus) AND ChatType = :chatType")
+    Integer getTotalUnreadMessagesCount(String toId, int notSentStatus, int SentButNotDeliveredStatus, String chatType);
 
     @Query("SELECT * FROM Chat where (FromProfileId = :id) OR (ToProfileId = :id) ORDER BY Timestamp DESC LIMIT 1")
     Chat getLatestChatMessage(String id);

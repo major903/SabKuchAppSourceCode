@@ -310,6 +310,18 @@ public class DataFetcher {
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
+    public static <T> void getMatrimonialMatchedChatProfiles(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener, int pageIndex, int pageSize) {
+        String userId = AppPrefs.getPrefsUserId(context);
+        String url = String.format(Locale.US, "%s/api/Matrimony/GetMatchedChatProfiles?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT3, userId, pageIndex, pageSize);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
+    public static <T> void getDatingMatchedChatProfiles(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener, int pageIndex, int pageSize) {
+        String userId = AppPrefs.getPrefsUserId(context);
+        String url = String.format(Locale.US, "%s/api/Dating/GetMatchedChatProfiles?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT3, userId, pageIndex, pageSize);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
     public static <T> void getAllTransportBookings(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener, int pageIndex, int pageSize) {
         String userId = AppPrefs.getPrefsUserId(context);
         String url = String.format(Locale.US, "%s/api/Transport/GetBooking?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT3, userId, pageIndex, pageSize);
@@ -364,6 +376,12 @@ public class DataFetcher {
     public static <T> void withdraw(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
 
         String url = String.format("%s/api/Referral/Withdrawal", NetworkConstants.END_POINT2);
+        HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
+    }
+
+    public static <T> void addStaffTrackLocation(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
+
+        String url = String.format("%s/api/BusinessLocation/InsertLocation", NetworkConstants.END_POINT2);
         HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
     }
 }

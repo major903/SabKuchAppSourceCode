@@ -5,7 +5,7 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-@Database(entities = {Chat.class}, version = 1)
+@Database(entities = {Chat.class}, version = 2)
 public abstract class ChatRoomDatabase extends RoomDatabase {
 
     public abstract ChatDao chatDao();
@@ -18,6 +18,7 @@ public abstract class ChatRoomDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             ChatRoomDatabase.class, "chat_database")
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }

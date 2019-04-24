@@ -28,6 +28,7 @@ import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.interfaces.OnInsertUpdateDoneListener;
 import vedam.subkuch.network.NetworkConstants;
 import vedam.subkuch.utils.AppPrefs;
+import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.LogUtils;
 
 
@@ -47,7 +48,7 @@ public class ChatFragment extends BaseFragment implements OnInsertUpdateDoneList
     private String senderName, chatToId;
     private WebSocket webSocket;
     private ChatRepository chatRepository;
-    private boolean isConnected;
+    private boolean isConnected, isDating;
 
     public ChatFragment() {
         // Required empty public constructor
@@ -66,6 +67,7 @@ public class ChatFragment extends BaseFragment implements OnInsertUpdateDoneList
         if (getArguments() != null) {
             chatToId = getArguments().getString(Constants.EXTRA_CHAT_TO_ID);
             senderName = getArguments().getString(Constants.EXTRA_NAME);
+            isDating = getArguments().getBoolean(Constants.EXTRA_IS_DATING);
             setTitle(senderName);
         }
     }
@@ -114,7 +116,6 @@ public class ChatFragment extends BaseFragment implements OnInsertUpdateDoneList
                     fragmentChatBinding.etMessage.setText("");
                 }
             }
-
         });
     }
 
@@ -145,6 +146,7 @@ public class ChatFragment extends BaseFragment implements OnInsertUpdateDoneList
         String time = String.valueOf(System.currentTimeMillis());
         chat.setTimeStamp(time);
         chat.setStatus(Constants.CHAT_STATUS_NOT_SENT);
+        chat.setChatType(AppUtil.getChatType(isDating));
         chat.setSenderName(senderName);
 //        this.chat = chat;
         chatRepository.insert(chat, true);

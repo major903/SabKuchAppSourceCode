@@ -403,4 +403,17 @@
     <string name="booking_completed_successfully">Booking completed successfully</string>
     <string name="notification_icon">Notification Icon</string>
     <string name="max_notification_number">99+</string>
+    <string name="staff_track">Staff track</string>
+    <string name="note_staff_track">Please Note :\n\nWe have captured your current location. We need following details. Provide whatever information you have.
+\n* Name of the Business
+\n* Products or Services they are dealing in
+\n* Address with Pin Code
+\n* Phone Numbers
+\n* Email id
+\n* Website URL
+\n* Name of the Contact person
+\n* Any other info if you have</string>
+    <string name="message_posted">Message posted successfully</string>
+    <string name="enter_message">Enter message</string>
+    <string name="location">Location</string>
 </resources>

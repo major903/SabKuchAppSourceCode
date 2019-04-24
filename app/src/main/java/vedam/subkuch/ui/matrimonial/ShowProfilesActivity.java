@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 import com.google.gson.Gson;
 
@@ -43,6 +44,7 @@ import vedam.subkuch.ui.home.HomeActivity;
 import vedam.subkuch.ui.matrimonial.editProfile.EditProfileFragment;
 import vedam.subkuch.ui.matrimonial.preference.PreferenceFragment;
 import vedam.subkuch.utils.AppPrefs;
+import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.LogUtils;
 
 import static vedam.subkuch.helpers.Constants.TAG_CHATS_FRAGMENT;
@@ -58,11 +60,10 @@ public class ShowProfilesActivity extends BaseActivity
     private HashMap<String, Integer> hmNavigationIds;
     private boolean isDating;
     private Menu menu;
-    private Disposable internetDisposable;
+    private Disposable internetDisposable, unreadMessagesDisposable;
     private WebSocket webSocket;
     private ChatRepository chatRepository;
     private TextView tvNotificationCount;
-    private View vNotificationCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,7 +149,6 @@ public class ShowProfilesActivity extends BaseActivity
         }
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
@@ -228,10 +228,11 @@ public class ShowProfilesActivity extends BaseActivity
     }
 
     private void setNotificationViews() {
-        vNotificationCount = menu.findItem(R.id.action_chats).getActionView();
+        View vNotificationCount = menu.findItem(R.id.action_chats).getActionView();
         tvNotificationCount = vNotificationCount.findViewById(R.id.tv_notification_count);
 
         vNotificationCount.setOnClickListener(v -> changeFragment(ChatListFragment.newInstance(isDating), TAG_CHATS_FRAGMENT));
+        tvNotificationCount.setOnClickListener(v -> changeFragment(ChatListFragment.newInstance(isDating), TAG_CHATS_FRAGMENT));
 
     }
 
@@ -239,15 +240,18 @@ public class ShowProfilesActivity extends BaseActivity
     protected void onDestroy() {
         super.onDestroy();
         getSupportFragmentManager().removeOnBackStackChangedListener(this);
+        if (internetDisposable != null && !internetDisposable.isDisposed())
+            internetDisposable.dispose();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
         internetDisposable = ReactiveNetwork.observeInternetConnectivity()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::setConnection);
+                .subscribe(this::setConnection, Crashlytics::logException);
         if (menu != null)
             getUnreadMessages();
     }
@@ -296,12 +300,11 @@ public class ShowProfilesActivity extends BaseActivity
 
     private void getUnreadMessages() {
 
-        Observable.fromCallable(() -> chatRepository.getTotalUnreadMessagesCount(AppPrefs.getPrefsUserId(this)))
+        unreadMessagesDisposable = Observable.fromCallable(() -> chatRepository.getTotalUnreadMessagesCount(AppPrefs.getPrefsUserId(this), AppUtil.getChatType(isDating)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::setCount);
+                .subscribe(this::setCount, Crashlytics::logException);
     }
-
 
     // WebSocket
     private final class ChatWebSocketListener extends WebSocketListener {

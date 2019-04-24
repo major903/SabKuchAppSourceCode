@@ -87,10 +87,9 @@ public class ChatListFragment extends BaseFragment implements OnListViewItemClic
     public void getMatchedProfiles() {
         UiUtil.showProgressDialog(context, getString(R.string.please_wait));
         if (isDating)
-            DataFetcher.getDatingMatchedProfiles(context, onMatchedProfilesSuccessListener, DatingProfileResponse.class, onErrorListener, pageNo, pageSize);
+            DataFetcher.getDatingMatchedChatProfiles(context, onMatchedProfilesSuccessListener, DatingProfileResponse.class, onErrorListener, pageNo, pageSize);
         else
-            DataFetcher.getMatrimonialMatchedProfiles(context, onMatchedProfilesSuccessListener, DatingProfileResponse.class, onErrorListener, pageNo, pageSize);
-
+            DataFetcher.getMatrimonialMatchedChatProfiles(context, onMatchedProfilesSuccessListener, DatingProfileResponse.class, onErrorListener, pageNo, pageSize);
 
     }
 
@@ -99,6 +98,7 @@ public class ChatListFragment extends BaseFragment implements OnListViewItemClic
         Intent intent = new Intent(context, ChatActivity.class);
         intent.putExtra(Constants.EXTRA_NAME, AppUtil.deNull(datingProfile.getFirstName()));
         intent.putExtra(Constants.EXTRA_CHAT_TO_ID, datingProfile.getProfileId());
+        intent.putExtra(Constants.EXTRA_IS_DATING, isDating);
         startActivityForResult(intent, Constants.REQUEST_CHAT);
     }
 
@@ -170,12 +170,10 @@ public class ChatListFragment extends BaseFragment implements OnListViewItemClic
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case Constants.REQUEST_CHAT:
-                refreshData();
-                break;
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.REQUEST_CHAT) {
+            refreshData();
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 

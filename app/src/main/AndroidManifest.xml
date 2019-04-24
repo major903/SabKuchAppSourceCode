@@ -26,6 +26,9 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
         <activity
+            android:name=".ui.stafftrack.StaffTrackActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.wallet.WalletActivity"
             android:screenOrientation="portrait" />
         <activity

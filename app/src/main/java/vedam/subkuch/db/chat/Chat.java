@@ -15,6 +15,7 @@ public class Chat {
     private String Uuid;
     private String TimeStamp;
     private String senderName;
+    private String ChatType;
     private int Status;
 
     public Chat(Chat chat) {
@@ -26,11 +27,20 @@ public class Chat {
         this.Uuid = chat.Uuid;
         this.TimeStamp = chat.TimeStamp;
         this.senderName = chat.senderName;
+        this.ChatType = chat.ChatType;
         this.Status = chat.Status;
 
     }
 
     public Chat() {
+    }
+
+    public void setChatType(String ChatType) {
+        this.ChatType = ChatType;
+    }
+
+    public String getChatType() {
+        return ChatType;
     }
 
     public String getFromProfileId() {

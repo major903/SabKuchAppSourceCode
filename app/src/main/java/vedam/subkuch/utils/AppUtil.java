@@ -39,6 +39,7 @@ import java.util.TimeZone;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import vedam.subkuch.R;
+import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.ui.directory.models.BusinessAddress;
 
 public class AppUtil {
@@ -474,5 +475,13 @@ public class AppUtil {
             return fullName + ", " + age;
         else
             return fullName;
+    }
+
+    public static String getChatType(boolean isDating) {
+
+        if (isDating)
+            return Constants.Dating;
+        else
+            return Constants.Matrimonial;
     }
 }

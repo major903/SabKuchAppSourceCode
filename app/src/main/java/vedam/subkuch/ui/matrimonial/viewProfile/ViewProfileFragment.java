@@ -189,6 +189,7 @@ public class ViewProfileFragment extends BaseFragment {
                 Intent intent = new Intent(context, ChatActivity.class);
                 intent.putExtra(Constants.EXTRA_NAME, AppUtil.deNull(datingProfile.getFirstName()));
                 intent.putExtra(Constants.EXTRA_CHAT_TO_ID, datingProfile.getProfileId());
+                intent.putExtra(Constants.EXTRA_IS_DATING, isDating);
                 startActivity(intent);
                 return true;
             default:

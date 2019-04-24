@@ -22,6 +22,7 @@ import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.ui.directory.models.Category;
 import vedam.subkuch.ui.directory.models.CategoryResponse;
+import vedam.subkuch.ui.stafftrack.StaffTrackActivity;
 import vedam.subkuch.utils.UiUtil;
 
 public class DirectoryFragment extends BaseListFragment {
@@ -89,7 +90,7 @@ public class DirectoryFragment extends BaseListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-        inflater.inflate(R.menu.add, menu);
+        inflater.inflate(R.menu.directory, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -99,6 +100,9 @@ public class DirectoryFragment extends BaseListFragment {
         switch (item.getItemId()) {
             case R.id.action_add:
                 startActivity(new Intent(getActivity(), AddDirectoryActivity.class));
+                return true;
+            case R.id.action_staff:
+                startActivity(new Intent(getActivity(), StaffTrackActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

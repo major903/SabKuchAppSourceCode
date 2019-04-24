@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@android:style/Widget.ActionButton"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
@@ -25,7 +26,7 @@
         android:background="@drawable/circular_fill_red"
         android:gravity="center"
         android:minWidth="17sp"
-        android:text="99"
+        tools:text="99"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_12" />
 </RelativeLayout>
