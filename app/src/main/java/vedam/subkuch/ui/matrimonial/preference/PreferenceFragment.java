@@ -178,6 +178,16 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     RelativeLayout relativeOwnHouse;
     @BindView(R.id.rl_income)
     RelativeLayout rlIncome;
+    @BindView(R.id.tv_occupation_heading)
+    TextView tvOccupationHeading;
+    @BindView(R.id.relativeLayoutOccupation)
+    RelativeLayout relativeLayoutOccupation;
+    @BindView(R.id.tv_food_habit_heading)
+    TextView tvFoodHabitHeading;
+    @BindView(R.id.relativeLayoutFoodhabits)
+    RelativeLayout relativeLayoutFoodhabits;
+    @BindView(R.id.rl_weight)
+    RelativeLayout rlWeight;
 
     private String minAge;
     private String maxAge;
@@ -296,6 +306,11 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         relativeLayoutLiving.setVisibility(View.GONE);
         tvMaritalStatusHeading.setVisibility(View.GONE);
         relativeLayoutMatrialstatus.setVisibility(View.GONE);
+        tvOccupationHeading.setVisibility(View.GONE);
+        relativeLayoutOccupation.setVisibility(View.GONE);
+        tvFoodHabitHeading.setVisibility(View.GONE);
+        relativeLayoutFoodhabits.setVisibility(View.GONE);
+        rlWeight.setVisibility(View.GONE);
         rlIncome.setVisibility(View.GONE);
         tvCarHeading.setVisibility(View.GONE);
         relativeOwnCar.setVisibility(View.GONE);

@@ -13,7 +13,7 @@
         <LinearLayout
             android:id="@+id/activity_add_member"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             tools:context="naddy.simplewebview.ui.modifyMember.EditMemberActivity">
 
@@ -21,6 +21,23 @@
                 style="@style/TextViewBlackHeading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/title"
+                android:text="@string/title" />
+
+            <EditText
+                android:id="@+id/et_title"
+                style="@style/EditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_4dp"
+                android:imeOptions="actionNext"
+                android:inputType="date" />
+
+            <TextView
+                style="@style/TextViewBlackHeading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16dp"
                 android:text="@string/date" />
 
             <EditText
@@ -31,7 +48,9 @@
                 android:layout_marginTop="@dimen/margin_4dp"
                 android:hint="@string/hint_date"
                 android:imeOptions="actionNext"
-                android:inputType="date" />
+                android:clickable="true"
+                android:focusable="false"
+                android:maxLines="1" />
 
             <TextView
                 style="@style/TextViewBlackHeading"
@@ -48,9 +67,9 @@
                 android:layout_marginTop="@dimen/margin_4dp"
                 android:hint="@string/hint_time"
                 android:imeOptions="actionNext"
-                android:inputType="time" />
+                android:inputType="text" />
 
-            <TextView
+            <!--<TextView
                 style="@style/TextViewBlackHeading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -65,7 +84,7 @@
                 android:layout_marginTop="@dimen/margin_4dp"
                 android:hint="@string/hint_details"
                 android:imeOptions="actionNext"
-                android:inputType="text" />
+                android:inputType="text" />-->
 
             <TextView
                 style="@style/TextViewBlackHeading"

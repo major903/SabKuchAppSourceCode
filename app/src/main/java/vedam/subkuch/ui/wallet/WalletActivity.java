@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -74,8 +76,17 @@ public class WalletActivity extends BaseActivity {
         UiUtil.setTextViewWithBoldPrefix(this, "Withdrawal : ", walletDetails.getTotalWithdrawal(), activityWalletBinding.tvWithdrawal);
         UiUtil.setTextViewWithBoldPrefix(this, "Available Amount : ", walletDetails.getAvailableBalance(), activityWalletBinding.tvAvailableAmount);
         UiUtil.setTextView(activityWalletBinding.tvTncTitle, termsCondition.getTitle());
-        UiUtil.setTextView(activityWalletBinding.tvTnc, termsCondition.getDescription());
+        setTnc(termsCondition.getDescription());
 
+    }
+
+    private void setTnc(String description) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N)
+            activityWalletBinding.tvTnc.setText(Html.fromHtml(AppUtil.deNull(description), Html.FROM_HTML_MODE_LEGACY));
+        else
+            activityWalletBinding.tvTnc.setText(Html.fromHtml(AppUtil.deNull(description)));
+
+        activityWalletBinding.tvTnc.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     private void hideViews(Wallet data) {

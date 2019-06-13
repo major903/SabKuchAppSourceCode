@@ -6,7 +6,7 @@ public class AddEventResponse {
 
     private String ReturnMessage;
 
-    private String ReturnData;
+    private Event ReturnData;
 
     public String getReturnCode() {
         return ReturnCode;
@@ -24,11 +24,11 @@ public class AddEventResponse {
         this.ReturnMessage = ReturnMessage;
     }
 
-    public String getReturnData() {
+    public Event getReturnData() {
         return ReturnData;
     }
 
-    public void setReturnData(String ReturnData) {
+    public void setReturnData(Event ReturnData) {
         this.ReturnData = ReturnData;
     }
 }

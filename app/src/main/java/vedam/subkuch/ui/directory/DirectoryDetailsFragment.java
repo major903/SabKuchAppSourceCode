@@ -81,7 +81,7 @@ public class DirectoryDetailsFragment extends BaseFragment implements OnListView
     private Response.Listener<DirectoryDetailResponse> onDirectoryDetailSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (response != null && response.getStatus().equals(Constants.TRUE)) {
+        if (getActivity() != null && response != null && response.getStatus().equals(Constants.TRUE)) {
             loadValues(response.getBusinessesResult().getBusinesses());
         } else
             UiUtil.showToast(context, getString(R.string.no_data));

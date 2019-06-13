@@ -200,7 +200,7 @@ public class AddDirectoryFragment extends BaseAddImagesFragment implements Adapt
     private Response.Listener<CountriesResponse> onCountriesSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
+        if (getActivity() != null && response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
             setCountries(response.getCountries());
         } else {
             UiUtil.showToast(context, getString(R.string.err_occurred));
@@ -236,13 +236,12 @@ public class AddDirectoryFragment extends BaseAddImagesFragment implements Adapt
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_done:
-                int errorMessage = validateErrorMessage();
-                if (errorMessage == 0) {
-                    submit();
-                } else
-                    UiUtil.showDialog(context, getString(errorMessage), true);
+        if (item.getItemId() == R.id.action_done) {
+            int errorMessage = validateErrorMessage();
+            if (errorMessage == 0) {
+                submit();
+            } else
+                UiUtil.showDialog(context, getString(errorMessage), true);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -253,7 +252,7 @@ public class AddDirectoryFragment extends BaseAddImagesFragment implements Adapt
             if (alBranches.size() != 20) {
                 addBranch();
             } else
-                UiUtil.showToast(context, getString(R.string.no_more_jobs));
+                UiUtil.showToast(context, getString(R.string.no_more_branches));
         });
 
     }
@@ -322,11 +321,11 @@ public class AddDirectoryFragment extends BaseAddImagesFragment implements Adapt
 
 //            businessAddress.setAddress1(etAddressLine1.getText().toString());
 //            businessAddress.setAddress2(AppUtil.deNull(etAddressLine2.getText().toString()));
-            businessAddress.setDealingIn(etDealingIn.getText().toString());
+            businessAddress.setDealingIn(AppUtil.deNull(etDealingIn.getText().toString()));
             businessAddress.setAddress(etAddress.getText().toString());
             businessAddress.setZipcode(etZipCode.getText().toString());
-            businessAddress.setPhoneNo(etPhone.getText().toString());
-            businessAddress.setMobile1(etCellPhone1.getText().toString());
+            businessAddress.setPhoneNo(AppUtil.deNull(etPhone.getText().toString()));
+            businessAddress.setMobile1(AppUtil.deNull(etCellPhone1.getText().toString()));
             businessAddress.setMobile2(AppUtil.deNull(etCellPhone2.getText().toString()));
             businessAddress.setEmail(etEmail.getText().toString());
             businessAddress.setContactPerson(etContactPerson.getText().toString());
@@ -381,14 +380,12 @@ public class AddDirectoryFragment extends BaseAddImagesFragment implements Adapt
                 EditText etEmail = v.findViewById(R.id.et_email);
                 EditText etZipCode = v.findViewById(R.id.et_zip_code);
 
-                if (TextUtils.isEmpty(etDealingIn.getText()))
-                    errorMessage = R.string.enter_dealing_in;
-                else if (TextUtils.isEmpty(etAddress.getText()))
+                if (TextUtils.isEmpty(etAddress.getText()))
                     errorMessage = R.string.enter_address;
                 else if (TextUtils.isEmpty(etZipCode.getText()))
                     errorMessage = R.string.enter_zip_code;
-                else if (TextUtils.isEmpty(etPhone.getText()) && TextUtils.isEmpty(etCellPhone1.getText()))
-                    errorMessage = R.string.enter_phone_or_cellphone;
+//                else if (TextUtils.isEmpty(etPhone.getText()) && TextUtils.isEmpty(etCellPhone1.getText()))
+//                    errorMessage = R.string.enter_phone_or_cellphone;
                 else if (!TextUtils.isEmpty(etEmail.getText()) && !AppUtil.validateEmail(etEmail.getText().toString()))
                     errorMessage = R.string.enter_valid_email;
                 else if (v.getTag() == null)

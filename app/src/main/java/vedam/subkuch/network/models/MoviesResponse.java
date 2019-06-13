@@ -5,34 +5,34 @@ import java.util.ArrayList;
 
 public class MoviesResponse {
 
-    private String returnCode;
+    private String ReturnCode;
 
-    private String returnMessage;
+    private String ReturnMessage;
 
-    private ArrayList<Movie> returnData;
+    private ArrayList<Movie> ReturnData;
 
     public String getReturnCode() {
-        return returnCode;
+        return ReturnCode;
     }
 
     public void setReturnCode(String ReturnCode) {
-        this.returnCode = ReturnCode;
+        this.ReturnCode = ReturnCode;
     }
 
     public String getReturnMessage() {
-        return returnMessage;
+        return ReturnMessage;
     }
 
     public void setReturnMessage(String ReturnMessage) {
-        this.returnMessage = ReturnMessage;
+        this.ReturnMessage = ReturnMessage;
     }
 
     public ArrayList<Movie> getReturnData() {
-        return returnData;
+        return ReturnData;
     }
 
     public void setReturnData(ArrayList<Movie> ReturnData) {
-        this.returnData = ReturnData;
+        this.ReturnData = ReturnData;
     }
 
 }

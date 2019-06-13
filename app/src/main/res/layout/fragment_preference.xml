@@ -106,6 +106,7 @@
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/tv_occupation_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -481,6 +482,7 @@
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/tv_food_habit_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -811,6 +813,7 @@
 
 
         <RelativeLayout
+            android:id="@+id/rl_weight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp">

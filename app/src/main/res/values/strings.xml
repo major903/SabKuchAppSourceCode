@@ -66,7 +66,7 @@
     <string name="movies">Movies</string>
     <string name="add_event">Add Event</string>
     <string name="date">Date</string>
-    <string name="hint_time">Accepted format - HH:MM</string>
+    <string name="hint_time">Example 6.30 PM</string>
     <string name="hint_date">Accepted format - dd/MM/yyyy</string>
     <string name="time">Time</string>
     <string name="details">Details</string>
@@ -132,7 +132,7 @@
     <string name="add_a_location">Add a location</string>
     <string name="city">City</string>
     <string name="no_more_jobs">You cannot add more than 10 jobs at once</string>
-    <string name="no_more_branches">You cannot add more than 10 branches at once</string>
+    <string name="no_more_branches">You cannot add more than 20 branches at once</string>
     <string name="select_a_city">Select a city</string>
     <string name="branches">Branches</string>
     <string name="add_business">Add Business</string>

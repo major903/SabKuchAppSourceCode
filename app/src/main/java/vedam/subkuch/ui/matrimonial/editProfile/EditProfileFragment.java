@@ -62,6 +62,7 @@ import vedam.subkuch.network.models.updateMatrimonial.UpdateMatrimonialResponse;
 import vedam.subkuch.ui.matrimonial.editProfile.presenter.EditProfileFragmentPresenter;
 import vedam.subkuch.ui.matrimonial.editProfile.view.EditProfileFragmentView;
 import vedam.subkuch.ui.matrimonial.preference.ItemAdapter;
+import vedam.subkuch.uicomponent.RequiredTextView;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.FrequentFunctions;
@@ -237,6 +238,18 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
     TextView tvHouseHeading;
     @BindView(R.id.relativeOwnHouse)
     RelativeLayout relativeOwnHouse;
+    @BindView(R.id.tv_occupation_heading)
+    RequiredTextView tvOccupationHeading;
+    @BindView(R.id.relativeLayoutOccupation)
+    RelativeLayout relativeLayoutOccupation;
+    @BindView(R.id.tv_food_habit_heading)
+    RequiredTextView tvFoodHabitHeading;
+    @BindView(R.id.relativeLayoutFoodhabits)
+    RelativeLayout relativeLayoutFoodhabits;
+    @BindView(R.id.tv_weight_heading)
+    RequiredTextView tvWeightHeading;
+    @BindView(R.id.relativeWeight)
+    RelativeLayout relativeWeight;
 
 
     private Unbinder unbinder;
@@ -335,6 +348,12 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
         relativeMatrialStatus.setVisibility(View.GONE);
         tvAnnualIncomeHeading.setVisibility(View.GONE);
         relativeAnnualIncome.setVisibility(View.GONE);
+        tvOccupationHeading.setVisibility(View.GONE);
+        relativeLayoutOccupation.setVisibility(View.GONE);
+        tvFoodHabitHeading.setVisibility(View.GONE);
+        relativeLayoutFoodhabits.setVisibility(View.GONE);
+        tvWeightHeading.setVisibility(View.GONE);
+        relativeWeight.setVisibility(View.GONE);
         tvCarHeading.setVisibility(View.GONE);
         relativeOwnCar.setVisibility(View.GONE);
         tvHouseHeading.setVisibility(View.GONE);
@@ -355,21 +374,21 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
             baseshowFeedbackMessage(rootLayout, getString(R.string.add_profile_pricture));
         } else if (selectedBodytypeId == 0) {
             baseshowFeedbackMessage(rootLayout, getString(R.string.empty_body_type));
-        } else if (selectedOccupationId == 0) {
-            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_occupation));
-        } else if (selectedFoodhabitsId == 0) {
-            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_food_habits));
         } else if (selectedDrinkingStatusId == 0) {
             baseshowFeedbackMessage(rootLayout, getString(R.string.empty_drinking_habits));
         } else if (selectedSmokingStatusId == 0) {
             baseshowFeedbackMessage(rootLayout, getString(R.string.empty_smoking_status));
         } else if (selectedHeightId == 0) {
             baseshowFeedbackMessage(rootLayout, getString(R.string.empty_height));
-        } else if (selectedWeightId == 0) {
-            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_weight));
         } else if (!isDating) {
             if (selectedReligionId == 0) {
                 baseshowFeedbackMessage(rootLayout, getString(R.string.empty_religion));
+            } else if (selectedOccupationId == 0) {
+                baseshowFeedbackMessage(rootLayout, getString(R.string.empty_occupation));
+            } else if (selectedFoodhabitsId == 0) {
+                baseshowFeedbackMessage(rootLayout, getString(R.string.empty_food_habits));
+            } else if (selectedWeightId == 0) {
+                baseshowFeedbackMessage(rootLayout, getString(R.string.empty_weight));
             } else if (selectedComplexionId == 0) {
                 baseshowFeedbackMessage(rootLayout, getString(R.string.empty_complexion));
             } else if (selectedQualificationId == 0) {

@@ -20,7 +20,11 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
+import com.tsongkha.spinnerdatepicker.DatePicker;
+import com.tsongkha.spinnerdatepicker.DatePickerDialog;
+import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +33,10 @@ import vedam.subkuch.base.BaseAddImagesFragment;
 import vedam.subkuch.databinding.FragmentAddEventBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
+import vedam.subkuch.network.NetworkConstants;
 import vedam.subkuch.network.models.AddEventResponse;
+import vedam.subkuch.network.models.DataPart;
+import vedam.subkuch.network.models.GeneralResponse;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.UiUtil;
@@ -37,7 +44,7 @@ import vedam.subkuch.utils.UiUtil;
 import static android.app.Activity.RESULT_OK;
 
 
-public class AddEventFragment extends BaseAddImagesFragment {
+public class AddEventFragment extends BaseAddImagesFragment implements DatePickerDialog.OnDateSetListener {
 
     private FragmentAddEventBinding fragmentAddEventBinding;
     private LatLng latLng;
@@ -82,13 +89,35 @@ public class AddEventFragment extends BaseAddImagesFragment {
             PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
             try {
-                startActivityForResult(builder.build(getActivity()), Constants.REQUEST_PLACE_PICKER);
+                if (getActivity() != null)
+                    startActivityForResult(builder.build(getActivity()), Constants.REQUEST_PLACE_PICKER);
             } catch (GooglePlayServicesRepairableException e) {
                 e.printStackTrace();
             } catch (GooglePlayServicesNotAvailableException e) {
                 e.printStackTrace();
             }
         });
+
+        fragmentAddEventBinding.etDate.setOnClickListener(v -> showDatePickerDialog());
+    }
+
+    public void showDatePickerDialog() {
+
+        long millis = System.currentTimeMillis();
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(millis);
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        new SpinnerDatePickerDialogBuilder()
+                .context(context)
+                .callback(this)
+                .spinnerTheme(R.style.DatePickerTheme)
+                .minDate(mYear, mMonth, mDay)
+                .defaultDate(mYear, mMonth, mDay)
+                .build()
+                .show();
     }
 
     @Override
@@ -100,13 +129,12 @@ public class AddEventFragment extends BaseAddImagesFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_done:
-                int errorMessage = validateErrorMessage();
-                if (errorMessage == 0) {
-                    createEvent();
-                } else
-                    UiUtil.showDialog(context, getString(errorMessage), true);
+        if (item.getItemId() == R.id.action_done) {
+            int errorMessage = validateErrorMessage();
+            if (errorMessage == 0) {
+                createEvent();
+            } else
+                UiUtil.showDialog(context, getString(errorMessage), true);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -120,12 +148,12 @@ public class AddEventFragment extends BaseAddImagesFragment {
         request.put(Constants.Date, fragmentAddEventBinding.etDate.getText().toString());
         request.put(Constants.Time, fragmentAddEventBinding.etTime.getText().toString());
         request.put(Constants.Venue, fragmentAddEventBinding.etVenue.getText().toString());
-        request.put(Constants.About, fragmentAddEventBinding.etDetails.getText().toString());
+        request.put(Constants.Title, fragmentAddEventBinding.etTitle.getText().toString());
         request.put(Constants.EntryFee, fragmentAddEventBinding.etEntryFee.getText().toString());
-        request.put("Lat", String.valueOf(latLng.latitude));
-        request.put("Long", String.valueOf(latLng.longitude));
-        if (!getImageItemMap().isEmpty())
-            request.put(Constants.image, AppUtil.getBase64FromBitmap(AppUtil.getSingleBitmap(context, getImageItemMap())));
+        request.put(Constants.Latitude, String.valueOf(latLng.latitude));
+        request.put(Constants.Longitude, String.valueOf(latLng.longitude));
+        /*if (!getImageItemMap().isEmpty())
+            request.put(Constants.image, AppUtil.getBase64FromBitmap(AppUtil.getSingleBitmap(context, getImageItemMap())));*/
 
 
         DataFetcher.addEvent(context, new Gson().toJson(request), onAddEventSuccessListener, AddEventResponse.class, onErrorListener);
@@ -134,23 +162,55 @@ public class AddEventFragment extends BaseAddImagesFragment {
     private Response.Listener<AddEventResponse> onAddEventSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
+        if (getActivity() != null)
+            if (response != null && response.getReturnMessage().equals(Constants.SUCCESS))
+                isImageAvailable(response.getReturnData().getID());
+            else
+                UiUtil.showToast(context, context.getString(R.string.err_occurred));
+    };
+
+    private void isImageAvailable(String eventId) {
+
+        if (getImageItemMap().size() > 0)
+            uploadEventImage(eventId);
+        else {
             UiUtil.showToast(context, context.getString(R.string.event_added));
             if (getGlobalFragmentInteractionListener() != null) {
                 getGlobalFragmentInteractionListener().finishActivity();
             }
-        } else
-            UiUtil.showToast(context, context.getString(R.string.err_occurred));
+        }
+    }
+
+    private void uploadEventImage(String eventId) {
+
+        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
+        Map<String, DataPart> params = new HashMap<>();
+        params.put(NetworkConstants.ProfileImage, new DataPart(AppUtil.getUniqueFileName(),
+                AppUtil.getBytesFromBitmap(AppUtil.getSingleBitmap(context, getImageItemMap()))
+                , NetworkConstants.JPEG_MIME_TYPE));
+
+        DataFetcher.uploadEventImage(context, params, onImageUploadSuccessListener, GeneralResponse.class, onErrorListener, eventId);
+    }
+
+    private Response.Listener<GeneralResponse> onImageUploadSuccessListener = response -> {
+
+        UiUtil.cancelProgressDialog();
+        if (getActivity() != null)
+            if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
+                UiUtil.showToast(context, getString(R.string.event_added));
+                getActivity().finish();
+            } else
+                UiUtil.showToast(context, getString(R.string.err_occurred));
     };
 
     private int validateErrorMessage() {
         int errorMessage = 0;
-        if (TextUtils.isEmpty(fragmentAddEventBinding.etDate.getText()))
+        if (TextUtils.isEmpty(fragmentAddEventBinding.etTitle.getText().toString()))
+            errorMessage = R.string.enter_title;
+        else if (TextUtils.isEmpty(fragmentAddEventBinding.etDate.getText()))
             errorMessage = R.string.enter_date;
         else if (!AppUtil.validateDob(fragmentAddEventBinding.etDate.getText().toString()))
             errorMessage = R.string.enter_valid_date;
-        else if (TextUtils.isEmpty(fragmentAddEventBinding.etDetails.getText().toString()))
-            errorMessage = R.string.enter_details;
         else if (TextUtils.isEmpty(fragmentAddEventBinding.etTime.getText()))
             errorMessage = R.string.enter_event_time;
         else if (TextUtils.isEmpty(fragmentAddEventBinding.etVenue.getText()))
@@ -171,5 +231,13 @@ public class AddEventFragment extends BaseAddImagesFragment {
             }
         } else
             super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(AppUtil.getZeroedString(dayOfMonth)).append("/").append(AppUtil.getZeroedString(monthOfYear + 1))
+                .append("/").append(year);
+        fragmentAddEventBinding.etDate.setText(stringBuilder);
     }
 }

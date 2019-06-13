@@ -10,6 +10,7 @@ public class NetworkConstants {
     public static final String Authorization = "Authorization";
     public static final String BASE_URL = "http://sabkuch2.sabkuchworld.com/api/";
     public static final String ProfileId = "ProfileId";
+    public static final String EventId = "EventId";
     public static final String ProfileImage = "ProfileImage";
     public static final String JPEG_MIME_TYPE = "image/jpeg";
 

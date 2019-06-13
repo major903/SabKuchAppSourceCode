@@ -75,7 +75,7 @@ public class DataFetcher {
     public static <T> void getEvents(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener,
                                      int pageIndex, int pageSize) {
         String userId = AppPrefs.getPrefsUserId(context);
-        String url = String.format(Locale.US, "%s/AllAPI/GetEvent?userid=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT, userId, pageIndex, pageSize);
+        String url = String.format(Locale.US, "%s/api/Events/GetEvents?PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT2, pageIndex, pageSize);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
@@ -104,14 +104,13 @@ public class DataFetcher {
     }
 
     public static <T> void getMovies(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
-        String userId = AppPrefs.getPrefsUserId(context);
-        String url = String.format("%s/MovieAPI/getMovies?userid=%s", NetworkConstants.END_POINT4, userId);
+        String url = String.format("%s/api/Movies/GetMovies", NetworkConstants.END_POINT2);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void addEvent(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
 
-        String url = String.format("%s/AllAPI/addevent", NetworkConstants.END_POINT);
+        String url = String.format("%s/api/Events/AddEvent", NetworkConstants.END_POINT2);
         HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
     }
 
@@ -246,6 +245,14 @@ public class DataFetcher {
         Map<String, String> map = new HashMap<>();
         map.put(NetworkConstants.ProfileId, AppPrefs.getPrefsUserId(context));
         String url = String.format("%s/api/Dating/UploadProfileImage", NetworkConstants.END_POINT3);
+        HelperVolley.callApiWithMultipartBody(context, url, null, updateSuccessListener, map, dataPartMap, repClass, errorListener);
+    }
+
+    public static <T> void uploadEventImage(Context context, Map<String, DataPart> dataPartMap, Response.Listener<T> updateSuccessListener, Class<T> repClass,
+                                                    Response.ErrorListener errorListener, String eventId) {
+        Map<String, String> map = new HashMap<>();
+        map.put(NetworkConstants.EventId, eventId);
+        String url = String.format("%s/api/Events/UploadEventImage", NetworkConstants.END_POINT3);
         HelperVolley.callApiWithMultipartBody(context, url, null, updateSuccessListener, map, dataPartMap, repClass, errorListener);
     }
 

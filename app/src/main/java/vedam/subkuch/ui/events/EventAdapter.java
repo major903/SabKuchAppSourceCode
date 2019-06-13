@@ -49,16 +49,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
         Event event = events.get(position);
 
-        holder.tvDate.setText(String.format("Date: %s", event.getDate()));
-        holder.tvTime.setText(String.format("Time: %s", event.getTime()));
-        holder.tvVenue.setText(String.format("Venue: %s", event.getVenue()));
-        holder.tvDetails.setText(event.getTitle());
-
         UiUtil.setTextView("Date:", event.getDate(), holder.tvDate);
         UiUtil.setTextView("Time:", event.getTime(), holder.tvTime);
         UiUtil.setTextView("Venue:", event.getVenue(), holder.tvVenue);
         UiUtil.setTextView("Entry Fee:", event.getEntryFee(), holder.tvCost);
-        UiUtil.setTextView(event.getDistance(), "Kms away", holder.tvDistance);
+        UiUtil.setTextView(holder.tvDistance, event.getDistance());
+        UiUtil.setTextView(holder.tvTitle, event.getTitle());
 
         if (!TextUtils.isEmpty(event.getEventImage())) {
             holder.ivEvent.setVisibility(View.VISIBLE);
@@ -100,7 +96,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
         private TextView tvTime;
         private TextView tvDate;
-        private TextView tvDetails;
+        private TextView tvTitle;
         private TextView tvVenue;
         private TextView tvCost;
         private TextView tvDistance;
@@ -109,7 +105,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvDetails = itemView.findViewById(R.id.tvDetails);
+            tvTitle = itemView.findViewById(R.id.tv_title);
             tvDate = itemView.findViewById(R.id.tvDate);
             tvTime = itemView.findViewById(R.id.tvTime);
             tvVenue = itemView.findViewById(R.id.tv_address);

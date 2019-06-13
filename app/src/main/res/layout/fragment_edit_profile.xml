@@ -348,6 +348,7 @@
 
 
         <vedam.subkuch.uicomponent.RequiredTextView
+            android:id="@+id/tv_occupation_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -417,6 +418,7 @@
 
 
         <vedam.subkuch.uicomponent.RequiredTextView
+            android:id="@+id/tv_food_habit_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -820,6 +822,7 @@
         </RelativeLayout>
 
         <vedam.subkuch.uicomponent.RequiredTextView
+            android:id="@+id/tv_weight_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
