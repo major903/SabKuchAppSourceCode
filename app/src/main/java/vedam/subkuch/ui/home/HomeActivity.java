@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,8 +15,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.android.installreferrer.api.InstallReferrerClient;
+import com.android.installreferrer.api.InstallReferrerClient.InstallReferrerResponse;
+import com.android.installreferrer.api.InstallReferrerStateListener;
+import com.android.installreferrer.api.ReferrerDetails;
 import com.android.volley.Response;
 import com.crashlytics.android.Crashlytics;
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -28,12 +34,14 @@ import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.network.models.AddEventResponse;
 import vedam.subkuch.network.models.Feature;
+import vedam.subkuch.network.models.ReferralRequest;
 import vedam.subkuch.network.models.ShareResponse;
 import vedam.subkuch.ui.ask.AskCategoryActivity;
 import vedam.subkuch.ui.directory.DirectoryActivity;
 import vedam.subkuch.ui.events.EventActivity;
 import vedam.subkuch.ui.inbox.InboxActivity;
 import vedam.subkuch.ui.jobs.JobCategoryActivity;
+import vedam.subkuch.ui.jobs.models.AddResponse;
 import vedam.subkuch.ui.movies.MoviesActivity;
 import vedam.subkuch.ui.offers.OffersActivity;
 import vedam.subkuch.ui.phonebook.PhoneBookActivity;
@@ -47,9 +55,10 @@ import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.LogUtils;
 import vedam.subkuch.utils.UiUtil;
 
-public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, InstallReferrerStateListener {
 
     private ActivityHomeBinding activityHomeBinding;
+    private InstallReferrerClient referrerClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +77,20 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         activityHomeBinding.navView.setNavigationItemSelectedListener(this);
         TextView tvName = activityHomeBinding.navView.getHeaderView(0).findViewById(R.id.tv_name);
         tvName.setText(AppPrefs.getPrefsUserName(this));
+
+        handleReferral();
+    }
+
+    private void handleReferral() {
+
+        String isReferralDone = AppPrefs.getPrefsIsReferralDone(this);
+        if (TextUtils.isEmpty(isReferralDone))
+            logout();
+        else if (Constants.FALSE.equalsIgnoreCase(isReferralDone)) {
+            referrerClient = InstallReferrerClient.newBuilder(this).build();
+            referrerClient.startConnection(this);
+        }
+
     }
 
     @Override
@@ -112,12 +135,10 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
 
-        switch (item.getItemId()) {
-            case R.id.action_share:
-                getShareMessage();
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        if (item.getItemId() == R.id.action_share)
+            getShareMessage();
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void getShareMessage() {
@@ -317,5 +338,67 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
         activityHomeBinding.drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onInstallReferrerSetupFinished(int responseCode) {
+        switch (responseCode) {
+            case InstallReferrerResponse.OK:
+                ReferrerDetails response;
+                try {
+                    response = referrerClient.getInstallReferrer();
+                    addReferralCode(response.getInstallReferrer());
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+                // Connection established
+                break;
+            case InstallReferrerResponse.FEATURE_NOT_SUPPORTED:
+                // API not available on the current Play Store app
+                break;
+            case InstallReferrerResponse.SERVICE_UNAVAILABLE:
+                // Connection could not be established
+                break;
+            case InstallReferrerResponse.DEVELOPER_ERROR:
+                break;
+            case InstallReferrerResponse.SERVICE_DISCONNECTED:
+                break;
+        }
+    }
+
+    @Override
+    public void onInstallReferrerServiceDisconnected() {
+
+        if (referrerClient != null && !referrerClient.isReady())
+            referrerClient.startConnection(this);
+    }
+
+    private void addReferralCode(String referrerCode) {
+
+        if (!TextUtils.isEmpty(referrerCode) && !referrerCode.startsWith("utm")) {
+            ReferralRequest referralRequest = new ReferralRequest();
+            referralRequest.setProfileId(AppPrefs.getPrefsUserId(this));
+            referralRequest.setReferredBy(referrerCode);
+            DataFetcher.addReferral(this, new Gson().toJson(referralRequest), onAddReferralSuccessListener, AddResponse.class, onErrorListener);
+        }
+    }
+
+    private Response.Listener<AddResponse> onAddReferralSuccessListener = response -> {
+
+        if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
+            AppPrefs.setPrefsIsReferralDone(this, Constants.TRUE);
+            endConnection();
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        endConnection();
+    }
+
+    private void endConnection() {
+        if (referrerClient != null && referrerClient.isReady())
+            referrerClient.endConnection();
     }
 }

@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 public class AppPrefs {
 
     public static final String PREFS_IF_USER_LOGGED_IN = "PREFS_IF_USER_LOGGED_IN";
+    public static final String PREFS_IS_REFERRAL_DONE = "PREFS_IS_REFERRAL_DONE";
     public static final String PREFS_USER_NAME = "PREFS_USER_NAME";
     public static final String PREFS_USER_ID = "PREFS_USER_ID";
     public static final String PREFS_TOKEN = "PREFS_TOKEN";
@@ -31,6 +32,14 @@ public class AppPrefs {
 
     public static String getPrefsUserName(Context context) {
         return getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_USER_NAME, "");
+    }
+
+    public static String getPrefsIsReferralDone(Context context) {
+        return getInstance(context).getSharedPreferences().getString(AppPrefs.PREFS_IS_REFERRAL_DONE, "");
+    }
+
+    public static void setPrefsIsReferralDone(Context context, String value) {
+        getInstance(context).getSharedPreferences().edit().putString(AppPrefs.PREFS_IS_REFERRAL_DONE, value).apply();
     }
 
     public static AppPrefs getInstance(Context context) {

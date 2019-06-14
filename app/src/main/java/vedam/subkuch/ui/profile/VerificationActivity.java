@@ -26,6 +26,7 @@ import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.UiUtil;
 
 import static vedam.subkuch.utils.AppPrefs.PREFS_IF_USER_LOGGED_IN;
+import static vedam.subkuch.utils.AppPrefs.PREFS_IS_REFERRAL_DONE;
 import static vedam.subkuch.utils.AppPrefs.PREFS_TOKEN;
 import static vedam.subkuch.utils.AppPrefs.PREFS_USER_ID;
 import static vedam.subkuch.utils.AppPrefs.PREFS_USER_NAME;
@@ -146,14 +147,14 @@ public class VerificationActivity extends BaseActivity {
         String bearer = "Bearer " + receivedProfile.getAuthToken();
         editor.putString(PREFS_TOKEN, bearer);
         editor.putString(PREFS_USER_NAME, AppUtil.getFullName(receivedProfile.getFirstName(), receivedProfile.getLastName()));
-        editor.apply();
         WebServices.getInstance().setBearer(bearer);
         boolean isReferralDone = receivedProfile.getIsReferralDone();
-
+        editor.putString(PREFS_IS_REFERRAL_DONE, String.valueOf(isReferralDone));
+        editor.apply();
         Intent intent;
-        if (!isReferralDone)
+        /*if (!isReferralDone)
             intent = new Intent(VerificationActivity.this, ReferralActivity.class);
-        else
+        else*/
             intent = new Intent(VerificationActivity.this, HomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

@@ -10,14 +10,23 @@ import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.android.volley.Response;
+
+import java.util.ArrayList;
+import java.util.Stack;
 
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseActivity;
 import vedam.subkuch.databinding.ActivityWalletBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
+import vedam.subkuch.network.models.referral.MyReferral;
+import vedam.subkuch.network.models.referral.MyReferralResponse;
+import vedam.subkuch.network.models.referral.ReferralDetails;
 import vedam.subkuch.network.models.wallet.ProfileData;
 import vedam.subkuch.network.models.wallet.TermsCondition;
 import vedam.subkuch.network.models.wallet.Wallet;
@@ -29,6 +38,9 @@ import vedam.subkuch.utils.UiUtil;
 public class WalletActivity extends BaseActivity {
 
     private ActivityWalletBinding activityWalletBinding;
+    private Stack<Object> requestStack = new Stack<>();
+    private WalletResponse walletResponse;
+    private MyReferralResponse myReferralResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,22 +48,54 @@ public class WalletActivity extends BaseActivity {
         activityWalletBinding = DataBindingUtil.setContentView(this, R.layout.activity_wallet);
         setTitle(R.string.my_wallet);
         setToolbarBackButton();
+
+        startAPICalls();
+    }
+
+    private void startAPICalls() {
+
+        requestStack.add(new Object());
+        requestStack.add(new Object());
+        UiUtil.showProgressDialog(this, getString(R.string.loading));
         getWalletDetails();
+        getMyReferrals();
     }
 
     private void getWalletDetails() {
 
-        UiUtil.showProgressDialog(this, getString(R.string.loading));
         DataFetcher.getWalletDetails(this, onWalletSuccessListener, WalletResponse.class, onErrorListener);
     }
 
-    private Response.Listener<WalletResponse> onWalletSuccessListener = response -> {
+    private void getMyReferrals() {
 
-        UiUtil.cancelProgressDialog();
-        if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
-            if (response.getReturnData() != null) {
-                bindData(response.getReturnData());
-                hideViews(response.getReturnData());
+        DataFetcher.getMyReferral(this, onMyReferralSuccessListener, MyReferralResponse.class, onErrorListener);
+    }
+
+    private Response.Listener<WalletResponse> onWalletSuccessListener = response -> {
+        requestStack.pop();
+        walletResponse = response;
+        checkFlagAndLoadUI();
+    };
+
+    private Response.Listener<MyReferralResponse> onMyReferralSuccessListener = response -> {
+        requestStack.pop();
+        myReferralResponse = response;
+        checkFlagAndLoadUI();
+    };
+
+    private void checkFlagAndLoadUI() {
+        if (requestStack.isEmpty()) {
+            UiUtil.cancelProgressDialog();
+            loadUI();
+        }
+    }
+
+    private void loadUI() {
+
+        if (walletResponse != null && walletResponse.getReturnMessage().equals(Constants.SUCCESS)) {
+            if (walletResponse.getReturnData() != null) {
+                bindData(walletResponse.getReturnData());
+                hideViews(walletResponse.getReturnData());
             } else {
                 UiUtil.showToast(this, getString(R.string.no_data));
                 activityWalletBinding.llContainer.setVisibility(View.INVISIBLE);
@@ -60,7 +104,7 @@ public class WalletActivity extends BaseActivity {
             UiUtil.showToast(this, getString(R.string.err_occurred));
             activityWalletBinding.llContainer.setVisibility(View.INVISIBLE);
         }
-    };
+    }
 
     private void bindData(Wallet data) {
 
@@ -78,6 +122,24 @@ public class WalletActivity extends BaseActivity {
         UiUtil.setTextView(activityWalletBinding.tvTncTitle, termsCondition.getTitle());
         setTnc(termsCondition.getDescription());
 
+        boolean isReferralDataAvailable = isReferralDataAvailable();
+
+        if (isReferralDataAvailable) {
+            activityWalletBinding.rlSubContainer.setVisibility(View.VISIBLE);
+            activityWalletBinding.tvReferralHeading.setVisibility(View.VISIBLE);
+            setVenueListener(activityWalletBinding.tvReferee, activityWalletBinding.ivTriangle, activityWalletBinding.rlSubContainer, myReferralResponse.getReturnData());
+            setVenue(activityWalletBinding.tvReferee, activityWalletBinding.ivTriangle, myReferralResponse.getReturnData());
+        } else {
+            activityWalletBinding.rlSubContainer.setVisibility(View.GONE);
+            activityWalletBinding.tvReferralHeading.setVisibility(View.GONE);
+        }
+
+    }
+
+    private boolean isReferralDataAvailable() {
+        return myReferralResponse != null && myReferralResponse.getReturnData() != null
+                && myReferralResponse.getReturnData().getReferralDetails() != null
+                && !myReferralResponse.getReturnData().getReferralDetails().isEmpty();
     }
 
     private void setTnc(String description) {
@@ -89,11 +151,63 @@ public class WalletActivity extends BaseActivity {
         activityWalletBinding.tvTnc.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
+    private void setVenueListener(TextView tvVenue, ImageView ivTriangle, RelativeLayout rlSubContainer, ReferralDetails referralDetails) {
+        if (referralDetails.getReferralDetails().size() > 2) {
+            ivTriangle.setVisibility(View.VISIBLE);
+            rlSubContainer.setOnClickListener(v -> {
+                if (referralDetails.isExpanded()) {
+                    referralDetails.setExpanded(false);
+                    setVenue(tvVenue, ivTriangle, referralDetails);
+                } else {
+                    referralDetails.setExpanded(true);
+                    setVenue(tvVenue, ivTriangle, referralDetails);
+                }
+            });
+        } else {
+            ivTriangle.setVisibility(View.GONE);
+            rlSubContainer.setOnClickListener(null);
+        }
+    }
+
+    private void setVenue(TextView tvName, ImageView ivTriangle, ReferralDetails referralDetails) {
+
+        if (referralDetails.getReferralDetails().size() > 2)
+            if (referralDetails.isExpanded()) {
+                tvName.setText(getFullNamesString(referralDetails.getReferralDetails()));
+                ivTriangle.setImageResource(R.drawable.baseline_expand_less_black_24dp);
+            } else {
+                ivTriangle.setImageResource(R.drawable.baseline_expand_more_black_24dp);
+                if (referralDetails.getReferralDetails().size() > 0) {
+                    MyReferral myReferral = referralDetails.getReferralDetails().get(0);
+                    tvName.setText(AppUtil.getFullName(myReferral.getFirstName(), myReferral.getLastName()));
+                } else
+                    tvName.setText("");
+            }
+        else {
+            tvName.setText(getFullNamesString(referralDetails.getReferralDetails()));
+        }
+    }
+
+    private String getFullNamesString(ArrayList<MyReferral> myReferrals) {
+        StringBuilder fullNames = new StringBuilder();
+        for (int i = 0; i < myReferrals.size(); i++) {
+            MyReferral myReferral = myReferrals.get(i);
+            if (i == myReferrals.size() - 1)
+                fullNames.append(AppUtil.getFullName(myReferral.getFirstName(), myReferral.getLastName()));
+            else
+                fullNames.append(AppUtil.getFullName(myReferral.getFirstName(), myReferral.getLastName())).append("\n");
+        }
+        return fullNames.toString();
+    }
+
     private void hideViews(Wallet data) {
         WalletDetails walletDetails = data.getWallet();
         ProfileData profileData = data.getProfileData();
         TermsCondition termsCondition = data.getTermsConditions();
-        if (TextUtils.isEmpty(profileData.getFirstName()) && TextUtils.isEmpty(profileData.getMobile()))
+
+        boolean isReferralDataAvailable = isReferralDataAvailable();
+
+        if (TextUtils.isEmpty(profileData.getFirstName()) && TextUtils.isEmpty(profileData.getMobile()) && !isReferralDataAvailable)
             activityWalletBinding.cvName.setVisibility(View.GONE);
         else
             activityWalletBinding.cvName.setVisibility(View.VISIBLE);

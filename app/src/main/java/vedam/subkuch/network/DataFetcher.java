@@ -374,6 +374,11 @@ public class DataFetcher {
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
+    public static <T> void getMyReferral(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
+        String url = String.format("%s/api/Referral/GetMyReferral", NetworkConstants.END_POINT2);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
     public static <T> void addReferral(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
 
         String url = String.format("%s/api/UserProfile/LinkReferral", NetworkConstants.END_POINT2);

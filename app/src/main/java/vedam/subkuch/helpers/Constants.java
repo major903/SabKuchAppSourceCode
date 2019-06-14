@@ -79,6 +79,7 @@ public class Constants {
     public static final String STATUS_SUCCESS = "1";
     public static final String SUCCESS = "success";
     public static final String TRUE = "true";
+    public static final String FALSE = "false";
 
     public static final String FirstName = "FirstName";
     public static final String LastName = "LastName";
