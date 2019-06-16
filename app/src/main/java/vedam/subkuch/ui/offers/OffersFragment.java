@@ -13,12 +13,14 @@ import java.util.ArrayList;
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseListFragment;
 import vedam.subkuch.helpers.Constants;
+import vedam.subkuch.interfaces.OnListViewItemClickListener;
 import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.ui.offers.models.Offer;
 import vedam.subkuch.ui.offers.models.OfferResponse;
+import vedam.subkuch.utils.ListItemClickAction;
 import vedam.subkuch.utils.UiUtil;
 
-public class OffersFragment extends BaseListFragment {
+public class OffersFragment extends BaseListFragment implements OnListViewItemClickListener {
 
     public OffersFragment() {
         // Required empty public constructor
@@ -58,7 +60,18 @@ public class OffersFragment extends BaseListFragment {
 
     private void loadValues(ArrayList<Offer> response) {
 
-        OffersAdapter offersAdapter = new OffersAdapter(getActivity(), response);
+        OffersAdapter offersAdapter = new OffersAdapter(getActivity(), response, this);
         setListAdapter(offersAdapter);
+    }
+
+    @Override
+    public <E> void onItemClick(E item, int position, View view, ListItemClickAction action) {
+
+        if (item != null) {
+            Offer offer = (Offer) item;
+            addFragmentWithAnimation(R.id.content_frame, OfferDetailFragment.newInstance(offer.getOfferURL()),
+                    null, true);
+            setTitle(offer.getOfferTitle());
+        }
     }
 }

@@ -140,7 +140,7 @@ public class DataFetcher {
 
     public static <T> void getOffers(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
         String userId = AppPrefs.getPrefsUserId(context);
-        String url = String.format("%s/AllAPI/GetAlloffer?userid=%s", NetworkConstants.END_POINT, userId);
+        String url = String.format("%s/api/Offers/GetOffers", NetworkConstants.END_POINT2);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 

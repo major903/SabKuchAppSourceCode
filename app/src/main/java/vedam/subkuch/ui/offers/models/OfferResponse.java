@@ -28,10 +28,6 @@ public class OfferResponse {
 
     public ArrayList<Offer> getReturnData() {
         return ReturnData;
-    }
 
-    @Override
-    public String toString() {
-        return "OfferResponse [ReturnCode = " + ReturnCode + ", ReturnMessage = " + ReturnMessage + ", ReturnData = " + ReturnData + "]";
     }
 }

@@ -11,8 +11,8 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 import vedam.subkuch.R;
+import vedam.subkuch.interfaces.OnListViewItemClickListener;
 import vedam.subkuch.ui.offers.models.Offer;
-import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.ImageSetter;
 import vedam.subkuch.utils.UiUtil;
 
@@ -23,12 +23,13 @@ public class OffersAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
     private ArrayList<Offer> offers;
+    private OnListViewItemClickListener listener;
 
-
-    public OffersAdapter(Context context, ArrayList<Offer> offers) {
+    OffersAdapter(Context context, ArrayList<Offer> offers, OnListViewItemClickListener listener) {
 
         inflater = LayoutInflater.from(context);
         this.offers = offers;
+        this.listener = listener;
     }
 
     @Override
@@ -62,14 +63,15 @@ public class OffersAdapter extends BaseAdapter {
         Offer offer = (Offer) getItem(position);
 
         UiUtil.setImageView(new ImageSetter.ImageBuilder(parent.getContext())
-                .setImageLink(offer.getImageurl())
+                .setImageLink(offer.getOfferImage())
                 .setDefaults()
                 .setTarget(holder.image)
                 .build());
 
-        if (!TextUtils.isEmpty(offer.getImageurl()))
+        if (!TextUtils.isEmpty(offer.getOfferURL()))
             holder.image.setOnClickListener(view -> {
-                AppUtil.openUrl(parent.getContext(), offer.getImageurl());
+                if (listener != null)
+                    listener.onItemClick(offer, position, null, null);
             });
         return v;
     }
