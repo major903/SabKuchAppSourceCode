@@ -21,7 +21,6 @@
                 style="@style/TextViewBlackHeading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/title"
                 android:text="@string/title" />
 
             <EditText
@@ -30,8 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_4dp"
-                android:imeOptions="actionNext"
-                android:inputType="date" />
+                android:imeOptions="actionNext" />
 
             <TextView
                 style="@style/TextViewBlackHeading"
