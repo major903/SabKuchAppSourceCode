@@ -1,27 +1,20 @@
 package vedam.subkuch.ui.matrimonial.preference;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
-
-import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseFragment;
+import vedam.subkuch.databinding.FragmentPreferenceBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.models.DrinkingHabits;
 import vedam.subkuch.network.models.GetBodyTypeBean;
@@ -59,182 +52,56 @@ import vedam.subkuch.utils.UiUtil;
 
 public class PreferenceFragment extends BaseFragment implements PerferenceFragmentView, ItemAdapter.ItemClickHandler {
 
-    PerferenceFragmentPresenterHandler mPresenter;
-    GetPreferenceResponse response;
-    @BindView(R.id.textViewReligion)
-    TextView textViewReligion;
-    @BindView(R.id.textViewCast)
-    TextView textViewCast;
-    @BindView(R.id.textViewSubCast)
-    TextView textViewSubCast;
-    @BindView(R.id.textViewLivingWith)
-    TextView textViewLivingWith;
-    @BindView(R.id.textViewAge)
-    TextView textViewAge;
-    @BindView(R.id.seekBarAge)
-    CrystalRangeSeekbar seekBarAge;
-    @BindView(R.id.textViewDistance)
-    TextView textViewDistance;
-    @BindView(R.id.seekBarDistance)
-    CrystalRangeSeekbar seekBarDistance;
-    @BindView(R.id.btnUpdate)
-    Button btnUpdate;
-    @BindView(R.id.rootLayout)
-    ScrollView rootLayout;
-    Unbinder unbinder;
-    @BindView(R.id.textViewCity)
-    TextView textViewCity;
-    @BindView(R.id.textViewNakshatra)
-    TextView textViewNakshatra;
-    @BindView(R.id.textViewBodytype)
-    TextView textViewBodytype;
-    @BindView(R.id.textViewComplexion)
-    TextView textViewComplexion;
-    @BindView(R.id.textViewOccupation)
-    TextView textViewOccupation;
-    @BindView(R.id.textViewQualification)
-    TextView textViewQualification;
-    @BindView(R.id.textViewFoodhabits)
-    TextView textViewFoodhabits;
-    @BindView(R.id.textViewDrinkingHabits)
-    TextView textViewDrinkingStatus;
-    @BindView(R.id.textViewMothertouge)
-    TextView textViewMothertouge;
-    @BindView(R.id.textViewPhysicalstatus)
-    TextView textViewPhysicalstatus;
-    @BindView(R.id.textViewDosham)
-    TextView textViewDosham;
-    @BindView(R.id.textViewOwnCar)
-    TextView textViewOwnCar;
-    @BindView(R.id.textViewOwnHouse)
-    TextView textViewOwnHouse;
-    @BindView(R.id.textViewSmoking)
-    TextView textViewSmoking;
-    @BindView(R.id.textViewIncome)
-    TextView textViewIncome;
-    @BindView(R.id.seekBarIncome)
-    CrystalRangeSeekbar seekBarIncome;
-    @BindView(R.id.textViewHeight)
-    TextView textViewHeight;
-    @BindView(R.id.seekBarHeight)
-    CrystalRangeSeekbar seekBarHeight;
-    @BindView(R.id.textViewWeight)
-    TextView textViewWeight;
-    @BindView(R.id.seekBarWeight)
-    CrystalRangeSeekbar seekBarWeight;
-    @BindView(R.id.textViewMatrialstatus)
-    TextView textViewMatrialstatus;
-    @BindView(R.id.tv_marital_status_heading)
-    TextView tvMaritalStatusHeading;
-    @BindView(R.id.relativeLayoutMatrialstatus)
-    RelativeLayout relativeLayoutMatrialstatus;
-    @BindView(R.id.tv_mother_tongue_heading)
-    TextView tvMotherTongueHeading;
-    @BindView(R.id.relativeLayoutMothertouge)
-    RelativeLayout relativeLayoutMothertouge;
-    @BindView(R.id.tv_qualification_heading)
-    TextView tvQualificationHeading;
-    @BindView(R.id.relativeLayoutQualification)
-    RelativeLayout relativeLayoutQualification;
-    @BindView(R.id.tv_complexion_heading)
-    TextView tvComplexionHeading;
-    @BindView(R.id.relativeLayoutComplexion)
-    RelativeLayout relativeLayoutComplexion;
-    @BindView(R.id.tv_religion_heading)
-    TextView tvReligionHeading;
-    @BindView(R.id.relativeLayoutReligion)
-    RelativeLayout relativeLayoutReligion;
-    @BindView(R.id.tv_caste_heading)
-    TextView tvCasteHeading;
-    @BindView(R.id.relativeLayoutMasterCast)
-    RelativeLayout relativeLayoutMasterCast;
-    @BindView(R.id.tv_gotra_heading)
-    TextView tvGotraHeading;
-    @BindView(R.id.relativeLayoutSubCast)
-    RelativeLayout relativeLayoutSubCast;
-    @BindView(R.id.tv_nakshatra_heading)
-    TextView tvNakshatraHeading;
-    @BindView(R.id.relativeLayoutNakshakra)
-    RelativeLayout relativeLayoutNakshakra;
-    @BindView(R.id.tv_dosham_heading)
-    TextView tvDoshamHeading;
-    @BindView(R.id.relativeLayoutDosham)
-    RelativeLayout relativeLayoutDosham;
-    @BindView(R.id.tv_living_with_heading)
-    TextView tvLivingWithHeading;
-    @BindView(R.id.relativeLayoutLiving)
-    RelativeLayout relativeLayoutLiving;
-    @BindView(R.id.tv_physical_status_heading)
-    TextView tvPhysicalStatusHeading;
-    @BindView(R.id.relativeLayoutPhysicalstatus)
-    RelativeLayout relativeLayoutPhysicalstatus;
-    @BindView(R.id.tv_car_heading)
-    TextView tvCarHeading;
-    @BindView(R.id.relativeOwnCar)
-    RelativeLayout relativeOwnCar;
-    @BindView(R.id.tv_house_heading)
-    TextView tvHouseHeading;
-    @BindView(R.id.relativeOwnHouse)
-    RelativeLayout relativeOwnHouse;
-    @BindView(R.id.rl_income)
-    RelativeLayout rlIncome;
-    @BindView(R.id.tv_occupation_heading)
-    TextView tvOccupationHeading;
-    @BindView(R.id.relativeLayoutOccupation)
-    RelativeLayout relativeLayoutOccupation;
-    @BindView(R.id.tv_food_habit_heading)
-    TextView tvFoodHabitHeading;
-    @BindView(R.id.relativeLayoutFoodhabits)
-    RelativeLayout relativeLayoutFoodhabits;
-    @BindView(R.id.rl_weight)
-    RelativeLayout rlWeight;
+    private FragmentPreferenceBinding binding;
+    private PerferenceFragmentPresenterHandler mPresenter;
+    private GetPreferenceResponse response;
 
     private String minAge;
     private String maxAge;
-    List<String> items = new ArrayList<>();
-    int selectedMaterCastId = 0;
-    int selectedSubCastId = 0;
-    int selectedReligionId = 0;
-    int selectedLivingId = 0;
-    int selectedCityId = 0;
-    int selectedNakshatraId = 0;
-    int selectedBodyTypeId = 0;
-    int selectedComplexionId = 0;
-    int selectedOccupationId = 0;
-    int selectedQualificationId = 0;
-    int selectedFoodHabitesId = 0;
-    int selectedMothertoungeId = 0;
-    int selectedPhysicalstatusId = 0;
-    int selectedDoshamId = 0;
-    int selectedMaritalStatusId = 0;
-    int selectedDrinkingStatusId = 0;
-    int selectedOwnCarId = 0;
-    int selectedOwnHouseId = 0;
-    int selectedSmokingStatusId = 0;
-    String clickedItem = "";
+    private List<String> items = new ArrayList<>();
+    private int selectedMaterCastId = 0;
+    private int selectedSubCastId = 0;
+    private int selectedReligionId = 0;
+    private int selectedLivingId = 0;
+    private int selectedCityId = 0;
+    private int selectedNakshatraId = 0;
+    private int selectedBodyTypeId = 0;
+    private int selectedComplexionId = 0;
+    private int selectedOccupationId = 0;
+    private int selectedQualificationId = 0;
+    private int selectedFoodHabitesId = 0;
+    private int selectedMothertoungeId = 0;
+    private int selectedPhysicalstatusId = 0;
+    private int selectedDoshamId = 0;
+    private int selectedMaritalStatusId = 0;
+    private int selectedDrinkingStatusId = 0;
+    private int selectedOwnCarId = 0;
+    private int selectedOwnHouseId = 0;
+    private int selectedSmokingStatusId = 0;
+    private String clickedItem = "";
 
 
-    GetMasterCastResponse masterCastResponse;
-    GetCityResponse getCityResponse;
-    GetGotrasBean gotraResponse;
-    GetReligionResponse getReligionResponse;
-    GetLivingResponse getLivingResponse;
-    GetBodyTypeBean getBodyTypeBean;
-    GetComplexionBean getComplexionBean;
-    GetDoshamBean getDoshamBean;
-    GetFoodHabitsBean getFoodHabitsBean;
-    GetMothertongueBean getMothertongueBean;
-    GetNakshatrasBean getNakshatrasBean;
-    GetOccupationBean getOccupationBean;
-    GetPhysicalStatusBean getPhysicalStatusBean;
-    GetQualificationBean getQualificationBean;
-    GetMaritalStatusResponse getMaritalStatusResponse;
-    GetDrinkingHabits getDrinkingHabits;
-    GetOwnCarResponse getOwnCarResponse;
-    GetOwnHouseResponse getOwnHouseResponse;
-    GetSmokingResponse getSmokingResponse;
+    private GetMasterCastResponse masterCastResponse;
+    private GetCityResponse getCityResponse;
+    private GetGotrasBean gotraResponse;
+    private GetReligionResponse getReligionResponse;
+    private GetLivingResponse getLivingResponse;
+    private GetBodyTypeBean getBodyTypeBean;
+    private GetComplexionBean getComplexionBean;
+    private GetDoshamBean getDoshamBean;
+    private GetFoodHabitsBean getFoodHabitsBean;
+    private GetMothertongueBean getMothertongueBean;
+    private GetNakshatrasBean getNakshatrasBean;
+    private GetOccupationBean getOccupationBean;
+    private GetPhysicalStatusBean getPhysicalStatusBean;
+    private GetQualificationBean getQualificationBean;
+    private GetMaritalStatusResponse getMaritalStatusResponse;
+    private GetDrinkingHabits getDrinkingHabits;
+    private GetOwnCarResponse getOwnCarResponse;
+    private GetOwnHouseResponse getOwnHouseResponse;
+    private GetSmokingResponse getSmokingResponse;
 
-    View view;
+    private View view;
     private String minDistance;
     private String maxDistance;
 
@@ -267,10 +134,10 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_preference, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_preference, container, false);
+        binding.setPreferenceFragment(this);
         setTitle(getString(R.string.preferences));
-        unbinder = ButterKnife.bind(this, view);
-        return view;
+        return binding.getRoot();
     }
 
     @Override
@@ -284,69 +151,69 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     }
 
     private void hideFields() {
-        tvReligionHeading.setVisibility(View.GONE);
-        relativeLayoutReligion.setVisibility(View.GONE);
-        tvCasteHeading.setVisibility(View.GONE);
-        relativeLayoutMasterCast.setVisibility(View.GONE);
-        tvGotraHeading.setVisibility(View.GONE);
-        relativeLayoutSubCast.setVisibility(View.GONE);
-        tvNakshatraHeading.setVisibility(View.GONE);
-        relativeLayoutNakshakra.setVisibility(View.GONE);
-        tvComplexionHeading.setVisibility(View.GONE);
-        relativeLayoutComplexion.setVisibility(View.GONE);
-        tvQualificationHeading.setVisibility(View.GONE);
-        relativeLayoutQualification.setVisibility(View.GONE);
-        tvPhysicalStatusHeading.setVisibility(View.GONE);
-        relativeLayoutPhysicalstatus.setVisibility(View.GONE);
-        tvDoshamHeading.setVisibility(View.GONE);
-        relativeLayoutDosham.setVisibility(View.GONE);
-        tvMotherTongueHeading.setVisibility(View.GONE);
-        relativeLayoutMothertouge.setVisibility(View.GONE);
-        tvLivingWithHeading.setVisibility(View.GONE);
-        relativeLayoutLiving.setVisibility(View.GONE);
-        tvMaritalStatusHeading.setVisibility(View.GONE);
-        relativeLayoutMatrialstatus.setVisibility(View.GONE);
-        tvOccupationHeading.setVisibility(View.GONE);
-        relativeLayoutOccupation.setVisibility(View.GONE);
-        tvFoodHabitHeading.setVisibility(View.GONE);
-        relativeLayoutFoodhabits.setVisibility(View.GONE);
-        rlWeight.setVisibility(View.GONE);
-        rlIncome.setVisibility(View.GONE);
-        tvCarHeading.setVisibility(View.GONE);
-        relativeOwnCar.setVisibility(View.GONE);
-        tvHouseHeading.setVisibility(View.GONE);
-        relativeOwnHouse.setVisibility(View.GONE);
+        binding.tvReligionHeading.setVisibility(View.GONE);
+        binding.relativeLayoutReligion.setVisibility(View.GONE);
+        binding.tvCasteHeading.setVisibility(View.GONE);
+        binding.relativeLayoutMasterCast.setVisibility(View.GONE);
+        binding.tvGotraHeading.setVisibility(View.GONE);
+        binding.relativeLayoutSubCast.setVisibility(View.GONE);
+        binding.tvNakshatraHeading.setVisibility(View.GONE);
+        binding.relativeLayoutNakshakra.setVisibility(View.GONE);
+        binding.tvComplexionHeading.setVisibility(View.GONE);
+        binding.relativeLayoutComplexion.setVisibility(View.GONE);
+        binding.tvQualificationHeading.setVisibility(View.GONE);
+        binding.relativeLayoutQualification.setVisibility(View.GONE);
+        binding.tvPhysicalStatusHeading.setVisibility(View.GONE);
+        binding.relativeLayoutPhysicalstatus.setVisibility(View.GONE);
+        binding.tvDoshamHeading.setVisibility(View.GONE);
+        binding.relativeLayoutDosham.setVisibility(View.GONE);
+        binding.tvMotherTongueHeading.setVisibility(View.GONE);
+        binding.relativeLayoutMothertouge.setVisibility(View.GONE);
+        binding.tvLivingWithHeading.setVisibility(View.GONE);
+        binding.relativeLayoutLiving.setVisibility(View.GONE);
+        binding.tvMaritalStatusHeading.setVisibility(View.GONE);
+        binding.relativeLayoutMatrialstatus.setVisibility(View.GONE);
+        binding.tvOccupationHeading.setVisibility(View.GONE);
+        binding.relativeLayoutOccupation.setVisibility(View.GONE);
+        binding.tvFoodHabitHeading.setVisibility(View.GONE);
+        binding.relativeLayoutFoodhabits.setVisibility(View.GONE);
+        binding.rlWeight.setVisibility(View.GONE);
+        binding.rlIncome.setVisibility(View.GONE);
+        binding.tvCarHeading.setVisibility(View.GONE);
+        binding.relativeOwnCar.setVisibility(View.GONE);
+        binding.tvHouseHeading.setVisibility(View.GONE);
+        binding.relativeOwnHouse.setVisibility(View.GONE);
     }
 
     private void init() {
 
-        seekBarAge.setOnRangeSeekbarChangeListener((minValue, maxValue) -> {
+        binding.seekBarAge.setOnRangeSeekbarChangeListener((minValue, maxValue) -> {
             minAge = minValue.toString();
             maxAge = maxValue.toString();
-            textViewAge.setText(String.format("%s-%s", minValue.toString(), maxValue));
+            binding.textViewAge.setText(String.format("%s-%s", minValue.toString(), maxValue));
         });
-        seekBarDistance.setOnRangeSeekbarChangeListener((minValue, maxValue) -> {
+        binding.seekBarDistance.setOnRangeSeekbarChangeListener((minValue, maxValue) -> {
             minDistance = minValue.toString();
             maxDistance = maxValue.toString();
-            textViewDistance.setText(String.format("%s-%s", minValue.toString(), maxValue));
+            binding.textViewDistance.setText(String.format("%s-%s", minValue.toString(), maxValue));
         });
 
-        seekBarIncome.setOnRangeSeekbarChangeListener((minValue, maxValue) -> {
+        binding.seekBarIncome.setOnRangeSeekbarChangeListener((minValue, maxValue) -> {
             minIncome = minValue.toString();
             maxMaxIncome = maxValue.toString();
-            textViewIncome.setText(String.format("%s-%s", minValue.toString(), maxValue));
+            binding.textViewIncome.setText(String.format("%s-%s", minValue.toString(), maxValue));
         });
 
-        seekBarWeight.setOnRangeSeekbarChangeListener((minValue, maxValue) -> {
+        binding.seekBarWeight.setOnRangeSeekbarChangeListener((minValue, maxValue) -> {
             minWeight = minValue.toString();
             maxWeight = maxValue.toString();
-            textViewWeight.setText(String.format("%s-%s", minValue.toString(), maxValue));
+            binding.textViewWeight.setText(String.format("%s-%s", minValue.toString(), maxValue));
         });
 
-        seekBarHeight.setOnRangeSeekbarChangeListener((minValue, maxValue) -> {
+        binding.seekBarHeight.setOnRangeSeekbarChangeListener((minValue, maxValue) -> {
             minHeight = minValue.toString();
             maxHeight = maxValue.toString();
-            textViewHeight.setText(String.format("%s-%s", minValue.toString(), maxValue));
+            binding.textViewHeight.setText(String.format("%s-%s", minValue.toString(), maxValue));
         });
 
         mPresenter = new PerferenceFragmentPresenter(this);
@@ -366,7 +233,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
 
     @Override
     public void showFeedBackMessage(String message) {
-        baseshowFeedbackMessage(rootLayout, message);
+        baseshowFeedbackMessage(binding.rootLayout, message);
     }
 
     @Override
@@ -624,35 +491,35 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
 
     private void setData() {
 
-        setText(textViewReligion, response.getReturnData().getReligionName());
-        setText(textViewCast, response.getReturnData().getMasterCastName());
-        setText(textViewLivingWith, response.getReturnData().getLivingWithName());
-        setText(textViewSubCast, response.getReturnData().getGotraName());
-        setText(textViewBodytype, response.getReturnData().getBodyTypeName());
-        setText(textViewCity, response.getReturnData().getCityName());
-        setText(textViewComplexion, response.getReturnData().getComplexionName());
-        setText(textViewDosham, response.getReturnData().getDoshamName());
-        setText(textViewFoodhabits, response.getReturnData().getFoodHabitsName());
-        setText(textViewMothertouge, response.getReturnData().getMothertongueName());
-        setText(textViewNakshatra, response.getReturnData().getNakshatraName());
-        setText(textViewOccupation, response.getReturnData().getOccupationName());
-        setText(textViewPhysicalstatus, response.getReturnData().getPhysicalStatusName());
-        setText(textViewQualification, response.getReturnData().getQualificationName());
-        setText(textViewMatrialstatus, response.getReturnData().getMaritalStatusName());
-        setText(textViewDrinkingStatus, response.getReturnData().getDrinkingStatusName());
-        setText(textViewOwnCar, response.getReturnData().getOwnCarType());
-        setText(textViewOwnHouse, response.getReturnData().getOwnHouseType());
-        setText(textViewSmoking, response.getReturnData().getSmokingType());
+        setText(binding.textViewReligion, response.getReturnData().getReligionName());
+        setText(binding.textViewCast, response.getReturnData().getMasterCastName());
+        setText(binding.textViewLivingWith, response.getReturnData().getLivingWithName());
+        setText(binding.textViewSubCast, response.getReturnData().getGotraName());
+        setText(binding.textViewBodytype, response.getReturnData().getBodyTypeName());
+        setText(binding.textViewCity, response.getReturnData().getCityName());
+        setText(binding.textViewComplexion, response.getReturnData().getComplexionName());
+        setText(binding.textViewDosham, response.getReturnData().getDoshamName());
+        setText(binding.textViewFoodhabits, response.getReturnData().getFoodHabitsName());
+        setText(binding.textViewMothertouge, response.getReturnData().getMothertongueName());
+        setText(binding.textViewNakshatra, response.getReturnData().getNakshatraName());
+        setText(binding.textViewOccupation, response.getReturnData().getOccupationName());
+        setText(binding.textViewPhysicalstatus, response.getReturnData().getPhysicalStatusName());
+        setText(binding.textViewQualification, response.getReturnData().getQualificationName());
+        setText(binding.textViewMatrialstatus, response.getReturnData().getMaritalStatusName());
+        setText(binding.textViewDrinkingHabits, response.getReturnData().getDrinkingStatusName());
+        setText(binding.textViewOwnCar, response.getReturnData().getOwnCarType());
+        setText(binding.textViewOwnHouse, response.getReturnData().getOwnHouseType());
+        setText(binding.textViewSmoking, response.getReturnData().getSmokingType());
 
 
        /* if (!response.getReturnData().getFromLocation().isEmpty()&&!response.getReturnData().getToLocation().isEmpty()){
             seekBarDistance.setMinStartValue(Float.parseFloat(response.getReturnData().getFromLocation())).setMaxStartValue(Float.parseFloat(response.getReturnData().getToLocation())).apply();
         }*/
-        seekBarAge.setMinStartValue(Float.parseFloat(response.getReturnData().getMinAge())).setMaxStartValue(Float.parseFloat(response.getReturnData().getMaxAge())).apply();
-        seekBarDistance.setMinStartValue(Float.parseFloat(response.getReturnData().getMinDistance())).setMaxStartValue(Float.parseFloat(response.getReturnData().getMaxDistance())).apply();
-        seekBarWeight.setMinStartValue(Float.parseFloat(response.getReturnData().getMinWeight())).setMaxStartValue(Float.parseFloat(response.getReturnData().getMaxWeight())).apply();
-        seekBarHeight.setMinStartValue(Float.parseFloat(response.getReturnData().getMinHeight())).setMaxStartValue(Float.parseFloat(response.getReturnData().getMaxHeight())).apply();
-        seekBarIncome.setMinStartValue(Float.parseFloat(response.getReturnData().getMinIncome())).setMaxStartValue(Float.parseFloat(response.getReturnData().getMaxIncome())).apply();
+        binding.seekBarAge.setMinStartValue(Float.parseFloat(response.getReturnData().getMinAge())).setMaxStartValue(Float.parseFloat(response.getReturnData().getMaxAge())).apply();
+        binding.seekBarDistance.setMinStartValue(Float.parseFloat(response.getReturnData().getMinDistance())).setMaxStartValue(Float.parseFloat(response.getReturnData().getMaxDistance())).apply();
+        binding.seekBarWeight.setMinStartValue(Float.parseFloat(response.getReturnData().getMinWeight())).setMaxStartValue(Float.parseFloat(response.getReturnData().getMaxWeight())).apply();
+        binding.seekBarHeight.setMinStartValue(Float.parseFloat(response.getReturnData().getMinHeight())).setMaxStartValue(Float.parseFloat(response.getReturnData().getMaxHeight())).apply();
+        binding.seekBarIncome.setMinStartValue(Float.parseFloat(response.getReturnData().getMinIncome())).setMaxStartValue(Float.parseFloat(response.getReturnData().getMaxIncome())).apply();
     }
 
     private void setText(TextView tv, String value) {
@@ -662,42 +529,30 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
             tv.setText(value);
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    @OnClick({R.id.relativeLayoutLiving})
     public void relativeLayoutLivingClick(View view) {
         clickedItem = "livingWith";
         this.view = view;
         mPresenter.getLiving();
     }
 
-    @OnClick({R.id.relativeLayoutReligion})
     public void relativeLayoutReligionClick(View view) {
         clickedItem = "religion";
         this.view = view;
         mPresenter.getReligion();
     }
 
-    @OnClick({R.id.relativeLayoutCity})
     public void relativeLayoutCityClick(View view) {
         clickedItem = "city";
         this.view = view;
         mPresenter.getAllCity();
     }
 
-    @OnClick({R.id.relativeLayoutMatrialstatus})
     public void relativeLayoutMatrialstatusClick(View view) {
         clickedItem = "matrialstatus";
         this.view = view;
         mPresenter.getMatrialStatus();
     }
 
-
-    @OnClick(R.id.relativeLayoutMasterCast)
     public void relativeLayoutMasterCastClick(View view) {
         clickedItem = "masterCast";
         this.view = view;
@@ -705,7 +560,6 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     }
 
 
-    @OnClick(R.id.relativeLayoutSubCast)
     public void relativeLayoutSubCastClick(View view) {
         if (selectedMaterCastId == 0) {
             baseshowFeedbackMessage(view, getString(R.string.select_master_cast_first));
@@ -716,91 +570,79 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         }
     }
 
-    @OnClick(R.id.relativeLayoutNakshakra)
     public void relativeLayoutNakshakraClick(View view) {
         clickedItem = "nakshakra";
         this.view = view;
         mPresenter.getNakshakra();
     }
 
-    @OnClick(R.id.relativeLayoutMothertouge)
     public void relativeLayoutMothertougeClick(View view) {
         clickedItem = "mothertouge";
         this.view = view;
         mPresenter.getMothertouge();
     }
 
-    @OnClick(R.id.relativeLayoutBodytype)
+
     public void relativeLayoutBodytypeClick(View view) {
         clickedItem = "bodytype";
         this.view = view;
         mPresenter.getBodytype();
     }
 
-    @OnClick(R.id.relativeLayoutComplexion)
     public void relativeLayoutComplexionClick(View view) {
         clickedItem = "complexion";
         this.view = view;
         mPresenter.getComplexion();
     }
 
-    @OnClick(R.id.relativeLayoutOccupation)
     public void relativeLayoutOccupationClick(View view) {
         clickedItem = "occupation";
         this.view = view;
         mPresenter.getOccupation();
     }
 
-    @OnClick(R.id.relativeLayoutQualification)
     public void relativeLayoutQualificationClick(View view) {
         clickedItem = "qualification";
         this.view = view;
         mPresenter.getQualification();
     }
 
-    @OnClick(R.id.relativeLayoutFoodhabits)
     public void relativeLayoutFoodhabitsClick(View view) {
         clickedItem = "foodhabits";
         this.view = view;
         mPresenter.getFoodhabits();
     }
 
-    @OnClick(R.id.relativeLayoutDrinkingHabits)
     public void relativeLayoutDrinkingHabitsClick(View view) {
         clickedItem = "DrinkingHabits";
         this.view = view;
         mPresenter.getDrinkingHabits();
     }
 
-    @OnClick(R.id.relativeLayoutPhysicalstatus)
     public void relativeLayoutPhysicalstatusClick(View view) {
         clickedItem = "physicalstatus";
         this.view = view;
         mPresenter.getPhysicalstatus();
     }
 
-    @OnClick(R.id.relativeLayoutDosham)
     public void relativeLayoutDoshamClick(View view) {
         clickedItem = "dosham";
         this.view = view;
         mPresenter.getDosham();
     }
 
-    @OnClick(R.id.relativeOwnCar)
     public void relativeOwnCarClick(View view) {
         clickedItem = "OwnCar";
         this.view = view;
         mPresenter.getOwnCar();
     }
 
-    @OnClick(R.id.relativeOwnHouse)
     public void relativeOwnHouseClick(View view) {
         clickedItem = "OwnHouse";
         this.view = view;
         mPresenter.getOwnHouse();
     }
 
-    @OnClick(R.id.relativeSmoking)
     public void relativeSmokingClick(View view) {
         clickedItem = "Smoking";
         this.view = view;
@@ -818,67 +660,66 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         mPopupWindow.dismiss();
         if (clickedItem.equalsIgnoreCase("masterCast")) {
             selectedMaterCastId = masterCastResponse.getReturnData().get(position).getMasterCasteID();
-            textViewCast.setText(masterCastResponse.getReturnData().get(position).getMasterCastName());
-            textViewSubCast.setText("");
+            binding.textViewCast.setText(masterCastResponse.getReturnData().get(position).getMasterCastName());
+            binding.textViewSubCast.setText("");
         } else if (clickedItem.equalsIgnoreCase("subCast")) {
             selectedSubCastId = gotraResponse.getReturnData().get(position).getGotrasid();
-            textViewSubCast.setText(gotraResponse.getReturnData().get(position).getName());
+            binding.textViewSubCast.setText(gotraResponse.getReturnData().get(position).getName());
         } else if (clickedItem.equalsIgnoreCase("religion")) {
             selectedReligionId = getReligionResponse.getReturnData().get(position).getReligionID();
-            textViewReligion.setText(getReligionResponse.getReturnData().get(position).getReligionName());
+            binding.textViewReligion.setText(getReligionResponse.getReturnData().get(position).getReligionName());
         } else if (clickedItem.equalsIgnoreCase("livingWith")) {
             selectedLivingId = getLivingResponse.getReturnData().get(position).getLivingWithId();
-            textViewLivingWith.setText(getLivingResponse.getReturnData().get(position).getLivingWithName());
+            binding.textViewLivingWith.setText(getLivingResponse.getReturnData().get(position).getLivingWithName());
         } else if (clickedItem.equalsIgnoreCase("mothertouge")) {
             selectedMothertoungeId = getMothertongueBean.getReturnData().get(position).getMothertongueid();
-            textViewMothertouge.setText(getMothertongueBean.getReturnData().get(position).getMothertongueName());
+            binding.textViewMothertouge.setText(getMothertongueBean.getReturnData().get(position).getMothertongueName());
         } else if (clickedItem.equalsIgnoreCase("bodytype")) {
             selectedBodyTypeId = getBodyTypeBean.getReturnData().get(position).getBodytypeid();
-            textViewBodytype.setText(getBodyTypeBean.getReturnData().get(position).getBodytypename());
+            binding.textViewBodytype.setText(getBodyTypeBean.getReturnData().get(position).getBodytypename());
         } else if (clickedItem.equalsIgnoreCase("complexion")) {
             selectedComplexionId = getComplexionBean.getReturnData().get(position).getComplexionid();
-            textViewComplexion.setText(getComplexionBean.getReturnData().get(position).getComplexionname());
+            binding.textViewComplexion.setText(getComplexionBean.getReturnData().get(position).getComplexionname());
         } else if (clickedItem.equalsIgnoreCase("occupation")) {
             selectedOccupationId = getOccupationBean.getReturnData().get(position).getOccupationid();
-            textViewOccupation.setText(getOccupationBean.getReturnData().get(position).getOccupationname());
+            binding.textViewOccupation.setText(getOccupationBean.getReturnData().get(position).getOccupationname());
         } else if (clickedItem.equalsIgnoreCase("qualification")) {
             selectedQualificationId = getQualificationBean.getReturnData().get(position).getQualificationid();
-            textViewQualification.setText(getQualificationBean.getReturnData().get(position).getQualificationname());
+            binding.textViewQualification.setText(getQualificationBean.getReturnData().get(position).getQualificationname());
         } else if (clickedItem.equalsIgnoreCase("foodhabits")) {
             selectedFoodHabitesId = getFoodHabitsBean.getReturnData().get(position).getFoodHabitsid();
-            textViewFoodhabits.setText(getFoodHabitsBean.getReturnData().get(position).getFoodHabitsName());
+            binding.textViewFoodhabits.setText(getFoodHabitsBean.getReturnData().get(position).getFoodHabitsName());
         } else if (clickedItem.equalsIgnoreCase("DrinkingHabits")) {
             selectedDrinkingStatusId = getDrinkingHabits.getReturnData().get(position).getDrinkingStatus_Id();
-            textViewDrinkingStatus.setText(getDrinkingHabits.getReturnData().get(position).getDrinkingStatus_Name());
+            binding.textViewDrinkingHabits.setText(getDrinkingHabits.getReturnData().get(position).getDrinkingStatus_Name());
         } else if (clickedItem.equalsIgnoreCase("physicalstatus")) {
             selectedPhysicalstatusId = getPhysicalStatusBean.getReturnData().get(position).getPhysicalStatusid();
-            textViewPhysicalstatus.setText(getPhysicalStatusBean.getReturnData().get(position).getPhysicalStatusName());
+            binding.textViewPhysicalstatus.setText(getPhysicalStatusBean.getReturnData().get(position).getPhysicalStatusName());
         } else if (clickedItem.equalsIgnoreCase("dosham")) {
             selectedDoshamId = getDoshamBean.getReturnData().get(position).getDoshamid();
-            textViewDosham.setText(getDoshamBean.getReturnData().get(position).getDoshamName());
+            binding.textViewDosham.setText(getDoshamBean.getReturnData().get(position).getDoshamName());
         } else if (clickedItem.equalsIgnoreCase("city")) {
             selectedCityId = getCityResponse.getReturnData().get(position).getCityId();
-            textViewCity.setText(getCityResponse.getReturnData().get(position).getName());
+            binding.textViewCity.setText(getCityResponse.getReturnData().get(position).getName());
         } else if (clickedItem.equalsIgnoreCase("matrialstatus")) {
             selectedMaritalStatusId = getMaritalStatusResponse.getReturnData().get(position).getMaritalStatus_Id();
-            textViewMatrialstatus.setText(getMaritalStatusResponse.getReturnData().get(position).getMaritalStatus_Name());
+            binding.textViewMatrialstatus.setText(getMaritalStatusResponse.getReturnData().get(position).getMaritalStatus_Name());
         } else if (clickedItem.equalsIgnoreCase("nakshakra")) {
             selectedNakshatraId = getNakshatrasBean.getReturnData().get(position).getNakshatraid();
-            textViewNakshatra.setText(getNakshatrasBean.getReturnData().get(position).getNakshatraname());
+            binding.textViewNakshatra.setText(getNakshatrasBean.getReturnData().get(position).getNakshatraname());
         } else if (clickedItem.equalsIgnoreCase("OwnCar")) {
             selectedOwnCarId = getOwnCarResponse.getReturnData().get(position).getOwnCarId();
-            textViewOwnCar.setText(getOwnCarResponse.getReturnData().get(position).getOwnCarType());
+            binding.textViewOwnCar.setText(getOwnCarResponse.getReturnData().get(position).getOwnCarType());
         } else if (clickedItem.equalsIgnoreCase("OwnHouse")) {
             selectedOwnHouseId = getOwnHouseResponse.getReturnData().get(position).getOwnHouseId();
-            textViewOwnHouse.setText(getOwnHouseResponse.getReturnData().get(position).getOwnHouseType());
+            binding.textViewOwnHouse.setText(getOwnHouseResponse.getReturnData().get(position).getOwnHouseType());
         } else if (clickedItem.equalsIgnoreCase("Smoking")) {
             selectedSmokingStatusId = getSmokingResponse.getReturnData().get(position).getSmokingId();
-            textViewSmoking.setText(getSmokingResponse.getReturnData().get(position).getSmokingType());
+            binding.textViewSmoking.setText(getSmokingResponse.getReturnData().get(position).getSmokingType());
         }
     }
 
 
-    @OnClick({R.id.btnUpdate})
     public void btnUpdateClick(View view) {
 //        if (selectedReligionId == 0) {
 //            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_religion));

@@ -169,11 +169,12 @@ public class AddDirectoryFragment extends BaseAddImagesFragment implements Adapt
     private Response.Listener<CitiesResponse> onCitiesSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
-            setCities(response.getReturnData());
-        } else {
-            UiUtil.showToast(context, getString(R.string.err_occurred));
-        }
+        if (getActivity() != null)
+            if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
+                setCities(response.getReturnData());
+            } else {
+                UiUtil.showToast(context, getString(R.string.err_occurred));
+            }
 
 
     };
@@ -200,11 +201,12 @@ public class AddDirectoryFragment extends BaseAddImagesFragment implements Adapt
     private Response.Listener<CountriesResponse> onCountriesSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (getActivity() != null && response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
-            setCountries(response.getCountries());
-        } else {
-            UiUtil.showToast(context, getString(R.string.err_occurred));
-        }
+        if (getActivity() != null)
+            if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
+                setCountries(response.getCountries());
+            } else {
+                UiUtil.showToast(context, getString(R.string.err_occurred));
+            }
     };
 
     private void setCountries(ArrayList<Country> countries) {

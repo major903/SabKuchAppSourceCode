@@ -72,13 +72,15 @@ public class WalletActivity extends BaseActivity {
     }
 
     private Response.Listener<WalletResponse> onWalletSuccessListener = response -> {
-        requestStack.pop();
+        if (!requestStack.isEmpty())
+            requestStack.pop();
         walletResponse = response;
         checkFlagAndLoadUI();
     };
 
     private Response.Listener<MyReferralResponse> onMyReferralSuccessListener = response -> {
-        requestStack.pop();
+        if (!requestStack.isEmpty())
+            requestStack.pop();
         myReferralResponse = response;
         checkFlagAndLoadUI();
     };

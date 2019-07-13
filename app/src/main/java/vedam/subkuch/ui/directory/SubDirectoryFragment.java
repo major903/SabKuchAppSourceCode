@@ -64,7 +64,7 @@ public class SubDirectoryFragment extends BaseListFragment {
         return inflater.inflate(R.layout.fragment_directory, container, false);
     }
 
-    public void onViewCreated(View v, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
         getSubCategories();
     }
@@ -78,11 +78,12 @@ public class SubDirectoryFragment extends BaseListFragment {
     private Response.Listener<SubCategoryResponse> onCategorySuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (response != null && response.getStatus().equals(Constants.TRUE)) {
-            subCategories = response.getSubCategoryResult().getSubCategories();
-            loadValues();
-        } else
-            UiUtil.showToast(context, getString(R.string.no_data));
+        if (getActivity() != null)
+            if (response != null && response.getStatus().equals(Constants.TRUE)) {
+                subCategories = response.getSubCategoryResult().getSubCategories();
+                loadValues();
+            } else
+                UiUtil.showToast(context, getString(R.string.no_data));
     };
 
     private void loadValues() {
@@ -115,12 +116,10 @@ public class SubDirectoryFragment extends BaseListFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()) {
-            case R.id.action_add:
-                startActivity(new Intent(getActivity(), AddDirectoryActivity.class));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.action_add) {
+            startActivity(new Intent(getActivity(), AddDirectoryActivity.class));
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 }

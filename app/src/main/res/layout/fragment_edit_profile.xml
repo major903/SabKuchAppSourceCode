@@ -1,866 +1,894 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/rootLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:fillViewport="true"
-    android:overScrollMode="never"
-    android:scrollbars="none">
+    <data>
 
-    <LinearLayout
+        <variable
+            name="editProfileFragment"
+            type="vedam.subkuch.ui.matrimonial.editProfile.EditProfileFragment" />
+    </data>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rootLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/dp_twenty">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:scrollbars="none">
 
-        <FrameLayout
-            android:id="@+id/ll_add_picture"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:orientation="vertical"
+            android:padding="@dimen/dp_twenty">
 
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/iv_picture"
-                android:layout_width="@dimen/margin_136dp"
-                android:layout_height="@dimen/margin_136dp"
-                android:scaleType="fitXY"
-                app:riv_border_color="@color/colorPrimary"
-                app:riv_border_width="@dimen/margin_2dp"
-                android:src="@drawable/placeholder_small"
-                app:riv_oval="true" />
+            <FrameLayout
+                android:id="@+id/ll_add_picture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
 
-            <LinearLayout
-                android:id="@+id/ll_edit_picture"
-                android:layout_width="@dimen/margin_48dp"
-                android:layout_height="@dimen/margin_48dp"
-                android:layout_gravity="bottom|right"
-                android:background="@drawable/circular_fill_black"
-                android:gravity="center"
-                app:layout_anchor="@+id/iv_picture"
-                app:layout_anchorGravity="bottom|right">
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/iv_picture"
+                    android:layout_width="@dimen/margin_136dp"
+                    android:layout_height="@dimen/margin_136dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/placeholder_small"
+                    app:riv_border_color="@color/colorPrimary"
+                    app:riv_border_width="@dimen/margin_2dp"
+                    app:riv_oval="true" />
+
+                <LinearLayout
+                    android:id="@+id/ll_edit_picture"
+                    android:layout_width="@dimen/margin_48dp"
+                    android:layout_height="@dimen/margin_48dp"
+                    android:layout_gravity="bottom|right"
+                    android:background="@drawable/circular_fill_black"
+                    android:gravity="center"
+                    app:layout_anchor="@+id/iv_picture"
+                    app:layout_anchorGravity="bottom|right">
+
+                    <ImageView
+                        android:id="@+id/iv_edit_picture"
+                        android:layout_width="@dimen/margin_32dp"
+                        android:layout_height="@dimen/margin_32dp"
+                        android:background="@color/black"
+                        android:padding="@dimen/margin_4dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/camera" />
+                </LinearLayout>
+            </FrameLayout>
+
+
+            <!-- <RelativeLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="@dimen/margin_16dp">
+
+                 <TextView
+                     android:id="@+id/tv_interested_in"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_centerVertical="true"
+                     android:layout_marginTop="@dimen/margin_16dp"
+                     android:text="@string/interested_in_matrimonial"
+                     android:textColor="@android:color/black"
+                     android:textSize="@dimen/sp_eighteen" />
+
+                 <Switch
+                     android:id="@+id/switchMatrimonial"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_alignParentRight="true"
+                     android:layout_centerVertical="true"
+                     app:theme="@style/MyCheckBoxTheme" />
+             </RelativeLayout>-->
+
+            <TextView
+                android:id="@+id/tv_interested_in"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/interested_in_matrimonial"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/sp_eighteen" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_4dp"
+                android:background="@drawable/edit_text_border">
+
+                <Spinner
+                    android:id="@+id/sp_interested_in"
+                    style="@style/SpinnerStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/SpinnerStyle" />
+            </FrameLayout>
+
+            <!--<TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/first_name"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/sp_eighteen" />
+
+            <EditText
+                android:id="@+id/editTextFirstName"
+                style="@style/EditTextStyle2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/last_name"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/sp_eighteen" />
+
+            <EditText
+                android:id="@+id/editTextLastName"
+                style="@style/EditTextStyle2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName" />-->
+
+            <vedam.subkuch.uicomponent.OptionalTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/about_me"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/sp_eighteen" />
+
+            <EditText
+                android:id="@+id/et_about_me"
+                style="@style/EditTextStyle2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine" />
+
+            <vedam.subkuch.uicomponent.RequiredTextView
+                android:id="@+id/tv_religion_heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/selectreligion"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/sp_eighteen" />
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutReligion"
+                style="@style/EditTextStyle2"
+                android:onClick="@{editProfileFragment::relativeLayoutReligionClick}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewReligion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_eighteen" />
 
                 <ImageView
-                    android:id="@+id/iv_edit_picture"
-                    android:layout_width="@dimen/margin_32dp"
-                    android:layout_height="@dimen/margin_32dp"
-                    android:background="@color/black"
-                    android:padding="@dimen/margin_4dp"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/camera" />
-            </LinearLayout>
-        </FrameLayout>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dp_sixteen"
+                    app:srcCompat="@drawable/ic_drop_down" />
+            </RelativeLayout>
 
 
-        <!-- <RelativeLayout
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:layout_marginTop="@dimen/margin_16dp">
-
-             <TextView
-                 android:id="@+id/tv_interested_in"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_centerVertical="true"
-                 android:layout_marginTop="@dimen/margin_16dp"
-                 android:text="@string/interested_in_matrimonial"
-                 android:textColor="@android:color/black"
-                 android:textSize="@dimen/sp_eighteen" />
-
-             <Switch
-                 android:id="@+id/switchMatrimonial"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_alignParentRight="true"
-                 android:layout_centerVertical="true"
-                 app:theme="@style/MyCheckBoxTheme" />
-         </RelativeLayout>-->
-
-        <TextView
-            android:id="@+id/tv_interested_in"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/interested_in_matrimonial"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_4dp"
-            android:background="@drawable/edit_text_border">
-
-            <Spinner
-                android:id="@+id/sp_interested_in"
-                style="@style/SpinnerStyle"
-                android:layout_width="match_parent"
+            <vedam.subkuch.uicomponent.OptionalTextView
+                android:id="@+id/tv_caste_heading"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:theme="@style/SpinnerStyle" />
-        </FrameLayout>
-
-        <!--<TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/first_name"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-        <EditText
-            android:id="@+id/editTextFirstName"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/last_name"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-        <EditText
-            android:id="@+id/editTextLastName"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName" />-->
-
-        <vedam.subkuch.uicomponent.OptionalTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/about_me"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-        <EditText
-            android:id="@+id/et_about_me"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textMultiLine" />
-
-        <vedam.subkuch.uicomponent.RequiredTextView
-            android:id="@+id/tv_religion_heading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/selectreligion"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-        <RelativeLayout
-            android:id="@+id/relativeLayoutReligion"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textViewReligion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/select_caste"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
 
-            <ImageView
+            <RelativeLayout
+                android:id="@+id/relativeLayoutMasterCast"
+                style="@style/EditTextStyle2"
+                android:onClick="@{editProfileFragment::relativeLayoutMasterCastClick}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewCast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_eighteen" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dp_sixteen"
+                    app:srcCompat="@drawable/ic_drop_down" />
+            </RelativeLayout>
+
+
+            <vedam.subkuch.uicomponent.OptionalTextView
+                android:id="@+id/tv_gotra_heading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/dp_sixteen"
-                app:srcCompat="@drawable/ic_drop_down" />
-        </RelativeLayout>
-
-
-        <vedam.subkuch.uicomponent.OptionalTextView
-            android:id="@+id/tv_caste_heading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/select_caste"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-        <RelativeLayout
-            android:id="@+id/relativeLayoutMasterCast"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textViewCast"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/select_gotra"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
 
-            <ImageView
+            <RelativeLayout
+                android:id="@+id/relativeLayoutGotra"
+                style="@style/EditTextStyle2"
+                android:onClick="@{editProfileFragment::relativeLayoutGotraClick}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewGotra"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_eighteen" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dp_sixteen"
+                    app:srcCompat="@drawable/ic_drop_down" />
+            </RelativeLayout>
+
+            <vedam.subkuch.uicomponent.OptionalTextView
+                android:id="@+id/tv_nakshatra_heading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/dp_sixteen"
-                app:srcCompat="@drawable/ic_drop_down" />
-        </RelativeLayout>
-
-
-        <vedam.subkuch.uicomponent.OptionalTextView
-            android:id="@+id/tv_gotra_heading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/select_gotra"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-        <RelativeLayout
-            android:id="@+id/relativeLayoutGotra"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textViewGotra"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/select_nakshakra"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
 
-            <ImageView
+            <RelativeLayout
+                android:id="@+id/relativeLayoutNakshakra"
+                style="@style/EditTextStyle2"
+                android:onClick="@{editProfileFragment::relativeLayoutNakshakraClick}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewNakshakra"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_eighteen" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dp_sixteen"
+                    app:srcCompat="@drawable/ic_drop_down" />
+            </RelativeLayout>
+
+
+            <vedam.subkuch.uicomponent.RequiredTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/dp_sixteen"
-                app:srcCompat="@drawable/ic_drop_down" />
-        </RelativeLayout>
-
-        <vedam.subkuch.uicomponent.OptionalTextView
-            android:id="@+id/tv_nakshatra_heading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/select_nakshakra"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-        <RelativeLayout
-            android:id="@+id/relativeLayoutNakshakra"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textViewNakshakra"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/select_bodytype"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
 
-            <ImageView
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutBodytype"
+                style="@style/EditTextStyle2"
+                android:onClick="@{editProfileFragment::relativeLayoutBodytypeClick}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewBodytype"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_eighteen" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dp_sixteen"
+                    app:srcCompat="@drawable/ic_drop_down" />
+            </RelativeLayout>
+
+
+            <vedam.subkuch.uicomponent.RequiredTextView
+                android:id="@+id/tv_complexion_heading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/dp_sixteen"
-                app:srcCompat="@drawable/ic_drop_down" />
-        </RelativeLayout>
-
-
-        <vedam.subkuch.uicomponent.RequiredTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/select_bodytype"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-
-        <RelativeLayout
-            android:id="@+id/relativeLayoutBodytype"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textViewBodytype"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/select_complexion"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
 
-            <ImageView
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutComplexion"
+                style="@style/EditTextStyle2"
+                android:onClick="@{editProfileFragment::relativeLayoutComplexionClick}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewComplexion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_eighteen" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dp_sixteen"
+                    app:srcCompat="@drawable/ic_drop_down" />
+            </RelativeLayout>
+
+
+            <vedam.subkuch.uicomponent.RequiredTextView
+                android:id="@+id/tv_occupation_heading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/dp_sixteen"
-                app:srcCompat="@drawable/ic_drop_down" />
-        </RelativeLayout>
-
-
-        <vedam.subkuch.uicomponent.RequiredTextView
-            android:id="@+id/tv_complexion_heading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/select_complexion"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-
-        <RelativeLayout
-            android:id="@+id/relativeLayoutComplexion"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textViewComplexion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/select_occupation"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
 
-            <ImageView
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutOccupation"
+                style="@style/EditTextStyle2"
+                android:onClick="@{editProfileFragment::relativeLayoutOccupationClick}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewOccupation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_eighteen" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dp_sixteen"
+                    app:srcCompat="@drawable/ic_drop_down" />
+            </RelativeLayout>
+
+
+            <vedam.subkuch.uicomponent.RequiredTextView
+                android:id="@+id/tv_qualification_heading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/dp_sixteen"
-                app:srcCompat="@drawable/ic_drop_down" />
-        </RelativeLayout>
-
-
-        <vedam.subkuch.uicomponent.RequiredTextView
-            android:id="@+id/tv_occupation_heading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/select_occupation"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-
-        <RelativeLayout
-            android:id="@+id/relativeLayoutOccupation"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textViewOccupation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/select_qualification"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
 
-            <ImageView
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutQualification"
+                style="@style/EditTextStyle2"
+                android:onClick="@{editProfileFragment::relativeLayoutQualificationClick}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewQualification"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_eighteen" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dp_sixteen"
+                    app:srcCompat="@drawable/ic_drop_down" />
+            </RelativeLayout>
+
+
+            <vedam.subkuch.uicomponent.RequiredTextView
+                android:id="@+id/tv_food_habit_heading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/dp_sixteen"
-                app:srcCompat="@drawable/ic_drop_down" />
-        </RelativeLayout>
-
-
-        <vedam.subkuch.uicomponent.RequiredTextView
-            android:id="@+id/tv_qualification_heading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/select_qualification"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-
-        <RelativeLayout
-            android:id="@+id/relativeLayoutQualification"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textViewQualification"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/select_food_habits"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
 
-            <ImageView
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutFoodhabits"
+                style="@style/EditTextStyle2"
+                android:onClick="@{editProfileFragment::relativeLayoutFoodhabitsClick}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewFoodhabits"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_eighteen" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dp_sixteen"
+                    app:srcCompat="@drawable/ic_drop_down" />
+            </RelativeLayout>
+
+            <vedam.subkuch.uicomponent.RequiredTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/dp_sixteen"
-                app:srcCompat="@drawable/ic_drop_down" />
-        </RelativeLayout>
-
-
-        <vedam.subkuch.uicomponent.RequiredTextView
-            android:id="@+id/tv_food_habit_heading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/select_food_habits"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-
-        <RelativeLayout
-            android:id="@+id/relativeLayoutFoodhabits"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textViewFoodhabits"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/select_drinking_habits"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
 
-            <ImageView
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutDrinkingHabits"
+                style="@style/EditTextStyle2"
+                android:onClick="@{editProfileFragment::relativeLayoutDrinkingHabitsClick}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewDrinkingHabits"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_eighteen" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dp_sixteen"
+                    app:srcCompat="@drawable/ic_drop_down" />
+            </RelativeLayout>
+
+
+            <vedam.subkuch.uicomponent.RequiredTextView
+                android:id="@+id/tv_physical_status_heading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/dp_sixteen"
-                app:srcCompat="@drawable/ic_drop_down" />
-        </RelativeLayout>
-
-        <vedam.subkuch.uicomponent.RequiredTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/select_drinking_habits"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-
-        <RelativeLayout
-            android:id="@+id/relativeLayoutDrinkingHabits"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textViewDrinkingHabits"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/select_physical_status"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
 
-            <ImageView
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutPhysicalstatus"
+                style="@style/EditTextStyle2"
+                android:onClick="@{editProfileFragment::relativeLayoutPhysicalstatusClick}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewPhysicalstatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_eighteen" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dp_sixteen"
+                    app:srcCompat="@drawable/ic_drop_down" />
+            </RelativeLayout>
+
+
+            <vedam.subkuch.uicomponent.OptionalTextView
+                android:id="@+id/tv_dosham_heading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/dp_sixteen"
-                app:srcCompat="@drawable/ic_drop_down" />
-        </RelativeLayout>
-
-
-        <vedam.subkuch.uicomponent.RequiredTextView
-            android:id="@+id/tv_physical_status_heading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/select_physical_status"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-
-        <RelativeLayout
-            android:id="@+id/relativeLayoutPhysicalstatus"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textViewPhysicalstatus"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/select_dosham"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
 
-            <ImageView
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutDosham"
+                style="@style/EditTextStyle2"
+                android:onClick="@{editProfileFragment::relativeLayoutDoshamClick}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewDosham"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_eighteen" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dp_sixteen"
+                    app:srcCompat="@drawable/ic_drop_down" />
+            </RelativeLayout>
+
+
+            <vedam.subkuch.uicomponent.RequiredTextView
+                android:id="@+id/tv_mother_tongue_heading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/dp_sixteen"
-                app:srcCompat="@drawable/ic_drop_down" />
-        </RelativeLayout>
-
-
-        <vedam.subkuch.uicomponent.OptionalTextView
-            android:id="@+id/tv_dosham_heading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/select_dosham"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-
-        <RelativeLayout
-            android:id="@+id/relativeLayoutDosham"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textViewDosham"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/select_mothertouge"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
 
-            <ImageView
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutMothertouge"
+                style="@style/EditTextStyle2"
+                android:onClick="@{editProfileFragment::relativeLayoutMothertougeClick}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewMothertouge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_eighteen" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dp_sixteen"
+                    app:srcCompat="@drawable/ic_drop_down" />
+            </RelativeLayout>
+
+
+            <vedam.subkuch.uicomponent.RequiredTextView
+                android:id="@+id/tv_living_with_heading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/dp_sixteen"
-                app:srcCompat="@drawable/ic_drop_down" />
-        </RelativeLayout>
-
-
-        <vedam.subkuch.uicomponent.RequiredTextView
-            android:id="@+id/tv_mother_tongue_heading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/select_mothertouge"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-
-        <RelativeLayout
-            android:id="@+id/relativeLayoutMothertouge"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textViewMothertouge"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/select_living_with"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
 
-            <ImageView
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutLiving"
+                style="@style/EditTextStyle2"
+                android:onClick="@{editProfileFragment::relativeLayoutLivingClick}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewLivingWith"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_eighteen" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dp_sixteen"
+                    app:srcCompat="@drawable/ic_drop_down" />
+            </RelativeLayout>
+
+
+            <vedam.subkuch.uicomponent.RequiredTextView
+                android:id="@+id/tv_marital_status_heading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/dp_sixteen"
-                app:srcCompat="@drawable/ic_drop_down" />
-        </RelativeLayout>
-
-
-        <vedam.subkuch.uicomponent.RequiredTextView
-            android:id="@+id/tv_living_with_heading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/select_living_with"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-
-        <RelativeLayout
-            android:id="@+id/relativeLayoutLiving"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textViewLivingWith"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/marital_status"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
 
-            <ImageView
+
+            <RelativeLayout
+                android:id="@+id/relativeMatrialStatus"
+                style="@style/EditTextStyle2"
+                android:onClick="@{editProfileFragment::relativeMatrialStatusClick}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewMatrialStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_eighteen" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dp_sixteen"
+                    app:srcCompat="@drawable/ic_drop_down" />
+            </RelativeLayout>
+
+            <vedam.subkuch.uicomponent.RequiredTextView
+                android:id="@+id/tv_annual_income_heading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/dp_sixteen"
-                app:srcCompat="@drawable/ic_drop_down" />
-        </RelativeLayout>
-
-
-        <vedam.subkuch.uicomponent.RequiredTextView
-            android:id="@+id/tv_marital_status_heading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/marital_status"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-
-        <RelativeLayout
-            android:id="@+id/relativeMatrialStatus"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textViewMatrialStatus"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/annual_income"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
 
-            <ImageView
+
+            <RelativeLayout
+                android:id="@+id/relativeAnnualIncome"
+                style="@style/EditTextStyle2"
+                android:onClick="@{editProfileFragment::relativeLayoutAnnualIncomeClick}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewAnnualIncome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_eighteen" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dp_sixteen"
+                    app:srcCompat="@drawable/ic_drop_down" />
+            </RelativeLayout>
+
+            <vedam.subkuch.uicomponent.RequiredTextView
+                android:id="@+id/tv_car_heading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/dp_sixteen"
-                app:srcCompat="@drawable/ic_drop_down" />
-        </RelativeLayout>
-
-        <vedam.subkuch.uicomponent.RequiredTextView
-            android:id="@+id/tv_annual_income_heading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/annual_income"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-
-        <RelativeLayout
-            android:id="@+id/relativeAnnualIncome"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textViewAnnualIncome"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/select_car_status"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
 
-            <ImageView
+
+            <RelativeLayout
+                android:id="@+id/relativeOwnCar"
+                style="@style/EditTextStyle2"
+                android:onClick="@{editProfileFragment::relativeOwnCarClick}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewOwnCar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_eighteen" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dp_sixteen"
+                    app:srcCompat="@drawable/ic_drop_down" />
+            </RelativeLayout>
+
+            <vedam.subkuch.uicomponent.RequiredTextView
+                android:id="@+id/tv_house_heading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/dp_sixteen"
-                app:srcCompat="@drawable/ic_drop_down" />
-        </RelativeLayout>
-
-        <vedam.subkuch.uicomponent.RequiredTextView
-            android:id="@+id/tv_car_heading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/select_car_status"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-
-        <RelativeLayout
-            android:id="@+id/relativeOwnCar"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textViewOwnCar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/select_house_status"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
 
-            <ImageView
+
+            <RelativeLayout
+                android:id="@+id/relativeOwnHouse"
+                style="@style/EditTextStyle2"
+                android:onClick="@{editProfileFragment::relativeOwnHouseClick}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewOwnHouse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_eighteen" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dp_sixteen"
+                    app:srcCompat="@drawable/ic_drop_down" />
+            </RelativeLayout>
+
+            <vedam.subkuch.uicomponent.RequiredTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/dp_sixteen"
-                app:srcCompat="@drawable/ic_drop_down" />
-        </RelativeLayout>
-
-        <vedam.subkuch.uicomponent.RequiredTextView
-            android:id="@+id/tv_house_heading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/select_house_status"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-
-        <RelativeLayout
-            android:id="@+id/relativeOwnHouse"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textViewOwnHouse"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/select_smoking_status"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
 
-            <ImageView
+
+            <RelativeLayout
+                android:id="@+id/relativeSmoking"
+                style="@style/EditTextStyle2"
+                android:onClick="@{editProfileFragment::relativeSmokingClick}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewSmoking"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_eighteen" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dp_sixteen"
+                    app:srcCompat="@drawable/ic_drop_down" />
+            </RelativeLayout>
+
+            <vedam.subkuch.uicomponent.RequiredTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/dp_sixteen"
-                app:srcCompat="@drawable/ic_drop_down" />
-        </RelativeLayout>
-
-        <vedam.subkuch.uicomponent.RequiredTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/select_smoking_status"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-
-        <RelativeLayout
-            android:id="@+id/relativeSmoking"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textViewSmoking"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/select_height"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
 
-            <ImageView
+
+            <RelativeLayout
+                android:id="@+id/relativeHeight"
+                style="@style/EditTextStyle2"
+                android:onClick="@{editProfileFragment::relativeHeightClick}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewHeight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_eighteen" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dp_sixteen"
+                    app:srcCompat="@drawable/ic_drop_down" />
+            </RelativeLayout>
+
+            <vedam.subkuch.uicomponent.RequiredTextView
+                android:id="@+id/tv_weight_heading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/dp_sixteen"
-                app:srcCompat="@drawable/ic_drop_down" />
-        </RelativeLayout>
-
-        <vedam.subkuch.uicomponent.RequiredTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/select_height"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
-
-
-        <RelativeLayout
-            android:id="@+id/relativeHeight"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textViewHeight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/select_weight"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/dp_sixteen"
-                app:srcCompat="@drawable/ic_drop_down" />
-        </RelativeLayout>
 
-        <vedam.subkuch.uicomponent.RequiredTextView
-            android:id="@+id/tv_weight_heading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/select_weight"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_eighteen" />
+            <RelativeLayout
+                android:id="@+id/relativeWeight"
+                style="@style/EditTextStyle2"
+                android:onClick="@{editProfileFragment::relativeWeightClick}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
+                <TextView
+                    android:id="@+id/textViewWeight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_eighteen" />
 
-        <RelativeLayout
-            android:id="@+id/relativeWeight"
-            style="@style/EditTextStyle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dp_sixteen"
+                    app:srcCompat="@drawable/ic_drop_down" />
+            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/textViewWeight"
+            <Button
+                android:id="@+id/btnUpdate"
+                android:onClick="@{editProfileFragment::btnUpdateClick}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/sp_eighteen" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/dp_sixteen"
-                app:srcCompat="@drawable/ic_drop_down" />
-        </RelativeLayout>
-
-        <Button
-            android:id="@+id/btnUpdate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:background="@color/colorPrimary"
-            android:text="@string/update"
-            android:textColor="@android:color/white" />
-    </LinearLayout>
-</ScrollView>
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:background="@color/colorPrimary"
+                android:text="@string/update"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+    </ScrollView>
+</layout>

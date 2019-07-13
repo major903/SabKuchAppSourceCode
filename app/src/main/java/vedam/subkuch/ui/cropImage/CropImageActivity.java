@@ -2,50 +2,45 @@ package vedam.subkuch.ui.cropImage;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.naver.android.helloyako.imagecrop.view.ImageCropView;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseActivity;
+import vedam.subkuch.databinding.ActivityCropImageBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.utils.ImageUtil;
 
 public class CropImageActivity extends BaseActivity {
 
-    @BindView(R.id.imageViewCrop)
-    ImageCropView imageViewCrop;
+    private ActivityCropImageBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_crop_image);
-        ButterKnife.bind(this);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_crop_image);
+        binding.setCropImageActivity(this);
         setData();
     }
 
     private void setData() {
         String imageUri = getIntent().getStringExtra(Constants.EXTRA_IMAGE_URI);
         // Bitmap newBitMap = FilesFunctions.changeImageOrientation(imageUri, singleBitmapDetail.getBitMap());
-        imageViewCrop.setImageFilePath(imageUri);
-        imageViewCrop.setAspectRatio(6, 6);
+        binding.imageViewCrop.setImageFilePath(imageUri);
+        binding.imageViewCrop.setAspectRatio(6, 6);
     }
 
 
-    @OnClick(R.id.buttonCrop)
     public void buttonCropClick(View view) {
-        if (!imageViewCrop.isChangingScale()) {
-            Bitmap b = imageViewCrop.getCroppedImage();
+        if (!binding.imageViewCrop.isChangingScale()) {
+            Bitmap b = binding.imageViewCrop.getCroppedImage();
             if (b != null) {
                 String fileName = new SimpleDateFormat("yyyyMMddHHmmss", Locale.US).format(Calendar.getInstance().getTime());
                 ImageUtil.saveToInternalStorage(this, b, fileName);
@@ -59,8 +54,7 @@ public class CropImageActivity extends BaseActivity {
         }
     }
 
-    @OnClick(R.id.buttonDiscard)
-    public void buttonDiscardClick() {
+    public void buttonDiscardClick(View view) {
         finish();
     }
 }

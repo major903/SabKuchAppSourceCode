@@ -68,7 +68,8 @@ public class OfferDetailFragment extends BaseFragment {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            UiUtil.showProgressDialog(context, getString(R.string.loading));
+            if (getActivity() != null)
+                UiUtil.showProgressDialog(context, getString(R.string.loading));
         }
 
         @Override

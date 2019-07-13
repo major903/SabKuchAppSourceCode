@@ -106,7 +106,7 @@ public class UiUtil {
         if (context == null)
             return;
 
-        if ((pDialog != null && !pDialog.isShowing()) || pDialog == null)
+        if (pDialog == null || !pDialog.isShowing())
             pDialog = initProgressDialog(context);
 
         if (title != null)
