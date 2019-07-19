@@ -38,8 +38,8 @@ public class DataFetcher {
     }
 
     public static <T> void getFeatures(Context context, Response.Listener<T> updateSuccessListener, Type repClass, Response.ErrorListener errorListener) {
-
-        String url = String.format("%s/api/features/getbycity", NetworkConstants.END_POINT2);
+        String userId = AppPrefs.getPrefsUserId(context);
+        String url = String.format("%s/api/Feature/GetByCity?UserId=%s", NetworkConstants.END_POINT2, userId);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
@@ -170,8 +170,9 @@ public class DataFetcher {
 
     public static <T> void updateLocation(Context context, Response.Listener<T> updateSuccessListener,
                                           Class<T> repClass, Response.ErrorListener errorListener, String latitude, String longitude) {
-        String url = String.format("%s/api/UserProfile/UserCurrentLocation?Latitude=%s&Longitude=%s",
-                NetworkConstants.END_POINT2, latitude, longitude);
+        String userId = AppPrefs.getPrefsUserId(context);
+        String url = String.format("%s/api/UserProfile/UserCurrentLocation?UserId=%s&Latitude=%s&Longitude=%s",
+                NetworkConstants.END_POINT2, userId, latitude, longitude);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
