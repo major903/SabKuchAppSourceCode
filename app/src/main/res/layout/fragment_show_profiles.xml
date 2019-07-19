@@ -13,7 +13,7 @@
             android:layout_height="match_parent"
             android:layout="@layout/layout_no_profiles" />
 
-        <android.support.v4.widget.NestedScrollView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/nsv_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <android.support.design.widget.CoordinatorLayout
+                <androidx.coordinatorlayout.widget.CoordinatorLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     tools:context=".ui.matrimonial.ShowProfilesFragment">
@@ -47,7 +47,7 @@
                         android:maxHeight="@dimen/margin_480dp"
                         tools:src="@drawable/whynot" />-->
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/fab_like"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
                         app:layout_anchor="@+id/csv_profile"
                         app:layout_anchorGravity="bottom|right" />
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/fab_dislike"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
                         app:layout_anchor="@+id/csv_profile"
                         app:layout_anchorGravity="left|bottom" />
 
-                </android.support.design.widget.CoordinatorLayout>
+                </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -303,6 +303,6 @@
                         tools:text="@string/err" />
                 </LinearLayout>
             </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
     </FrameLayout>
 </layout>

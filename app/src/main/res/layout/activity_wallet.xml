@@ -27,7 +27,7 @@
                 tools:context=".ui.wallet.WalletActivity"
                 tools:visibility="visible">
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/cv_name"
                     style="@style/CardViewWallet"
                     android:layout_width="match_parent"
@@ -97,10 +97,10 @@
 
                         </RelativeLayout>
                     </LinearLayout>
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/cv_earnings"
                     style="@style/CardViewWallet"
                     android:layout_width="match_parent"
@@ -144,9 +144,9 @@
                             tools:text="@string/err" />
                     </LinearLayout>
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     style="@style/CardViewWallet"
                     android:id="@+id/cv_tnc"
                     android:layout_width="match_parent"
@@ -175,7 +175,7 @@
                             android:textColor="@color/black" />
                     </LinearLayout>
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

@@ -1,6 +1,6 @@
 package vedam.subkuch.ui.vehicle.models;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public class Vehicle {
     private String vehicle;

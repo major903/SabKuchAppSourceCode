@@ -11,7 +11,7 @@
 
         <include layout="@layout/toolbar" />
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/margin_16dp"
@@ -143,6 +143,6 @@
                         android:text="@string/update" />
                 </LinearLayout>
             </ScrollView>
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 </layout>

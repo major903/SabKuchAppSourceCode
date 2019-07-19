@@ -13,12 +13,12 @@
             android:orientation="vertical"
             android:padding="@dimen/margin_16dp">
 
-            <android.support.design.widget.CoordinatorLayout
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:context=".ui.matrimonial.ShowProfilesFragment">
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/cv_image"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/margin_432dp"
@@ -36,9 +36,9 @@
                         app:riv_corner_radius="8dp"
                         tools:src="@drawable/placeholder" />
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
-                <android.support.design.widget.FloatingActionButton
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fab_dislike"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
                     app:layout_anchor="@+id/cv_image"
                     app:layout_anchorGravity="center_horizontal|bottom" />
 
-            </android.support.design.widget.CoordinatorLayout>
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
             <TextView
                 android:id="@+id/tv_name"

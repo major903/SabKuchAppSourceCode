@@ -1,6 +1,6 @@
 package vedam.subkuch.ui.ask.models;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public class AskCategory {
     private String categoryname;

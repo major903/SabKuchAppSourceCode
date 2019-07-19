@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 
 import vedam.subkuch.utils.UiUtil;
 
-public class OptionalTextView extends android.support.v7.widget.AppCompatTextView {
+public class OptionalTextView extends androidx.appcompat.widget.AppCompatTextView {
 
     public OptionalTextView(Context context, AttributeSet attrs) {
         super(context, attrs);

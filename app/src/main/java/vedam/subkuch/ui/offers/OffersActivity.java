@@ -1,7 +1,7 @@
 package vedam.subkuch.ui.offers;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseActivity;

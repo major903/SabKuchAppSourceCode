@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!-- https://qiita.com/ntsk/items/dac92596742e18470a55 -->
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -20,4 +20,4 @@
         app:riv_corner_radius="8dp"
         tools:src="@drawable/giftalife" />
 
-</android.support.v7.widget.CardView>
+</androidx.cardview.widget.CardView>
