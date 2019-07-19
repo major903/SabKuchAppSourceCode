@@ -151,8 +151,8 @@ public abstract class BaseAddImageFragment extends BaseFragment {
 
                     String filePath = file.getAbsolutePath();
 
-                    Bitmap rotatedImage = UiUtil.rotateImageIfRequired(filePath);
-                    Bitmap thumbnailBitmap = UiUtil.getThumbnail(context, rotatedImage);
+//                    Bitmap rotatedImage = UiUtil.rotateImageIfRequired(filePath);
+//                    Bitmap thumbnailBitmap = UiUtil.getThumbnail(context, rotatedImage);
 
                     //Setting the Bitmap to ImageView
                     startCrop(filePath);

@@ -20,26 +20,26 @@ public class DataFetcher {
 
     public static <T> void registerUser(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
 
-        String url = String.format("%s/api/UserProfile/AddProfile", NetworkConstants.END_POINT3);
+        String url = String.format("%s/api/UserProfile/AddProfile", NetworkConstants.END_POINT2);
         HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
     }
 
     public static <T> void editProfileMain(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
 
-        String url = String.format("%s/api/UserProfile/EditProfileMain", NetworkConstants.END_POINT3);
+        String url = String.format("%s/api/UserProfile/EditProfileMain", NetworkConstants.END_POINT2);
         HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
     }
 
     public static <T> void sendOtp(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener,
                                    String countryCode, String phoneNumber) {
 
-        String url = String.format("%s/api/login/otps/get/%s/%s", NetworkConstants.END_POINT3, countryCode, phoneNumber);
+        String url = String.format("%s/api/login/otps/get/%s/%s", NetworkConstants.END_POINT2, countryCode, phoneNumber);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
-    public static <T> void getFeatures(Context context, Response.Listener<T> updateSuccessListener, Type repClass, Response.ErrorListener errorListener, String userId) {
+    public static <T> void getFeatures(Context context, Response.Listener<T> updateSuccessListener, Type repClass, Response.ErrorListener errorListener) {
 
-        String url = String.format("%s/api/features/users/%s/get", NetworkConstants.END_POINT, userId);
+        String url = String.format("%s/api/features/getbycity", NetworkConstants.END_POINT2);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
@@ -74,7 +74,6 @@ public class DataFetcher {
 
     public static <T> void getEvents(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener,
                                      int pageIndex, int pageSize) {
-        String userId = AppPrefs.getPrefsUserId(context);
         String url = String.format(Locale.US, "%s/api/Events/GetEvents?PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT2, pageIndex, pageSize);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
@@ -139,7 +138,6 @@ public class DataFetcher {
     }
 
     public static <T> void getOffers(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
-        String userId = AppPrefs.getPrefsUserId(context);
         String url = String.format("%s/api/Offers/GetOffers", NetworkConstants.END_POINT2);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
@@ -172,9 +170,8 @@ public class DataFetcher {
 
     public static <T> void updateLocation(Context context, Response.Listener<T> updateSuccessListener,
                                           Class<T> repClass, Response.ErrorListener errorListener, String latitude, String longitude) {
-        String userId = AppPrefs.getPrefsUserId(context);
-        String url = String.format("%s/AllAPI/UserCurrentLocation?userid=%s&Latitude=%s&Longitude=%s",
-                NetworkConstants.END_POINT, userId, latitude, longitude);
+        String url = String.format("%s/api/UserProfile/UserCurrentLocation?Latitude=%s&Longitude=%s",
+                NetworkConstants.END_POINT2, latitude, longitude);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
@@ -193,34 +190,34 @@ public class DataFetcher {
     }
 
     public static <T> void getJobTypes(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
-        String url = String.format("%s/api/Master/GetJobTypes", NetworkConstants.END_POINT3);
+        String url = String.format("%s/api/Master/GetJobTypes", NetworkConstants.END_POINT2);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void getJobQualifications(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
-        String url = String.format("%s/api/Master/GetJobQualifications", NetworkConstants.END_POINT3);
+        String url = String.format("%s/api/Master/GetJobQualifications", NetworkConstants.END_POINT2);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void getJobExperiences(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
-        String url = String.format("%s/api/Master/GetJobExpereince", NetworkConstants.END_POINT3);
+        String url = String.format("%s/api/Master/GetJobExpereince", NetworkConstants.END_POINT2);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void getJobSalaries(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
-        String url = String.format("%s/api/Master/GetJobSalaries", NetworkConstants.END_POINT3);
+        String url = String.format("%s/api/Master/GetJobSalaries", NetworkConstants.END_POINT2);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void getJobProfile(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
         String userId = AppPrefs.getPrefsUserId(context);
-        String url = String.format("%s/api/Jobs/ViewJobProfile?ProfileId=%s", NetworkConstants.END_POINT3, userId);
+        String url = String.format("%s/api/Jobs/ViewJobProfile?ProfileId=%s", NetworkConstants.END_POINT2, userId);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void addJobProfile(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
 
-        String url = String.format("%s/api/Jobs/AddJobProfile", NetworkConstants.END_POINT3);
+        String url = String.format("%s/api/Jobs/AddJobProfile", NetworkConstants.END_POINT2);
         HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
     }
 
@@ -228,7 +225,7 @@ public class DataFetcher {
                                                  Response.ErrorListener errorListener) {
         Map<String, String> map = new HashMap<>();
         map.put(NetworkConstants.ProfileId, AppPrefs.getPrefsUserId(context));
-        String url = String.format("%s/api/Jobs/UploadJobProfileImage", NetworkConstants.END_POINT3);
+        String url = String.format("%s/api/Jobs/UploadJobProfileImage", NetworkConstants.END_POINT2);
         HelperVolley.callApiWithMultipartBody(context, url, null, updateSuccessListener, map, dataPartMap, repClass, errorListener);
     }
 
@@ -236,7 +233,7 @@ public class DataFetcher {
                                                          Response.ErrorListener errorListener) {
         Map<String, String> map = new HashMap<>();
         map.put(NetworkConstants.ProfileId, AppPrefs.getPrefsUserId(context));
-        String url = String.format("%s/api/Matrimony/UploadProfileImage", NetworkConstants.END_POINT3);
+        String url = String.format("%s/api/Matrimony/UploadProfileImage", NetworkConstants.END_POINT2);
         HelperVolley.callApiWithMultipartBody(context, url, null, updateSuccessListener, map, dataPartMap, repClass, errorListener);
     }
 
@@ -244,7 +241,7 @@ public class DataFetcher {
                                                          Response.ErrorListener errorListener) {
         Map<String, String> map = new HashMap<>();
         map.put(NetworkConstants.ProfileId, AppPrefs.getPrefsUserId(context));
-        String url = String.format("%s/api/Dating/UploadProfileImage", NetworkConstants.END_POINT3);
+        String url = String.format("%s/api/Dating/UploadProfileImage", NetworkConstants.END_POINT2);
         HelperVolley.callApiWithMultipartBody(context, url, null, updateSuccessListener, map, dataPartMap, repClass, errorListener);
     }
 
@@ -252,102 +249,102 @@ public class DataFetcher {
                                                     Response.ErrorListener errorListener, String eventId) {
         Map<String, String> map = new HashMap<>();
         map.put(NetworkConstants.EventId, eventId);
-        String url = String.format("%s/api/Events/UploadEventImage", NetworkConstants.END_POINT3);
+        String url = String.format("%s/api/Events/UploadEventImage", NetworkConstants.END_POINT2);
         HelperVolley.callApiWithMultipartBody(context, url, null, updateSuccessListener, map, dataPartMap, repClass, errorListener);
     }
 
     public static <T> void getInbox(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
         String userId = AppPrefs.getPrefsUserId(context);
-        String url = String.format("%s/api/Inbox/GetInbox?UserProfileId=%s", NetworkConstants.END_POINT3, userId);
+        String url = String.format("%s/api/Inbox/GetInbox?UserProfileId=%s", NetworkConstants.END_POINT2, userId);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void getProfile(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
         String userId = AppPrefs.getPrefsUserId(context);
-        String url = String.format("%s/api/UserProfile/ViewProfile?ProfileId=%s", NetworkConstants.END_POINT3, userId);
+        String url = String.format("%s/api/UserProfile/ViewProfile?ProfileId=%s", NetworkConstants.END_POINT2, userId);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void setAccessPin(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
 
-        String url = String.format("%s/api/UserProfile/SetAccessPin", NetworkConstants.END_POINT3);
+        String url = String.format("%s/api/UserProfile/SetAccessPin", NetworkConstants.END_POINT2);
         HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
     }
 
     public static <T> void verifyAccessPin(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
 
-        String url = String.format("%s/api/UserProfile/VerifyAccessPin", NetworkConstants.END_POINT3);
+        String url = String.format("%s/api/UserProfile/VerifyAccessPin", NetworkConstants.END_POINT2);
         HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
     }
 
     public static <T> void getDatingProfile(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener, int pageIndex, int pageSize) {
         String userId = AppPrefs.getPrefsUserId(context);
-        String url = String.format(Locale.US, "%s/api/Dating/GetProfiles?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT3, userId, pageIndex, pageSize);
+        String url = String.format(Locale.US, "%s/api/Dating/GetProfiles?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT2, userId, pageIndex, pageSize);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void getMatrimonialProfile(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener, int pageIndex, int pageSize) {
         String userId = AppPrefs.getPrefsUserId(context);
-        String url = String.format(Locale.US, "%s/api/Matrimony/GetProfiles?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT3, userId, pageIndex, pageSize);
+        String url = String.format(Locale.US, "%s/api/Matrimony/GetProfiles?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT2, userId, pageIndex, pageSize);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
 
     public static <T> void setMatrimonyLikeDislike(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
 
-        String url = String.format("%s/api/Matrimony/SetLikeDislike", NetworkConstants.END_POINT3);
+        String url = String.format("%s/api/Matrimony/SetLikeDislike", NetworkConstants.END_POINT2);
         HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
     }
 
     public static <T> void setDatingLikeDislike(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
 
-        String url = String.format("%s/api/Dating/SetLikeDislike", NetworkConstants.END_POINT3);
+        String url = String.format("%s/api/Dating/SetLikeDislike", NetworkConstants.END_POINT2);
         HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
     }
 
     public static <T> void getMatrimonialMatchedProfiles(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener, int pageIndex, int pageSize) {
         String userId = AppPrefs.getPrefsUserId(context);
-        String url = String.format(Locale.US, "%s/api/Matrimony/GetMatchedProfiles?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT3, userId, pageIndex, pageSize);
+        String url = String.format(Locale.US, "%s/api/Matrimony/GetMatchedProfiles?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT2, userId, pageIndex, pageSize);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void getDatingMatchedProfiles(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener, int pageIndex, int pageSize) {
         String userId = AppPrefs.getPrefsUserId(context);
-        String url = String.format(Locale.US, "%s/api/Dating/GetMatchedProfiles?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT3, userId, pageIndex, pageSize);
+        String url = String.format(Locale.US, "%s/api/Dating/GetMatchedProfiles?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT2, userId, pageIndex, pageSize);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void getMatrimonialMatchedChatProfiles(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener, int pageIndex, int pageSize) {
         String userId = AppPrefs.getPrefsUserId(context);
-        String url = String.format(Locale.US, "%s/api/Matrimony/GetMatchedChatProfiles?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT3, userId, pageIndex, pageSize);
+        String url = String.format(Locale.US, "%s/api/Matrimony/GetMatchedChatProfiles?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT2, userId, pageIndex, pageSize);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void getDatingMatchedChatProfiles(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener, int pageIndex, int pageSize) {
         String userId = AppPrefs.getPrefsUserId(context);
-        String url = String.format(Locale.US, "%s/api/Dating/GetMatchedChatProfiles?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT3, userId, pageIndex, pageSize);
+        String url = String.format(Locale.US, "%s/api/Dating/GetMatchedChatProfiles?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT2, userId, pageIndex, pageSize);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void getAllTransportBookings(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener, int pageIndex, int pageSize) {
         String userId = AppPrefs.getPrefsUserId(context);
-        String url = String.format(Locale.US, "%s/api/Transport/GetBooking?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT3, userId, pageIndex, pageSize);
+        String url = String.format(Locale.US, "%s/api/Transport/GetBooking?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT2, userId, pageIndex, pageSize);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void getMyTransportBookings(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener, int pageIndex, int pageSize) {
         String userId = AppPrefs.getPrefsUserId(context);
-        String url = String.format(Locale.US, "%s/api/Transport/GetMyBooking?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT3, userId, pageIndex, pageSize);
+        String url = String.format(Locale.US, "%s/api/Transport/GetMyBooking?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT2, userId, pageIndex, pageSize);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void getLabourRequirement(Context context, Response.Listener<T> updateSuccessListener, Type repClass, Response.ErrorListener errorListener) {
-        String url = String.format("%s/api/Master/GetTransportCoolie", NetworkConstants.END_POINT3);
+        String url = String.format("%s/api/Master/GetTransportCoolie", NetworkConstants.END_POINT2);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
     public static <T> void getVehicleType(Context context, Response.Listener<T> updateSuccessListener, Type repClass, Response.ErrorListener errorListener) {
-        String url = String.format("%s/api/Master/GetTransportTypes", NetworkConstants.END_POINT3);
+        String url = String.format("%s/api/Master/GetTransportTypes", NetworkConstants.END_POINT2);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 

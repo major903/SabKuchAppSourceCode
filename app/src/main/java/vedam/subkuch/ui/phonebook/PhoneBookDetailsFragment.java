@@ -75,10 +75,11 @@ public class PhoneBookDetailsFragment extends BaseListFragment {
     private Response.Listener<PhoneBookDetailsResponse> onPhoneBookDetailsSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (response != null && response.getReturnMessage().equals(Constants.SUCCESS) && response.getReturnData().size() > 0) {
-            loadValues(response.getReturnData());
-        } else
-            UiUtil.showToast(context, getString(R.string.err_occurred));
+        if (getActivity() != null)
+            if (response != null && response.getReturnMessage().equals(Constants.SUCCESS) && response.getReturnData().size() > 0) {
+                loadValues(response.getReturnData());
+            } else
+                UiUtil.showToast(context, getString(R.string.err_occurred));
     };
 
     private void loadValues(ArrayList<PhoneBookDetail> returnData) {

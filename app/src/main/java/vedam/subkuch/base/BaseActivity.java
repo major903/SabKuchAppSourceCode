@@ -385,27 +385,23 @@ public abstract class BaseActivity extends AppCompatActivity implements ScreenCh
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[], @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSION_REQUEST_READ_LOCATION:
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_READ_LOCATION) {// If request is cancelled, the result arrays are empty.
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    requestLocationProvider();
+                requestLocationProvider();
 
-                } else {
-                    if (shouldForce) {
-                        startAppSettings();
-                        finish();
-                    }
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
+            } else {
+                if (shouldForce) {
+                    startAppSettings();
+                    finish();
                 }
-                break;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
+                // permission denied, boo! Disable the
+                // functionality that depends on this permission.
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 

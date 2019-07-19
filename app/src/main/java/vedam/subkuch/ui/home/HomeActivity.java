@@ -108,8 +108,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         UiUtil.showProgressDialog(this, getString(R.string.please_wait));
         Type type = new TypeToken<ArrayList<Feature>>() {
         }.getType();
-        DataFetcher.getFeatures(this, onFeaturesSuccessListener, type, onErrorListener,
-                AppPrefs.getPrefsUserId(this));
+        DataFetcher.getFeatures(this, onFeaturesSuccessListener, type, onErrorListener);
     }
 
     private Response.Listener<ArrayList<Feature>> onFeaturesSuccessListener = response -> {

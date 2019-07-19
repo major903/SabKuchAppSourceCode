@@ -18,7 +18,7 @@ public class PhoneBookDetailsAdapter extends BaseAdapter {
     private ArrayList<PhoneBookDetail> phoneBookDetails;
 
 
-    public PhoneBookDetailsAdapter(Context context, ArrayList<PhoneBookDetail> phoneBookDetails) {
+    PhoneBookDetailsAdapter(Context context, ArrayList<PhoneBookDetail> phoneBookDetails) {
 
         inflater = LayoutInflater.from(context);
         this.phoneBookDetails = phoneBookDetails;

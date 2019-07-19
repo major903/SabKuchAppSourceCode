@@ -55,11 +55,12 @@ public class VehicleFragment extends BaseListFragment {
     private Response.Listener<VehicleResponse> onVehicleSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (response != null && response.getReturnMessage().equalsIgnoreCase(Constants.SUCCESS)) {
-            vehicles = response.getReturnData();
-            loadValues();
-        } else
-            UiUtil.showToast(context, getString(R.string.no_data));
+        if (getActivity() != null)
+            if (response != null && response.getReturnMessage().equalsIgnoreCase(Constants.SUCCESS)) {
+                vehicles = response.getReturnData();
+                loadValues();
+            } else
+                UiUtil.showToast(context, getString(R.string.no_data));
     };
 
     private void loadValues() {

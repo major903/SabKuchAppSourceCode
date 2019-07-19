@@ -87,7 +87,7 @@ public class UiUtil {
         showProgressDialog(context, null, msg, false);
     }
 
-    public static void showProgressDialog(Context context, @NonNull int msg) {
+    public static void showProgressDialog(Context context, int msg) {
         if (context == null)
             return;
         showProgressDialog(context, null, context.getString(msg), false);
@@ -106,15 +106,19 @@ public class UiUtil {
         if (context == null)
             return;
 
-        if (pDialog == null || !pDialog.isShowing())
-            pDialog = initProgressDialog(context);
+        try {
+            if (pDialog == null || !pDialog.isShowing())
+                pDialog = initProgressDialog(context);
 
-        if (title != null)
-            pDialog.setTitle(title);
-        pDialog.setMessage(msg);
-        pDialog.setCanceledOnTouchOutside(cancelable);
-        pDialog.setCancelable(cancelable);
-        pDialog.show();
+            if (title != null)
+                pDialog.setTitle(title);
+            pDialog.setMessage(msg);
+            pDialog.setCanceledOnTouchOutside(cancelable);
+            pDialog.setCancelable(cancelable);
+            pDialog.show();
+        } catch (Exception e) {
+            Crashlytics.logException(e);
+        }
     }
 
     private static ProgressDialog initProgressDialog(Context context) {

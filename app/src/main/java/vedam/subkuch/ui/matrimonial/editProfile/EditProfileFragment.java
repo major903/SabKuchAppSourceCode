@@ -572,8 +572,10 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
 
     @Override
     public void onSuccessfullyUpdateProfile(UpdateMatrimonialResponse response) {
-        object.pop();
-        checkAndFinish();
+        if (getActivity() != null) {
+            object.pop();
+            checkAndFinish();
+        }
     }
 
     @Override
