@@ -3,11 +3,15 @@ package vedam.subkuch.ui.profile;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 
 import com.android.volley.Response;
 import com.google.gson.Gson;
@@ -39,7 +43,7 @@ public class VerificationActivity extends BaseActivity {
     private String sentOtp;
     private Profile profile;
     private int noOfAttempts;
-
+    private VerificationIdlingResource idlingResource;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,12 +51,22 @@ public class VerificationActivity extends BaseActivity {
 
         setTitle(R.string.verification);
 
-        Button btSubmit = findViewById(R.id.btSubmit);
+        initUI();
+        bindCallbacks();
+
+        sendOtp();
+    }
+
+    private void initUI() {
+
         etOtp = findViewById(R.id.etOtp);
 
         profile = getIntent().getParcelableExtra(Constants.EXTRA_DATA);
+    }
 
-        btSubmit.setOnClickListener(v -> {
+    private void bindCallbacks() {
+
+        findViewById(R.id.btSubmit).setOnClickListener(v -> {
                     if (noOfAttempts <= 5)
                         attemptVerification();
                     else
@@ -60,7 +74,23 @@ public class VerificationActivity extends BaseActivity {
                 }
         );
 
-        sendOtp();
+        etOtp.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!TextUtils.isEmpty(s) && s.length() == 4)
+                    UiUtil.hideKeyBoard(VerificationActivity.this, etOtp);
+            }
+        });
     }
 
     private void sendOtp() {
@@ -109,8 +139,17 @@ public class VerificationActivity extends BaseActivity {
 
     private void registerUser() {
 
+        setIdleState(false, null);
         UiUtil.showProgressDialog(this, getString(R.string.please_wait));
         DataFetcher.registerUser(this, new Gson().toJson(profile), onRegisterUserSuccessListener, ProfileResponse.class, onErrorListener);
+    }
+
+    private void setIdleState(boolean isIdleNow, OtpResponse response) {
+
+        // The IdlingResource is null in production.
+        if (idlingResource != null) {
+            idlingResource.setIdleState(isIdleNow, response);
+        }
     }
 
     private Response.Listener<OtpResponse> onOtpSuccessListener = new Response.Listener<OtpResponse>() {
@@ -124,8 +163,8 @@ public class VerificationActivity extends BaseActivity {
             } else {
                 UiUtil.showToast(VerificationActivity.this, getString(R.string.err_occurred));
             }
-
-
+            getIdlingResource();
+            setIdleState(true, response);
         }
     };
 
@@ -168,4 +207,16 @@ public class VerificationActivity extends BaseActivity {
 //        UiUtil.showToast(VerificationActivity.this, getString(R.string.err_occurred));
 //
 //    };
+
+    /**
+     * Only called from test, creates and returns a new {@link VerificationIdlingResource}.
+     */
+    @VisibleForTesting
+    @NonNull
+    public VerificationIdlingResource getIdlingResource() {
+        if (idlingResource == null) {
+            idlingResource = new VerificationIdlingResource();
+        }
+        return idlingResource;
+    }
 }

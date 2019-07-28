@@ -8,10 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-import androidx.cardview.widget.CardView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +17,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.crashlytics.android.Crashlytics;
+import com.google.gson.Gson;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.io.File;
@@ -44,18 +48,20 @@ import java.util.Map;
 import vedam.subkuch.R;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.NetworkConstants;
+import vedam.subkuch.network.models.ErrorResponse;
 import vedam.subkuch.network.models.Image;
 import vedam.subkuch.uicomponent.PickImageDialog;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.LogUtils;
 import vedam.subkuch.utils.UiUtil;
 
+import static vedam.subkuch.base.BaseActivity.TAG;
 import static vedam.subkuch.helpers.Constants.REQUEST_PICK_IMAGE_FROM_GALLERY;
 
 
 public abstract class BaseAddImagesFragment extends BaseFragment {
 
-    public int maxImagesAllowed = 5;
+    private int maxImagesAllowed = 5;
     private TextView tvAddPicture;
     private LinearLayout llAddPicture;
     private CardView cvAddPicture;
@@ -139,7 +145,28 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
 
     protected void parseAndShowError(VolleyError error) {
 
-        UiUtil.showToast(context, getString(R.string.err_occurred));
+        NetworkResponse networkResponse = error.networkResponse;
+        if (networkResponse != null && networkResponse.data != null) {
+            String response = new String(networkResponse.data);
+            LogUtils.LOGE(TAG, "response error:" + response);
+
+            try {
+                ErrorResponse errorResponse = new Gson().fromJson(response, ErrorResponse.class);
+
+                if (!TextUtils.isEmpty(errorResponse.getReturnMessage()))
+                    UiUtil.showToast(context, errorResponse.getReturnMessage());
+                else if (!TextUtils.isEmpty(errorResponse.getMessage()))
+                    UiUtil.showToast(context, errorResponse.getMessage());
+                else
+                    UiUtil.showToast(context, getString(R.string.err_occurred));
+            } catch (Exception exception) {
+                Crashlytics.logException(exception);
+                exception.printStackTrace();
+                UiUtil.showToast(context, getString(R.string.err_occurred));
+            }
+        } else {
+            UiUtil.showToast(context, getString(R.string.err_unknown));
+        }
     }
 
     protected void setImagesLayout(View view, int maxImagesAllowed) {
@@ -174,7 +201,7 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
         startActivityForResult(Intent.createChooser(intent, getString(R.string.select_picture)), REQUEST_PICK_IMAGE_FROM_GALLERY);
     }
 
-    protected PickImageDialog dialogBuilderPickImage() {
+    protected void dialogBuilderPickImage() {
         PickImageDialog pickImageDialog = new PickImageDialog(context);
         pickImageDialog.setCancelable(true);
         Window window = pickImageDialog.getWindow();
@@ -207,7 +234,6 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
             }
         });
         pickImageDialog.show();
-        return pickImageDialog;
     }
 
     //region Helper methods for camera permission

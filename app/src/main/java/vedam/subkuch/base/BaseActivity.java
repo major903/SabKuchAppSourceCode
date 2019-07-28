@@ -11,26 +11,30 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.TextUtils;
+import android.view.MenuItem;
+import android.widget.TextView;
+
 import androidx.annotation.AnimRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.common.api.Status;
+import com.google.gson.Gson;
 
 import vedam.subkuch.R;
 import vedam.subkuch.interfaces.OnFragmentInteractionListener;
@@ -38,6 +42,7 @@ import vedam.subkuch.interfaces.ScreenChangeListener;
 import vedam.subkuch.locationProvider.LocationCallbacks;
 import vedam.subkuch.locationProvider.LocationProvider;
 import vedam.subkuch.network.NetworkConstants;
+import vedam.subkuch.network.models.ErrorResponse;
 import vedam.subkuch.ui.profile.RegisterUserActivity;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.LogUtils;
@@ -85,7 +90,28 @@ public abstract class BaseActivity extends AppCompatActivity implements ScreenCh
 
     protected void parseAndShowError(VolleyError error) {
 
-        UiUtil.showToast(this, getString(R.string.err_occurred));
+        NetworkResponse networkResponse = error.networkResponse;
+        if (networkResponse != null && networkResponse.data != null) {
+            String response = new String(networkResponse.data);
+            LogUtils.LOGE(TAG, "response error:" + response);
+
+            try {
+                ErrorResponse errorResponse = new Gson().fromJson(response, ErrorResponse.class);
+
+                if (!TextUtils.isEmpty(errorResponse.getReturnMessage()))
+                    UiUtil.showToast(this, errorResponse.getReturnMessage());
+                else if (!TextUtils.isEmpty(errorResponse.getMessage()))
+                    UiUtil.showToast(this, errorResponse.getMessage());
+                else
+                    UiUtil.showToast(this, getString(R.string.err_occurred));
+            } catch (Exception exception) {
+                Crashlytics.logException(exception);
+                exception.printStackTrace();
+                UiUtil.showToast(this, getString(R.string.err_occurred));
+            }
+        } else {
+            UiUtil.showToast(this, getString(R.string.err_unknown));
+        }
     }
 
     @Override

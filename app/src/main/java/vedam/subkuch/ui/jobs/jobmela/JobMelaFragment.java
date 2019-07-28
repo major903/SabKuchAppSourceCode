@@ -1,16 +1,17 @@
 package vedam.subkuch.ui.jobs.jobmela;
 
 
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.volley.Response;
 
@@ -123,10 +124,11 @@ public class JobMelaFragment extends BaseFragment implements OnListViewItemClick
     private Response.Listener<JobTypeResponse> onJobTypesSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
-            loadValues(response.getReturnData());
-        } else
-            UiUtil.showToast(context, getString(R.string.no_data));
+        if (getActivity() != null)
+            if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
+                loadValues(response.getReturnData());
+            } else
+                UiUtil.showToast(context, getString(R.string.no_data));
     };
 
     private void loadValues(ArrayList<JobType> returnData) {

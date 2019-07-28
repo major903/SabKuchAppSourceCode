@@ -3,31 +3,39 @@ package vedam.subkuch.base;
 import android.content.Context;
 import android.location.Address;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+
 import androidx.annotation.AnimRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.ListFragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import android.view.View;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.crashlytics.android.Crashlytics;
+import com.google.gson.Gson;
 
 import vedam.subkuch.R;
 import vedam.subkuch.interfaces.OnFragmentInteractionListener;
 import vedam.subkuch.interfaces.ScreenChangeListener;
 import vedam.subkuch.network.NetworkConstants;
+import vedam.subkuch.network.models.ErrorResponse;
 import vedam.subkuch.utils.LogUtils;
 import vedam.subkuch.utils.UiUtil;
 
+import static vedam.subkuch.base.BaseActivity.TAG;
+
 public class BaseListFragment extends ListFragment implements SwipeRefreshLayout.OnRefreshListener {
     public Context context;
-    protected OnFragmentInteractionListener mListener;
+    private OnFragmentInteractionListener mListener;
     private ScreenChangeListener screenChangeListener;
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -39,7 +47,7 @@ public class BaseListFragment extends ListFragment implements SwipeRefreshLayout
 
     };
 
-    protected void onErrorReceived(VolleyError error) {
+    private void onErrorReceived(VolleyError error) {
 
         if (error instanceof NetworkError) {
             UiUtil.showToast(context, getString(R.string.connectionError));
@@ -56,14 +64,35 @@ public class BaseListFragment extends ListFragment implements SwipeRefreshLayout
         UiUtil.cancelProgressDialog();
     }
 
-    protected void logout() {
+    private void logout() {
         if (getGlobalFragmentInteractionListener() != null)
             getGlobalFragmentInteractionListener().logout();
     }
 
-    protected void parseAndShowError(VolleyError error) {
+    private void parseAndShowError(VolleyError error) {
 
-        UiUtil.showToast(context, getString(R.string.err_occurred));
+        NetworkResponse networkResponse = error.networkResponse;
+        if (networkResponse != null && networkResponse.data != null) {
+            String response = new String(networkResponse.data);
+            LogUtils.LOGE(TAG, "response error:" + response);
+
+            try {
+                ErrorResponse errorResponse = new Gson().fromJson(response, ErrorResponse.class);
+
+                if (!TextUtils.isEmpty(errorResponse.getReturnMessage()))
+                    UiUtil.showToast(context, errorResponse.getReturnMessage());
+                else if (!TextUtils.isEmpty(errorResponse.getMessage()))
+                    UiUtil.showToast(context, errorResponse.getMessage());
+                else
+                    UiUtil.showToast(context, getString(R.string.err_occurred));
+            } catch (Exception exception) {
+                Crashlytics.logException(exception);
+                exception.printStackTrace();
+                UiUtil.showToast(context, getString(R.string.err_occurred));
+            }
+        } else {
+            UiUtil.showToast(context, getString(R.string.err_unknown));
+        }
     }
 
     @Override

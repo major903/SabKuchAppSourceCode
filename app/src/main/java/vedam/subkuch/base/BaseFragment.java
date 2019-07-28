@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -14,6 +15,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.AnimRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -24,12 +26,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -38,11 +42,14 @@ import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.interfaces.OnFragmentInteractionListener;
 import vedam.subkuch.interfaces.ScreenChangeListener;
 import vedam.subkuch.network.NetworkConstants;
+import vedam.subkuch.network.models.ErrorResponse;
 import vedam.subkuch.network.models.Image;
 import vedam.subkuch.ui.matrimonial.preference.ItemAdapter;
 import vedam.subkuch.uicomponent.SlideShowDialogFragment;
 import vedam.subkuch.utils.LogUtils;
 import vedam.subkuch.utils.UiUtil;
+
+import static vedam.subkuch.base.BaseActivity.TAG;
 
 
 /**
@@ -50,12 +57,11 @@ import vedam.subkuch.utils.UiUtil;
  */
 public abstract class BaseFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    private int permissionNeeded;
     public Context context;
-    protected OnFragmentInteractionListener mListener;
+    private OnFragmentInteractionListener mListener;
     private ScreenChangeListener screenChangeListener;
     private SwipeRefreshLayout swipeRefreshLayout;
-    public PopupWindow mPopupWindow;
+    protected PopupWindow mPopupWindow;
 
     protected Response.ErrorListener onErrorListener = error -> {
 
@@ -82,17 +88,38 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
         UiUtil.cancelProgressDialog();
     }
 
-    protected void logout() {
+    void logout() {
         if (getGlobalFragmentInteractionListener() != null)
             getGlobalFragmentInteractionListener().logout();
     }
     protected void parseAndShowError(VolleyError error) {
 
-        UiUtil.showToast(context, getString(R.string.err_occurred));
+        NetworkResponse networkResponse = error.networkResponse;
+        if (networkResponse != null && networkResponse.data != null) {
+            String response = new String(networkResponse.data);
+            LogUtils.LOGE(TAG, "response error:" + response);
+
+            try {
+                ErrorResponse errorResponse = new Gson().fromJson(response, ErrorResponse.class);
+
+                if (!TextUtils.isEmpty(errorResponse.getReturnMessage()))
+                    UiUtil.showToast(context, errorResponse.getReturnMessage());
+                else if (!TextUtils.isEmpty(errorResponse.getMessage()))
+                    UiUtil.showToast(context, errorResponse.getMessage());
+                else
+                    UiUtil.showToast(context, getString(R.string.err_occurred));
+            } catch (Exception exception) {
+                Crashlytics.logException(exception);
+                exception.printStackTrace();
+                UiUtil.showToast(context, getString(R.string.err_occurred));
+            }
+        } else {
+            UiUtil.showToast(context, getString(R.string.err_unknown));
+        }
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initSwipeViewIfPresent(view);
     }
@@ -246,7 +273,7 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
     }
 
     public Integer checkPermission(String[] permission) {
-        permissionNeeded = 0;
+        int permissionNeeded = 0;
         if (Build.VERSION.SDK_INT >= 23) {
             for (int i = 0; i < permission.length; i++) {
                 int result = ContextCompat.checkSelfPermission(getActivity(), permission[i]);

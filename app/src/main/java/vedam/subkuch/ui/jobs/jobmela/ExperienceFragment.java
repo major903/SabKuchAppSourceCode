@@ -1,17 +1,18 @@
 package vedam.subkuch.ui.jobs.jobmela;
 
 
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.Response;
 
@@ -84,10 +85,11 @@ public class ExperienceFragment extends BaseFragment implements AdapterView.OnIt
     private Response.Listener<JobExperienceResponse> onExperienceSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
-            setJobExperiences(response.getReturnData());
-        } else
-            UiUtil.showToast(context, getString(R.string.no_data));
+        if (getActivity() != null)
+            if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
+                setJobExperiences(response.getReturnData());
+            } else
+                UiUtil.showToast(context, getString(R.string.no_data));
     };
 
     private void setJobExperiences(ArrayList<JobExperience> jobExperiences) {
@@ -112,10 +114,11 @@ public class ExperienceFragment extends BaseFragment implements AdapterView.OnIt
     private Response.Listener<JobQualificationResponse> onQualifySuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
-            setJobQualifications(response.getReturnData());
-        } else
-            UiUtil.showToast(context, getString(R.string.no_data));
+        if (getActivity() != null)
+            if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
+                setJobQualifications(response.getReturnData());
+            } else
+                UiUtil.showToast(context, getString(R.string.no_data));
     };
 
     private void setJobQualifications(ArrayList<JobQualification> jobQualifications) {

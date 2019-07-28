@@ -2,11 +2,7 @@ package vedam.subkuch.ui.directory;
 
 
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,6 +16,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.Response;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -113,10 +114,11 @@ public class AddDirectoryFragment extends BaseAddImagesFragment implements Adapt
     private Response.Listener<CategoryResponse> onCategorySuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (response != null && response.getStatus().equals(Constants.TRUE)) {
-            setCategories(response.getCategoryResult().getCategories());
-        } else
-            UiUtil.showToast(context, getString(R.string.no_data));
+        if (getActivity() != null)
+            if (response != null && response.getStatus().equals(Constants.TRUE)) {
+                setCategories(response.getCategoryResult().getCategories());
+            } else
+                UiUtil.showToast(context, getString(R.string.no_data));
     };
 
     private void setCategories(ArrayList<Category> categories) {
@@ -141,10 +143,11 @@ public class AddDirectoryFragment extends BaseAddImagesFragment implements Adapt
     private Response.Listener<SubCategoryResponse> onSubCategorySuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (response != null && response.getStatus().equals(Constants.TRUE)) {
-            setSubcategories(response.getSubCategoryResult().getSubCategories());
-        } else
-            UiUtil.showToast(context, getString(R.string.err_occurred));
+        if (getActivity() != null)
+            if (response != null && response.getStatus().equals(Constants.TRUE)) {
+                setSubcategories(response.getSubCategoryResult().getSubCategories());
+            } else
+                UiUtil.showToast(context, getString(R.string.err_occurred));
     };
 
     private void setSubcategories(ArrayList<SubCategory> subCategories) {

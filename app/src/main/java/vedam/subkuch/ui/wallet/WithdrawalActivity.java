@@ -1,10 +1,11 @@
 package vedam.subkuch.ui.wallet;
 
 import android.app.Activity;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
+
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 
 import com.android.volley.Response;
 import com.google.gson.Gson;
@@ -58,12 +59,16 @@ public class WithdrawalActivity extends BaseActivity {
     private Response.Listener<AddResponse> onWithdrawalSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
+        String errorMessage = getString(R.string.err_occurred);
+        if (response != null && !TextUtils.isEmpty(response.getReturnMessage()))
+            errorMessage = response.getReturnMessage();
+
         if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
             UiUtil.showToast(this, getString(R.string.withdrawal_done_successfully));
             setResult(Activity.RESULT_OK);
             finish();
         } else
-            UiUtil.showToast(this, getString(R.string.err_occurred));
+            UiUtil.showToast(this, errorMessage);
     };
 
     private int validateErrorMessage() {
