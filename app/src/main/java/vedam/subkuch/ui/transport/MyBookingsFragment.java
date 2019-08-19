@@ -2,17 +2,18 @@ package vedam.subkuch.ui.transport;
 
 import android.app.Activity;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Response;
 
@@ -74,7 +75,7 @@ public class MyBookingsFragment extends BaseFragment implements MyBookingsAdapte
         fragmentMyBookingsBinding.rvEvents.addOnScrollListener(new OnScrollListener());
     }
 
-    public void getMyBookings() {
+    private void getMyBookings() {
         UiUtil.showProgressDialog(context, getString(R.string.please_wait));
         DataFetcher.getMyTransportBookings(context, onTransportBookingsSuccessListener, TransportBookingResponse.class, onErrorListener, pageNo, pageSize);
 
@@ -113,10 +114,8 @@ public class MyBookingsFragment extends BaseFragment implements MyBookingsAdapte
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_add:
-                startActivityForResult(new Intent(context, AddTransportActivity.class), Constants.REQUEST_ADD_TRANSPORT);
-                break;
+        if (item.getItemId() == R.id.action_add) {
+            startActivityForResult(new Intent(context, AddTransportActivity.class), Constants.REQUEST_ADD_TRANSPORT);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -132,15 +131,13 @@ public class MyBookingsFragment extends BaseFragment implements MyBookingsAdapte
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        switch (requestCode) {
-            case Constants.REQUEST_ADD_TRANSPORT:
-                if (resultCode == Activity.RESULT_OK) {
-                    setDefaults();
-                    getMyBookings();
-                }
-                break;
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.REQUEST_ADD_TRANSPORT) {
+            if (resultCode == Activity.RESULT_OK) {
+                setDefaults();
+                getMyBookings();
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 

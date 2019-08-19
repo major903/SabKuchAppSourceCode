@@ -43,7 +43,19 @@
             android:name=".ui.transport.TransportActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.needs.AddNeedActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.needs.NeedsActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.matrimonial.viewProfile.ViewProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.public_utility.AddPublicUtilityActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.public_utility.PublicUtilityActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.chat.ChatActivity"

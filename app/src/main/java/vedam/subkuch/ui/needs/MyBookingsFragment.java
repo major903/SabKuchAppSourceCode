@@ -1,22 +1,18 @@
-package vedam.subkuch.ui.ask;
-
+package vedam.subkuch.ui.needs;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,82 +22,79 @@ import java.util.ArrayList;
 
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseFragment;
-import vedam.subkuch.databinding.FragmentConversationBinding;
+import vedam.subkuch.databinding.FragmentMyBookingsBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
-import vedam.subkuch.ui.ask.models.Conversation;
-import vedam.subkuch.ui.ask.models.ConversationResponse;
+import vedam.subkuch.network.models.needs.Need;
+import vedam.subkuch.network.models.needs.NeedResponse;
+import vedam.subkuch.network.models.needs.Provider;
+import vedam.subkuch.ui.jobs.models.AddResponse;
 import vedam.subkuch.utils.UiUtil;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class ConversationFragment extends BaseFragment implements AskReplyListener, AskReplyDialog.AskReplyPostedListener {
+public class MyBookingsFragment extends BaseFragment implements MyBookingsAdapter.BookingCompleteListener {
 
-    private FragmentConversationBinding fragmentConversationBinding;
-    private ConversationAdapter adapter;
-    private ArrayList<Conversation> conversations = new ArrayList<>();
+    private FragmentMyBookingsBinding fragmentMyBookingsBinding;
+    private MyBookingsAdapter adapter;
+    private ArrayList<Need> needBookings = new ArrayList<>();
     private boolean loading = true;
     private LinearLayoutManager linearLayoutManager;
     private int pageNo = 1;
     private int pageSize = 20;
     private boolean hasMoreProjects = true;
-    private String categoryId;
+    private Provider provider;
 
-    public ConversationFragment() {
+    public MyBookingsFragment() {
         // Required empty public constructor
     }
 
-    public static ConversationFragment newInstance(Bundle extras) {
-
-        ConversationFragment fragment = new ConversationFragment();
-        fragment.setArguments(extras);
+    public static MyBookingsFragment newInstance(Provider provider) {
+        MyBookingsFragment fragment = new MyBookingsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.EXTRA_PROVIDER, provider);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            categoryId = getArguments().getString(Constants.EXTRA_CATEGORY_ID);
-        }
+        if (getArguments() != null)
+            provider = getArguments().getParcelable(Constants.EXTRA_PROVIDER);
     }
 
-    //Layout of BulleinFragment is used because both needed to same i.e. ListView
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
-        fragmentConversationBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_conversation, container, false);
-        return fragmentConversationBinding.getRoot();
+        fragmentMyBookingsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_bookings, container, false);
+        return fragmentMyBookingsBinding.getRoot();
     }
 
     public void onViewCreated(@NonNull View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
-
         initUI();
-        getConversation();
-        setHasOptionsMenu(true);
+        getMyBookings();
+        setTitle(getString(R.string.my_bookings));
     }
 
     private void initUI() {
 
         linearLayoutManager = new LinearLayoutManager(context);
-        fragmentConversationBinding.rvQuestions.setLayoutManager(linearLayoutManager);
-        fragmentConversationBinding.rvQuestions.setHasFixedSize(true);
-        adapter = new ConversationAdapter(context, conversations, this);
-        fragmentConversationBinding.rvQuestions.setAdapter(adapter);
-        fragmentConversationBinding.rvQuestions.addOnScrollListener(new ConversationOnScrollListener());
+        fragmentMyBookingsBinding.rvEvents.setLayoutManager(linearLayoutManager);
+        fragmentMyBookingsBinding.rvEvents.setHasFixedSize(true);
+        adapter = new MyBookingsAdapter(context, needBookings, this);
+        fragmentMyBookingsBinding.rvEvents.setAdapter(adapter);
+        fragmentMyBookingsBinding.rvEvents.addOnScrollListener(new OnScrollListener());
     }
 
-    private void getConversation() {
+    private void getMyBookings() {
         UiUtil.showProgressDialog(context, getString(R.string.please_wait));
-        DataFetcher.getAskConversation(context, onConversationSuccessListener, ConversationResponse.class,
-                onErrorListener, categoryId, pageNo, pageSize);
+        DataFetcher.getMyNeeds(context, onNeedBookingsSuccessListener, NeedResponse.class, onErrorListener, provider.getProviderId(), pageNo, pageSize);
 
     }
 
-    private Response.Listener<ConversationResponse> onConversationSuccessListener = response -> {
+    private Response.Listener<NeedResponse> onNeedBookingsSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
         if (getActivity() != null)
@@ -111,26 +104,16 @@ public class ConversationFragment extends BaseFragment implements AskReplyListen
                     loading = true;
                     loadValues(response.getReturnData());
                 } else
-                    UiUtil.showToast(context, getString(R.string.no_data));
+                    UiUtil.showToast(context, getString(R.string.no_booking_found));
             } else
                 UiUtil.showToast(context, getString(R.string.err_occurred));
     };
 
-    /*private void startEventCalendarService(JSONArray jsonArray) {
-
-        if (jsonArray != null) {
-            Intent intent = new Intent(getActivity(), EventCalendarIntentService.class);
-            intent.putExtra(EXTRA_DATA, jsonArray.toString());
-            getActivity().startService(intent);
-        }
-    }*/
-
-
-    private void loadValues(ArrayList<Conversation> response) {
+    private void loadValues(ArrayList<Need> response) {
 
         if (response != null && !response.isEmpty()) {
             pageNo++;
-            conversations.addAll(response);
+            needBookings.addAll(response);
             adapter.notifyDataSetChanged();
         }
     }
@@ -144,10 +127,9 @@ public class ConversationFragment extends BaseFragment implements AskReplyListen
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_add:
-                startActivityForResult(new Intent(context, AddQuestionActivity.class), Constants.REQUEST_ADD_QUESTION);
-                break;
+        if (item.getItemId() == R.id.action_add) {
+            startActivityForResult(new Intent(context, AddNeedActivity.class)
+                    .putExtra(Constants.EXTRA_ID, provider.getProviderId()), Constants.REQUEST_ADD_TRANSPORT);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -155,7 +137,7 @@ public class ConversationFragment extends BaseFragment implements AskReplyListen
     private void setDefaults() {
         pageNo = 1;
         hasMoreProjects = true;
-        conversations.clear();
+        needBookings.clear();
         adapter.notifyDataSetChanged();
 
     }
@@ -163,46 +145,40 @@ public class ConversationFragment extends BaseFragment implements AskReplyListen
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        switch (requestCode) {
-            case Constants.REQUEST_ADD_QUESTION:
-                if (resultCode == Activity.RESULT_OK) {
-                    setDefaults();
-                    getConversation();
-                }
-                break;
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.REQUEST_ADD_TRANSPORT) {
+            if (resultCode == Activity.RESULT_OK) {
+                setDefaults();
+                getMyBookings();
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
     @Override
-    public void onReplyClick(String questionId) {
-
-        startAskReplyDialog(questionId);
+    public void onBookingCompleteRequest(String needId) {
+        markComplete(needId);
     }
 
-    private void startAskReplyDialog(String questionId) {
+    private void markComplete(String needId) {
+        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
+        DataFetcher.setNeedBookingComplete(context, onNeedCompleteSuccessListener, AddResponse.class, onErrorListener, needId);
 
-        AskReplyDialog askReplyDialog = new AskReplyDialog(context, this, questionId);
-        askReplyDialog.setCancelable(true);
-        Window window = askReplyDialog.getWindow();
-        if (window != null) {
-            window.setGravity(Gravity.CENTER);
-            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            window.getAttributes().windowAnimations = R.style.DialogAnimation;
-            askReplyDialog.show();
-        }
     }
 
-    @Override
-    public void onReplyPosted() {
+    private Response.Listener<AddResponse> onNeedCompleteSuccessListener = response -> {
 
-        setDefaults();
-        getConversation();
-    }
+        UiUtil.cancelProgressDialog();
+        if (getActivity() != null)
+            if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
+                UiUtil.showToast(context, getString(R.string.booking_completed_successfully));
+                setDefaults();
+                getMyBookings();
+            } else
+                UiUtil.showToast(context, getString(R.string.err_occurred));
+    };
 
-
-    public class ConversationOnScrollListener extends RecyclerView.OnScrollListener {
+    public class OnScrollListener extends RecyclerView.OnScrollListener {
 
         @Override
         public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -227,7 +203,7 @@ public class ConversationFragment extends BaseFragment implements AskReplyListen
                 if (loading) {
                     if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
                         loading = false;
-                        if (hasMoreProjects) getConversation();
+                        if (hasMoreProjects) getMyBookings();
 
                     }
                 }

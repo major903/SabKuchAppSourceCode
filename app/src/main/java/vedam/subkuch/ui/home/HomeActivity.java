@@ -1,19 +1,18 @@
 package vedam.subkuch.ui.home;
 
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.RemoteException;
-import androidx.annotation.NonNull;
-import com.google.android.material.navigation.NavigationView;
-import androidx.core.view.GravityCompat;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.view.GravityCompat;
+import androidx.databinding.DataBindingUtil;
 
 import com.android.installreferrer.api.InstallReferrerClient;
 import com.android.installreferrer.api.InstallReferrerClient.InstallReferrerResponse;
@@ -21,6 +20,7 @@ import com.android.installreferrer.api.InstallReferrerStateListener;
 import com.android.installreferrer.api.ReferrerDetails;
 import com.android.volley.Response;
 import com.crashlytics.android.Crashlytics;
+import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -43,10 +43,12 @@ import vedam.subkuch.ui.inbox.InboxActivity;
 import vedam.subkuch.ui.jobs.JobCategoryActivity;
 import vedam.subkuch.ui.jobs.models.AddResponse;
 import vedam.subkuch.ui.movies.MoviesActivity;
+import vedam.subkuch.ui.needs.NeedsActivity;
 import vedam.subkuch.ui.offers.OffersActivity;
 import vedam.subkuch.ui.phonebook.PhoneBookActivity;
 import vedam.subkuch.ui.pin.PinActivity;
 import vedam.subkuch.ui.profile.EditProfileActivity;
+import vedam.subkuch.ui.public_utility.PublicUtilityActivity;
 import vedam.subkuch.ui.transport.TransportActivity;
 import vedam.subkuch.ui.vehicle.VehicleActivity;
 import vedam.subkuch.ui.wallet.WalletActivity;
@@ -212,6 +214,15 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 case Constants.Offers:
                     activityHomeBinding.getRoot().findViewById(R.id.iv_offer).setVisibility(View.VISIBLE);
                     break;
+                case Constants.Needs:
+                    activityHomeBinding.getRoot().findViewById(R.id.iv_needs).setVisibility(View.VISIBLE);
+                    break;
+                case Constants.Public_Utility:
+                    activityHomeBinding.getRoot().findViewById(R.id.iv_public_utility).setVisibility(View.VISIBLE);
+                    break;
+                case Constants.Classifieds:
+                    activityHomeBinding.getRoot().findViewById(R.id.iv_classifieds).setVisibility(View.VISIBLE);
+                    break;
 
             }
         }
@@ -289,20 +300,19 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 //        startActivity(new Intent(this, JobCategoryActivity.class));
     }
 
-    /*public void offlinemapClick(View v)
-    {
-        startActivity(new Intent(this,OfflineMap.class));
-    }*/
-
-    /*public void WheretoeatClick(View v)
-    {
-        startActivity(new Intent(this,Wheretoeat.class));
+    public void needsClick(View v) {
+        startActivity(new Intent(this, NeedsActivity.class));
     }
 
-    public void WheretoshopClick(View v)
+    public void publicUtilityClick(View v)
     {
-        startActivity(new Intent(this,Wheretoshop.class));
-    }*/
+        startActivity(new Intent(this, PublicUtilityActivity.class));
+    }
+
+    public void classifiedsClick(View v)
+    {
+//        startActivity(new Intent(this,Wheretoshop.class));
+    }
 
     /*public void InfoClick(View v)
     {
@@ -347,8 +357,9 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 try {
                     response = referrerClient.getInstallReferrer();
                     addReferralCode(response.getInstallReferrer());
-                } catch (RemoteException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
+                    Crashlytics.logException(e);
                 }
                 // Connection established
                 break;

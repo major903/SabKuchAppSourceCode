@@ -1,0 +1,44 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_4dp"
+    android:layout_marginBottom="@dimen/margin_4dp"
+    android:background="@drawable/myshape"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_work_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        tools:text="@string/err" />
+
+    <TextView
+        android:id="@+id/tv_work_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        tools:text="@string/err" />
+
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        tools:text="@string/err" />
+
+    <Button
+        android:id="@+id/bt_mark_complete"
+        style="@style/ButtonBlue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8dp"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:paddingLeft="@dimen/margin_16dp"
+        android:paddingTop="@dimen/margin_4dp"
+        android:paddingRight="@dimen/margin_16dp"
+        android:paddingBottom="@dimen/margin_4dp"
+        android:text="@string/mark_as_complete" />
+</LinearLayout>

@@ -20,12 +20,14 @@ public class Constants {
     public static final String EXTRA_CODE = "EXTRA_CODE";
     public static final String EXTRA_PIN = "EXTRA_PIN";
     public static final String EXTRA_ADDRESS = "EXTRA_ADDRESS";
+    public static final String EXTRA_PROVIDER = "EXTRA_PROVIDER";
     public static final String EXTRA_CATEGORY_ID = "EXTRA_CATEGORY_ID";
     public static final String EXTRA_CITY_NAME = "EXTRA_CITY_NAME";
     public static final String EXTRA_BUSINESS_ID = "EXTRA_BUSINESS_ID";
     public static final String EXTRA_CATEGORY_NAME = "EXTRA_CATEGORY_NAME";
     public static final String EXTRA_SUB_CATEGORY_NAME = "EXTRA_SUB_CATEGORY_NAME";
     public static final String EXTRA_SUB_CATEGORY_ID = "EXTRA_SUB_CATEGORY_ID";
+    public static final String EXTRA_ID = "EXTRA_ID";
     public static final String EXTRA_IMAGE_ITEMS = "EXTRA_IMAGE_ITEMS";
     public static final String EXTRA_IMAGE_URI = "EXTRA_IMAGE_URI";
     public static final String EXTRA_DATA = "EXTRA_DATA";
@@ -36,6 +38,7 @@ public class Constants {
     public static final String EXTRA_POSITION = "EXTRA_POSITION";
     public static final String EXTRA_IS_IMAGE_URLS = "EXTRA_IS_IMAGE_URLS";
     public static final String EXTRA_CHAT_TO_ID = "EXTRA_CHAT_TO_ID";
+    public static final String EXTRA_IS_MY_BOOKINGS = "EXTRA_IS_MY_BOOKINGS";
     public static final int PERMISSIONS_REQUEST_STORAGE = 2;
     public static final int PERMISSIONS_REQUEST_CAMERA = 3;
 
@@ -108,6 +111,9 @@ public class Constants {
     public static final String Ask_Me = "Ask Me";
     public static final String Public_Transport_Timings = "Public Transport Timings";
     public static final String Offers = "Offers";
+    public static final String Needs = "Needs";
+    public static final String Public_Utility = "Public Utility";
+    public static final String Classifieds = "Classifieds";
     public static final String Gift_A_Life = "Gift A Life";
     public static final String Events = "Events";
 

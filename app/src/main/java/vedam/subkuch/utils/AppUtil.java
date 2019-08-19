@@ -13,12 +13,13 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
-import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.TypedValue;
 import android.view.View;
 import android.webkit.URLUtil;
+
+import androidx.core.content.ContextCompat;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.common.ConnectionResult;
@@ -40,6 +41,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import vedam.subkuch.R;
 import vedam.subkuch.helpers.Constants;
+import vedam.subkuch.network.models.public_utility.PublicUtility;
 import vedam.subkuch.ui.directory.models.BusinessAddress;
 
 public class AppUtil {
@@ -390,6 +392,20 @@ public class AppUtil {
             stringBuilder.append(", ").append(businessAddress.getCity());
         if (!TextUtils.isEmpty(businessAddress.getZipcode()))
             stringBuilder.append(" ").append(businessAddress.getZipcode());
+
+        return stringBuilder.toString();
+    }
+
+    public static String getFormattedAddress(PublicUtility publicUtility) {
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        if (!TextUtils.isEmpty(publicUtility.getAddress()))
+            stringBuilder.append(publicUtility.getAddress());
+        if (!TextUtils.isEmpty(publicUtility.getCityName()))
+            stringBuilder.append(", ").append(publicUtility.getCityName());
+        if (!TextUtils.isEmpty(publicUtility.getZipcode()))
+            stringBuilder.append(" ").append(publicUtility.getZipcode());
 
         return stringBuilder.toString();
     }

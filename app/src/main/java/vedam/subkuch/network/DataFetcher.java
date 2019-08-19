@@ -72,6 +72,12 @@ public class DataFetcher {
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
+    public static <T> void getPublicUtilities(Context context, Response.Listener<T> updateSuccessListener, Type repClass, Response.ErrorListener errorListener, int pageIndex, int pageSize) {
+        String userId = AppPrefs.getPrefsUserId(context);
+        String url = String.format(Locale.US, "%s/api/PublicUtility/GetPublicUtilities?UserId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT2, userId, pageIndex, pageSize);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
     public static <T> void getEvents(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener,
                                      int pageIndex, int pageSize) {
         String url = String.format(Locale.US, "%s/api/Events/GetEvents?PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT2, pageIndex, pageSize);
@@ -392,6 +398,36 @@ public class DataFetcher {
     public static <T> void addStaffTrackLocation(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
 
         String url = String.format("%s/api/BusinessLocation/InsertLocation", NetworkConstants.END_POINT2);
+        HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
+    }
+
+    public static <T> void getProviders(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
+        String url = String.format("%s/api/Needs/GetProviders", NetworkConstants.END_POINT2);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
+    public static <T> void getAllNeeds(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener, String providerId, int pageIndex, int pageSize) {
+        String userId = AppPrefs.getPrefsUserId(context);
+        String url = String.format(Locale.US, "%s/api/Needs/AllNeeds?UserId=%s&NeedProviderId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT2, userId, providerId, pageIndex, pageSize);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
+    public static <T> void getMyNeeds(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener, String providerId, int pageIndex, int pageSize) {
+        String userId = AppPrefs.getPrefsUserId(context);
+        String url = String.format(Locale.US, "%s/api/Needs/GetMyNeeds?UserId=%s&NeedProviderId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT2, userId, providerId, pageIndex, pageSize);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
+    public static <T> void setNeedBookingComplete(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener, String needId) {
+
+        String url = String.format("%s/api/Needs/MarkComplete?NeedId=%s&UserId=%s", NetworkConstants.END_POINT2,
+                needId, AppPrefs.getPrefsUserId(context));
+        HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, null, repClass, errorListener);
+    }
+
+    public static <T> void addNeed(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
+
+        String url = String.format("%s/api/Needs/PostNeed", NetworkConstants.END_POINT2);
         HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
     }
 }

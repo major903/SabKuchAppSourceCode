@@ -1,0 +1,65 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_4dp"
+    android:layout_marginBottom="@dimen/margin_4dp"
+    android:background="@drawable/myshape"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        tools:text="@string/err" />
+
+    <TextView
+        android:id="@+id/tv_distance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        tools:text="@string/err" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_work_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_8dp"
+            android:layout_toLeftOf="@+id/ib_direction"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            tools:text="@string/err" />
+
+        <ImageButton
+            android:id="@+id/ib_direction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tv_work_location"
+            android:layout_alignBottom="@+id/tv_work_location"
+            android:layout_alignParentRight="true"
+            android:background="@color/transparent"
+            android:src="@drawable/baseline_directions_black_24" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_work_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        tools:text="@string/err" />
+
+    <TextView
+        android:id="@+id/tv_mobile_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        tools:text="@string/err" />
+
+</LinearLayout>
