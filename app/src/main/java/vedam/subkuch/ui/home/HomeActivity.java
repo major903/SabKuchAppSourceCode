@@ -37,6 +37,7 @@ import vedam.subkuch.network.models.Feature;
 import vedam.subkuch.network.models.ReferralRequest;
 import vedam.subkuch.network.models.ShareResponse;
 import vedam.subkuch.ui.ask.AskCategoryActivity;
+import vedam.subkuch.ui.classifieds.ClassifiedsActivity;
 import vedam.subkuch.ui.directory.DirectoryActivity;
 import vedam.subkuch.ui.events.EventActivity;
 import vedam.subkuch.ui.inbox.InboxActivity;
@@ -311,7 +312,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     public void classifiedsClick(View v)
     {
-//        startActivity(new Intent(this,Wheretoshop.class));
+        startActivity(new Intent(this, ClassifiedsActivity.class));
     }
 
     /*public void InfoClick(View v)

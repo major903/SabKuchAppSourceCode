@@ -12,6 +12,9 @@ public class Provider implements Parcelable {
 
     private int UserType;
 
+    public Provider() {
+    }
+
     protected Provider(Parcel in) {
         ProviderId = in.readString();
         Providers = in.readString();

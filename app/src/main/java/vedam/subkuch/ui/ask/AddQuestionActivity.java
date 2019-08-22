@@ -1,12 +1,13 @@
 package vedam.subkuch.ui.ask;
 
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+
+import androidx.databinding.DataBindingUtil;
 
 import com.android.volley.Response;
 import com.google.gson.Gson;
@@ -20,9 +21,9 @@ import vedam.subkuch.base.BaseActivity;
 import vedam.subkuch.databinding.ActivityAddQuestionBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
+import vedam.subkuch.network.models.AddEventResponse;
 import vedam.subkuch.ui.ask.models.AskCategory;
 import vedam.subkuch.ui.ask.models.AskCategoryResponse;
-import vedam.subkuch.network.models.AddEventResponse;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.UiUtil;
 
@@ -105,8 +106,8 @@ public class AddQuestionActivity extends BaseActivity {
     private Response.Listener<AddEventResponse> onAddQuestionSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
-            UiUtil.showToast(this, getString(R.string.question_posted));
+        if (response != null && !TextUtils.isEmpty(response.getReturnMessage())) {
+            UiUtil.showToast(this, response.getReturnMessage());
             setResult(RESULT_OK);
             finish();
         } else

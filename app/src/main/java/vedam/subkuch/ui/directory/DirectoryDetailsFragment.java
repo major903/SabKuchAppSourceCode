@@ -106,13 +106,11 @@ public class DirectoryDetailsFragment extends BaseFragment implements OnListView
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()) {
-            case R.id.action_add:
-                startActivity(new Intent(getActivity(), AddDirectoryActivity.class));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.action_add) {
+            startActivity(new Intent(getActivity(), AddDirectoryActivity.class));
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     /*@Override

@@ -1,8 +1,12 @@
 package vedam.subkuch.ui.needs;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -51,6 +55,7 @@ public class NeedsFragment extends BaseListFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
         getProviders();
         getUserTypeId();
     }
@@ -113,5 +118,20 @@ public class NeedsFragment extends BaseListFragment {
             addFragmentWithAnimation(R.id.content_frame, AllBookingsFragment.newInstance(provider), null, true);
         else
             addFragmentWithAnimation(R.id.content_frame, MyBookingsFragment.newInstance(provider), null, true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.add, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_add) {
+            startActivity(new Intent(context, AddNeedActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -430,4 +430,55 @@ public class DataFetcher {
         String url = String.format("%s/api/Needs/PostNeed", NetworkConstants.END_POINT2);
         HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
     }
+
+    public static <T> void getClassifiedsCategories(Context context, Response.Listener<T> updateSuccessListener, Type repClass, Response.ErrorListener errorListener) {
+
+        String url = String.format("%s/api/Classified/Categories", NetworkConstants.END_POINT2);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
+    public static <T> void getClassifiedSubCategories(Context context, Response.Listener<T> updateSuccessListener, Type repClass, Response.ErrorListener errorListener, String categoryId) {
+        String url = String.format("%s/api/Classified/SubCategories?CategoryId=%s", NetworkConstants.END_POINT2, categoryId);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
+    public static <T> void addClassified(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
+
+        String url = String.format("%s/api/Classified/AddClassifiedAds", NetworkConstants.END_POINT2);
+        HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
+    }
+
+    public static <T> void updateClassified(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
+
+        String url = String.format("%s/api/Classified/UpdateClassifiedAds", NetworkConstants.END_POINT2);
+        HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
+    }
+
+    public static <T> void deleteClassified(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener, String adId) {
+        String userId = AppPrefs.getPrefsUserId(context);
+        String url = String.format("%s/api/Classified/DeleteAd?ClassifiedAdId=%s&UserId=%s", NetworkConstants.END_POINT2, adId, userId);
+        HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, null, repClass, errorListener);
+    }
+
+    public static <T> void uploadClassifiedImage(Context context, Map<String, DataPart> dataPartMap, Response.Listener<T> updateSuccessListener, Class<T> repClass,
+                                                 Response.ErrorListener errorListener, String classifiedId) {
+        Map<String, String> map = new HashMap<>();
+        map.put(NetworkConstants.ClassifiedAdId, classifiedId);
+        String url = String.format("%s/api/Classified/UploadImage", NetworkConstants.END_POINT2);
+        HelperVolley.callApiWithMultipartBody(context, url, null, updateSuccessListener, map, dataPartMap, repClass, errorListener);
+    }
+
+    public static <T> void getClassifieds(Context context, Response.Listener<T> updateSuccessListener, Type repClass, Response.ErrorListener errorListener,
+                                          int pageIndex, int pageSize, String subCategoryId) {
+        String userId = AppPrefs.getPrefsUserId(context);
+        String url = String.format(Locale.US, "%s/api/Classified/GetClassifiedAds?SubCategoryId=%s&ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT2, subCategoryId, userId, pageIndex, pageSize);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
+    public static <T> void getMyClassifieds(Context context, Response.Listener<T> updateSuccessListener, Type repClass, Response.ErrorListener errorListener,
+                                            int pageIndex, int pageSize) {
+        String userId = AppPrefs.getPrefsUserId(context);
+        String url = String.format(Locale.US, "%s/api/Classified/MyClassifiedAds?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT2, userId, pageIndex, pageSize);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
 }

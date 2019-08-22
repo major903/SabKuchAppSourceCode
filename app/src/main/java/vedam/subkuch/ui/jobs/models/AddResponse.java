@@ -6,6 +6,11 @@ public class AddResponse {
     private boolean success;
     private String message;
     private String ReturnMessage;
+    private int ReturnCode;
+
+    public int getReturnCode() {
+        return ReturnCode;
+    }
 
     public boolean isSuccess() {
         return success;

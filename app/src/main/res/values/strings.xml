@@ -88,7 +88,7 @@
     <string name="external_storage_denied">External Storage permission is denied, to enable the permission go to settings</string>
     <string name="enter_date">Enter date</string>
     <string name="enter_valid_date">Enter date in specified format</string>
-    <string name="enter_details">Enter details of event</string>
+    <string name="enter_event_details">Enter details of event</string>
     <string name="enter_event_time">Enter time of event</string>
     <string name="enter_event_venue">Enter venue of event</string>
     <string name="offers">Offers</string>
@@ -426,4 +426,25 @@
     <string name="enter_work_details">Enter work details</string>
     <string name="public_utility">Public Utility</string>
     <string name="add_public_utility">Add Public Utility</string>
+    <string name="classifieds">Classifieds</string>
+    <string name="about">About</string>
+    <string name="contact">Contact</string>
+    <string name="locality">Locality</string>
+    <string name="rate">Rate</string>
+    <string name="discount">Daily Discount</string>
+    <string name="enter_location">Enter location</string>
+    <string name="enter_rate">Enter rate</string>
+    <string name="add_classified">Add Advertisement</string>
+    <string name="my_classifieds">My Ads</string>
+    <string name="no_ads_found">No advertisements found</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="edit_classified">Edit Ad</string>
+    <string name="my_needs">My Needs</string>
+    <string name="item_location">Item Location</string>
+    <string name="item_location_hint">Example M.G. Road</string>
+    <string name="add_a_need">Add a Need</string>
+    <string name="enter_item_details">Enter Details</string>
+    <string name="enter_details">Enter Details</string>
+    <string name="enter_daily_discount">Enter daily discount</string>
 </resources>

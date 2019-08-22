@@ -18,7 +18,7 @@ public class DateTimeUtils {
     public static String DATE_FORMAT_2 = "dd MMMM yyyy hh:mm aaa";
     public static String DATE_FORMAT_3 = "dd/MM/yyyy";
     public static String DATE_FORMAT_4 = "dd/MM/yy HH:mm";
-    public static String DATE_FORMAT_5 = "HH:mm";
+    public static String DATE_FORMAT_5 = "dd-MM-yyyy";
     public static String DATE_FORMAT_6 = "EEE, dd MMM";
     public static String DATE_FORMAT_7 = "MMMM, EEEE";
     public static String DATE_FORMAT_8 = "dd";

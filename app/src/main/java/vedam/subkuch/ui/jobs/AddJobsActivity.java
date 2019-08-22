@@ -1,7 +1,6 @@
 package vedam.subkuch.ui.jobs;
 
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -13,6 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+
+import androidx.databinding.DataBindingUtil;
 
 import com.android.volley.Response;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -185,17 +186,15 @@ public class AddJobsActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_done:
-                int errorMessage = validateErrorMessage();
-                if (errorMessage == 0) {
-                    submit();
-                } else
-                    UiUtil.showDialog(this, getString(errorMessage), true);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.action_done) {
+            int errorMessage = validateErrorMessage();
+            if (errorMessage == 0) {
+                submit();
+            } else
+                UiUtil.showDialog(this, getString(errorMessage), true);
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     private void submit() {

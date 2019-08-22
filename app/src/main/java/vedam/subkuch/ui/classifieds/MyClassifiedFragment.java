@@ -1,4 +1,4 @@
-package vedam.subkuch.ui.needs;
+package vedam.subkuch.ui.classifieds;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,90 +11,85 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Response;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseFragment;
-import vedam.subkuch.databinding.FragmentMyBookingsBinding;
+import vedam.subkuch.databinding.FragmentClassifiedDetailsBinding;
 import vedam.subkuch.helpers.Constants;
+import vedam.subkuch.interfaces.OnListViewItemClickListener;
 import vedam.subkuch.network.DataFetcher;
-import vedam.subkuch.network.models.needs.Need;
-import vedam.subkuch.network.models.needs.NeedResponse;
-import vedam.subkuch.network.models.needs.Provider;
+import vedam.subkuch.network.models.BaseGetMasterModel;
+import vedam.subkuch.network.models.classifieds.Classified;
 import vedam.subkuch.ui.jobs.models.AddResponse;
+import vedam.subkuch.utils.AppUtil;
+import vedam.subkuch.utils.ListItemClickAction;
 import vedam.subkuch.utils.UiUtil;
 
-public class MyBookingsFragment extends BaseFragment implements MyBookingsAdapter.BookingCompleteListener {
+public class MyClassifiedFragment extends BaseFragment implements OnListViewItemClickListener {
 
-    private FragmentMyBookingsBinding fragmentMyBookingsBinding;
-    private MyBookingsAdapter adapter;
-    private ArrayList<Need> needBookings = new ArrayList<>();
+    private FragmentClassifiedDetailsBinding binding;
+    private MyClassifiedsAdapter adapter;
+    private ArrayList<Classified> classifieds = new ArrayList<>();
     private boolean loading = true;
     private LinearLayoutManager linearLayoutManager;
     private int pageNo = 1;
     private int pageSize = 20;
     private boolean hasMoreProjects = true;
-    private Provider provider;
 
-    public MyBookingsFragment() {
+    public MyClassifiedFragment() {
         // Required empty public constructor
     }
 
-    public static MyBookingsFragment newInstance(Provider provider) {
-        MyBookingsFragment fragment = new MyBookingsFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.EXTRA_PROVIDER, provider);
-        fragment.setArguments(bundle);
-        return fragment;
+    public static MyClassifiedFragment newInstance() {
+
+        return new MyClassifiedFragment();
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null)
-            provider = getArguments().getParcelable(Constants.EXTRA_PROVIDER);
-    }
-
+    //Layout of BulleinFragment is used because both needed to same i.e. ListView
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         // Inflate the layout for this fragment
-        fragmentMyBookingsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_bookings, container, false);
-        return fragmentMyBookingsBinding.getRoot();
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_classified_details, container, false);
+        return binding.getRoot();
     }
 
     public void onViewCreated(@NonNull View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+        setTitle(getString(R.string.my_classifieds));
         initUI();
-        getMyBookings();
-        setTitle(getString(R.string.my_needs));
+        getClassifieds();
     }
 
     private void initUI() {
 
         linearLayoutManager = new LinearLayoutManager(context);
-        fragmentMyBookingsBinding.rvEvents.setLayoutManager(linearLayoutManager);
-        fragmentMyBookingsBinding.rvEvents.setHasFixedSize(true);
-        adapter = new MyBookingsAdapter(context, needBookings, this);
-        fragmentMyBookingsBinding.rvEvents.setAdapter(adapter);
-        fragmentMyBookingsBinding.rvEvents.addOnScrollListener(new OnScrollListener());
+        binding.rvClassifieds.setLayoutManager(linearLayoutManager);
+        binding.rvClassifieds.setHasFixedSize(true);
+        adapter = new MyClassifiedsAdapter(context, classifieds, this);
+        binding.rvClassifieds.setAdapter(adapter);
+        binding.rvClassifieds.addOnScrollListener(new MyClassifiedFragment.OnScrollListener());
     }
 
-    private void getMyBookings() {
+    private void getClassifieds() {
         UiUtil.showProgressDialog(context, getString(R.string.please_wait));
-        DataFetcher.getMyNeeds(context, onNeedBookingsSuccessListener, NeedResponse.class, onErrorListener, provider.getProviderId(), pageNo, pageSize);
+        Type type = new TypeToken<BaseGetMasterModel<Classified>>() {
+        }.getType();
+        DataFetcher.getMyClassifieds(context, onGetClassifiedsSuccessListener, type, onErrorListener, pageNo, pageSize);
 
     }
 
-    private Response.Listener<NeedResponse> onNeedBookingsSuccessListener = response -> {
+    private Response.Listener<BaseGetMasterModel<Classified>> onGetClassifiedsSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
         if (getActivity() != null)
@@ -104,16 +99,17 @@ public class MyBookingsFragment extends BaseFragment implements MyBookingsAdapte
                     loading = true;
                     loadValues(response.getReturnData());
                 } else
-                    UiUtil.showToast(context, getString(R.string.no_booking_found));
+                    UiUtil.showToast(context, getString(R.string.no_ads_found));
             } else
                 UiUtil.showToast(context, getString(R.string.err_occurred));
     };
 
-    private void loadValues(ArrayList<Need> response) {
+
+    private void loadValues(ArrayList<Classified> response) {
 
         if (response != null && !response.isEmpty()) {
             pageNo++;
-            needBookings.addAll(response);
+            classifieds.addAll(response);
             adapter.notifyDataSetChanged();
         }
     }
@@ -128,55 +124,54 @@ public class MyBookingsFragment extends BaseFragment implements MyBookingsAdapte
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_add) {
-            startActivityForResult(new Intent(context, AddNeedActivity.class)
-                    .putExtra(Constants.EXTRA_ID, provider.getProviderId()), Constants.REQUEST_ADD_TRANSPORT);
+            startActivity(new Intent(context, AddClassifiedsActivity.class));
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public <E> void onItemClick(E item, int position, View view, ListItemClickAction action) {
+        switch (action) {
+            case EDIT:
+                Intent intent = new Intent(context, EditClassifiedActivity.class);
+                intent.putExtra(Constants.EXTRA_DATA, (Classified) item);
+                startActivityForResult(intent, Constants.REQUEST_EDIT_AD);
+                break;
+            case DELETE:
+                deleteAd((Classified) item);
+                break;
+        }
+    }
+
+    private void deleteAd(Classified item) {
+
+        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
+        DataFetcher.deleteClassified(context, onDeleteSuccessListener, AddResponse.class, onErrorListener, item.getClassifiedAdId());
+    }
+
+    private Response.Listener<AddResponse> onDeleteSuccessListener = response -> {
+
+        UiUtil.cancelProgressDialog();
+        if (getActivity() != null)
+            if (response != null && response.getReturnCode() == Constants.SUCCESS_RETURN_CODE) {
+                UiUtil.showToast(context, AppUtil.deNull(response.getReturnMessage()));
+                refreshData();
+            } else
+                UiUtil.showToast(context, getString(R.string.err_occurred));
+    };
+
+    private void refreshData() {
+        setDefaults();
+        getClassifieds();
     }
 
     private void setDefaults() {
         pageNo = 1;
         hasMoreProjects = true;
-        needBookings.clear();
+        classifieds.clear();
         adapter.notifyDataSetChanged();
 
     }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == Constants.REQUEST_ADD_TRANSPORT) {
-            if (resultCode == Activity.RESULT_OK) {
-                setDefaults();
-                getMyBookings();
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    @Override
-    public void onBookingCompleteRequest(String needId) {
-        markComplete(needId);
-    }
-
-    private void markComplete(String needId) {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
-        DataFetcher.setNeedBookingComplete(context, onNeedCompleteSuccessListener, AddResponse.class, onErrorListener, needId);
-
-    }
-
-    private Response.Listener<AddResponse> onNeedCompleteSuccessListener = response -> {
-
-        UiUtil.cancelProgressDialog();
-        if (getActivity() != null)
-            if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
-                UiUtil.showToast(context, getString(R.string.booking_completed_successfully));
-                setDefaults();
-                getMyBookings();
-            } else
-                UiUtil.showToast(context, getString(R.string.err_occurred));
-    };
 
     public class OnScrollListener extends RecyclerView.OnScrollListener {
 
@@ -203,11 +198,20 @@ public class MyBookingsFragment extends BaseFragment implements MyBookingsAdapte
                 if (loading) {
                     if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
                         loading = false;
-                        if (hasMoreProjects) getMyBookings();
+                        if (hasMoreProjects) getClassifieds();
 
                     }
                 }
             }
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == Constants.REQUEST_EDIT_AD && resultCode == Activity.RESULT_OK)
+            refreshData();
+        else
+            super.onActivityResult(requestCode, resultCode, data);
     }
 }

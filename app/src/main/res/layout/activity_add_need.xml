@@ -29,6 +29,31 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_16dp"
                     android:layout_marginRight="@dimen/margin_16dp"
+                    android:text="@string/category" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_4dp"
+                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:background="@drawable/edit_text_border">
+
+                    <Spinner
+                        android:id="@+id/sp_category"
+                        style="@style/SpinnerStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/SpinnerStyle" />
+                </FrameLayout>
+
+                <TextView
+                    style="@style/TextViewBlackHeading2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_16dp"
+                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginRight="@dimen/margin_16dp"
                     android:text="@string/work_location" />
 
                 <EditText

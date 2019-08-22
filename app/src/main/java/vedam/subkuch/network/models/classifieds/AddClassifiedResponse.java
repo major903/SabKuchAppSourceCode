@@ -1,8 +1,9 @@
-package vedam.subkuch.network.models;
+package vedam.subkuch.network.models.classifieds;
 
-public class GeneralResponse {
-
+public class AddClassifiedResponse {
     private int ReturnCode;
+
+    private Classified ReturnData;
 
     private String ReturnMessage;
 
@@ -12,6 +13,14 @@ public class GeneralResponse {
 
     public void setReturnCode(int ReturnCode) {
         this.ReturnCode = ReturnCode;
+    }
+
+    public Classified getClassified() {
+        return ReturnData;
+    }
+
+    public void setClassified(Classified ReturnData) {
+        this.ReturnData = ReturnData;
     }
 
     public String getReturnMessage() {

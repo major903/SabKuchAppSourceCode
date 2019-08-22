@@ -1,10 +1,7 @@
 package vedam.subkuch.ui.events;
 
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,6 +9,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 
 import com.android.volley.Response;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -48,6 +49,7 @@ public class AddEventFragment extends BaseAddImagesFragment implements DatePicke
 
     private FragmentAddEventBinding fragmentAddEventBinding;
     private LatLng latLng;
+    private String successMessage;
 
     public AddEventFragment() {
         // Required empty public constructor
@@ -77,7 +79,7 @@ public class AddEventFragment extends BaseAddImagesFragment implements DatePicke
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setImagesLayout(view, 1);
         bind();
@@ -101,7 +103,7 @@ public class AddEventFragment extends BaseAddImagesFragment implements DatePicke
         fragmentAddEventBinding.etDate.setOnClickListener(v -> showDatePickerDialog());
     }
 
-    public void showDatePickerDialog() {
+    private void showDatePickerDialog() {
 
         long millis = System.currentTimeMillis();
         Calendar c = Calendar.getInstance();
@@ -163,8 +165,10 @@ public class AddEventFragment extends BaseAddImagesFragment implements DatePicke
 
         UiUtil.cancelProgressDialog();
         if (getActivity() != null)
-            if (response != null && response.getReturnMessage().equals(Constants.SUCCESS))
+            if (response != null && !TextUtils.isEmpty(response.getReturnMessage())) {
+                successMessage = response.getReturnMessage();
                 isImageAvailable(response.getReturnData().getID());
+            }
             else
                 UiUtil.showToast(context, context.getString(R.string.err_occurred));
     };
@@ -174,7 +178,7 @@ public class AddEventFragment extends BaseAddImagesFragment implements DatePicke
         if (getImageItemMap().size() > 0)
             uploadEventImage(eventId);
         else {
-            UiUtil.showToast(context, context.getString(R.string.event_added));
+            UiUtil.showToast(context, successMessage);
             if (getGlobalFragmentInteractionListener() != null) {
                 getGlobalFragmentInteractionListener().finishActivity();
             }
@@ -196,8 +200,8 @@ public class AddEventFragment extends BaseAddImagesFragment implements DatePicke
 
         UiUtil.cancelProgressDialog();
         if (getActivity() != null)
-            if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
-                UiUtil.showToast(context, getString(R.string.event_added));
+            if (response != null && Constants.SUCCESS.equals(response.getReturnMessage())) {
+                UiUtil.showToast(context, successMessage);
                 getActivity().finish();
             } else
                 UiUtil.showToast(context, getString(R.string.err_occurred));

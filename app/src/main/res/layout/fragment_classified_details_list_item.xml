@@ -3,22 +3,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/myshape"
-    android:orientation="vertical"
     android:layout_marginTop="@dimen/margin_4dp"
     android:layout_marginBottom="@dimen/margin_4dp"
+    android:background="@drawable/myshape"
+    android:orientation="vertical"
     android:padding="@dimen/margin_8dp">
 
+    <ImageView
+        android:id="@+id/iv_ad"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/margin_16dp"
+        android:scaleType="fitXY"
+        tools:src="@color/light_phone_book" />
+
     <TextView
-        android:id="@+id/tvName"
-        style="@style/TextViewBlackHeading"
-        android:layout_width="fill_parent"
+        android:id="@+id/tv_user_name"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
+        android:textSize="14sp"
         tools:text="@string/err" />
 
     <TextView
-        android:id="@+id/tvDealingIn"
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        tools:text="@string/err" />
+
+    <TextView
+        android:id="@+id/tv_distance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        tools:text="@string/err" />
+
+    <TextView
+        android:id="@+id/tv_about"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -28,15 +54,7 @@
     <include layout="@layout/layout_direction" />
 
     <TextView
-        android:id="@+id/tvDistance"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:text="@string/err" />
-
-    <TextView
-        android:id="@+id/tvPhone"
+        android:id="@+id/tv_contact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:autoLink="phone"
@@ -45,34 +63,7 @@
         tools:text="@string/err" />
 
     <TextView
-        android:id="@+id/tvMobile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autoLink="phone"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:text="@string/err" />
-
-    <TextView
-        android:id="@+id/tvEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autoLink="email"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:text="@string/err" />
-
-    <TextView
-        android:id="@+id/tvWebsite"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autoLink="web"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:text="@string/err" />
-
-    <TextView
-        android:id="@+id/tvContactPerson"
+        android:id="@+id/tv_ad_price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -80,7 +71,7 @@
         tools:text="@string/err" />
 
     <TextView
-        android:id="@+id/tvLine1"
+        android:id="@+id/tv_current_price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -88,7 +79,7 @@
         tools:text="@string/err" />
 
     <TextView
-        android:id="@+id/tvLine2"
+        android:id="@+id/tv_daily_discount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"

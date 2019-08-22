@@ -353,7 +353,7 @@ public class AddDirectoryFragment extends BaseAddImagesFragment implements Adapt
         UiUtil.cancelProgressDialog();
         if (getActivity() != null)
             if (response != null && response.isStatus()) {
-                UiUtil.showToast(context, getString(R.string.business_added));
+                UiUtil.showToast(context, response.getMessage());
                 getActivity().setResult(RESULT_OK);
                 getActivity().finish();
             } else
@@ -426,8 +426,10 @@ public class AddDirectoryFragment extends BaseAddImagesFragment implements Adapt
         switch (parent.getId()) {
             case R.id.sp_category:
                 categoryId = ((Category) parent.getItemAtPosition(position)).getCategoryId();
-                if (!TextUtils.isEmpty(categoryId))
+                if (!TextUtils.isEmpty(categoryId)) {
+                    subcategoryId = null;
                     getSubCategories();
+                }
                 break;
             case R.id.sp_sub_category:
                 subcategoryId = ((SubCategory) parent.getItemAtPosition(position)).getSubCategoryId();
