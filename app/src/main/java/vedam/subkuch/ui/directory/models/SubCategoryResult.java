@@ -16,10 +16,4 @@ public class SubCategoryResult {
     {
         this.SubCategories = SubCategories;
     }
-
-    @Override
-    public String toString()
-    {
-        return "ClassPojo [SubCategories = "+SubCategories+"]";
-    }
 }

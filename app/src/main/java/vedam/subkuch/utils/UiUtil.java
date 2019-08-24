@@ -225,11 +225,11 @@ public class UiUtil {
 
     }
 
-    public static void showHEADERToast(Context context, String msg) {
+    public static void showCenterToast(Context context, String msg) {
         if (context == null)
             return;
         Toast toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.TOP, 0, 30);
+        toast.setGravity(Gravity.CENTER, 0, 30);
         toast.show();
 
     }

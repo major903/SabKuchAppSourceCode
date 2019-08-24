@@ -13,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.Response;
@@ -25,8 +24,6 @@ import vedam.subkuch.base.BaseListFragment;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.network.models.SubCategory;
-import vedam.subkuch.ui.directory.AddDirectoryActivity;
-import vedam.subkuch.ui.directory.DirectoryDetailsActivity;
 import vedam.subkuch.ui.directory.models.SubCategoryResponse;
 import vedam.subkuch.utils.UiUtil;
 
@@ -35,34 +32,21 @@ import vedam.subkuch.utils.UiUtil;
  */
 public class SubDirectoryFragment extends BaseListFragment {
 
-    private String categoryId;
     private ArrayList<SubCategory> subCategories;
 
     public SubDirectoryFragment() {
         // Required empty public constructor
     }
 
-    public static SubDirectoryFragment newInstance(String categoryId) {
+    public static SubDirectoryFragment newInstance() {
 
-        SubDirectoryFragment fragment = new SubDirectoryFragment();
-
-        Bundle args = new Bundle();
-        args.putString(Constants.EXTRA_CATEGORY_ID, categoryId);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-        if (getArguments() != null)
-            categoryId = getArguments().getString(Constants.EXTRA_CATEGORY_ID);
+        return new SubDirectoryFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_directory, container, false);
     }
@@ -74,7 +58,7 @@ public class SubDirectoryFragment extends BaseListFragment {
 
     private void getSubCategories() {
         UiUtil.showProgressDialog(context, R.string.please_wait);
-        DataFetcher.getSubCategories(context, onCategorySuccessListener, SubCategoryResponse.class, onErrorListener, categoryId);
+        DataFetcher.getUtilitySubCategories(context, onCategorySuccessListener, SubCategoryResponse.class, onErrorListener);
 
     }
 
@@ -100,13 +84,11 @@ public class SubDirectoryFragment extends BaseListFragment {
         super.onListItemClick(l, v, position, id);
 
 
-        Intent intent = new Intent(getActivity(),
-                DirectoryDetailsActivity.class);
         SubCategory subCategory = subCategories.get(position);
-        intent.putExtra(Constants.EXTRA_CATEGORY_ID, categoryId);
-        intent.putExtra(Constants.EXTRA_SUB_CATEGORY_NAME, subCategory.getSubCategoryName());
-        intent.putExtra(Constants.EXTRA_SUB_CATEGORY_ID, subCategory.getSubCategoryId());
-        startActivity(intent);
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.EXTRA_SUB_CATEGORY_NAME, subCategory.getSubCategoryName());
+        bundle.putString(Constants.EXTRA_SUB_CATEGORY_ID, subCategory.getSubCategoryId());
+        addFragmentWithAnimation(R.id.content_frame, PublicUtilityFragment.newInstance(bundle), null, true);
     }
 
     @Override
@@ -120,7 +102,7 @@ public class SubDirectoryFragment extends BaseListFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == R.id.action_add) {
-            startActivity(new Intent(getActivity(), AddDirectoryActivity.class));
+            startActivity(new Intent(getActivity(), AddPublicUtilityActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

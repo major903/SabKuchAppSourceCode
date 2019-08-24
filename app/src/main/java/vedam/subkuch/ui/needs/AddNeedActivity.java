@@ -25,7 +25,6 @@ import vedam.subkuch.base.BaseActivity;
 import vedam.subkuch.databinding.ActivityAddNeedBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
-import vedam.subkuch.network.models.classifieds.ClassifiedCategory;
 import vedam.subkuch.network.models.needs.AddNeedRequest;
 import vedam.subkuch.network.models.needs.Provider;
 import vedam.subkuch.network.models.needs.ProviderResponse;
@@ -154,7 +153,7 @@ public class AddNeedActivity extends BaseActivity implements AdapterView.OnItemS
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == R.id.sp_category) {
-            categoryId = ((ClassifiedCategory) parent.getItemAtPosition(position)).getCategoryId();
+            categoryId = ((Provider) parent.getItemAtPosition(position)).getProviderId();
         }
     }
 

@@ -102,16 +102,6 @@ public class MyClassifiedsAdapter extends RecyclerView.Adapter<MyClassifiedsAdap
             holder.ibDirection.setVisibility(View.GONE);
     }
 
-    private String getNameAndDate(Classified classified) {
-        StringBuilder sb = new StringBuilder();
-        if (!TextUtils.isEmpty(classified.getUserName()))
-            sb.append(classified.getUserName());
-        if (!TextUtils.isEmpty(classified.getUpdatedAt()))
-            sb.append(" ").append(DateTimeUtils.getFormattedDate(classified.getUpdatedAt(),
-                    DateTimeUtils.DATE_TIME_FORMAT_1, DateTimeUtils.DATE_FORMAT_5));
-        return sb.toString().trim();
-    }
-
     private String getLocation(Classified classified) {
         StringBuilder sb = new StringBuilder();
         if (!TextUtils.isEmpty(classified.getLocality()))

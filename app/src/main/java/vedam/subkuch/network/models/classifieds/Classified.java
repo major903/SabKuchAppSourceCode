@@ -60,7 +60,7 @@ public class Classified implements Parcelable {
 
     private String Location;
 
-    private String UserName;
+    private String FirstName;
     private String PostedAdId;
     private String FormattedRate;
 
@@ -97,7 +97,7 @@ public class Classified implements Parcelable {
         ClassifiedAdId = in.readString();
         ExpiresAt = in.readString();
         Location = in.readString();
-        UserName = in.readString();
+        FirstName = in.readString();
         PostedAdId = in.readString();
         FormattedRate = in.readString();
     }
@@ -132,7 +132,7 @@ public class Classified implements Parcelable {
         dest.writeString(ClassifiedAdId);
         dest.writeString(ExpiresAt);
         dest.writeString(Location);
-        dest.writeString(UserName);
+        dest.writeString(FirstName);
         dest.writeString(PostedAdId);
         dest.writeString(FormattedRate);
     }
@@ -162,8 +162,8 @@ public class Classified implements Parcelable {
         return PostedAdId;
     }
 
-    public String getUserName() {
-        return UserName;
+    public String getFirstName() {
+        return FirstName;
     }
 
     public String getCategoryId() {

@@ -104,7 +104,7 @@ public class MyBookingsFragment extends BaseFragment implements MyBookingsAdapte
                     loading = true;
                     loadValues(response.getReturnData());
                 } else
-                    UiUtil.showToast(context, getString(R.string.no_booking_found));
+                    UiUtil.showCenterToast(context, getString(R.string.no_needs_found_details));
             } else
                 UiUtil.showToast(context, getString(R.string.err_occurred));
     };

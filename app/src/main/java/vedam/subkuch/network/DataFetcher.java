@@ -66,15 +66,20 @@ public class DataFetcher {
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
+    public static <T> void getUtilitySubCategories(Context context, Response.Listener<T> updateSuccessListener, Type repClass, Response.ErrorListener errorListener) {
+        String url = String.format("%s/api/PublicUtility/GetSubCategories", NetworkConstants.END_POINT2);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
+
     public static <T> void getDirectoryDetails(Context context, Response.Listener<T> updateSuccessListener, Type repClass, Response.ErrorListener errorListener
             , String categoryId, String subCategoryId, String search) {
         String url = String.format("%s/Directory/GetBusiness?SubCategoryId=%s&search=%s", NetworkConstants.END_POINT2, subCategoryId, AppUtil.deNull(search));
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 
-    public static <T> void getPublicUtilities(Context context, Response.Listener<T> updateSuccessListener, Type repClass, Response.ErrorListener errorListener, int pageIndex, int pageSize) {
+    public static <T> void getPublicUtilities(Context context, Response.Listener<T> updateSuccessListener, Type repClass, Response.ErrorListener errorListener, String subCategoryId, int pageIndex, int pageSize) {
         String userId = AppPrefs.getPrefsUserId(context);
-        String url = String.format(Locale.US, "%s/api/PublicUtility/GetPublicUtilities?UserId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT2, userId, pageIndex, pageSize);
+        String url = String.format(Locale.US, "%s/api/PublicUtility/GetPublicUtilities?SubCategoryId=%s&UserId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT2, subCategoryId, userId, pageIndex, pageSize);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 

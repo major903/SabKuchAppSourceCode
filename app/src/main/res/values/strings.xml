@@ -434,7 +434,7 @@
     <string name="discount">Daily Discount</string>
     <string name="enter_location">Enter location</string>
     <string name="enter_rate">Enter rate</string>
-    <string name="add_classified">Add Advertisement</string>
+    <string name="add_classified">Post an Ad</string>
     <string name="my_classifieds">My Ads</string>
     <string name="no_ads_found">No advertisements found</string>
     <string name="delete">Delete</string>
@@ -443,8 +443,10 @@
     <string name="my_needs">My Needs</string>
     <string name="item_location">Item Location</string>
     <string name="item_location_hint">Example M.G. Road</string>
-    <string name="add_a_need">Add a Need</string>
+    <string name="add_a_need">Post a Need</string>
     <string name="enter_item_details">Enter Details</string>
     <string name="enter_details">Enter Details</string>
     <string name="enter_daily_discount">Enter daily discount</string>
+    <string name="no_needs_found">No needs found</string>
+    <string name="no_needs_found_details">You have not posted any Need. To submit a Need please click on + sign.</string>
 </resources>

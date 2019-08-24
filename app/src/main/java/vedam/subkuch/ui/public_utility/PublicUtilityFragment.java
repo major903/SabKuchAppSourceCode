@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,14 +43,26 @@ public class PublicUtilityFragment extends BaseFragment {
     private int pageSize = 20;
     private boolean hasMoreProjects = true;
     private ArrayList<PublicUtility> publicUtilities = new ArrayList<>();
+    private String subCategoryId;
 
     public PublicUtilityFragment() {
         // Required empty public constructor
     }
 
-    public static PublicUtilityFragment newInstance() {
+    public static PublicUtilityFragment newInstance(Bundle args) {
 
-        return new PublicUtilityFragment();
+        PublicUtilityFragment fragment = new PublicUtilityFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            subCategoryId = getArguments().getString(Constants.EXTRA_SUB_CATEGORY_ID);
+            setTitle(getArguments().getString(Constants.EXTRA_SUB_CATEGORY_NAME));
+        }
     }
 
     @Override
@@ -81,7 +94,7 @@ public class PublicUtilityFragment extends BaseFragment {
     private void getPublicUtilities() {
 
         UiUtil.showProgressDialog(context, getString(R.string.please_wait));
-        DataFetcher.getPublicUtilities(context, onDirectoryDetailSuccessListener, PublicUtilityResponse.class, onErrorListener, pageNo, pageSize);
+        DataFetcher.getPublicUtilities(context, onDirectoryDetailSuccessListener, PublicUtilityResponse.class, onErrorListener, subCategoryId, pageNo, pageSize);
     }
 
     private Response.Listener<PublicUtilityResponse> onDirectoryDetailSuccessListener = response -> {
