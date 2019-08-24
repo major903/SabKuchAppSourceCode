@@ -8,7 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
-        android:paddingTop="@dimen/margin_16dp"
         android:paddingBottom="@dimen/margin_16dp">
 
         <LinearLayout
@@ -25,92 +24,112 @@
                 android:layout_height="wrap_content"
                 app:alignmentMode="alignBounds"
                 app:columnCount="2"
+                android:background="@drawable/blue_2_rounded_edges"
+                android:paddingLeft="@dimen/margin_8dp"
+                android:paddingTop="@dimen/margin_16dp"
+                android:paddingRight="@dimen/margin_8dp"
+                android:paddingBottom="@dimen/margin_32dp"
                 app:rowOrderPreserved="false"
                 app:useDefaultMargins="true">
 
                 <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/iv_events"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_8dp"
                     android:layout_marginRight="@dimen/margin_8dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/square_image"
+                    android:onClick="eventsClick"
                     app:layout_columnWeight="1"
+                    android:src="@drawable/grey_background"
                     app:layout_gravity="fill_horizontal"
                     app:riv_corner_radius="@dimen/margin_8dp" />
 
                 <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/iv_directory"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_8dp"
                     android:layout_marginRight="@dimen/margin_8dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/square_image"
+                    android:onClick="directoryClick"
                     app:layout_columnWeight="1"
+                    android:src="@drawable/grey_background"
                     app:layout_gravity="fill_horizontal"
                     app:riv_corner_radius="@dimen/margin_8dp" />
 
                 <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/iv_jobs"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_8dp"
                     android:layout_marginRight="@dimen/margin_8dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/square_image"
+                    android:layout_marginTop="@dimen/margin_16dp"
                     app:layout_columnWeight="1"
+                    android:onClick="jobsClick"
                     app:layout_gravity="fill_horizontal"
+                    android:src="@drawable/grey_background"
                     app:riv_corner_radius="@dimen/margin_8dp" />
 
                 <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/iv_movies"
                     android:layout_width="0dp"
+                    android:layout_marginTop="@dimen/margin_16dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_8dp"
                     android:layout_marginRight="@dimen/margin_8dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/square_image"
+                    android:onClick="moviesClick"
                     app:layout_columnWeight="1"
+                    android:src="@drawable/grey_background"
                     app:layout_gravity="fill_horizontal"
                     app:riv_corner_radius="@dimen/margin_8dp" />
 
             </androidx.gridlayout.widget.GridLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_8dp"
-                android:layout_marginTop="@dimen/margin_32dp"
+                android:layout_marginTop="@dimen/margin_16dp"
                 android:layout_marginRight="@dimen/margin_8dp"
                 android:orientation="horizontal"
                 android:weightSum="3">
 
                 <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/iv_ask_me"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_8dp"
                     android:layout_marginRight="@dimen/margin_8dp"
                     android:layout_weight="1"
                     android:scaleType="fitXY"
-                    android:src="@drawable/square_image"
+                    android:onClick="askClick"
+                    android:src="@drawable/grey_background"
                     app:riv_corner_radius="@dimen/margin_8dp" />
 
                 <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/iv_classifieds"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_8dp"
                     android:layout_marginRight="@dimen/margin_8dp"
                     android:layout_weight="1"
                     android:scaleType="fitXY"
-                    android:src="@drawable/square_image"
+                    android:onClick="classifiedsClick"
+                    android:src="@drawable/grey_background"
                     app:riv_corner_radius="@dimen/margin_8dp" />
 
                 <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/iv_needs"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_8dp"
                     android:layout_marginRight="@dimen/margin_8dp"
                     android:layout_weight="1"
                     android:scaleType="fitXY"
-                    android:src="@drawable/square_image"
+                    android:onClick="needsClick"
+                    android:src="@drawable/grey_background"
                     app:riv_corner_radius="@dimen/margin_8dp" />
             </LinearLayout>
 
@@ -118,29 +137,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_8dp"
-                android:layout_marginTop="@dimen/margin_32dp"
+                android:layout_marginTop="@dimen/margin_16dp"
                 android:layout_marginRight="@dimen/margin_8dp"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
                 <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/iv_matrimonial"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_8dp"
                     android:layout_marginRight="@dimen/margin_8dp"
                     android:layout_weight="1"
                     android:scaleType="fitXY"
-                    android:src="@drawable/square_image"
+                    android:onClick="matrimonialClick"
+                    android:src="@drawable/grey_background"
                     app:riv_corner_radius="@dimen/margin_8dp" />
 
                 <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/iv_dating"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_8dp"
                     android:layout_marginRight="@dimen/margin_8dp"
                     android:layout_weight="1"
                     android:scaleType="fitXY"
-                    android:src="@drawable/square_image"
+                    android:onClick="datingClick"
+                    android:src="@drawable/grey_background"
                     app:riv_corner_radius="@dimen/margin_8dp" />
             </LinearLayout>
 
@@ -148,42 +171,90 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_8dp"
-                android:layout_marginTop="@dimen/margin_32dp"
+                android:layout_marginTop="@dimen/margin_16dp"
                 android:layout_marginRight="@dimen/margin_8dp"
                 android:orientation="horizontal"
                 android:weightSum="3">
 
                 <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/iv_bus"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_8dp"
                     android:layout_marginRight="@dimen/margin_8dp"
                     android:layout_weight="1"
                     android:scaleType="fitXY"
-                    android:src="@drawable/square_image"
+                    android:onClick="busClick"
+                    android:src="@drawable/grey_background"
                     app:riv_corner_radius="@dimen/margin_8dp" />
 
                 <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/iv_phone_book"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_8dp"
                     android:layout_marginRight="@dimen/margin_8dp"
                     android:layout_weight="1"
                     android:scaleType="fitXY"
-                    android:src="@drawable/square_image"
+                    android:onClick="phoneBookClick"
+                    android:src="@drawable/grey_background"
                     app:riv_corner_radius="@dimen/margin_8dp" />
 
                 <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/iv_public_utility"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_8dp"
                     android:layout_marginRight="@dimen/margin_8dp"
                     android:layout_weight="1"
                     android:scaleType="fitXY"
-                    android:src="@drawable/square_image"
+                    android:onClick="publicUtilityClick"
+                    android:src="@drawable/grey_background"
                     app:riv_corner_radius="@dimen/margin_8dp" />
             </LinearLayout>
 
+            <ImageView
+                android:id="@+id/iv_transport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:layout_marginRight="@dimen/margin_16dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/transport"
+                android:onClick="transportClick"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/iv_gift"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:layout_marginRight="@dimen/margin_16dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/giftalife"
+                android:onClick="giftALifeClick"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/iv_offer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:layout_marginRight="@dimen/margin_16dp"
+                android:layout_marginBottom="@dimen/margin_4dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/specialoffer"
+                android:onClick="specialOfferClick"
+                android:visibility="gone"
+                tools:visibility="visible" />
         </LinearLayout>
     </ScrollView>
 </layout>

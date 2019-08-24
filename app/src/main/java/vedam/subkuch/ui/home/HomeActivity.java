@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,9 +23,7 @@ import com.android.volley.Response;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import vedam.subkuch.R;
@@ -33,9 +32,11 @@ import vedam.subkuch.databinding.ActivityHomeBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.network.models.AddEventResponse;
-import vedam.subkuch.network.models.Feature;
 import vedam.subkuch.network.models.ReferralRequest;
 import vedam.subkuch.network.models.ShareResponse;
+import vedam.subkuch.network.models.feature.Feature;
+import vedam.subkuch.network.models.feature.FeatureResponse;
+import vedam.subkuch.network.models.feature.Node;
 import vedam.subkuch.ui.ask.AskCategoryActivity;
 import vedam.subkuch.ui.classifieds.ClassifiedsActivity;
 import vedam.subkuch.ui.directory.DirectoryActivity;
@@ -55,11 +56,11 @@ import vedam.subkuch.ui.vehicle.VehicleActivity;
 import vedam.subkuch.ui.wallet.WalletActivity;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.AppUtil;
+import vedam.subkuch.utils.ImageSetter;
 import vedam.subkuch.utils.LogUtils;
 import vedam.subkuch.utils.UiUtil;
 
 public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, InstallReferrerStateListener {
-
     private ActivityHomeBinding activityHomeBinding;
     private InstallReferrerClient referrerClient;
 
@@ -109,17 +110,18 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     private void getFeatures() {
 
         UiUtil.showProgressDialog(this, getString(R.string.please_wait));
-        Type type = new TypeToken<ArrayList<Feature>>() {
-        }.getType();
-        DataFetcher.getFeatures(this, onFeaturesSuccessListener, type, onErrorListener);
+        DataFetcher.getFeatures2(this, onFeaturesSuccessListener, FeatureResponse.class, onErrorListener);
     }
 
-    private Response.Listener<ArrayList<Feature>> onFeaturesSuccessListener = response -> {
+    private Response.Listener<FeatureResponse> onFeaturesSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
         if (response != null) {
-            enableFeatures(response);
-            activityHomeBinding.getRoot().findViewById(R.id.ll_container).setVisibility(View.VISIBLE);
+            if (response.getReturnCode() == Constants.SUCCESS_RETURN_CODE) {
+                enableFeatures(response.getReturnData());
+                activityHomeBinding.getRoot().findViewById(R.id.ll_container).setVisibility(View.VISIBLE);
+            } else if (!TextUtils.isEmpty(response.getReturnMessage()))
+                UiUtil.showToast(HomeActivity.this, response.getReturnMessage());
         } else
             UiUtil.showToast(HomeActivity.this, getString(R.string.err_occurred));
     };
@@ -175,60 +177,144 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
-    private void enableFeatures(ArrayList<Feature> response) {
+    private void enableFeatures(Feature response) {
+        if (response.getNode1() != null)
+            enableFeaturesByNode1(response.getNode1());
+        if (response.getNode2() != null)
+            enableFeaturesByNode2(response.getNode2());
+        if (response.getNode3() != null)
+            enableFeaturesByNode3(response.getNode3());
+        if (response.getNode4() != null)
+            enableFeaturesByNode4(response.getNode4());
+        if (response.getNode5() != null)
+            enableFeaturesByNode5(response.getNode5());
 
-        for (Feature feature : response) {
+    }
+
+    private void enableFeaturesByNode1(ArrayList<Node> nodes) {
+
+        for (Node feature : nodes) {
             switch (feature.getName()) {
                 case Constants.Directory:
-                    activityHomeBinding.getRoot().findViewById(R.id.iv_directory).setVisibility(View.VISIBLE);
+                    ImageView ivDirectory = activityHomeBinding.getRoot().findViewById(R.id.iv_directory);
+                    ivDirectory.setVisibility(View.VISIBLE);
+                    setImage(ivDirectory, feature.getIconUrl());
                     break;
                 case Constants.Events:
-                    activityHomeBinding.getRoot().findViewById(R.id.iv_events).setVisibility(View.VISIBLE);
+                    ImageView ivEvent = activityHomeBinding.getRoot().findViewById(R.id.iv_events);
+                    ivEvent.setVisibility(View.VISIBLE);
+                    setImage(ivEvent, feature.getIconUrl());
                     break;
                 case Constants.Jobs:
-                    activityHomeBinding.getRoot().findViewById(R.id.iv_jobs).setVisibility(View.VISIBLE);
+                    ImageView ivJobs = activityHomeBinding.getRoot().findViewById(R.id.iv_jobs);
+                    ivJobs.setVisibility(View.VISIBLE);
+                    setImage(ivJobs, feature.getIconUrl());
                     break;
                 case Constants.Movies:
-                    activityHomeBinding.getRoot().findViewById(R.id.iv_movies).setVisibility(View.VISIBLE);
-                    break;
-                case Constants.Public_Transport_Timings:
-                    activityHomeBinding.getRoot().findViewById(R.id.iv_bus).setVisibility(View.VISIBLE);
-                    break;
-                case Constants.Phone_book:
-                    activityHomeBinding.getRoot().findViewById(R.id.iv_phone_book).setVisibility(View.VISIBLE);
-                    break;
-                case Constants.Dating:
-                    activityHomeBinding.getRoot().findViewById(R.id.iv_dating).setVisibility(View.VISIBLE);
-                    break;
-                case Constants.Matrimonial:
-                    activityHomeBinding.getRoot().findViewById(R.id.iv_matrimonial).setVisibility(View.VISIBLE);
-                    break;
-                case Constants.Goods_Transport:
-                    activityHomeBinding.getRoot().findViewById(R.id.iv_transport).setVisibility(View.VISIBLE);
-                    break;
-                case Constants.Ask_Me:
-                    activityHomeBinding.getRoot().findViewById(R.id.iv_ask_me).setVisibility(View.VISIBLE);
-                    break;
-                case Constants.Gift_A_Life:
-                    activityHomeBinding.getRoot().findViewById(R.id.iv_gift).setVisibility(View.VISIBLE);
-                    break;
-                case Constants.Offers:
-                    activityHomeBinding.getRoot().findViewById(R.id.iv_offer).setVisibility(View.VISIBLE);
-                    break;
-                case Constants.Needs:
-                    activityHomeBinding.getRoot().findViewById(R.id.iv_needs).setVisibility(View.VISIBLE);
-                    break;
-                case Constants.Public_Utility:
-                    activityHomeBinding.getRoot().findViewById(R.id.iv_public_utility).setVisibility(View.VISIBLE);
-                    break;
-                case Constants.Classifieds:
-                    activityHomeBinding.getRoot().findViewById(R.id.iv_classifieds).setVisibility(View.VISIBLE);
+                    ImageView ivMovies = activityHomeBinding.getRoot().findViewById(R.id.iv_movies);
+                    ivMovies.setVisibility(View.VISIBLE);
+                    setImage(ivMovies, feature.getIconUrl());
                     break;
 
             }
         }
     }
 
+    private void setImage(ImageView ivDirectory, String iconUrl) {
+
+        UiUtil.setImageView(new ImageSetter.ImageBuilder(this)
+                .setImageLink(iconUrl)
+                .setPlaceholderResource(R.drawable.grey_background)
+                .setErrorResource(R.drawable.grey_background)
+                .setTarget(ivDirectory).build());
+    }
+
+    private void enableFeaturesByNode2(ArrayList<Node> nodes) {
+
+        for (Node feature : nodes) {
+            switch (feature.getName()) {
+                case Constants.Ask_Me:
+                    ImageView ivAskMe = activityHomeBinding.getRoot().findViewById(R.id.iv_ask_me);
+                    ivAskMe.setVisibility(View.VISIBLE);
+                    setImage(ivAskMe, feature.getIconUrl());
+                    break;
+                case Constants.Classifieds:
+                    ImageView ivClassifieds = activityHomeBinding.getRoot().findViewById(R.id.iv_classifieds);
+                    ivClassifieds.setVisibility(View.VISIBLE);
+                    setImage(ivClassifieds, feature.getIconUrl());
+                    break;
+                case Constants.Needs:
+                    ImageView ivNeeds = activityHomeBinding.getRoot().findViewById(R.id.iv_needs);
+                    ivNeeds.setVisibility(View.VISIBLE);
+                    setImage(ivNeeds, feature.getIconUrl());
+                    break;
+            }
+        }
+    }
+
+    private void enableFeaturesByNode3(ArrayList<Node> nodes) {
+
+        for (Node feature : nodes) {
+            switch (feature.getName()) {
+                case Constants.Dating:
+                    ImageView ivDating = activityHomeBinding.getRoot().findViewById(R.id.iv_dating);
+                    ivDating.setVisibility(View.VISIBLE);
+                    setImage(ivDating, feature.getIconUrl());
+                    break;
+                case Constants.Matrimonial:
+                    ImageView ivMatrimonial = activityHomeBinding.getRoot().findViewById(R.id.iv_matrimonial);
+                    ivMatrimonial.setVisibility(View.VISIBLE);
+                    setImage(ivMatrimonial, feature.getIconUrl());
+                    break;
+            }
+        }
+    }
+
+    private void enableFeaturesByNode4(ArrayList<Node> nodes) {
+
+        for (Node feature : nodes) {
+            switch (feature.getName()) {
+                case Constants.Phone_book:
+                    ImageView ivPhoneBook = activityHomeBinding.getRoot().findViewById(R.id.iv_phone_book);
+                    ivPhoneBook.setVisibility(View.VISIBLE);
+                    setImage(ivPhoneBook, feature.getIconUrl());
+                    break;
+                case Constants.Public_Transport_Timings:
+                    ImageView ivBus = activityHomeBinding.getRoot().findViewById(R.id.iv_bus);
+                    ivBus.setVisibility(View.VISIBLE);
+                    setImage(ivBus, feature.getIconUrl());
+                    break;
+                case Constants.Public_Utility:
+                    ImageView ivPublicUtility = activityHomeBinding.getRoot().findViewById(R.id.iv_public_utility);
+                    ivPublicUtility.setVisibility(View.VISIBLE);
+                    setImage(ivPublicUtility, feature.getIconUrl());
+                    break;
+            }
+        }
+    }
+
+    private void enableFeaturesByNode5(ArrayList<Node> nodes) {
+
+        for (Node feature : nodes) {
+            switch (feature.getName()) {
+                case Constants.Goods_Transport:
+                    ImageView ivTransport = activityHomeBinding.getRoot().findViewById(R.id.iv_transport);
+                    ivTransport.setVisibility(View.VISIBLE);
+                    setImage(ivTransport, feature.getIconUrl());
+                    break;
+                case Constants.Gift_A_Life:
+                    ImageView ivGift = activityHomeBinding.getRoot().findViewById(R.id.iv_gift);
+                    ivGift.setVisibility(View.VISIBLE);
+                    setImage(ivGift, feature.getIconUrl());
+                    break;
+                case Constants.Offers:
+                    ImageView ivOffers = activityHomeBinding.getRoot().findViewById(R.id.iv_offer);
+                    ivOffers.setVisibility(View.VISIBLE);
+                    setImage(ivOffers, feature.getIconUrl());
+                    break;
+            }
+        }
+    }
     /*public void newsClick(View v)
     {
         startActivity(new Intent(this,NewsActivity.class));
@@ -305,13 +391,11 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         startActivity(new Intent(this, NeedsActivity.class));
     }
 
-    public void publicUtilityClick(View v)
-    {
+    public void publicUtilityClick(View v) {
         startActivity(new Intent(this, PublicUtilityActivity.class));
     }
 
-    public void classifiedsClick(View v)
-    {
+    public void classifiedsClick(View v) {
         startActivity(new Intent(this, ClassifiedsActivity.class));
     }
 
@@ -330,7 +414,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
@@ -353,7 +436,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public void onInstallReferrerSetupFinished(int responseCode) {
         switch (responseCode) {
-            case InstallReferrerResponse.OK:
+            case InstallReferrerClient.InstallReferrerResponse.OK:
                 ReferrerDetails response;
                 try {
                     response = referrerClient.getInstallReferrer();
