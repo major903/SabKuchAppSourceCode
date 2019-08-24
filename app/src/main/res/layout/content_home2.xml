@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:paddingTop="@dimen/margin_16dp"
+        android:paddingBottom="@dimen/margin_16dp">
+
+        <LinearLayout
+            android:id="@+id/ll_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <androidx.gridlayout.widget.GridLayout
+                android:id="@+id/grid_container"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                app:alignmentMode="alignBounds"
+                app:columnCount="2"
+                app:rowOrderPreserved="false"
+                app:useDefaultMargins="true">
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_8dp"
+                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/square_image"
+                    app:layout_columnWeight="1"
+                    app:layout_gravity="fill_horizontal"
+                    app:riv_corner_radius="@dimen/margin_8dp" />
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_8dp"
+                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/square_image"
+                    app:layout_columnWeight="1"
+                    app:layout_gravity="fill_horizontal"
+                    app:riv_corner_radius="@dimen/margin_8dp" />
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_8dp"
+                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/square_image"
+                    app:layout_columnWeight="1"
+                    app:layout_gravity="fill_horizontal"
+                    app:riv_corner_radius="@dimen/margin_8dp" />
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_8dp"
+                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/square_image"
+                    app:layout_columnWeight="1"
+                    app:layout_gravity="fill_horizontal"
+                    app:riv_corner_radius="@dimen/margin_8dp" />
+
+            </androidx.gridlayout.widget.GridLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_8dp"
+                android:layout_marginTop="@dimen/margin_32dp"
+                android:layout_marginRight="@dimen/margin_8dp"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_8dp"
+                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/square_image"
+                    app:riv_corner_radius="@dimen/margin_8dp" />
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_8dp"
+                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/square_image"
+                    app:riv_corner_radius="@dimen/margin_8dp" />
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_8dp"
+                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/square_image"
+                    app:riv_corner_radius="@dimen/margin_8dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_8dp"
+                android:layout_marginTop="@dimen/margin_32dp"
+                android:layout_marginRight="@dimen/margin_8dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_8dp"
+                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/square_image"
+                    app:riv_corner_radius="@dimen/margin_8dp" />
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_8dp"
+                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/square_image"
+                    app:riv_corner_radius="@dimen/margin_8dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_8dp"
+                android:layout_marginTop="@dimen/margin_32dp"
+                android:layout_marginRight="@dimen/margin_8dp"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_8dp"
+                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/square_image"
+                    app:riv_corner_radius="@dimen/margin_8dp" />
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_8dp"
+                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/square_image"
+                    app:riv_corner_radius="@dimen/margin_8dp" />
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_8dp"
+                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/square_image"
+                    app:riv_corner_radius="@dimen/margin_8dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</layout>
