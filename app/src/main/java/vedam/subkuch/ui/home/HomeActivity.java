@@ -224,7 +224,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
         UiUtil.setImageView(new ImageSetter.ImageBuilder(this)
                 .setImageLink(iconUrl)
-                .setPlaceholderResource(R.drawable.grey_background)
                 .setErrorResource(R.drawable.grey_background)
                 .setTarget(ivDirectory).build());
     }
