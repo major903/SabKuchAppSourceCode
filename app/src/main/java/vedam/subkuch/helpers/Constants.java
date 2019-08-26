@@ -181,4 +181,7 @@ public class Constants {
     public final static int USER_TYPE_TRANSPORT = 11;
 
     public static final int SUCCESS_RETURN_CODE = 1;
+
+    public static final String NOTIFICATION_CHANNEL_ID = "GENERIC_NOTIFICATION_03";
+    public static final String NOTIFICATION_CHANNEL_NAME = "SABKUCH_NOTIFICATION_CHANNEL";
 }

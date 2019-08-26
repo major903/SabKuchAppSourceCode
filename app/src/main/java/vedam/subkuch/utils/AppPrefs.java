@@ -12,6 +12,7 @@ public class AppPrefs {
     public static final String PREFS_USER_NAME = "PREFS_USER_NAME";
     public static final String PREFS_USER_ID = "PREFS_USER_ID";
     public static final String PREFS_TOKEN = "PREFS_TOKEN";
+    public static final String PREFS_TOKEN_SENT_TO_SERVER = "PREFS_TOKEN_SENT_TO_SERVER";
 
     private static final String APP_PREFS = "Vedam.SubKuch";
     private static AppPrefs instance;
@@ -40,6 +41,18 @@ public class AppPrefs {
 
     public static void setPrefsIsReferralDone(Context context, String value) {
         getInstance(context).getSharedPreferences().edit().putString(AppPrefs.PREFS_IS_REFERRAL_DONE, value).apply();
+    }
+
+    public static boolean getPrefsIsTokenSent(Context context) {
+        return getInstance(context).getSharedPreferences().getBoolean(AppPrefs.PREFS_TOKEN_SENT_TO_SERVER, false);
+    }
+
+    public static void setPrefsIsTokenSent(Context context, boolean value) {
+        getInstance(context).getSharedPreferences().edit().putBoolean(AppPrefs.PREFS_TOKEN_SENT_TO_SERVER, value).apply();
+    }
+
+    public static boolean getIsLoggedIn(Context context) {
+        return getInstance(context).getSharedPreferences().getBoolean(AppPrefs.PREFS_IF_USER_LOGGED_IN, false);
     }
 
     public static AppPrefs getInstance(Context context) {

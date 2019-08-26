@@ -27,6 +27,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 
 import vedam.subkuch.R;
+import vedam.subkuch.RegistrationIntentService;
 import vedam.subkuch.base.BaseActivity;
 import vedam.subkuch.databinding.ActivityHomeBinding;
 import vedam.subkuch.helpers.Constants;
@@ -83,6 +84,19 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         tvName.setText(AppPrefs.getPrefsUserName(this));
 
         handleReferral();
+        registerFCM();
+    }
+
+    private void registerFCM() {
+
+        boolean sentToken = AppPrefs.getPrefsIsTokenSent(this);
+
+        if (!sentToken)
+            if (AppUtil.checkPlayServices(HomeActivity.this)) {
+                // Start IntentService to register this application with FCM.
+                Intent intent = new Intent(this, RegistrationIntentService.class);
+                RegistrationIntentService.enqueueWork(this, intent);
+            }
     }
 
     private void handleReferral() {

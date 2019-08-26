@@ -492,4 +492,10 @@ public class DataFetcher {
         String url = String.format(Locale.US, "%s/api/Classified/MyClassifiedAds?ProfileId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT2, userId, pageIndex, pageSize);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
+
+    public static <T> void registerForPush(Context context, String json, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener) {
+
+        String url = String.format("%s/api/PushNotification/RegisterDevice", NetworkConstants.END_POINT2);
+        HelperVolley.callApiWithBody(context, url, null, updateSuccessListener, json, repClass, errorListener);
+    }
 }
