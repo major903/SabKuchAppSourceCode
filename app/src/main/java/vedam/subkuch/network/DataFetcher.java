@@ -419,7 +419,7 @@ public class DataFetcher {
 
     public static <T> void getAllNeeds(Context context, Response.Listener<T> updateSuccessListener, Class<T> repClass, Response.ErrorListener errorListener, String providerId, int pageIndex, int pageSize) {
         String userId = AppPrefs.getPrefsUserId(context);
-        String url = String.format(Locale.US, "%s/api/Needs/AllNeeds?UserId=%s&NeedProviderId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT2, userId, providerId, pageIndex, pageSize);
+        String url = String.format(Locale.US, "%s/api/Needs/GetAllNeeds?UserId=%s&NeedProviderId=%s&PageIndex=%d&PageSize=%d", NetworkConstants.END_POINT2, userId, providerId, pageIndex, pageSize);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 

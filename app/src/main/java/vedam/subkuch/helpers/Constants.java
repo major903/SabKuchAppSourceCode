@@ -168,7 +168,7 @@ public class Constants {
     public final static int CHAT_STATUS_READ = 2;
     public final static int CHAT_STATUS_ACKNOWLEDGED = 3;
 
-    public final static String CODE_PIN_NOT_SET = "2";
+    public final static int CODE_PIN_NOT_SET = 2;
 
     public final static String TAG_HOME_FRAGMENT = "Home";
     public final static String TAG_PROFILE_FRAGMENT = "Profile";

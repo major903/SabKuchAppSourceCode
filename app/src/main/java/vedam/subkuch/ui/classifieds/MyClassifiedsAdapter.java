@@ -57,9 +57,14 @@ public class MyClassifiedsAdapter extends RecyclerView.Adapter<MyClassifiedsAdap
         UiUtil.setTextView(holder.tvDistance, classified.getFormattedDistance());
         UiUtil.setTextView(holder.tvContact, classified.getContact());
         UiUtil.setTextView("Location :", getLocation(classified), holder.tvAddress);
-        UiUtil.setTextView("Advertised Price : Rs.", classified.getFormattedRate(), holder.tvAdPrice);
+        if (classified.getCategoryId().equals("1")) {
+            UiUtil.setTextView("Price : Rs.", classified.getFormattedRate(), holder.tvAdPrice);
+            holder.tvDailyDiscount.setVisibility(View.GONE);
+        } else {
+            UiUtil.setTextView("Advertised Price : Rs.", classified.getFormattedRate(), holder.tvAdPrice);
+            UiUtil.setTextView("Daily Discount : Rs.", classified.getDailyDiscount(), holder.tvDailyDiscount);
+        }
         UiUtil.setTextView("Current Price : Rs.", classified.getTodaysPrice(), holder.tvCurrentPrice);
-        UiUtil.setTextView("Daily Discount : Rs.", classified.getDailyDiscount(), holder.tvDailyDiscount);
 
         holder.btEdit.setOnClickListener(v -> {
             if (listener != null)

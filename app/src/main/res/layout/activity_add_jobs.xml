@@ -132,7 +132,7 @@
                     android:layout_marginLeft="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_4dp"
                     android:layout_marginRight="@dimen/margin_16dp"
-                    android:hint="@string/job_location"
+                    android:hint="@string/job_location_hint"
                     android:inputType="textMultiLine"
                     android:padding="@dimen/margin_8dp" />
 

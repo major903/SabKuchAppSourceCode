@@ -56,7 +56,7 @@ public class PinActivity extends BaseActivity {
     private Response.Listener<GeneralResponse> onPinSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (response != null && Constants.CODE_PIN_NOT_SET.equals(response.getReturnCode()))
+        if (response != null && Constants.CODE_PIN_NOT_SET == response.getReturnCode())
             showSetScreen();
         else
             showEnterScreen();

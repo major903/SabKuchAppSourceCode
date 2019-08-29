@@ -59,6 +59,7 @@ public class AddClassifiedFragment extends BaseAddImagesFragment implements Adap
     private String subcategoryId;
     private String cityId;
     private String successMessage;
+    private boolean isProperty;
 
     public static AddClassifiedFragment newInstance() {
 
@@ -299,7 +300,7 @@ public class AddClassifiedFragment extends BaseAddImagesFragment implements Adap
             errorMessage = R.string.enter_details;
         else if (TextUtils.isEmpty(binding.etRate.getText()))
             errorMessage = R.string.enter_rate;
-        else if (TextUtils.isEmpty(binding.etDiscount.getText()))
+        else if (TextUtils.isEmpty(binding.etDiscount.getText()) && !isProperty)
             errorMessage = R.string.enter_daily_discount;
         else if (TextUtils.isEmpty(binding.etContact.getText()))
             errorMessage = R.string.enter_contact;
@@ -330,6 +331,13 @@ public class AddClassifiedFragment extends BaseAddImagesFragment implements Adap
                 if (!TextUtils.isEmpty(categoryId)) {
                     subcategoryId = null;
                     getSubCategories();
+                    if (categoryId.equals("1")) {
+                        isProperty = true;
+                        hideViewsForProperty();
+                    } else {
+                        isProperty = false;
+                        showViewsForProperty();
+                    }
                 }
                 break;
             case R.id.sp_sub_category:
@@ -339,6 +347,18 @@ public class AddClassifiedFragment extends BaseAddImagesFragment implements Adap
                 cityId = ((City) parent.getItemAtPosition(position)).getCityid();
                 break;
         }
+    }
+
+    private void hideViewsForProperty() {
+
+        binding.etDiscount.setVisibility(View.GONE);
+        binding.tvDiscount.setVisibility(View.GONE);
+    }
+
+    private void showViewsForProperty() {
+
+        binding.etDiscount.setVisibility(View.VISIBLE);
+        binding.tvDiscount.setVisibility(View.VISIBLE);
     }
 
     @Override

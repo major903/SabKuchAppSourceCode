@@ -3,6 +3,8 @@ package vedam.subkuch.network;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -114,8 +116,8 @@ public class WebServices {
         Call<GetMasterCastResponse> callback = api.getMasterCast(bearer);
         callback.enqueue(new Callback<GetMasterCastResponse>() {
             @Override
-            public void onResponse(Call<GetMasterCastResponse> call, Response<GetMasterCastResponse> response) {
-                if (response != null && response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
+            public void onResponse(@NonNull Call<GetMasterCastResponse> call, @NonNull Response<GetMasterCastResponse> response) {
+                if (response.body() != null && response.body().getReturnMessage().equalsIgnoreCase("success")) {
                     handler.onSuccess(response.body());
                 } else {
                     handleError(response);
@@ -124,7 +126,7 @@ public class WebServices {
             }
 
             @Override
-            public void onFailure(Call<GetMasterCastResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<GetMasterCastResponse> call, Throwable t) {
                 handler.onError(t.getMessage());
             }
         });

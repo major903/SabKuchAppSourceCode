@@ -7,7 +7,7 @@ public class NetworkConstants {
     public static final String END_POINT2 = "https://sabkuch2.sabkuchworld.com";
     public static final String END_POINT4 = "https://sabkuch5.sabkuchworld.com/api";
     public static final String Authorization = "Authorization";
-    public static final String BASE_URL = "http://sabkuch2.sabkuchworld.com/api/";
+    public static final String BASE_URL = "https://sabkuch2.sabkuchworld.com/api/";
     public static final String ProfileId = "ProfileId";
     public static final String EventId = "EventId";
     public static final String ClassifiedAdId = "ClassifiedAdId";

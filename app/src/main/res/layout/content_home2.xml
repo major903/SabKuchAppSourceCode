@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
+        android:scrollbars="none"
         android:paddingBottom="@dimen/margin_16dp">
 
         <LinearLayout
@@ -42,6 +43,9 @@
                     android:scaleType="fitXY"
                     android:src="@drawable/grey_background"
                     app:layout_columnWeight="1"
+                    android:adjustViewBounds="true"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     app:layout_gravity="fill_horizontal"
                     app:riv_corner_radius="@dimen/margin_8dp" />
 
@@ -54,20 +58,9 @@
                     android:scaleType="fitXY"
                     android:onClick="eventsClick"
                     app:layout_columnWeight="1"
-                    android:src="@drawable/grey_background"
-                    app:layout_gravity="fill_horizontal"
-                    app:riv_corner_radius="@dimen/margin_8dp" />
-
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:id="@+id/iv_movies"
-                    android:layout_width="0dp"
-                    android:layout_marginTop="@dimen/margin_16dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_8dp"
-                    android:layout_marginRight="@dimen/margin_8dp"
-                    android:scaleType="fitXY"
-                    android:onClick="moviesClick"
-                    app:layout_columnWeight="1"
+                    android:adjustViewBounds="true"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:src="@drawable/grey_background"
                     app:layout_gravity="fill_horizontal"
                     app:riv_corner_radius="@dimen/margin_8dp" />
@@ -81,9 +74,29 @@
                     android:scaleType="fitXY"
                     android:layout_marginTop="@dimen/margin_16dp"
                     app:layout_columnWeight="1"
+                    android:adjustViewBounds="true"
                     android:onClick="jobsClick"
+                    android:visibility="gone"
                     app:layout_gravity="fill_horizontal"
+                    tools:visibility="visible"
                     android:src="@drawable/grey_background"
+                    app:riv_corner_radius="@dimen/margin_8dp" />
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/iv_movies"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="@dimen/margin_16dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_8dp"
+                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:scaleType="fitXY"
+                    android:adjustViewBounds="true"
+                    app:layout_columnWeight="1"
+                    android:onClick="moviesClick"
+                    android:src="@drawable/grey_background"
+                    android:visibility="gone"
+                    app:layout_gravity="fill_horizontal"
+                    tools:visibility="visible"
                     app:riv_corner_radius="@dimen/margin_8dp" />
 
             </androidx.gridlayout.widget.GridLayout>
@@ -104,6 +117,9 @@
                     android:layout_marginRight="@dimen/margin_8dp"
                     android:layout_weight="1"
                     android:scaleType="fitXY"
+                    android:visibility="gone"
+                    android:adjustViewBounds="true"
+                    tools:visibility="visible"
                     android:onClick="classifiedsClick"
                     android:src="@drawable/grey_background"
                     app:riv_corner_radius="@dimen/margin_8dp" />
@@ -116,7 +132,10 @@
                     android:layout_marginRight="@dimen/margin_8dp"
                     android:layout_weight="1"
                     android:scaleType="fitXY"
+                    android:adjustViewBounds="true"
                     android:onClick="needsClick"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:src="@drawable/grey_background"
                     app:riv_corner_radius="@dimen/margin_8dp" />
 
@@ -129,6 +148,9 @@
                     android:layout_weight="1"
                     android:onClick="askClick"
                     android:scaleType="fitXY"
+                    android:adjustViewBounds="true"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:src="@drawable/grey_background"
                     app:riv_corner_radius="@dimen/margin_8dp" />
             </LinearLayout>
@@ -151,6 +173,9 @@
                     android:layout_weight="1"
                     android:scaleType="fitXY"
                     android:onClick="datingClick"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:adjustViewBounds="true"
                     android:src="@drawable/grey_background"
                     app:riv_corner_radius="@dimen/margin_8dp" />
 
@@ -163,6 +188,9 @@
                     android:layout_weight="1"
                     android:onClick="matrimonialClick"
                     android:scaleType="fitXY"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:adjustViewBounds="true"
                     android:src="@drawable/grey_background"
                     app:riv_corner_radius="@dimen/margin_8dp" />
             </LinearLayout>
@@ -185,6 +213,9 @@
                     android:layout_weight="1"
                     android:onClick="publicUtilityClick"
                     android:scaleType="fitXY"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:adjustViewBounds="true"
                     android:src="@drawable/grey_background"
                     app:riv_corner_radius="@dimen/margin_8dp" />
 
@@ -197,6 +228,9 @@
                     android:layout_weight="1"
                     android:scaleType="fitXY"
                     android:onClick="busClick"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:adjustViewBounds="true"
                     android:src="@drawable/grey_background"
                     app:riv_corner_radius="@dimen/margin_8dp" />
 
@@ -208,6 +242,9 @@
                     android:layout_marginRight="@dimen/margin_8dp"
                     android:layout_weight="1"
                     android:scaleType="fitXY"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:adjustViewBounds="true"
                     android:onClick="phoneBookClick"
                     android:src="@drawable/grey_background"
                     app:riv_corner_radius="@dimen/margin_8dp" />
