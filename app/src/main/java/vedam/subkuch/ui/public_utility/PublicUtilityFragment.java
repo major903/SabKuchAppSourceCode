@@ -85,7 +85,6 @@ public class PublicUtilityFragment extends BaseFragment {
         linearLayoutManager = new LinearLayoutManager(context);
         binding.rvUtilities.setLayoutManager(linearLayoutManager);
         binding.rvUtilities.setHasFixedSize(true);
-        linearLayoutManager = new LinearLayoutManager(context);
         adapter = new PublicUtilityAdapter(context, publicUtilities);
         binding.rvUtilities.setAdapter(adapter);
         binding.rvUtilities.addOnScrollListener(new OnScrollListener());

@@ -192,7 +192,8 @@ public class GsonRequest<T> extends Request<T> {
             isReader = new InputStreamReader(isr);
             JsonReader reader = new JsonReader(isReader);
 
-            LogUtils.LOGD("GsonRequest", "========================== received response" + new String(response.data));
+            String data = new String(response.data);
+            LogUtils.LOGD("GsonRequest", "========================== received response" + data);
             if (clazz != null) {
                 return (Response<T>) Response.success(mGson.fromJson(reader, clazz),
                         HttpHeaderParser.parseCacheHeaders(response));
