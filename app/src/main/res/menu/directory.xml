@@ -7,10 +7,4 @@
         android:icon="@drawable/outline_add_white_24dp"
         android:title="@string/add"
         app:showAsAction="always" />
-
-    <item
-        android:id="@+id/action_staff"
-        android:icon="@drawable/baseline_location_on_white_24"
-        android:title="@string/location"
-        app:showAsAction="always" />
 </menu>

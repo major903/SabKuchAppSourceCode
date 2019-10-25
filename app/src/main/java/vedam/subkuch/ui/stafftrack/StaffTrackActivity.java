@@ -1,13 +1,14 @@
 package vedam.subkuch.ui.stafftrack;
 
-import androidx.databinding.DataBindingUtil;
 import android.location.Location;
 import android.os.Bundle;
-import androidx.core.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
 
 import com.android.volley.Response;
 import com.google.gson.Gson;
@@ -20,6 +21,7 @@ import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.network.models.MessageRequest;
 import vedam.subkuch.ui.jobs.models.AddResponse;
 import vedam.subkuch.utils.AppPrefs;
+import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.UiUtil;
 
 import static vedam.subkuch.utils.AppUtil.deNull;
@@ -34,7 +36,7 @@ public class StaffTrackActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityStaffTrackBinding = DataBindingUtil.setContentView(this, R.layout.activity_staff_track);
-        setTitle(R.string.location);
+        setTitle(R.string.contribute);
         setToolbarBackButton();
         requestLocation(true);
         initUI();
@@ -43,8 +45,8 @@ public class StaffTrackActivity extends BaseActivity {
 
     private void initUI() {
 
-        String userName = deNull(AppPrefs.getPrefsUserName(this));
-        SpannableStringBuilder stringBuilder = new SpannableStringBuilder(String.format("Hello %s\nWhere are you now ?",
+        String userName = deNull(AppUtil.getFirstName(AppPrefs.getPrefsUserName(this)));
+        SpannableStringBuilder stringBuilder = new SpannableStringBuilder(String.format("Hello %s\nWe have captured your Location. Use the text box below to send us a business location or report an error.",
                 userName));
         stringBuilder.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorPrimary)),
                 6, userName.length() + 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -93,8 +95,6 @@ public class StaffTrackActivity extends BaseActivity {
         } else {
             UiUtil.showToast(StaffTrackActivity.this, getString(R.string.err_occurred));
         }
-
-
     };
 
     private int validateErrorMessage() {

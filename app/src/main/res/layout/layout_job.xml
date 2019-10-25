@@ -14,7 +14,6 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tv_job_title"
             style="@style/TextViewBlackHeading2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,7 +46,6 @@
         android:padding="@dimen/margin_4dp" />
 
     <TextView
-        android:id="@+id/tv_job_requirement"
         style="@style/TextViewBlackHeading2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

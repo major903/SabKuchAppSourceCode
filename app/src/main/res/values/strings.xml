@@ -4,8 +4,6 @@
     <string name="invalid_lat_long_used">Invalid latitude or longitude used</string>
     <string name="no_address_found">Sorry, no businessAddress found</string>
     <string name="geocoder_not_available">Geocoder not available</string>
-    <string name="select_one_pro">Please select one Pro from the list to get a quote</string>
-    <string name="view_profile">View Profile</string>
     <string name="no_location_data_provided">No location data provided</string>
     <string name="service_not_available">Service not available</string>
     <string name="allow_location_permission">SabKuch needs location permission to fetch your current location.</string>
@@ -13,7 +11,6 @@
     <string name="typeface_regular">avenir_light.ttf</string>
     <string name="typeface_heavy">avenir_heavy.ttf</string>
     <string name="err_no_network_avail">No internet connection!</string>
-    <string name="err_invalid_zipcode">Enter the correct zip code</string>
     <string name="err">Error</string>
     <string name="retry">Retry</string>
     <string name="yes">Yes</string>
@@ -40,7 +37,6 @@
     <string name="err_occurred">Error occurred</string>
     <string name="otp">Enter OTP</string>
     <string name="enter_otp_manually">We have sent a One Time Password to your registered mobile. Please enter the OTP.</string>
-    <string name="sms_permission_denied">Permission denied. Enter Otp manually</string>
     <string name="otp_sent">OTP sent successfully</string>
     <string name="verification">Verification</string>
     <string name="error_field_required">This field is required</string>
@@ -55,14 +51,11 @@
     <string name="select_a_country">Select a country</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="directory">Directory</string>
-    <string name="needBookings">Events</string>
     <string name="error">Error</string>
     <string name="country">Country</string>
     <string name="gender">Gender</string>
     <string name="phone_book">Phone Book</string>
-    <string name="movie">Movie</string>
     <string name="movies">Movies</string>
     <string name="add_event">Add Event</string>
     <string name="date">Date</string>
@@ -70,7 +63,6 @@
     <string name="hint_date">Accepted format - dd/MM/yyyy</string>
     <string name="time">Time</string>
     <string name="details">Details</string>
-    <string name="hint_details">Event Details</string>
     <string name="venue">Venue</string>
     <string name="entry_fee">Entry Fee</string>
     <string name="add_photo">Add Photo</string>
@@ -88,18 +80,14 @@
     <string name="external_storage_denied">External Storage permission is denied, to enable the permission go to settings</string>
     <string name="enter_date">Enter date</string>
     <string name="enter_valid_date">Enter date in specified format</string>
-    <string name="enter_event_details">Enter details of event</string>
     <string name="enter_event_time">Enter time of event</string>
     <string name="enter_event_venue">Enter venue of event</string>
     <string name="offers">Offers</string>
-    <string name="event_added">Thank you. Your post is awaiting Admin approval.</string>
     <string name="jobs">Jobs</string>
     <string name="ask">Ask</string>
     <string name="ask_hint">Ask a question</string>
     <string name="question">Question</string>
     <string name="enter_question">Enter Question</string>
-    <string name="question_posted">Question posted</string>
-    <string name="direction">Direction</string>
     <string name="review_hint">Write a review</string>
     <string name="review">Review Comments</string>
     <string name="add_review">Add review</string>
@@ -107,12 +95,8 @@
     <string name="review_added">Review added successfully</string>
     <string name="title">Title</string>
     <string name="job_title">Job Title</string>
-    <string name="description">Description</string>
-    <string name="job_description">Job description</string>
     <string name="post_a_job">Post a Job</string>
     <string name="enter_title">Enter title</string>
-    <string name="enter_description">Enter description</string>
-    <string name="job_added">Thank you. Your post is awaiting Admin approval.</string>
     <string name="search_jobs">Search Jobs</string>
     <string name="company_name">Company Name</string>
     <string name="dealing_in">Dealing In</string>
@@ -124,7 +108,6 @@
     <string name="enter_dealing_in">Enter dealing in</string>
     <string name="enter_job_location">Enter job location</string>
     <string name="enter_contact">Enter how to contact</string>
-    <string name="enter_job_requirement">Enter Job requirement</string>
     <string name="enter_job_title">Enter job title</string>
     <string name="add_one_job">Add at least one job</string>
     <string name="add_one_branch">Add at least one branch</string>
@@ -140,21 +123,11 @@
     <string name="phone">Phone</string>
     <string name="website">Website</string>
     <string name="contact_person">Contact Person</string>
-    <string name="address_line_1">Address Line 1</string>
-    <string name="address_line_2">Address Line 2</string>
-    <string name="add_branch">Add Branch</string>
-    <string name="state">State</string>
     <string name="zip_code">Zip Code</string>
     <string name="enter_business_name">Enter Business Name</string>
-    <string name="enter_mobile1">Enter Mobile Number</string>
-    <string name="enter_website">Enter Website</string>
     <string name="enter_address">Enter Address</string>
-    <string name="enter_city">Enter City</string>
-    <string name="enter_state">Enter State</string>
-    <string name="enter_country">Enter Country</string>
     <string name="enter_zip_code">Enter Zip Code</string>
     <string name="add_a_location_for_a_branch">Add a location for a branch</string>
-    <string name="select_an_image">Select an image</string>
     <string name="reviews">Reviews</string>
     <string name="search_hint">Search</string>
     <string name="add">Add</string>
@@ -176,27 +149,20 @@
     <string name="info_2">Additional info Line 2</string>
     <string name="select_a_sub_category">Select a subcategory</string>
     <string name="add_branches">Add Branches</string>
-    <string name="enter_cellphone_1">Enter cellphone 1</string>
-    <string name="enter_phone_or_cellphone">Enter phone or cell phone number</string>
-    <string name="enter_contact_person">Enter contact person</string>
     <string name="vehicles">Vehicles</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_settings">Settings</string>
     <string name="privacy_policy">Privacy Policy</string>
-    <string name="gallery">Gallery</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="inbox">Inbox</string>
     <string name="show_location">Show Location</string>
     <string name="add_position">Add Position</string>
     <string name="add_question">Add Question</string>
-    <string name="business_added">Thank you. Your post is awaiting Admin approval.</string>
     <string name="reply">Reply</string>
     <string name="one">1</string>
     <string name="type_your_reply">Type your reply</string>
     <string name="enter_a_reply">Please enter a reply</string>
     <string name="reply_posted">Reply posted</string>
-    <string name="date_picker">datePicker</string>
     <string name="select_rating">Select rating</string>
     <string name="job_mela">Job Mela</string>
     <string name="interested_in_job_mela">Are you interested in attending Job Mela?</string>
@@ -206,13 +172,11 @@
     <string name="your_qualification">Your Qualification</string>
     <string name="your_experience">Your Experience</string>
     <string name="tell_us_more_about_your_work_experience">If experienced, tell us more about your work experience</string>
-    <string name="optional">Optional</string>
     <string name="do_you_own_a_two_wheeler">Do you own a two wheeler?</string>
     <string name="minimum_salary_expected">Minimum Salary Expected</string>
     <string name="upload_your_profile_picture">Upload your profile picture (Optional)</string>
     <string name="select_attending_job_mela">Select whether you are interested in Job Mela</string>
     <string name="select_interesting_jobs">Select at least one job you are interested in</string>
-    <string name="enter_experience">Enter experience</string>
     <string name="select_if_own_two_wheeler">Select whether you own a two wheeler</string>
     <string name="enter_expected_salary">Enter expected salary</string>
     <string name="select_a_job_qualification">Select your job qualification</string>
@@ -223,11 +187,9 @@
     <string name="select_a_job_experience">Select your job experience</string>
     <string name="profile_updated_successfully">Profile updated successfully</string>
     <string name="too_many_otp_attempts">Too many attempts. Try registering again.</string>
-    <string name="india">India</string>
     <string name="update">Update</string>
     <string name="warning">Warning!</string>
     <string name="warning_message">If you forget the PIN, you can never access this section</string>
-    <string name="pin_not_set">{\"Message\":\"pin not set\"}</string>
     <string name="set_pin">Set PIN</string>
     <string name="re_enter_pin">Re-Enter PIN</string>
     <string name="enter_pin">Enter PIN</string>
@@ -236,21 +198,10 @@
     <string name="pin_mismatch">Pin mismatch</string>
     <string name="no_profiles_reason_dating">Reason 1 : You have not enabled Dating. Go to profile\nReason 2 : You are male. You can only see women\'s profile who have clicked on Like\nReason 3 : No more profiles to show</string>
     <string name="no_profiles_reason_matrimonial">Reason 1 : You have not enabled Matrimonial. Go to profile\nReason 2 : You are male. You can only see women\'s profile who have clicked on Like\nReason 3 : No more profiles to show</string>
-    <string name="edit_preference">Edit Preference</string>
-    <string name="profile_image">Profile Image</string>
-    <string name="reaction_posted">Reaction posted</string>
     <string name="liked">Liked</string>
     <string name="disliked">Disliked</string>
-    <string name="matched_profiles">Matched Profiles</string>
 
     <string name="about_me">About Me</string>
-    <string name="choose_from">Choose From</string>
-    <string name="phone_s_gallery">Phone\'s Gallery</string>
-    <string name="take_a_pic">Take a Pic</string>
-    <string name="cancel1">Cancel</string>
-    <string name="permission_denied">Permission Denied</string>
-    <string name="ok">OK</string>
-    <string name="storagePermission">Without storage permission the app is unable to get the images from the phone.So please allow this permission</string>
     <string name="discard">discard</string>
     <string name="Crop">Crop</string>
     <string name="selectreligion">Select Religion</string>
@@ -258,27 +209,14 @@
     <string name="select_sub_cast">Select Gothra</string>
     <string name="select_living_with">Select Living With</string>
     <string name="select_master_cast_first">Please select the mast cast first</string>
-    <string name="prepred_type">Preferred Type</string>
-    <string name="own_car">Own Car</string>
-    <string name="own_house">Own House</string>
-    <string name="start_age">Start Age</string>
-    <string name="end_age">End Age</string>
     <string name="age_range">Age</string>
-    <string name="height">Height(cm)</string>
-    <string name="weight">Weight(Kg)</string>
-    <string name="empty_preffered_type">Please select the preferred type</string>
     <string name="empty_religion">Please select the religion</string>
-    <string name="empty_cast">Please select cast</string>
-    <string name="empty_gothra">Please select gothra</string>
     <string name="empty_living_with">Please select living with</string>
     <string name="empty_height">Please select height</string>
     <string name="empty_weight">Please select weight</string>
     <string name="distance_range">Distance (Km)</string>
     <string name="preferences">Preferences</string>
-    <string name="is_smoking">Smoking</string>
-    <string name="anual_income">Annual Income</string>
     <string name="marital_status">Marital Status</string>
-    <string name="is_drinking">Drinking</string>
     <string name="select_gotra">Select Gotra</string>
     <string name="select_nakshakra">Select Nakshatra</string>
     <string name="select_bodytype">Select Body Type</string>
@@ -289,8 +227,6 @@
     <string name="select_physical_status">Select Physical Status</string>
     <string name="select_dosham">Select Dosham</string>
     <string name="select_mothertouge">Select Mother tongue</string>
-    <string name="select_physicalstatus">Select Physical Status</string>
-    <string name="age">Age (Years)</string>
     <string name="height_range">Height (Cm)</string>
     <string name="weight_range">Weight (Kg)</string>
     <string name="nakshatra">Nakshatra</string>
@@ -298,22 +234,14 @@
     <string name="complextion">Complexion</string>
     <string name="occupation">Occupation</string>
     <string name="qualification">Qualification</string>
-    <string name="smoking">Smoking</string>
-    <string name="drinking">Drinking</string>
     <string name="income_range">Income</string>
     <string name="foodhabits">Food Habits</string>
     <string name="mothertouge">Mother tongue</string>
     <string name="physicalstatus">Physical Status</string>
     <string name="dosham">Dosham</string>
-    <string name="matrialstatus">Matrital Status</string>
     <string name="empty_matrialstatus">Please select Marital status.</string>
-    <string name="empty_first_name">Please enter first name</string>
-    <string name="empty_lst_name">Please enter last name</string>
-    <string name="empty_age">Please enter age</string>
-    <string name="matrimonial">Matrimonial</string>
     <string name="matches">Matches</string>
     <string name="profiles">Profiles</string>
-    <string name="dating">Dating</string>
     <string name="annual_income">Annual Income</string>
     <string name="profile_updated">Profile updated Successfully!</string>
     <string name="preference_updated">Preference updated Successfully!</string>
@@ -327,11 +255,6 @@
     <string name="living_in_city">Living in (City)</string>
     <string name="drinking_habits">Drinking Habits</string>
     <string name="internet_not_connected">Internet not connected</string>
-    <string-array name="preffered_type">
-        <item>Matrimonial</item>
-        <item>Dating</item>
-
-    </string-array>
     <string name="home">Home</string>
     <string name="profile">Profile</string>
     <string name="chats">Chats</string>
@@ -362,8 +285,6 @@
     <string name="empty_house_status">Please select house status</string>
     <string name="apply">Apply</string>
     <string name="booking">Booking</string>
-    <string name="book_a_flight_hotel">Book a Flight / Hotel</string>
-    <string name="book_a_transport">Book a Transport</string>
     <string name="coming_soon">Coming Soon!</string>
     <string name="no_user_type">Could not get User Type</string>
     <string name="mark_as_complete">Mark it as Complete</string>
@@ -381,14 +302,10 @@
     <string name="add_a_location_on_map">Add a location on map</string>
     <string name="enter_transport_material">Enter transport material</string>
     <string name="transport_added_successfully">Transport added successfully</string>
-    <string name="wallet">Wallet</string>
     <string name="terms_conditions"><![CDATA[Terms & Conditions]]></string>
     <string name="terms_conditions_value">* You earn for referring your friends to Sabkuch. You earn for motivating your friends to promote Sabkuch too.\n\n* This Mobile Application can grow with your cooperation and involvement. Help us keep the content accurate and up to date. In return we reward you with points that can be used for shopping on our platform or we may reward you with cash too.</string>
-    <string name="referral">Referral</string>
     <string name="my_wallet">My Wallet</string>
     <string name="withdraw">Withdraw</string>
-    <string name="referral_code">Referral Code</string>
-    <string name="proceed">Proceed</string>
     <string name="refer_earn"><![CDATA[Refer & earn]]></string>
     <string name="please_let_us_know_who_referred_you">Please let us know who referred you.</string>
     <string name="you_may_leave_it_blank">You may leave it blank</string>
@@ -403,23 +320,16 @@
     <string name="booking_completed_successfully">Booking completed successfully</string>
     <string name="notification_icon">Notification Icon</string>
     <string name="max_notification_number">99+</string>
-    <string name="staff_track">Staff track</string>
-    <string name="note_staff_track">Please Note :\n\nWe have captured your current location. We need following details. Provide whatever information you have.
-\n* Name of the Business
-\n* Products or Services they are dealing in
-\n* Address with Pin Code
-\n* Phone Numbers
-\n* Email id
-\n* Website URL
-\n* Name of the Contact person
-\n* Any other info if you have</string>
+    <string name="note_staff_track">Help us to Improve the content of the App
+\n\n* If you find some information missing like timings, address or mobile number …etc in Business Directory or Public Utility, pls send the same and we will update the content.
+\n\n* If you want to add a location, you need to click on the \'contribute\' in Menu from the location which you want us to add. For example, if you find an ATM missing in the app, stand infront of the ATM and then click on the Contribute button in the App and enter the details in the text box.
+\n\n* We will soon start paying our users for contributing content and to report errors. </string>
     <string name="message_posted">Message posted successfully</string>
     <string name="enter_message">Enter message</string>
     <string name="location">Location</string>
     <string name="my_referrals">My Referrals</string>
     <string name="needs">Needs</string>
     <string name="no_providers_found">No providers found</string>
-    <string name="no_booking_found">No booking found</string>
     <string name="work_location">Work Location</string>
     <string name="work_details">Work Details</string>
     <string name="enter_work_location">Enter work location</string>
@@ -427,9 +337,7 @@
     <string name="public_utility">Public Utility</string>
     <string name="add_public_utility">Add Public Utility</string>
     <string name="classifieds">Classifieds</string>
-    <string name="about">About</string>
     <string name="contact">Contact</string>
-    <string name="locality">Locality</string>
     <string name="rate">Rate</string>
     <string name="discount">Daily Discount</string>
     <string name="enter_location">Enter location</string>
@@ -444,11 +352,11 @@
     <string name="item_location">Item Location</string>
     <string name="item_location_hint">Example M.G. Road</string>
     <string name="add_a_need">Post a Need</string>
-    <string name="enter_item_details">Enter Details</string>
     <string name="enter_details">Enter Details</string>
     <string name="enter_daily_discount">Enter daily discount</string>
     <string name="no_needs_found">No needs found</string>
     <string name="no_needs_found_details">You have not posted any Need. To submit a Need please click on + sign.</string>
     <string name="work_location_hint">Type your Locality without City name</string>
     <string name="job_location_hint">Type your Locality without City name</string>
+    <string name="contribute">Contribute</string>
 </resources>

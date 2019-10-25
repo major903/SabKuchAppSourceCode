@@ -500,4 +500,11 @@ public class AppUtil {
         else
             return Constants.Matrimonial;
     }
+
+    public static CharSequence getFirstName(String userName) {
+        if (TextUtils.isEmpty(userName))
+            return null;
+        return userName.split(" ")[0].trim();
+
+    }
 }

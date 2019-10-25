@@ -52,6 +52,7 @@ import vedam.subkuch.ui.phonebook.PhoneBookActivity;
 import vedam.subkuch.ui.pin.PinActivity;
 import vedam.subkuch.ui.profile.EditProfileActivity;
 import vedam.subkuch.ui.public_utility.PublicUtilityActivity;
+import vedam.subkuch.ui.stafftrack.StaffTrackActivity;
 import vedam.subkuch.ui.transport.TransportActivity;
 import vedam.subkuch.ui.vehicle.VehicleActivity;
 import vedam.subkuch.ui.wallet.WalletActivity;
@@ -212,32 +213,32 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 case Constants.Directory:
                     ImageView ivDirectory = activityHomeBinding.getRoot().findViewById(R.id.iv_directory);
                     ivDirectory.setVisibility(View.VISIBLE);
-                    setImage(ivDirectory, feature.getIconUrl());
+                    setImage(ivDirectory, R.drawable.directory);
                     break;
                 case Constants.Events:
                     ImageView ivEvent = activityHomeBinding.getRoot().findViewById(R.id.iv_events);
                     ivEvent.setVisibility(View.VISIBLE);
-                    setImage(ivEvent, feature.getIconUrl());
+                    setImage(ivEvent, R.drawable.events);
                     break;
                 case Constants.Jobs:
                     ImageView ivJobs = activityHomeBinding.getRoot().findViewById(R.id.iv_jobs);
                     ivJobs.setVisibility(View.VISIBLE);
-                    setImage(ivJobs, feature.getIconUrl());
+                    setImage(ivJobs, R.drawable.jobs);
                     break;
                 case Constants.Movies:
                     ImageView ivMovies = activityHomeBinding.getRoot().findViewById(R.id.iv_movies);
                     ivMovies.setVisibility(View.VISIBLE);
-                    setImage(ivMovies, feature.getIconUrl());
+                    setImage(ivMovies, R.drawable.movies);
                     break;
 
             }
         }
     }
 
-    private void setImage(ImageView ivDirectory, String iconUrl) {
+    private void setImage(ImageView ivDirectory, int resourceId) {
 
         UiUtil.setImageView(new ImageSetter.ImageBuilder(this)
-                .setImageLink(iconUrl)
+                .setImageResource(resourceId)
                 .setTarget(ivDirectory).build());
     }
 
@@ -248,17 +249,17 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 case Constants.Ask_Me:
                     ImageView ivAskMe = activityHomeBinding.getRoot().findViewById(R.id.iv_ask_me);
                     ivAskMe.setVisibility(View.VISIBLE);
-                    setImage(ivAskMe, feature.getIconUrl());
+                    setImage(ivAskMe, R.drawable.ask);
                     break;
                 case Constants.Classifieds:
                     ImageView ivClassifieds = activityHomeBinding.getRoot().findViewById(R.id.iv_classifieds);
                     ivClassifieds.setVisibility(View.VISIBLE);
-                    setImage(ivClassifieds, feature.getIconUrl());
+                    setImage(ivClassifieds, R.drawable.classifieds);
                     break;
                 case Constants.Needs:
                     ImageView ivNeeds = activityHomeBinding.getRoot().findViewById(R.id.iv_needs);
                     ivNeeds.setVisibility(View.VISIBLE);
-                    setImage(ivNeeds, feature.getIconUrl());
+                    setImage(ivNeeds, R.drawable.needs);
                     break;
             }
         }
@@ -271,12 +272,12 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 case Constants.Dating:
                     ImageView ivDating = activityHomeBinding.getRoot().findViewById(R.id.iv_dating);
                     ivDating.setVisibility(View.VISIBLE);
-                    setImage(ivDating, feature.getIconUrl());
+                    setImage(ivDating, R.drawable.dating);
                     break;
                 case Constants.Matrimonial:
                     ImageView ivMatrimonial = activityHomeBinding.getRoot().findViewById(R.id.iv_matrimonial);
                     ivMatrimonial.setVisibility(View.VISIBLE);
-                    setImage(ivMatrimonial, feature.getIconUrl());
+                    setImage(ivMatrimonial, R.drawable.matrimonial);
                     break;
             }
         }
@@ -289,17 +290,17 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 case Constants.Phone_book:
                     ImageView ivPhoneBook = activityHomeBinding.getRoot().findViewById(R.id.iv_phone_book);
                     ivPhoneBook.setVisibility(View.VISIBLE);
-                    setImage(ivPhoneBook, feature.getIconUrl());
+                    setImage(ivPhoneBook, R.drawable.phonebook);
                     break;
                 case Constants.Public_Transport_Timings:
                     ImageView ivBus = activityHomeBinding.getRoot().findViewById(R.id.iv_bus);
                     ivBus.setVisibility(View.VISIBLE);
-                    setImage(ivBus, feature.getIconUrl());
+                    setImage(ivBus, R.drawable.bustrain);
                     break;
                 case Constants.Public_Utility:
                     ImageView ivPublicUtility = activityHomeBinding.getRoot().findViewById(R.id.iv_public_utility);
                     ivPublicUtility.setVisibility(View.VISIBLE);
-                    setImage(ivPublicUtility, feature.getIconUrl());
+                    setImage(ivPublicUtility, R.drawable.public_utility);
                     break;
             }
         }
@@ -312,17 +313,17 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 case Constants.Goods_Transport:
                     ImageView ivTransport = activityHomeBinding.getRoot().findViewById(R.id.iv_transport);
                     ivTransport.setVisibility(View.VISIBLE);
-                    setImage(ivTransport, feature.getIconUrl());
+                    setImage(ivTransport, 0);
                     break;
                 case Constants.Gift_A_Life:
                     ImageView ivGift = activityHomeBinding.getRoot().findViewById(R.id.iv_gift);
                     ivGift.setVisibility(View.VISIBLE);
-                    setImage(ivGift, feature.getIconUrl());
+                    setImage(ivGift, 0);
                     break;
                 case Constants.Offers:
                     ImageView ivOffers = activityHomeBinding.getRoot().findViewById(R.id.iv_offer);
                     ivOffers.setVisibility(View.VISIBLE);
-                    setImage(ivOffers, feature.getIconUrl());
+                    setImage(ivOffers, R.drawable.offers);
                     break;
             }
         }
@@ -437,6 +438,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             startActivity(new Intent(this, WalletActivity.class));
         } else if (id == R.id.nav_inbox) {
             startActivity(new Intent(this, InboxActivity.class));
+        } else if (id == R.id.nav_contribute) {
+            startActivity(new Intent(this, StaffTrackActivity.class));
         } else if (id == R.id.nav_privacy) {
             AppUtil.openUrl(this, Constants.PRIVACY_POLICY_URL);
         }
