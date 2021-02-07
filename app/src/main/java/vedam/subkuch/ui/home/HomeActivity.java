@@ -33,6 +33,7 @@ import vedam.subkuch.databinding.ActivityHomeBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.network.models.AddEventResponse;
+import vedam.subkuch.network.models.BroadcastResponse;
 import vedam.subkuch.network.models.ReferralRequest;
 import vedam.subkuch.network.models.ShareResponse;
 import vedam.subkuch.network.models.feature.Feature;
@@ -74,6 +75,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 this, R.layout.activity_home);
         requestLocation(false);
         getFeatures();
+        getBroadCastMessage();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, activityHomeBinding.drawerLayout, getToolbar(), R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -86,6 +88,19 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
         handleReferral();
         registerFCM();
+    }
+
+    private final Response.Listener<BroadcastResponse> onBroadcastSuccessListener = response -> {
+
+        if (response != null && response.getReturnCode() == Constants.SUCCESS_RETURN_CODE &&
+                !TextUtils.isEmpty(response.getReturnData().getMessage())) {
+            UiUtil.showDialog(this, response.getReturnData().getMessage(), false);
+        }
+    };
+
+    private void getBroadCastMessage() {
+        UiUtil.showProgressDialog(this, getString(R.string.please_wait));
+        DataFetcher.getFeatures2(this, onBroadcastSuccessListener, BroadcastResponse.class, onErrorListener);
     }
 
     private void registerFCM() {
@@ -119,7 +134,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 , String.valueOf(location.getLongitude()));
     }
 
-    private Response.Listener<AddEventResponse> onUpdateLocationSuccessListener =
+    private final Response.Listener<AddEventResponse> onUpdateLocationSuccessListener =
             response -> LogUtils.LOGD("Update Location", response.toString());
 
     private void getFeatures() {
@@ -128,7 +143,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         DataFetcher.getFeatures2(this, onFeaturesSuccessListener, FeatureResponse.class, onErrorListener);
     }
 
-    private Response.Listener<FeatureResponse> onFeaturesSuccessListener = response -> {
+    private final Response.Listener<FeatureResponse> onFeaturesSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
         if (response != null) {
@@ -166,7 +181,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     }
 
-    private Response.Listener<ShareResponse> onShareSuccessListener = response -> {
+    private final Response.Listener<ShareResponse> onShareSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
         if (response != null && response.getReturnMessage().equals(Constants.SUCCESS) && response.getReturnData() != null) {
@@ -469,7 +484,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 // Connection could not be established
                 break;
             case InstallReferrerResponse.DEVELOPER_ERROR:
-                break;
             case InstallReferrerResponse.SERVICE_DISCONNECTED:
                 break;
         }
@@ -492,7 +506,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
-    private Response.Listener<AddResponse> onAddReferralSuccessListener = response -> {
+    private final Response.Listener<AddResponse> onAddReferralSuccessListener = response -> {
 
         if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
             AppPrefs.setPrefsIsReferralDone(this, Constants.TRUE);

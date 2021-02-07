@@ -113,10 +113,10 @@
     <string name="add_one_branch">Add at least one branch</string>
     <string name="add_location">Add Location</string>
     <string name="add_a_location">Add a location</string>
-    <string name="city">City</string>
+    <string name="city">District</string>
     <string name="no_more_jobs">You cannot add more than 10 jobs at once</string>
     <string name="no_more_branches">You cannot add more than 20 branches at once</string>
-    <string name="select_a_city">Select a city</string>
+    <string name="select_a_city">Select a District</string>
     <string name="branches">Branches</string>
     <string name="add_business">Add Business</string>
     <string name="business_name">Business Name</string>
@@ -252,7 +252,7 @@
     <string name="any">Any</string>
     <string name="interested_in_matrimonial">Interested in Matrimonial</string>
     <string name="interested_in_dating">Interested in Dating</string>
-    <string name="living_in_city">Living in (City)</string>
+    <string name="living_in_city">Living in (District)</string>
     <string name="drinking_habits">Drinking Habits</string>
     <string name="internet_not_connected">Internet not connected</string>
     <string name="home">Home</string>
@@ -356,7 +356,7 @@
     <string name="enter_daily_discount">Enter daily discount</string>
     <string name="no_needs_found">No needs found</string>
     <string name="no_needs_found_details">You have not posted any Need. To submit a Need please click on + sign.</string>
-    <string name="work_location_hint">Type your Locality without City name</string>
-    <string name="job_location_hint">Type your Locality without City name</string>
+    <string name="work_location_hint">Type your Locality without District name</string>
+    <string name="job_location_hint">Type your Locality without District name</string>
     <string name="contribute">Contribute</string>
 </resources>

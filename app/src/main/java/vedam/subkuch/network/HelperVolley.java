@@ -88,7 +88,7 @@ public class HelperVolley<T> {
             }
 
             @Override
-            protected Response<T> parseNetworkResponse(NetworkResponse response) {
+            protected retrofit2.Response<T> parseNetworkResponse(NetworkResponse response) {
                 try {
                     if (response.data.length == 0) {
                         byte[] responseData = "{}".getBytes("UTF-8");
@@ -220,7 +220,7 @@ public class HelperVolley<T> {
             }
 
             @Override
-            protected Response<T> parseNetworkResponse(NetworkResponse response) {
+            protected retrofit2.Response<T> parseNetworkResponse(NetworkResponse response) {
                 try {
                     if (response.data.length == 0) {
                         byte[] responseData = "{}".getBytes("UTF-8");

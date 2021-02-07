@@ -388,8 +388,8 @@ public class AppUtil {
 
         if (!TextUtils.isEmpty(businessAddress.getAddress()))
             stringBuilder.append(businessAddress.getAddress());
-        if (!TextUtils.isEmpty(businessAddress.getCity()))
-            stringBuilder.append(", ").append(businessAddress.getCity());
+//        if (!TextUtils.isEmpty(businessAddress.getCity()))
+//            stringBuilder.append(", ").append(businessAddress.getCity());
         if (!TextUtils.isEmpty(businessAddress.getZipcode()))
             stringBuilder.append(" ").append(businessAddress.getZipcode());
 
@@ -402,8 +402,8 @@ public class AppUtil {
 
         if (!TextUtils.isEmpty(publicUtility.getAddress()))
             stringBuilder.append(publicUtility.getAddress());
-        if (!TextUtils.isEmpty(publicUtility.getCityName()))
-            stringBuilder.append(", ").append(publicUtility.getCityName());
+//        if (!TextUtils.isEmpty(publicUtility.getCityName()))
+//            stringBuilder.append(", ").append(publicUtility.getCityName());
         if (!TextUtils.isEmpty(publicUtility.getZipcode()))
             stringBuilder.append(" ").append(publicUtility.getZipcode());
 

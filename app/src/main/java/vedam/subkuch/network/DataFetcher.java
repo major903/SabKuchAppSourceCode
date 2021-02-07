@@ -48,6 +48,11 @@ public class DataFetcher {
         String url = String.format("%s/api/Feature/GetFeature2?UserId=%s", NetworkConstants.END_POINT2, userId);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
+    public static <T> void getBroadcastMessage(Context context, Response.Listener<T> updateSuccessListener, Type repClass, Response.ErrorListener errorListener) {
+        String userId = AppPrefs.getPrefsUserId(context);
+        String url = String.format("%s/api/Message/GetBroadCastMessage?UserId=%s", NetworkConstants.END_POINT2, userId);
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
+    }
 
     public static <T> void getCountries(Context context, Response.Listener<T> updateSuccessListener, Type repClass, Response.ErrorListener errorListener) {
 

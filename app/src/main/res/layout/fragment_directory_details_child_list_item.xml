@@ -4,7 +4,7 @@
     android:id="@+id/rl_sub_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/myshape_2"
+    android:background="@drawable/myshape_5"
     android:orientation="vertical"
     android:padding="@dimen/margin_8dp">
 
