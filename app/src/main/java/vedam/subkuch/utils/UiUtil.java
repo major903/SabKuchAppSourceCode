@@ -36,8 +36,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
@@ -118,7 +118,7 @@ public class UiUtil {
             pDialog.setCancelable(cancelable);
             pDialog.show();
         } catch (Exception e) {
-            Crashlytics.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 
@@ -142,7 +142,7 @@ public class UiUtil {
                 pDialog = null;
             }
         } catch (Exception e) {
-            Crashlytics.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             LogUtils.LOGE(TAG, e.getMessage(), e);
         } finally {
             pDialog = null;
@@ -318,7 +318,7 @@ public class UiUtil {
         try {
             exif = new ExifInterface(filePath);
         } catch (IOException e) {
-            Crashlytics.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             e.printStackTrace();
         }
         if (exif == null) {
@@ -455,7 +455,7 @@ public class UiUtil {
         if (TextUtils.isEmpty(suffix))
             tv.setVisibility(View.GONE);
         else {
-
+            tv.setVisibility(View.VISIBLE);
 //            Typeface typeface = Typeface.createFromAsset(context.getAssets(), context.getString(R.string.typeface_heavy));
 //            MetricAffectingSpan boldSpan = new CustomTypefaceSpan(typeface);
             StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
@@ -478,7 +478,7 @@ public class UiUtil {
         if (TextUtils.isEmpty(suffix))
             tv.setVisibility(View.GONE);
         else {
-
+            tv.setVisibility(View.VISIBLE);
             Typeface typeface = Typeface.createFromAsset(context.getAssets(), context.getString(R.string.typeface_heavy));
             MetricAffectingSpan boldSpan = new CustomTypefaceSpan(typeface);
 
@@ -502,7 +502,7 @@ public class UiUtil {
         if (TextUtils.isEmpty(value))
             tv.setVisibility(View.GONE);
         else {
-
+            tv.setVisibility(View.VISIBLE);
             Typeface typeface = Typeface.createFromAsset(context.getAssets(), context.getString(R.string.typeface_heavy));
             MetricAffectingSpan boldSpan = new CustomTypefaceSpan(typeface);
 
@@ -550,8 +550,10 @@ public class UiUtil {
 
         if (TextUtils.isEmpty(value))
             tv.setVisibility(View.GONE);
-        else
+        else {
+            tv.setVisibility(View.VISIBLE);
             tv.setText(value);
+        }
     }
 
     public static void setTextViewWithVisibility(TextView tv, CharSequence value) {
@@ -573,8 +575,10 @@ public class UiUtil {
 
         if (TextUtils.isEmpty(value))
             tv.setVisibility(View.GONE);
-        else
+        else {
             tv.setText(value);
+            tv.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
@@ -600,8 +604,10 @@ public class UiUtil {
         if (TextUtils.isEmpty(value)) {
             tv.setVisibility(View.GONE);
             tvHeading.setVisibility(View.GONE);
-        } else
+        } else {
+            tv.setVisibility(View.VISIBLE);
             tv.setText(value);
+        }
     }
 
     public static void setTextView(TextView tv, TextView tvHeading, ImageView ivIcon, String value) {
@@ -610,8 +616,10 @@ public class UiUtil {
             tv.setVisibility(View.GONE);
             tvHeading.setVisibility(View.GONE);
             ivIcon.setVisibility(View.GONE);
-        } else
+        } else {
+            tv.setVisibility(View.VISIBLE);
             tv.setText(value);
+        }
     }
 
     public static Typeface getTypeface(Context context, String fontName) {

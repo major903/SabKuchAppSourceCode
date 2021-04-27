@@ -3,12 +3,7 @@ package vedam.subkuch.ui.matrimonial.viewProfile;
 
 import android.app.Activity;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +11,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.Response;
 import com.google.gson.Gson;
@@ -40,7 +41,7 @@ import vedam.subkuch.utils.UiUtil;
 public class ViewProfileFragment extends BaseFragment {
 
     private DatingProfile datingProfile;
-    private FragmentViewProfileBinding fragmentViewProfileBinding;
+    private FragmentViewProfileBinding binding;
     private boolean isDating;
 
     public ViewProfileFragment() {
@@ -69,8 +70,8 @@ public class ViewProfileFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         // Inflate the layout for this fragment
-        fragmentViewProfileBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_view_profile, container, false);
-        return fragmentViewProfileBinding.getRoot();
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_view_profile, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -82,7 +83,7 @@ public class ViewProfileFragment extends BaseFragment {
 
     private void bindCallback() {
 
-        fragmentViewProfileBinding.fabDislike.setOnClickListener(v -> showWarning());
+        binding.fabDislike.setOnClickListener(v -> showWarning());
     }
 
     private void showWarning() {
@@ -98,53 +99,56 @@ public class ViewProfileFragment extends BaseFragment {
                     .setImageLink(imageLink)
                     .setPlaceholderResource(R.drawable.placeholder)
                     .setErrorResource(R.drawable.placeholder)
-                    .setTarget(fragmentViewProfileBinding.ivProfile)
+                    .setTarget(binding.ivProfile)
                     .build());
         } else
-            fragmentViewProfileBinding.ivProfile.setBackgroundResource(R.drawable.placeholder);
+            binding.ivProfile.setBackgroundResource(R.drawable.placeholder);
 
-        fragmentViewProfileBinding.cvImage.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        binding.cvImage.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                fragmentViewProfileBinding.cvImage.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                binding.cvImage.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 setLayoutParams();
             }
         });
 
-        fragmentViewProfileBinding.tvName.setText(AppUtil.getNameAndAge(datingProfile.getFirstName(), datingProfile.getAge()));
+        binding.tvName.setText(AppUtil.getNameAndAge(datingProfile.getFirstName(), datingProfile.getAge()));
 
-        UiUtil.setTextView(fragmentViewProfileBinding.tvAbout, datingProfile.getAboutMe());
-        UiUtil.setTextView(fragmentViewProfileBinding.tvDistance, datingProfile.getDistance());
-        UiUtil.setTextViewWithBoldPrefix(context, "Marital Status :", datingProfile.getMaritalStatusName(), fragmentViewProfileBinding.tvMaritalStatus);
-        UiUtil.setTextViewWithBoldPrefix(context, "Mother Tongue :", datingProfile.getMothertongueName(), fragmentViewProfileBinding.tvMotherTongue);
-        UiUtil.setTextViewWithBoldPrefix(context, "Occupation :", datingProfile.getOccupationName(), fragmentViewProfileBinding.tvOccupation);
-        UiUtil.setTextViewWithBoldPrefix(context, "Qualification :", datingProfile.getQualificationName(), fragmentViewProfileBinding.tvQualification);
-        UiUtil.setTextViewWithBoldPrefix(context, "Annual Income :", datingProfile.getIncome(), fragmentViewProfileBinding.tvAnnualIncome);
-        UiUtil.setTextViewWithBoldPrefix(context, "Body Type :", datingProfile.getBodyTypeName(), fragmentViewProfileBinding.tvBodyType);
-        UiUtil.setTextViewWithBoldPrefix(context, "Complexion :", datingProfile.getComplexionName(), fragmentViewProfileBinding.tvComplexion);
-        UiUtil.setTextViewWithBoldPrefix(context, "Height :", datingProfile.getHeight(), fragmentViewProfileBinding.tvHeight);
-        UiUtil.setTextViewWithBoldPrefix(context, "Weight :", datingProfile.getWeight(), fragmentViewProfileBinding.tvWeight);
-        UiUtil.setTextViewWithBoldPrefix(context, "Religion :", datingProfile.getReligionName(), fragmentViewProfileBinding.tvReligion);
-        UiUtil.setTextViewWithBoldPrefix(context, "Caste :", datingProfile.getMasterCastName(), fragmentViewProfileBinding.tvCaste);
-        UiUtil.setTextViewWithBoldPrefix(context, "Gothra :", datingProfile.getGotraName(), fragmentViewProfileBinding.tvGothra);
-        UiUtil.setTextViewWithBoldPrefix(context, "Nakshatra :", datingProfile.getNakshatraName(), fragmentViewProfileBinding.tvNakshatra);
-        UiUtil.setTextViewWithBoldPrefix(context, "Dosham :", datingProfile.getDoshamName(), fragmentViewProfileBinding.tvDosham);
-        UiUtil.setTextViewWithBoldPrefix(context, "Food Habit :", datingProfile.getFoodHabitsName(), fragmentViewProfileBinding.tvFoodHabit);
-        UiUtil.setTextViewWithBoldPrefix(context, "Drinking Habit :", datingProfile.getDrinkingStatusName(), fragmentViewProfileBinding.tvDrinkingHabit);
-        UiUtil.setTextViewWithBoldPrefix(context, "Smoking Habit :", datingProfile.getSmokingType(), fragmentViewProfileBinding.tvSmokingHabit);
-        UiUtil.setTextViewWithBoldPrefix(context, "Physical Status :", datingProfile.getPhysicalStatusName(), fragmentViewProfileBinding.tvPhysicalStatus);
-        UiUtil.setTextViewWithBoldPrefix(context, "Living With :", datingProfile.getLivingWithName(), fragmentViewProfileBinding.tvLivingWith);
-        UiUtil.setTextViewWithBoldPrefix(context, "Owns a Car :", datingProfile.getOwnCarType(), fragmentViewProfileBinding.tvOwnCar);
-        UiUtil.setTextViewWithBoldPrefix(context, "Owns a House :", datingProfile.getOwnHouseType(), fragmentViewProfileBinding.tvOwnHouse);
+        UiUtil.setTextView(binding.tvAbout, datingProfile.getAboutMe());
+        UiUtil.setTextView(binding.tvDistance, datingProfile.getDistance());
+        UiUtil.setTextViewWithBoldPrefix(context, "Marital Status :", datingProfile.getMaritalStatusName(), binding.tvMaritalStatus);
+        UiUtil.setTextViewWithBoldPrefix(context, "Mother Tongue :", datingProfile.getMothertongueName(), binding.tvMotherTongue);
+        UiUtil.setTextViewWithBoldPrefix(context, "Occupation :", datingProfile.getOccupationName(), binding.tvOccupation);
+        UiUtil.setTextViewWithBoldPrefix(context, "Qualification :", datingProfile.getQualificationName(), binding.tvQualification);
+        UiUtil.setTextViewWithBoldPrefix(context, "Annual Income :", datingProfile.getIncome(), binding.tvAnnualIncome);
+        UiUtil.setTextViewWithBoldPrefix(context, "Body Type :", datingProfile.getBodyTypeName(), binding.tvBodyType);
+        UiUtil.setTextViewWithBoldPrefix(context, "Complexion :", datingProfile.getComplexionName(), binding.tvComplexion);
+        UiUtil.setTextViewWithBoldPrefix(context, "Height :", datingProfile.getHeight(), binding.tvHeight);
+        if (!isDating)
+            UiUtil.setTextViewWithBoldPrefix(context, "Weight :", datingProfile.getWeight(), binding.tvWeight);
+        else
+            binding.tvWeight.setVisibility(View.GONE);
+        UiUtil.setTextViewWithBoldPrefix(context, "Religion :", datingProfile.getReligionName(), binding.tvReligion);
+        UiUtil.setTextViewWithBoldPrefix(context, "Caste :", datingProfile.getMasterCastName(), binding.tvCaste);
+        UiUtil.setTextViewWithBoldPrefix(context, "Gothra :", datingProfile.getGotraName(), binding.tvGothra);
+        UiUtil.setTextViewWithBoldPrefix(context, "Nakshatra :", datingProfile.getNakshatraName(), binding.tvNakshatra);
+        UiUtil.setTextViewWithBoldPrefix(context, "Dosham :", datingProfile.getDoshamName(), binding.tvDosham);
+        UiUtil.setTextViewWithBoldPrefix(context, "Food Habit :", datingProfile.getFoodHabitsName(), binding.tvFoodHabit);
+        UiUtil.setTextViewWithBoldPrefix(context, "Drinking Habit :", datingProfile.getDrinkingStatusName(), binding.tvDrinkingHabit);
+        UiUtil.setTextViewWithBoldPrefix(context, "Smoking Habit :", datingProfile.getSmokingType(), binding.tvSmokingHabit);
+        UiUtil.setTextViewWithBoldPrefix(context, "Physical Status :", datingProfile.getPhysicalStatusName(), binding.tvPhysicalStatus);
+        UiUtil.setTextViewWithBoldPrefix(context, "Living With :", datingProfile.getLivingWithName(), binding.tvLivingWith);
+        UiUtil.setTextViewWithBoldPrefix(context, "Owns a Car :", datingProfile.getOwnCarType(), binding.tvOwnCar);
+        UiUtil.setTextViewWithBoldPrefix(context, "Owns a House :", datingProfile.getOwnHouseType(), binding.tvOwnHouse);
     }
 
     @SuppressWarnings("SuspiciousNameCombination")
     private void setLayoutParams() {
 
-        int width = fragmentViewProfileBinding.cvImage.getMeasuredWidth();
+        int width = binding.cvImage.getMeasuredWidth();
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(width, width);
         params.bottomMargin = AppUtil.dpToPx(context, 28);
-        fragmentViewProfileBinding.cvImage.setLayoutParams(params);
+        binding.cvImage.setLayoutParams(params);
     }
 
     private void setUnmatch() {

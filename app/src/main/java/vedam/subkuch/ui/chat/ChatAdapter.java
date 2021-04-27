@@ -1,8 +1,6 @@
 package vedam.subkuch.ui.chat;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +9,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +84,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             UiUtil.setTextView(holder.tvMessageDate,
                     DateTimeUtils.getFormattedDate(Long.parseLong(chat.getTimeStamp()), DateTimeUtils.DATE_FORMAT_4));
         } catch (NumberFormatException e) {
-            Crashlytics.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             holder.tvMessageDate.setVisibility(View.INVISIBLE);
         }
     }

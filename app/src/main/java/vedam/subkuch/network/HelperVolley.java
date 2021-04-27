@@ -9,7 +9,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyLog;
-import com.crashlytics.android.Crashlytics;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -88,7 +87,7 @@ public class HelperVolley<T> {
             }
 
             @Override
-            protected retrofit2.Response<T> parseNetworkResponse(NetworkResponse response) {
+            protected Response<T> parseNetworkResponse(NetworkResponse response) {
                 try {
                     if (response.data.length == 0) {
                         byte[] responseData = "{}".getBytes("UTF-8");
@@ -139,7 +138,6 @@ public class HelperVolley<T> {
                 try {
                     return mRequestBody == null ? null : mRequestBody.getBytes(PROTOCOL_CHARSET);
                 } catch (UnsupportedEncodingException uee) {
-                    Crashlytics.logException(uee);
                     VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
                             mRequestBody, PROTOCOL_CHARSET);
                     return null;
@@ -220,7 +218,7 @@ public class HelperVolley<T> {
             }
 
             @Override
-            protected retrofit2.Response<T> parseNetworkResponse(NetworkResponse response) {
+            protected Response<T> parseNetworkResponse(NetworkResponse response) {
                 try {
                     if (response.data.length == 0) {
                         byte[] responseData = "{}".getBytes("UTF-8");
@@ -261,7 +259,6 @@ public class HelperVolley<T> {
             }
             return encodedParams.toString().getBytes(paramsEncoding);
         } catch (UnsupportedEncodingException uee) {
-            Crashlytics.logException(uee);
             throw new RuntimeException("Encoding not supported: " + paramsEncoding, uee);
         }
     }

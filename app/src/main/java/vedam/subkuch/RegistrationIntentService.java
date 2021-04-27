@@ -24,7 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.JobIntentService;
 
 import com.android.volley.Response;
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
@@ -79,7 +79,7 @@ public class RegistrationIntentService extends JobIntentService {
                     });
 
         } catch (Exception e) {
-            Crashlytics.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             LogUtils.LOGD(TAG, "Failed to complete token refresh", e);
         }
     }

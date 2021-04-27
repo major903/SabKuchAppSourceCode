@@ -20,7 +20,7 @@ import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import vedam.subkuch.R;
@@ -86,7 +86,7 @@ public class BaseListFragment extends ListFragment implements SwipeRefreshLayout
                 else
                     UiUtil.showToast(context, getString(R.string.err_occurred));
             } catch (Exception exception) {
-                Crashlytics.logException(exception);
+                FirebaseCrashlytics.getInstance().recordException(exception);
                 exception.printStackTrace();
                 UiUtil.showToast(context, getString(R.string.err_occurred));
             }

@@ -7,7 +7,7 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.os.ResultReceiver;
 
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.io.IOException;
 import java.util.List;
@@ -71,12 +71,12 @@ public class FetchAddressIntentService extends IntentService {
                     // In this sample, get just a single address.
                     1);
         } catch (IOException ioException) {
- Crashlytics.logException(ioException);
+            FirebaseCrashlytics.getInstance().recordException(ioException);
             // Catch network or other I/O problems.
             errorMessage = getString(R.string.service_not_available);
             LogUtils.LOGE(TAG, errorMessage, ioException);
         } catch (IllegalArgumentException illegalArgumentException) {
- Crashlytics.logException(illegalArgumentException);
+            FirebaseCrashlytics.getInstance().recordException(illegalArgumentException);
             // Catch invalid latitude or longitude values.
             errorMessage = getString(R.string.invalid_lat_long_used);
             LogUtils.LOGE(TAG, errorMessage + ". " +

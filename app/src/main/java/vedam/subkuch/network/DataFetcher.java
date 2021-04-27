@@ -50,7 +50,7 @@ public class DataFetcher {
     }
     public static <T> void getBroadcastMessage(Context context, Response.Listener<T> updateSuccessListener, Type repClass, Response.ErrorListener errorListener) {
         String userId = AppPrefs.getPrefsUserId(context);
-        String url = String.format("%s/api/Message/GetBroadCastMessage?UserId=%s", NetworkConstants.END_POINT2, userId);
+        String url = String.format("%s/api/Message/GetBroadCastMessage?id=%s", NetworkConstants.END_POINT2, userId);
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener);
     }
 

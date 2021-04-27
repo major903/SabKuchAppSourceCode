@@ -1,13 +1,14 @@
 package vedam.subkuch.ui.matrimonial.preference;
 
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,8 +145,10 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (isDating)
+        if (isDating) {
+            binding.seekBarDistance.setMaxStartValue(500);
             hideFields();
+        }
         init();
 
     }

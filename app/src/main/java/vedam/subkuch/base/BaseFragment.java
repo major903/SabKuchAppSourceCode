@@ -31,8 +31,8 @@ import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
-import com.crashlytics.android.Crashlytics;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -109,7 +109,7 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
                 else
                     UiUtil.showToast(context, getString(R.string.err_occurred));
             } catch (Exception exception) {
-                Crashlytics.logException(exception);
+                FirebaseCrashlytics.getInstance().recordException(exception);
                 exception.printStackTrace();
                 UiUtil.showToast(context, getString(R.string.err_occurred));
             }
@@ -255,7 +255,7 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
             }
             snakbar.show();
         } catch (Exception e) {
-            Crashlytics.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 

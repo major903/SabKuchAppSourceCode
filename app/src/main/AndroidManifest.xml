@@ -18,13 +18,13 @@
     <application
         android:name=".SabkuchApplication"
         android:allowBackup="false"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/icon"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:largeHeap="true"
-        android:hardwareAccelerated="false"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
         <activity
@@ -204,9 +204,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.classifieds.EditClassifiedActivity"
-            android:screenOrientation="portrait" />
-
-        <!-- [START gcm_listener] -->
+            android:screenOrientation="portrait" /> <!-- [START gcm_listener] -->
         <service
             android:name=".MyFirebaseMessagingService"
             android:exported="false">
@@ -214,7 +212,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service
             android:name=".RegistrationIntentService"
             android:exported="false"

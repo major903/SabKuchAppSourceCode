@@ -17,9 +17,9 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.crashlytics.android.Crashlytics;
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -252,7 +252,7 @@ public class ShowProfilesActivity extends BaseActivity
         internetDisposable = ReactiveNetwork.observeInternetConnectivity()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::setConnection, Crashlytics::logException);
+                .subscribe(this::setConnection, FirebaseCrashlytics.getInstance()::recordException);
         if (menu != null)
             getUnreadMessages();
     }
@@ -304,7 +304,7 @@ public class ShowProfilesActivity extends BaseActivity
         unreadMessagesDisposable = Observable.fromCallable(() -> chatRepository.getTotalUnreadMessagesCount(AppPrefs.getPrefsUserId(this), AppUtil.getChatType(isDating)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::setCount, Crashlytics::logException);
+                .subscribe(this::setCount, FirebaseCrashlytics.getInstance()::recordException);
     }
 
     // WebSocket

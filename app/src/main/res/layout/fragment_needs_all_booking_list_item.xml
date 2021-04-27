@@ -30,7 +30,8 @@
             android:layout_alignBottom="@+id/tv_work_location"
             android:layout_alignParentRight="true"
             android:background="@color/transparent"
-            android:src="@drawable/baseline_directions_black_24" />
+            android:tint="@color/black"
+            android:src="@drawable/ic_baseline_directions_24" />
 
     </RelativeLayout>
 

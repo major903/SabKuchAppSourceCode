@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -51,7 +52,8 @@
             android:layout_alignBottom="@+id/tv_pick_up"
             android:layout_alignParentRight="true"
             android:background="@color/transparent"
-            android:src="@drawable/baseline_directions_black_24" />
+            android:tint="@color/black"
+            app:srcCompat="@drawable/ic_baseline_directions_24" />
 
     </RelativeLayout>
 

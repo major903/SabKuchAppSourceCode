@@ -3,6 +3,7 @@ package vedam.subkuch.ui.profile;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -141,6 +142,9 @@ public class VerificationActivity extends BaseActivity {
 
         setIdleState(false, null);
         UiUtil.showProgressDialog(this, getString(R.string.please_wait));
+        final String deviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        profile.setDeviceId(deviceId);
         DataFetcher.registerUser(this, new Gson().toJson(profile), onRegisterUserSuccessListener, ProfileResponse.class, onErrorListener);
     }
 

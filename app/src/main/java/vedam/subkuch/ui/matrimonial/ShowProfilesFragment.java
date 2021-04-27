@@ -1,12 +1,7 @@
 package vedam.subkuch.ui.matrimonial;
 
 
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +9,12 @@ import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -46,7 +47,7 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
 
     private FragmentShowProfilesBinding fragmentShowProfilesBinding;
     private int pageNo = 1;
-    private int pageSize = 20;
+    private final int pageSize = 20;
     private int profileNo = 0;
     private boolean hasMoreProfiles = true;
     ArrayList<DatingProfile> datingProfiles = new ArrayList<>();

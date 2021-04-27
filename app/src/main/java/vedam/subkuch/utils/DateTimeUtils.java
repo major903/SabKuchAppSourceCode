@@ -1,6 +1,6 @@
 package vedam.subkuch.utils;
 
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -61,7 +61,7 @@ public class DateTimeUtils {
             SimpleDateFormat format = new SimpleDateFormat(dateFormat, Locale.US);
             return format.format(dateInCurrentFormat);
         } catch (Exception e) {
-            Crashlytics.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             e.printStackTrace();
         }
         return null;
@@ -94,7 +94,7 @@ public class DateTimeUtils {
             Date d = format.parse(date);
             return d.getTime();
         } catch (ParseException e) {
-            Crashlytics.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             e.printStackTrace();
         }
         return 0;
@@ -129,7 +129,7 @@ public class DateTimeUtils {
             calendar = Calendar.getInstance();
             calendar.setTime(simpleDateFormat.parse(date));
         } catch (ParseException e) {
-            Crashlytics.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             e.printStackTrace();
         }
 
@@ -144,7 +144,7 @@ public class DateTimeUtils {
             long diff = endDate.getTime() - startDate.getTime();
             return (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
         } catch (ParseException e) {
-            Crashlytics.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             e.printStackTrace();
             return 0;
         }

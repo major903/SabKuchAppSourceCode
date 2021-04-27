@@ -7,15 +7,16 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
-import androidx.annotation.NonNull;
-import androidx.core.content.FileProvider;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
 
-import com.crashlytics.android.Crashlytics;
+import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.io.File;
@@ -130,7 +131,7 @@ public abstract class BaseAddImageFragment extends BaseFragment {
             this.imagePath = file.getAbsolutePath();
             return imgUri;
         } catch (IOException e) {
-            Crashlytics.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             e.printStackTrace();
         }
         return null;
@@ -161,7 +162,7 @@ public abstract class BaseAddImageFragment extends BaseFragment {
                     noImageAdded();
                 }
             } catch (IOException e) {
-                Crashlytics.logException(e);
+                FirebaseCrashlytics.getInstance().recordException(e);
                 e.printStackTrace();
                 noImageAdded();
             }
@@ -175,7 +176,7 @@ public abstract class BaseAddImageFragment extends BaseFragment {
                     noImageAdded();
                 }
             } catch (Exception e) {
-                Crashlytics.logException(e);
+                FirebaseCrashlytics.getInstance().recordException(e);
                 e.printStackTrace();
                 noImageAdded();
             }
@@ -226,7 +227,7 @@ public abstract class BaseAddImageFragment extends BaseFragment {
             out.close();
             in.close();
         } catch (Exception e) {
-            Crashlytics.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             e.printStackTrace();
         }
     }

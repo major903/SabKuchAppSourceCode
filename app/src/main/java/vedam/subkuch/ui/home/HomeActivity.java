@@ -20,8 +20,8 @@ import com.android.installreferrer.api.InstallReferrerClient.InstallReferrerResp
 import com.android.installreferrer.api.InstallReferrerStateListener;
 import com.android.installreferrer.api.ReferrerDetails;
 import com.android.volley.Response;
-import com.crashlytics.android.Crashlytics;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -100,7 +100,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void getBroadCastMessage() {
         UiUtil.showProgressDialog(this, getString(R.string.please_wait));
-        DataFetcher.getFeatures2(this, onBroadcastSuccessListener, BroadcastResponse.class, onErrorListener);
+        DataFetcher.getBroadcastMessage(this, onBroadcastSuccessListener, BroadcastResponse.class, onErrorListener);
     }
 
     private void registerFCM() {
@@ -203,7 +203,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             i.putExtra(Intent.EXTRA_TEXT, data);
             startActivity(Intent.createChooser(i, "Choose one"));
         } catch (Exception e) {
-            Crashlytics.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 
@@ -228,30 +228,30 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 case Constants.Directory:
                     ImageView ivDirectory = activityHomeBinding.getRoot().findViewById(R.id.iv_directory);
                     ivDirectory.setVisibility(View.VISIBLE);
-                    setImage(ivDirectory, R.drawable.directory);
+                    setImage(ivDirectory, R.drawable.directory, feature);
                     break;
                 case Constants.Events:
                     ImageView ivEvent = activityHomeBinding.getRoot().findViewById(R.id.iv_events);
                     ivEvent.setVisibility(View.VISIBLE);
-                    setImage(ivEvent, R.drawable.events);
+                    setImage(ivEvent, R.drawable.events, feature);
                     break;
                 case Constants.Jobs:
                     ImageView ivJobs = activityHomeBinding.getRoot().findViewById(R.id.iv_jobs);
                     ivJobs.setVisibility(View.VISIBLE);
-                    setImage(ivJobs, R.drawable.jobs);
+                    setImage(ivJobs, R.drawable.jobs, feature);
                     break;
                 case Constants.Movies:
                     ImageView ivMovies = activityHomeBinding.getRoot().findViewById(R.id.iv_movies);
                     ivMovies.setVisibility(View.VISIBLE);
-                    setImage(ivMovies, R.drawable.movies);
+                    setImage(ivMovies, R.drawable.movies, feature);
                     break;
 
             }
         }
     }
 
-    private void setImage(ImageView ivDirectory, int resourceId) {
-
+    private void setImage(ImageView ivDirectory, int resourceId, Node feature) {
+        ivDirectory.setTag(feature);
         UiUtil.setImageView(new ImageSetter.ImageBuilder(this)
                 .setImageResource(resourceId)
                 .setTarget(ivDirectory).build());
@@ -264,17 +264,17 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 case Constants.Ask_Me:
                     ImageView ivAskMe = activityHomeBinding.getRoot().findViewById(R.id.iv_ask_me);
                     ivAskMe.setVisibility(View.VISIBLE);
-                    setImage(ivAskMe, R.drawable.ask);
+                    setImage(ivAskMe, R.drawable.ask, feature);
                     break;
                 case Constants.Classifieds:
                     ImageView ivClassifieds = activityHomeBinding.getRoot().findViewById(R.id.iv_classifieds);
                     ivClassifieds.setVisibility(View.VISIBLE);
-                    setImage(ivClassifieds, R.drawable.classifieds);
+                    setImage(ivClassifieds, R.drawable.classifieds, feature);
                     break;
                 case Constants.Needs:
                     ImageView ivNeeds = activityHomeBinding.getRoot().findViewById(R.id.iv_needs);
                     ivNeeds.setVisibility(View.VISIBLE);
-                    setImage(ivNeeds, R.drawable.needs);
+                    setImage(ivNeeds, R.drawable.needs, feature);
                     break;
             }
         }
@@ -287,12 +287,12 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 case Constants.Dating:
                     ImageView ivDating = activityHomeBinding.getRoot().findViewById(R.id.iv_dating);
                     ivDating.setVisibility(View.VISIBLE);
-                    setImage(ivDating, R.drawable.dating);
+                    setImage(ivDating, R.drawable.dating, feature);
                     break;
                 case Constants.Matrimonial:
                     ImageView ivMatrimonial = activityHomeBinding.getRoot().findViewById(R.id.iv_matrimonial);
                     ivMatrimonial.setVisibility(View.VISIBLE);
-                    setImage(ivMatrimonial, R.drawable.matrimonial);
+                    setImage(ivMatrimonial, R.drawable.matrimonial, feature);
                     break;
             }
         }
@@ -305,17 +305,17 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 case Constants.Phone_book:
                     ImageView ivPhoneBook = activityHomeBinding.getRoot().findViewById(R.id.iv_phone_book);
                     ivPhoneBook.setVisibility(View.VISIBLE);
-                    setImage(ivPhoneBook, R.drawable.phonebook);
+                    setImage(ivPhoneBook, R.drawable.phonebook, feature);
                     break;
                 case Constants.Public_Transport_Timings:
                     ImageView ivBus = activityHomeBinding.getRoot().findViewById(R.id.iv_bus);
                     ivBus.setVisibility(View.VISIBLE);
-                    setImage(ivBus, R.drawable.bustrain);
+                    setImage(ivBus, R.drawable.bustrain, feature);
                     break;
                 case Constants.Public_Utility:
                     ImageView ivPublicUtility = activityHomeBinding.getRoot().findViewById(R.id.iv_public_utility);
                     ivPublicUtility.setVisibility(View.VISIBLE);
-                    setImage(ivPublicUtility, R.drawable.public_utility);
+                    setImage(ivPublicUtility, R.drawable.public_utility, feature);
                     break;
             }
         }
@@ -328,17 +328,17 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 case Constants.Goods_Transport:
                     ImageView ivTransport = activityHomeBinding.getRoot().findViewById(R.id.iv_transport);
                     ivTransport.setVisibility(View.VISIBLE);
-                    setImage(ivTransport, 0);
+                    setImage(ivTransport, 0, feature);
                     break;
                 case Constants.Gift_A_Life:
                     ImageView ivGift = activityHomeBinding.getRoot().findViewById(R.id.iv_gift);
                     ivGift.setVisibility(View.VISIBLE);
-                    setImage(ivGift, 0);
+                    setImage(ivGift, 0, feature);
                     break;
                 case Constants.Offers:
                     ImageView ivOffers = activityHomeBinding.getRoot().findViewById(R.id.iv_offer);
                     ivOffers.setVisibility(View.VISIBLE);
-                    setImage(ivOffers, R.drawable.offers);
+                    setImage(ivOffers, R.drawable.offers, feature);
                     break;
             }
         }
@@ -349,7 +349,17 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     }*/
 
     public void directoryClick(View v) {
-        startActivity(new Intent(this, DirectoryActivity.class));
+        if (isEnabled(v))
+            startActivity(new Intent(this, DirectoryActivity.class));
+        else {
+            String message = ((Node) v.getTag()).getMessage();
+            if (!TextUtils.isEmpty(message))
+                UiUtil.showDialog(this, ((Node) v.getTag()).getMessage(), true);
+        }
+    }
+
+    private boolean isEnabled(View v) {
+        return ((Node) v.getTag()).getIsEnabled();
     }
 
     /*public void datingClick(View v) {
@@ -367,7 +377,13 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     public void specialOfferClick(View v) {
 
-        startActivity(new Intent(this, OffersActivity.class));
+        if (isEnabled(v))
+            startActivity(new Intent(this, OffersActivity.class));
+        else {
+            String message = ((Node) v.getTag()).getMessage();
+            if (!TextUtils.isEmpty(message))
+                UiUtil.showDialog(this, ((Node) v.getTag()).getMessage(), true);
+        }
     }
 
     /*public void eCommerceClick(View v)
@@ -376,39 +392,97 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     }*/
 
     public void busClick(View v) {
-        startActivity(new Intent(this, VehicleActivity.class));
+        if (isEnabled(v))
+            startActivity(new Intent(this, VehicleActivity.class));
+        else {
+            String message = ((Node) v.getTag()).getMessage();
+            if (!TextUtils.isEmpty(message))
+                UiUtil.showDialog(this, ((Node) v.getTag()).getMessage(), true);
+        }
     }
 
     public void phoneBookClick(View v) {
-        startActivity(new Intent(this, PhoneBookActivity.class));
+        if (isEnabled(v))
+            startActivity(new Intent(this, PhoneBookActivity.class));
+        else {
+            String message = ((Node) v.getTag()).getMessage();
+            if (!TextUtils.isEmpty(message))
+                UiUtil.showDialog(this, ((Node) v.getTag()).getMessage(), true);
+        }
     }
 
     public void datingClick(View v) {
-        startActivity(new Intent(this, PinActivity.class).putExtra(Constants.EXTRA_IS_DATING, true));
+        if (isEnabled(v))
+            startActivity(new Intent(this, PinActivity.class).putExtra(Constants.EXTRA_IS_DATING, true));
+        else {
+            String message = ((Node) v.getTag()).getMessage();
+            if (!TextUtils.isEmpty(message))
+                UiUtil.showDialog(this, ((Node) v.getTag()).getMessage(), true);
+        }
     }
 
     public void matrimonialClick(View v) {
-        startActivity(new Intent(this, PinActivity.class).putExtra(Constants.EXTRA_IS_DATING, false));
+        if (isEnabled(v))
+            startActivity(new Intent(this, PinActivity.class).putExtra(Constants.EXTRA_IS_DATING, false));
+        else {
+            String message = ((Node) v.getTag()).getMessage();
+            if (!TextUtils.isEmpty(message))
+                UiUtil.showDialog(this, ((Node) v.getTag()).getMessage(), true);
+        }
     }
 
     public void askClick(View v) {
-        startActivity(new Intent(this, AskCategoryActivity.class));
+
+        if (isEnabled(v))
+            startActivity(new Intent(this, AskCategoryActivity.class));
+        else {
+            String message = ((Node) v.getTag()).getMessage();
+            if (!TextUtils.isEmpty(message))
+                UiUtil.showDialog(this, ((Node) v.getTag()).getMessage(), true);
+        }
     }
 
     public void eventsClick(View v) {
-        startActivity(new Intent(this, EventActivity.class));
+
+        if (isEnabled(v))
+            startActivity(new Intent(this, EventActivity.class));
+        else {
+            String message = ((Node) v.getTag()).getMessage();
+            if (!TextUtils.isEmpty(message))
+                UiUtil.showDialog(this, ((Node) v.getTag()).getMessage(), true);
+        }
     }
 
     public void jobsClick(View v) {
-        startActivity(new Intent(this, JobCategoryActivity.class));
+
+        if (isEnabled(v))
+            startActivity(new Intent(this, JobCategoryActivity.class));
+        else {
+            String message = ((Node) v.getTag()).getMessage();
+            if (!TextUtils.isEmpty(message))
+                UiUtil.showDialog(this, ((Node) v.getTag()).getMessage(), true);
+        }
     }
 
     public void moviesClick(View v) {
-        startActivity(new Intent(this, MoviesActivity.class));
+
+        if (isEnabled(v))
+            startActivity(new Intent(this, MoviesActivity.class));
+        else {
+            String message = ((Node) v.getTag()).getMessage();
+            if (!TextUtils.isEmpty(message))
+                UiUtil.showDialog(this, ((Node) v.getTag()).getMessage(), true);
+        }
     }
 
     public void transportClick(View v) {
-        startActivity(new Intent(this, TransportActivity.class));
+        if (isEnabled(v))
+            startActivity(new Intent(this, TransportActivity.class));
+        else {
+            String message = ((Node) v.getTag()).getMessage();
+            if (!TextUtils.isEmpty(message))
+                UiUtil.showDialog(this, ((Node) v.getTag()).getMessage(), true);
+        }
     }
 
     public void giftALifeClick(View v) {
@@ -416,15 +490,34 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     public void needsClick(View v) {
-        startActivity(new Intent(this, NeedsActivity.class));
+
+        if (isEnabled(v))
+            startActivity(new Intent(this, NeedsActivity.class));
+        else {
+            String message = ((Node) v.getTag()).getMessage();
+            if (!TextUtils.isEmpty(message))
+                UiUtil.showDialog(this, ((Node) v.getTag()).getMessage(), true);
+        }
     }
 
     public void publicUtilityClick(View v) {
-        startActivity(new Intent(this, PublicUtilityActivity.class));
+        if (isEnabled(v))
+            startActivity(new Intent(this, PublicUtilityActivity.class));
+        else {
+            String message = ((Node) v.getTag()).getMessage();
+            if (!TextUtils.isEmpty(message))
+                UiUtil.showDialog(this, ((Node) v.getTag()).getMessage(), true);
+        }
     }
 
     public void classifiedsClick(View v) {
-        startActivity(new Intent(this, ClassifiedsActivity.class));
+        if (isEnabled(v))
+            startActivity(new Intent(this, ClassifiedsActivity.class));
+        else {
+            String message = ((Node) v.getTag()).getMessage();
+            if (!TextUtils.isEmpty(message))
+                UiUtil.showDialog(this, ((Node) v.getTag()).getMessage(), true);
+        }
     }
 
     /*public void InfoClick(View v)
@@ -473,7 +566,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                     addReferralCode(response.getInstallReferrer());
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Crashlytics.logException(e);
+                    FirebaseCrashlytics.getInstance().recordException(e);
                 }
                 // Connection established
                 break;

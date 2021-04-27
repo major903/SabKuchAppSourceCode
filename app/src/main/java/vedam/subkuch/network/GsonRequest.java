@@ -10,7 +10,7 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.JsonReader;
@@ -206,10 +206,10 @@ public class GsonRequest<T> extends Request<T> {
  Crashlytics.logException(e);
             return Response.error(new ParseError(e));
         }*/ catch (JsonSyntaxException e) {
-            Crashlytics.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             return Response.error(new ParseError(e));
         } catch (Exception e) {
-            Crashlytics.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             return Response.error(new ParseError(e));
         } finally {
 
@@ -219,7 +219,7 @@ public class GsonRequest<T> extends Request<T> {
                 if (isReader != null)
                     isReader.close();
             } catch (IOException e) {
-                Crashlytics.logException(e);
+                FirebaseCrashlytics.getInstance().recordException(e);
                 e.printStackTrace();
             }
         }

@@ -47,7 +47,7 @@ public class PublicUtilityAdapter extends RecyclerView.Adapter<PublicUtilityAdap
         holder.tvName.setText(publicUtility.getName());
 
         UiUtil.setTextView(holder.tvDistance, publicUtility.getDistance());
-        setText(holder.tvDealingIn, "Dealing In :", publicUtility.getDealingIn());
+        setText(holder.tvDealingIn, "Dealing in :", publicUtility.getDealingIn());
         String formattedAddress = AppUtil.getFormattedAddress(publicUtility);
         UiUtil.setTextView(holder.tvAddress, formattedAddress);
         setText(holder.tvPhone, "Ph :", publicUtility.getPhoneNo());

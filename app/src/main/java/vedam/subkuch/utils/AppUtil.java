@@ -21,9 +21,9 @@ import android.webkit.URLUtil;
 
 import androidx.core.content.ContextCompat;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -105,7 +105,7 @@ public class AppUtil {
             packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             appVersion = packageInfo.versionName;
         } catch (NameNotFoundException e) {
-            Crashlytics.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
 
             e.printStackTrace();
         }
@@ -275,7 +275,7 @@ public class AppUtil {
             is.close();
             file = new String(buffer, "UTF-8");
         } catch (IOException ex) {
-            Crashlytics.logException(ex);
+            FirebaseCrashlytics.getInstance().recordException(ex);
             ex.printStackTrace();
             return null;
         }
@@ -299,7 +299,7 @@ public class AppUtil {
             context.startActivity(i);
         } catch (Exception e) {
             UiUtil.showToast(context, context.getString(R.string.err_occurred));
-            Crashlytics.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 

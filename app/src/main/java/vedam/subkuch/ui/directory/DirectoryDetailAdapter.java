@@ -113,8 +113,8 @@ public class DirectoryDetailAdapter extends BaseExpandableListAdapter {
 
             holder.tvName.setText(directoryDetail.getBusinessName());
 
-            UiUtil.setTextView(businessAddress.getDistance(), "Kms away", holder.tvDistance);
-            setText(holder.tvDealingIn, "Dealing In :", businessAddress.getDealingIn());
+            UiUtil.setTextView(businessAddress.getDistance(), "KMs away", holder.tvDistance);
+            setText(holder.tvDealingIn, "Dealing in :", businessAddress.getDealingIn());
             String formattedAddress = AppUtil.getFormattedAddress(businessAddress);
             UiUtil.setTextView(holder.tvAddress, formattedAddress);
             setText(holder.tvPhone, "Ph :", businessAddress.getPhoneNo());
@@ -197,8 +197,8 @@ public class DirectoryDetailAdapter extends BaseExpandableListAdapter {
         Business directoryDetail = (Business) getGroup(listPosition);
         BusinessAddress businessAddress = directoryDetail.getBusinessAddresses()[expandedListPosition + 1];
 
-        UiUtil.setTextView(businessAddress.getDistance(), "Kms away", holder.tvDistance);
-        setText(holder.tvDealingIn, "Dealing In :", businessAddress.getDealingIn());
+        UiUtil.setTextView(holder.tvDistance, businessAddress.getDistance());
+        setText(holder.tvDealingIn, "Dealing in :", businessAddress.getDealingIn());
         String formattedAddress = AppUtil.getFormattedAddress(businessAddress);
         UiUtil.setTextView(holder.tvAddress, formattedAddress);
         setText(holder.tvPhone, "Ph :", businessAddress.getPhoneNo());

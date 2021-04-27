@@ -732,7 +732,7 @@
                     app:left_thumb_color="@color/colorPrimary"
                     app:left_thumb_color_pressed="@color/colorPrimary"
                     app:max_value="5000000"
-                    app:min_value="100000"
+                    app:min_value="0"
                     app:right_thumb_color="@color/colorPrimary"
                     app:right_thumb_color_pressed="@color/colorPrimary"
                     app:steps="1" />
@@ -866,7 +866,7 @@
                     app:left_thumb_color="@color/colorPrimary"
                     app:left_thumb_color_pressed="@color/colorPrimary"
                     app:max_value="200"
-                    app:min_value="10"
+                    app:min_value="0"
                     app:right_thumb_color="@color/colorPrimary"
                     app:right_thumb_color_pressed="@color/colorPrimary"
                     app:steps="1" />
@@ -909,7 +909,7 @@
                     app:gap="1"
                     app:left_thumb_color="@color/colorPrimary"
                     app:left_thumb_color_pressed="@color/colorPrimary"
-                    app:max_value="20000"
+                    app:max_value="2000"
                     app:min_value="0"
                     app:right_thumb_color="@color/colorPrimary"
                     app:right_thumb_color_pressed="@color/colorPrimary"

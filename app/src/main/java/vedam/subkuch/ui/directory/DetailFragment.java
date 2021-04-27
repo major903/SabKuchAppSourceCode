@@ -1,11 +1,7 @@
 package vedam.subkuch.ui.directory;
 
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,6 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.squareup.picasso.Callback;
 
@@ -145,8 +146,8 @@ public class DetailFragment extends BaseFragment {
 
         fragmentDetailBinding.tvName.setText(directoryDetail.getBusinessName());
 
-        UiUtil.setTextView(businessAddress.getDistance(), "Kms away", fragmentDetailBinding.tvDistance);
-        setText(fragmentDetailBinding.tvDealingIn, "Dealing In :", businessAddress.getDealingIn());
+        UiUtil.setTextView(fragmentDetailBinding.tvDistance, businessAddress.getDistance());
+        setText(fragmentDetailBinding.tvDealingIn, "Dealing in :", businessAddress.getDealingIn());
         String formattedAddress = AppUtil.getFormattedAddress(businessAddress);
         UiUtil.setTextView(fragmentDetailBinding.tvAddress, formattedAddress);
         setText(fragmentDetailBinding.tvPhone, "Ph :", businessAddress.getPhoneNo());
@@ -208,8 +209,8 @@ public class DetailFragment extends BaseFragment {
             TextView tvLine2 = view.findViewById(R.id.tvLine2);
 
             UiUtil.setTextView(tvAddress, formattedAddress);
-            UiUtil.setTextView(businessAddress.getDistance(), "Kms away", tvDistance);
-            setText(tvDealingIn, "Dealing In :", businessAddress.getDealingIn());
+            UiUtil.setTextView(tvDistance, businessAddress.getDistance());
+            setText(tvDealingIn, "Dealing in :", businessAddress.getDealingIn());
             setText(tvPhone, "Ph :", businessAddress.getPhoneNo());
             setText(tvMobile, "Mobile :", businessAddress.getMobile1());
             setText(tvEmail, "Email :", businessAddress.getEmail());

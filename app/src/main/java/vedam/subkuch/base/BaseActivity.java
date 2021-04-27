@@ -32,8 +32,8 @@ import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
-import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.common.api.Status;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import vedam.subkuch.R;
@@ -105,7 +105,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ScreenCh
                 else
                     UiUtil.showToast(this, getString(R.string.err_occurred));
             } catch (Exception exception) {
-                Crashlytics.logException(exception);
+                FirebaseCrashlytics.getInstance().recordException(exception);
                 exception.printStackTrace();
                 UiUtil.showToast(this, getString(R.string.err_occurred));
             }
@@ -391,7 +391,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ScreenCh
                     this,
                     REQUEST_CHECK_SETTINGS);
         } catch (IntentSender.SendIntentException e) {
-            Crashlytics.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             // Ignore the error.
         }
     }

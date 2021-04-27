@@ -29,7 +29,7 @@ import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -160,7 +160,7 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
                 else
                     UiUtil.showToast(context, getString(R.string.err_occurred));
             } catch (Exception exception) {
-                Crashlytics.logException(exception);
+                FirebaseCrashlytics.getInstance().recordException(exception);
                 exception.printStackTrace();
                 UiUtil.showToast(context, getString(R.string.err_occurred));
             }
@@ -329,7 +329,7 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
             this.imagePath = file.getAbsolutePath();
             return imgUri;
         } catch (IOException e) {
-            Crashlytics.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             e.printStackTrace();
         }
         return null;
@@ -360,7 +360,7 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
                     noImageAdded();
                 }
             } catch (IOException e) {
-                Crashlytics.logException(e);
+                FirebaseCrashlytics.getInstance().recordException(e);
                 e.printStackTrace();
                 noImageAdded();
             }
@@ -374,7 +374,7 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
                     noImageAdded();
                 }
             } catch (Exception e) {
-                Crashlytics.logException(e);
+                FirebaseCrashlytics.getInstance().recordException(e);
                 e.printStackTrace();
                 noImageAdded();
             }
@@ -398,7 +398,7 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
             out.close();
             in.close();
         } catch (Exception e) {
-            Crashlytics.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             e.printStackTrace();
         }
     }

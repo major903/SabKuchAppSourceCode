@@ -15,6 +15,10 @@ public class Node {
 
     private String Name;
 
+    private int IsEnabled;
+
+    private String Message;
+
     public String getFeatureId() {
         return FeatureId;
     }
@@ -69,5 +73,13 @@ public class Node {
 
     public void setName(String Name) {
         this.Name = Name;
+    }
+
+    public boolean getIsEnabled() {
+        return IsEnabled == 1;
+    }
+
+    public String getMessage() {
+        return Message;
     }
 }
