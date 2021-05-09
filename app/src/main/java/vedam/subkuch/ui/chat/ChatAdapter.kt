@@ -1,58 +1,42 @@
-package vedam.subkuch.ui.chat;
+package vedam.subkuch.ui.chat
 
-import android.content.Context;
-import android.content.res.ColorStateList;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.core.widget.ImageViewCompat;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import vedam.subkuch.R;
-import vedam.subkuch.db.chat.Chat;
-import vedam.subkuch.utils.AppPrefs;
-import vedam.subkuch.utils.DateTimeUtils;
-import vedam.subkuch.utils.UiUtil;
-
+import android.content.Context
+import android.content.res.ColorStateList
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.ListAdapter
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.widget.ImageViewCompat
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import vedam.subkuch.R
+import vedam.subkuch.db.chat.Chat
+import vedam.subkuch.utils.AppPrefs
+import vedam.subkuch.utils.DateTimeUtils
+import vedam.subkuch.utils.UiUtil
+import java.util.*
 
 /**
  * Created by nadeemansari on 01/04/16.
  */
-public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
-
-    private List<Chat> chats = new ArrayList<>();
-    private Context context;
-    String myId = AppPrefs.getPrefsUserId(context);
-
-    ChatAdapter(Context context) {
-        this.context = context;
+class ChatAdapter constructor(private val context: Context) :
+    androidx.recyclerview.widget.ListAdapter<Chat, ChatAdapter.ViewHolder>(ChatDiffCallback()) {
+    //    private var chats: List<Chat> = ArrayList()
+    var myId: String = AppPrefs.getPrefsUserId(context)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val layoutInflater = LayoutInflater.from(context)
+        val view = layoutInflater.inflate(R.layout.fragment_chat_list_item, parent, false)
+        return ViewHolder(view)
     }
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.fragment_chat_list_item, parent, false);
-        return new ViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-        Chat chat = chats.get(position);
-        boolean status = chat.isStatus();
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val (_, _, fromId, _, message, timeStamp, _, status, isRead) = getItem(position)
 
 //        if (status == Constants.CHAT_STATUS_DELIVERED)
 //            holder.ivSent.setImageResource(R.drawable.ic_done_all_black_18dp);
@@ -63,88 +47,80 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 //        } else {
 //            holder.ivSent.setImageResource(R.drawable.ic_done_all_black_18dp);
 //        }
-
         if (status) {
-            holder.ivSent.setImageResource(R.drawable.ic_done_black_18dp);
+            holder.ivSent.setImageResource(R.drawable.ic_done_black_18dp)
             ImageViewCompat.setImageTintList(
-                    holder.ivSent, ColorStateList.valueOf(
-                            ContextCompat.getColor(context, R.color.black)
-                    )
-            );
+                holder.ivSent, ColorStateList.valueOf(
+                    ContextCompat.getColor(context, R.color.black)
+                )
+            )
         } else {
-            holder.ivSent.setImageResource(R.drawable.ic_done_all_black_18dp);
-            if (chat.isRead()) ImageViewCompat.setImageTintList(
-                    holder.ivSent, ColorStateList.valueOf(
-                            ContextCompat.getColor(context, R.color.blue_tick)
-                    ));
-            else ImageViewCompat.setImageTintList(
-                    holder.ivSent, ColorStateList.valueOf(
-                            ContextCompat.getColor(context, R.color.black)
-                    )
-            );
+            holder.ivSent.setImageResource(R.drawable.ic_done_all_black_18dp)
+            if (isRead) ImageViewCompat.setImageTintList(
+                holder.ivSent, ColorStateList.valueOf(
+                    ContextCompat.getColor(context, R.color.blue_tick)
+                )
+            ) else ImageViewCompat.setImageTintList(
+                holder.ivSent, ColorStateList.valueOf(
+                    ContextCompat.getColor(context, R.color.black)
+                )
+            )
         }
-        String fromId = chat.getFromProfileId();
         // else
         // img_sent.setVisibility(View.GONE);
-        if (fromId.equals(myId)) {
-            holder.ivSent.setVisibility(View.VISIBLE);
-            holder.llAlignment.setGravity(Gravity.END);
-            holder.llAlignment.setBackgroundResource(R.drawable.white_absolute);
-            holder.llLayout.setGravity(Gravity.END);
-            holder.llRow.setGravity(Gravity.END);
+        if (fromId == myId) {
+            holder.ivSent.visibility = View.VISIBLE
+            holder.llAlignment.gravity = Gravity.END
+            holder.llAlignment.setBackgroundResource(R.drawable.white_absolute)
+            holder.llLayout.gravity = Gravity.END
+            holder.llRow.gravity = Gravity.END
         } else {
-            holder.ivSent.setVisibility(View.GONE);
-            holder.llAlignment.setGravity(Gravity.START);
-            holder.llAlignment.setBackgroundResource(R.drawable.white_layer);
-            holder.llLayout.setGravity(Gravity.START);
-            holder.llRow.setGravity(Gravity.START);
+            holder.ivSent.visibility = View.GONE
+            holder.llAlignment.gravity = Gravity.START
+            holder.llAlignment.setBackgroundResource(R.drawable.white_layer)
+            holder.llLayout.gravity = Gravity.START
+            holder.llRow.gravity = Gravity.START
         }
-        UiUtil.setTextView(holder.tvMessage, chat.getMessage());
+        UiUtil.setTextView(holder.tvMessage, message)
         try {
-            holder.tvMessageDate.setVisibility(View.VISIBLE);
-            UiUtil.setTextView(holder.tvMessageDate,
-                    DateTimeUtils.getFormattedDate(Long.parseLong(chat.getTimeStamp()), DateTimeUtils.DATE_FORMAT_4));
-        } catch (NumberFormatException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-            holder.tvMessageDate.setVisibility(View.INVISIBLE);
+            holder.tvMessageDate.visibility = View.VISIBLE
+            UiUtil.setTextView(
+                holder.tvMessageDate,
+                DateTimeUtils.getFormattedDate(timeStamp!!.toLong(), DateTimeUtils.DATE_FORMAT_4)
+            )
+        } catch (e: NumberFormatException) {
+            FirebaseCrashlytics.getInstance().recordException(e)
+            holder.tvMessageDate.visibility = View.INVISIBLE
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return chats.size();
+//    override fun getItemCount(): Int {
+//        return chats.size
+//    }
+
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val tvMessage: TextView = itemView.findViewById(R.id.message_text)
+        val tvMessageDate: TextView = itemView.findViewById(R.id.message_text_date)
+        var llRow: LinearLayout = itemView.findViewById(R.id.message_row_layout)
+        var llLayout: LinearLayout = itemView.findViewById(R.id.ll_container)
+        var llAlignment: LinearLayout = itemView.findViewById(R.id.ll_alignment)
+        val ivSent: ImageView = itemView.findViewById(R.id.chat_row_sent)
+
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    fun setChat(chats: List<Chat>) {
+        submitList(chats)
+//        notifyDataSetChanged()
+    }
 
-        private TextView tvMessage;
-        private TextView tvMessageDate;
-        LinearLayout llRow;
-        LinearLayout llLayout;
-        LinearLayout llAlignment;
-        private ImageView ivSent;
+    private class ChatDiffCallback : DiffUtil.ItemCallback<Chat>() {
 
-        ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            llAlignment = itemView.findViewById(R.id.ll_alignment);
-            llLayout = itemView.findViewById(R.id.ll_container);
-            llRow = itemView.findViewById(R.id.message_row_layout);
-            ivSent = itemView.findViewById(R.id.chat_row_sent);
-            tvMessage = itemView.findViewById(R.id.message_text);
-            tvMessageDate = itemView.findViewById(R.id.message_text_date);
+        override fun areItemsTheSame(oldItem: Chat, newItem: Chat): Boolean {
+            return oldItem.docId == newItem.docId
         }
 
-        /*public <E> void bind(final E item, final int position, final OnListViewItemClickListener listener) {
-
-            itemView.setOnClickListener(v -> {
-                if (listener != null)
-                    listener.onItemClick(item, position, itemView, null);
-            });
-        }*/
-    }
-
-    void setChat(List<Chat> chats) {
-        this.chats = chats;
-        notifyDataSetChanged();
+        override fun areContentsTheSame(oldItem: Chat, newItem: Chat): Boolean {
+            return oldItem == newItem
+        }
     }
 }
