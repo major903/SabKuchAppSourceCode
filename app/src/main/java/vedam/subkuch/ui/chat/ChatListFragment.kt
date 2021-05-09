@@ -1,26 +1,22 @@
 package vedam.subkuch.ui.chat
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Response
 import com.google.android.gms.tasks.Tasks
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import vedam.subkuch.R
 import vedam.subkuch.base.BaseFragment
 import vedam.subkuch.databinding.FragmentChatListBinding
+import vedam.subkuch.db.chat.LatestChat
 import vedam.subkuch.helpers.Constants
 import vedam.subkuch.interfaces.OnListViewItemClickListener
 import vedam.subkuch.network.DataFetcher
@@ -30,20 +26,20 @@ import vedam.subkuch.utils.AppPrefs
 import vedam.subkuch.utils.AppUtil
 import vedam.subkuch.utils.ListItemClickAction
 import vedam.subkuch.utils.UiUtil
-import java.util.*
+import vedam.subkuch.R
+
 
 class ChatListFragment : BaseFragment(), OnListViewItemClickListener {
     private var fragmentChatListBinding: FragmentChatListBinding? = null
     private var adapter: ChatListAdapter? = null
-    private val datingProfiles = ArrayList<DatingProfile>()
+    private var datingProfiles: List<DatingProfile>? = null
     private var loading = true
-    private var linearLayoutManager: LinearLayoutManager? = null
-    private var pageNo = 1
-    private val pageSize = 20
+
+    //    private var pageNo = 1
+    private val pageSize = 200
     private var hasMoreProjects = true
     private var isDating = false
-    private val viewModel: ChatViewModel by activityViewModels()
-    private var snapshotListener: ListenerRegistration? = null
+    private val latestChatMap = mutableMapOf<String, LatestChat>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         isDating = arguments?.getBoolean(Constants.EXTRA_IS_DATING) ?: false
@@ -63,40 +59,78 @@ class ChatListFragment : BaseFragment(), OnListViewItemClickListener {
         super.onViewCreated(v, savedInstanceState)
         setTitle(getString(R.string.matches))
         initUI()
+    }
+
+    override fun onResume() {
+        super.onResume()
         getMatchedProfiles()
     }
 
-    private fun initUI() {
-        linearLayoutManager = LinearLayoutManager(context)
-        fragmentChatListBinding!!.rvChatList.layoutManager = linearLayoutManager
-        fragmentChatListBinding!!.rvChatList.setHasFixedSize(true)
-        adapter = ChatListAdapter(context, datingProfiles, this)
-        fragmentChatListBinding!!.rvChatList.adapter = adapter
-        fragmentChatListBinding!!.rvChatList.addOnScrollListener(ProfilesOnScrollListener())
+    private fun getLatestChats() {
 
-        val task1 = Firebase.firestore.collection(Constants.TABLE_MESSAGES)
+        val task1 = Firebase.firestore.collection(Constants.TABLE_LATEST_CHAT)
             .whereEqualTo(Constants.ToProfileId, AppPrefs.getPrefsUserId(context)).get()
 
-        val task2 = Firebase.firestore.collection(Constants.TABLE_MESSAGES)
+        val task2 = Firebase.firestore.collection(Constants.TABLE_LATEST_CHAT)
             .whereEqualTo(Constants.FromProfileId, AppPrefs.getPrefsUserId(context)).get()
-//        val combinedTask = Tasks.whenAllSuccess<>()
 
-//            .addSnapshotListener { value: QuerySnapshot?, error: FirebaseFirestoreException? ->
-//                if (value != null) setCount(
-//                    value.documents.size
-//                )
-//            }
-//        viewModel.chat.observe(viewLifecycleOwner, {
-//            it?.let {
-//                val profile = datingProfiles.firstOrNull { datingProfile ->
-//                    datingProfile.profileId.getIdPair(
-//                        AppPrefs.getPrefsUserId(context)
-//                    ) == it.idPair
-//                }
-//                profile?.latestChat = it
-//                adapter?.notifyDataSetChanged()
-//            }
-//        })
+        Tasks.whenAllSuccess<QuerySnapshot>(task1, task2).addOnSuccessListener {
+            for (snapshot in it)
+                for (doc in snapshot.documents) {
+                    val chat = getLatestChatFromDoc(doc)
+                    latestChatMap[chat.idPair!!] = getLatestChatFromDoc(doc)
+                }
+            filterChatList()
+        }.addOnFailureListener {
+            UiUtil.cancelProgressDialog()
+        }
+    }
+
+    private fun filterChatList() {
+
+        val myId = AppPrefs.getPrefsUserId(context)
+        datingProfiles?.let { list ->
+            for (profile in list) {
+                val idPair = myId.getIdPair(profile.ProfileId!!)
+                val latestChat = latestChatMap[idPair]
+                latestChat?.let { profile.latestChat = it }
+            }
+            val chatList = list.filter { it.latestChat != null }
+                .sortedByDescending { it.latestChat?.timeStamp }
+            if (chatList.isNotEmpty())
+                adapter?.submitList(chatList)
+            else
+                Toast.makeText(
+                    context,
+                    "No Chats. Go to your Matches to start a Chat.",
+                    Toast.LENGTH_LONG
+                ).show()
+            UiUtil.cancelProgressDialog()
+        } ?: kotlin.run {
+            UiUtil.cancelProgressDialog()
+        }
+    }
+
+    private fun getLatestChatFromDoc(doc: DocumentSnapshot): LatestChat {
+
+        val latestChat = LatestChat()
+        latestChat.id = doc.id
+        latestChat.fromProfileId = doc.getString("fromProfileId")
+        latestChat.toProfileId = doc.getString("toProfileId")
+        latestChat.senderName = doc.getString("senderName")
+        latestChat.latestMessage = doc.getString("latestMessage")
+        latestChat.timeStamp =
+            doc.getTimestamp("timeStamp")
+        latestChat.idPair = doc.getString(Constants.idPair)
+
+        return latestChat
+    }
+
+    private fun initUI() {
+        fragmentChatListBinding!!.rvChatList.layoutManager = LinearLayoutManager(context)
+        adapter = ChatListAdapter(context, this)
+        fragmentChatListBinding!!.rvChatList.adapter = adapter
+
     }
 
     private fun String.getIdPair(chatToId: String): String {
@@ -106,97 +140,61 @@ class ChatListFragment : BaseFragment(), OnListViewItemClickListener {
             "${chatToId}_${this}"
     }
 
-    fun getMatchedProfiles() {
+    private fun getMatchedProfiles() {
         UiUtil.showProgressDialog(context, getString(R.string.please_wait))
         if (isDating) DataFetcher.getDatingMatchedChatProfiles(
             context,
             onMatchedProfilesSuccessListener,
             DatingProfileResponse::class.java,
             onErrorListener,
-            pageNo,
+            1,
             pageSize
         ) else DataFetcher.getMatrimonialMatchedChatProfiles(
             context,
             onMatchedProfilesSuccessListener,
             DatingProfileResponse::class.java,
             onErrorListener,
-            pageNo,
+            1,
             pageSize
         )
     }
 
     private fun startChatActivity(datingProfile: DatingProfile) {
         val intent = Intent(context, ChatActivity::class.java)
-        intent.putExtra(Constants.EXTRA_NAME, AppUtil.deNull(datingProfile.firstName))
-        intent.putExtra(Constants.EXTRA_CHAT_TO_ID, datingProfile.profileId)
+        intent.putExtra(Constants.EXTRA_NAME, AppUtil.deNull(datingProfile.FirstName))
+        intent.putExtra(Constants.EXTRA_CHAT_TO_ID, datingProfile.ProfileId)
         intent.putExtra(Constants.EXTRA_IS_DATING, isDating)
         startActivityForResult(intent, Constants.REQUEST_CHAT)
     }
 
     private val onMatchedProfilesSuccessListener =
         Response.Listener { response: DatingProfileResponse? ->
-            UiUtil.cancelProgressDialog()
             if (activity != null) if (response != null && response.returnMessage == Constants.SUCCESS) {
                 if (response.returnData.size > 0) {
-                    hasMoreProjects = response.returnData.size >= pageSize
-                    loading = true
-                    loadValues(response.returnData)
-                } else UiUtil.showToast(context, getString(R.string.no_matches_found))
-            } else UiUtil.showToast(context, getString(R.string.err_occurred))
+//                    hasMoreProjects = response.returnData.size >= pageSize
+//                    loading = true
+                    datingProfiles = response.returnData
+                    getLatestChats()
+                } else {
+                    UiUtil.cancelProgressDialog()
+                    UiUtil.showToast(context, getString(R.string.no_matches_found))
+                }
+            } else {
+                UiUtil.cancelProgressDialog()
+                UiUtil.showToast(context, getString(R.string.err_occurred))
+            }
         }
 
-    private fun loadValues(response: ArrayList<DatingProfile>?) {
-        if (response != null && response.isNotEmpty()) {
-            pageNo++
-            datingProfiles.addAll(response)
-            adapter = ChatListAdapter(context, datingProfiles, this)
-            fragmentChatListBinding!!.rvChatList.adapter = adapter
-        }
-    }
-
-    override fun <E> onItemClick(item: E?, position: Int, view: View?, action: ListItemClickAction?) {
+    override fun <E> onItemClick(
+        item: E?,
+        position: Int,
+        view: View?,
+        action: ListItemClickAction?
+    ) {
         if (item != null) {
             val datingProfile = item as DatingProfile
             startChatActivity(datingProfile)
         }
-    }
-
-    inner class ProfilesOnScrollListener : RecyclerView.OnScrollListener() {
-
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            if (dy > 0) //check for scroll down
-            {
-                val visibleItemCount = linearLayoutManager!!.childCount
-                val totalItemCount = linearLayoutManager!!.itemCount
-                val pastVisibleItems = linearLayoutManager!!.findFirstVisibleItemPosition()
-                if (loading) {
-                    if (visibleItemCount + pastVisibleItems >= totalItemCount) {
-                        loading = false
-                        if (hasMoreProjects) getMatchedProfiles()
-                    }
-                }
-            }
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == Constants.REQUEST_CHAT && resultCode == Activity.RESULT_OK) {
-            refreshData()
-        } else {
-            super.onActivityResult(requestCode, resultCode, data)
-        }
-    }
-
-    private fun refreshData() {
-        pageNo = 1
-        hasMoreProjects = true
-        loading = true
-        datingProfiles.clear()
-        getMatchedProfiles()
-    }
-
-    fun changeData() {
-        adapter!!.notifyDataSetChanged()
     }
 
     companion object {

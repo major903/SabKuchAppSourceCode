@@ -97,9 +97,9 @@ public class ShowProfilesActivity extends BaseActivity
             tvNotificationCount.setText(getString(R.string.max_notification_number));
         }
 
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG_CHATS_FRAGMENT);
-        if (fragment != null && fragment.isAdded())
-            ((ChatListFragment) fragment).changeData();
+//        Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG_CHATS_FRAGMENT);
+//        if (fragment != null && fragment.isAdded())
+//            ((ChatListFragment) fragment).changeData();
 
     }
 

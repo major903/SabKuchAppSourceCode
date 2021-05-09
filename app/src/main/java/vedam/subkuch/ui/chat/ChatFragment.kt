@@ -14,14 +14,12 @@ import vedam.subkuch.utils.LogUtils
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.MetadataChanges
-import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import okhttp3.*
 import vedam.subkuch.databinding.FragmentChatBinding
+import vedam.subkuch.db.chat.LatestChat
 import vedam.subkuch.helpers.Constants
 
 /**
@@ -38,7 +36,6 @@ class ChatFragment : BaseFragment() {
     private var senderName: String? = null
     private var chatToId: String? = null
     private var isConnected = false
-    private var isDating = false
     private val firestore: FirebaseFirestore by lazy { Firebase.firestore }
     private var snapshotListener: ListenerRegistration? = null
     private val viewModel: ChatViewModel by activityViewModels()
@@ -48,7 +45,6 @@ class ChatFragment : BaseFragment() {
         if (arguments != null) {
             chatToId = requireArguments().getString(Constants.EXTRA_CHAT_TO_ID)
             senderName = requireArguments().getString(Constants.EXTRA_NAME)
-            isDating = requireArguments().getBoolean(Constants.EXTRA_IS_DATING)
             setTitle(senderName)
         }
     }
@@ -101,7 +97,7 @@ class ChatFragment : BaseFragment() {
     }
 
     private fun bindCallbacks() {
-        fragmentChatBinding!!.sendMessageButton.setOnClickListener { v: View? ->
+        fragmentChatBinding!!.sendMessageButton.setOnClickListener { _: View? ->
             if (fragmentChatBinding!!.etMessage.text.toString()
                     .trim { it <= ' ' } == ""
             ) Toast.makeText(
@@ -132,15 +128,7 @@ class ChatFragment : BaseFragment() {
                 val list = mutableListOf<Chat>()
                 snapshot.documents.let {
                     for (doc in it) {
-                        val chat = Chat()
-                        chat.docId = doc.id
-                        chat.fromProfileId = doc.getString("fromProfileId")
-                        chat.toProfileId = doc.getString("toProfileId")
-                        chat.senderName = doc.getString("senderName")
-                        chat.message = doc.getString("message")
-                        chat.timeStamp = doc.getString("timeStamp")
-                        chat.isRead = doc.getBoolean(Constants.read) ?: false
-                        chat.isStatus = doc.metadata.hasPendingWrites()
+                        val chat = getChatFromDoc(doc)
                         list.add(chat)
                     }
                 }
@@ -167,15 +155,36 @@ class ChatFragment : BaseFragment() {
         chat.fromProfileId = AppPrefs.getPrefsUserId(context)
         chat.toProfileId = chatToId
         chat.message = message
-        val time = System.currentTimeMillis().toString()
-        chat.timeStamp = time
         chat.senderName = senderName
         chat.idPair = chat.fromProfileId?.getIdPair(chatToId!!)
         firestore.collection(Constants.TABLE_MESSAGES).add(chat).addOnSuccessListener {
 
+            storeLatestMessage()
         }.addOnFailureListener {
 
         }
+    }
+
+    private fun storeLatestMessage() {
+
+
+        firestore.collection(Constants.TABLE_MESSAGES).orderBy(Constants.timeStamp, Query.Direction.DESCENDING).limit(1)
+            .get().addOnSuccessListener {
+                if (it.isEmpty) return@addOnSuccessListener
+
+                val chat = mapLatestChat(it.documents[0])
+                val latestChat = LatestChat(
+                    latestMessage = chat.message,
+                    idPair = chat.idPair,
+                    senderName = chat.senderName,
+                    fromProfileId = chat.fromProfileId,
+                    toProfileId = chat.toProfileId,
+                    timeStamp = chat.timeStamp,
+                    null
+                )
+                firestore.collection(Constants.TABLE_LATEST_CHAT).document(chat.idPair!!)
+                    .set(latestChat)
+            }
     }
 
     private fun String.getIdPair(chatToId: String): String {
@@ -183,6 +192,39 @@ class ChatFragment : BaseFragment() {
             "${this}_$chatToId"
         else
             "${chatToId}_${this}"
+    }
+
+    private fun getChatFromDoc(doc: DocumentSnapshot): Chat {
+
+        val chat = Chat()
+        chat.docId = doc.id
+        chat.fromProfileId = doc.getString("fromProfileId")
+        chat.toProfileId = doc.getString("toProfileId")
+        chat.senderName = doc.getString("senderName")
+        chat.message = doc.getString("message")
+        chat.timeStamp =
+            doc.getTimestamp("timeStamp", DocumentSnapshot.ServerTimestampBehavior.ESTIMATE)
+        chat.isRead = doc.getBoolean(Constants.read) ?: false
+        chat.isStatus = doc.metadata.hasPendingWrites()
+
+        return chat
+    }
+
+    private fun mapLatestChat(doc: DocumentSnapshot): Chat {
+
+        val chat = Chat()
+        chat.docId = doc.id
+        chat.fromProfileId = doc.getString("fromProfileId")
+        chat.toProfileId = doc.getString("toProfileId")
+        chat.senderName = doc.getString("senderName")
+        chat.message = doc.getString("message")
+        chat.timeStamp =
+            doc.getTimestamp("timeStamp", DocumentSnapshot.ServerTimestampBehavior.ESTIMATE)
+        chat.isRead = doc.getBoolean(Constants.read) ?: false
+        chat.isStatus = doc.metadata.hasPendingWrites()
+        chat.idPair = doc.getString(Constants.idPair)
+
+        return chat
     }
 
     override fun onDestroy() {

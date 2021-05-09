@@ -93,8 +93,8 @@ public class ViewProfileFragment extends BaseFragment {
 
     private void initUI() {
 
-        if (datingProfile.getImagesList() != null && datingProfile.getImagesList().length > 0) {
-            String imageLink = datingProfile.getImagesList()[0].getImage();
+        if (datingProfile.getImagesList() != null && datingProfile.getImagesList().size() > 0) {
+            String imageLink = datingProfile.getImagesList().get(0).getImage();
             UiUtil.setImageView(new ImageSetter.ImageBuilder(context)
                     .setImageLink(imageLink)
                     .setPlaceholderResource(R.drawable.placeholder)
@@ -168,7 +168,7 @@ public class ViewProfileFragment extends BaseFragment {
                     LikeDislikeResponse.class, onErrorListener);
     }
 
-    private Response.Listener<LikeDislikeResponse> onLikeDislikeSuccessListener = response -> {
+    private final Response.Listener<LikeDislikeResponse> onLikeDislikeSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
         if (getActivity() != null)
@@ -181,23 +181,22 @@ public class ViewProfileFragment extends BaseFragment {
     };
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.chat, menu);
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.chat2, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_chats:
-                Intent intent = new Intent(context, ChatActivity.class);
-                intent.putExtra(Constants.EXTRA_NAME, AppUtil.deNull(datingProfile.getFirstName()));
-                intent.putExtra(Constants.EXTRA_CHAT_TO_ID, datingProfile.getProfileId());
-                intent.putExtra(Constants.EXTRA_IS_DATING, isDating);
-                startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.action_chats) {
+            Intent intent = new Intent(context, ChatActivity.class);
+            intent.putExtra(Constants.EXTRA_NAME, AppUtil.deNull(datingProfile.getFirstName()));
+            intent.putExtra(Constants.EXTRA_CHAT_TO_ID, datingProfile.getProfileId());
+            intent.putExtra(Constants.EXTRA_IS_DATING, isDating);
+            startActivity(intent);
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 }

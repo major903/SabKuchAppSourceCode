@@ -186,6 +186,7 @@ public class Constants {
     public static final String NOTIFICATION_CHANNEL_NAME = "SABKUCH_NOTIFICATION_CHANNEL";
 
     public final static String TABLE_MESSAGES = "messages";
+    public final static String TABLE_LATEST_CHAT = "latest_chat";
     public final static String FromProfileId = "fromProfileId";
     public final static String ToProfileId = "toProfileId";
     public final static String read = "read";

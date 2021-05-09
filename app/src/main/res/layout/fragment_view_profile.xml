@@ -45,6 +45,7 @@
                     android:src="@drawable/baseline_thumb_down_white_24"
                     app:backgroundTint="@color/red"
                     app:layout_anchor="@+id/cv_image"
+                    app:tint="@color/white"
                     app:layout_anchorGravity="center_horizontal|bottom" />
 
             </androidx.coordinatorlayout.widget.CoordinatorLayout>

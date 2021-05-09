@@ -3,10 +3,6 @@ package vedam.subkuch.db.chat;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import androidx.lifecycle.LiveData;
-
-import java.util.List;
-
 import vedam.subkuch.interfaces.OnInsertUpdateDoneListener;
 import vedam.subkuch.interfaces.RowIdListener;
 
@@ -26,9 +22,9 @@ public class ChatRepository implements RowIdListener {
         chatDao = db.chatDao();
     }
 
-    public LiveData<List<Chat>> getIndividualChat(String fromId, String toId) {
-        return chatDao.getIndividualChat(fromId, toId);
-    }
+//    public LiveData<List<Chat>> getIndividualChat(String fromId, String toId) {
+//        return chatDao.getIndividualChat(fromId, toId);
+//    }
 
 //    public List<Chat> getPendingChat() {
 //        return chatDao.getPendingChat(Constants.CHAT_STATUS_NOT_SENT);
@@ -42,13 +38,13 @@ public class ChatRepository implements RowIdListener {
 //        return chatDao.getChatByUUID(UUID);
 //    }
 
-    public Chat getChatById(long id) {
-        return chatDao.getChatById(id);
-    }
+//    public Chat getChatById(long id) {
+//        return chatDao.getChatById(id);
+//    }
 
-    public Chat getLatestChatMessage(String id) {
-        return chatDao.getLatestChatMessage(id);
-    }
+//    public Chat getLatestChatMessage(String id) {
+//        return chatDao.getLatestChatMessage(id);
+//    }
 
 //    public Integer getTotalUnreadMessagesCount(String id, String chatType) {
 //        return chatDao.getTotalUnreadMessagesCount(id, Constants.CHAT_STATUS_NOT_SENT, Constants.CHAT_STATUS_SENT_BUT_NOT_DELIVERED, chatType);

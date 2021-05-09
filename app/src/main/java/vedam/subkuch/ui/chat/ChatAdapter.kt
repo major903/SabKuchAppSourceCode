@@ -86,7 +86,7 @@ class ChatAdapter constructor(private val context: Context) :
             holder.tvMessageDate.visibility = View.VISIBLE
             UiUtil.setTextView(
                 holder.tvMessageDate,
-                DateTimeUtils.getFormattedDate(timeStamp!!.toLong(), DateTimeUtils.DATE_FORMAT_4)
+                DateTimeUtils.getFormattedDate(timeStamp!!.toDate().time, DateTimeUtils.DATE_FORMAT_4)
             )
         } catch (e: NumberFormatException) {
             FirebaseCrashlytics.getInstance().recordException(e)

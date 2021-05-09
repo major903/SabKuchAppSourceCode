@@ -1,12 +1,13 @@
 package vedam.subkuch.ui.matrimonial;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
@@ -39,9 +40,9 @@ public class ProfileStackAdapter extends RecyclerView.Adapter<ProfileStackAdapte
 
         DatingProfile datingProfile = datingProfiles.get(position);
 
-        if (datingProfile.getImagesList() != null && datingProfile.getImagesList().length > 0)
+        if (datingProfile.getImagesList() != null && datingProfile.getImagesList().size() > 0)
             UiUtil.setImageView(new ImageSetter.ImageBuilder(context)
-                    .setImageLink(datingProfile.getImagesList()[0].getImage())
+                    .setImageLink(datingProfile.getImagesList().get(0).getImage())
                     .setErrorResource(R.drawable.placeholder)
                     .setPlaceholderResource(R.drawable.placeholder)
                     .setTarget(holder.ivProfile)

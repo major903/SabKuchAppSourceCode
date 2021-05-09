@@ -97,7 +97,7 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
             DataFetcher.getMatrimonialProfile(context, onProfileSuccessListener, DatingProfileResponse.class, onErrorListener, pageNo, pageSize);
     }
 
-    private Response.Listener<DatingProfileResponse> onProfileSuccessListener = response -> {
+    private final Response.Listener<DatingProfileResponse> onProfileSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
         if (getActivity() != null)
