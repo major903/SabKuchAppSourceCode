@@ -1,12 +1,12 @@
 package vedam.subkuch.db.chat;
 
-import androidx.lifecycle.LiveData;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import androidx.lifecycle.LiveData;
+
 import java.util.List;
 
-import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.interfaces.OnInsertUpdateDoneListener;
 import vedam.subkuch.interfaces.RowIdListener;
 
@@ -30,17 +30,17 @@ public class ChatRepository implements RowIdListener {
         return chatDao.getIndividualChat(fromId, toId);
     }
 
-    public List<Chat> getPendingChat() {
-        return chatDao.getPendingChat(Constants.CHAT_STATUS_NOT_SENT);
-    }
+//    public List<Chat> getPendingChat() {
+//        return chatDao.getPendingChat(Constants.CHAT_STATUS_NOT_SENT);
+//    }
+//
+//    public LiveData<List<Chat>> getPendingAckChat(String fromId, String toId) {
+//        return chatDao.getPendingAckChat(fromId, toId, Constants.CHAT_STATUS_READ);
+//    }
 
-    public LiveData<List<Chat>> getPendingAckChat(String fromId, String toId) {
-        return chatDao.getPendingAckChat(fromId, toId, Constants.CHAT_STATUS_READ);
-    }
-
-    public Chat getChatByUUID(String UUID) {
-        return chatDao.getChatByUUID(UUID);
-    }
+//    public Chat getChatByUUID(String UUID) {
+//        return chatDao.getChatByUUID(UUID);
+//    }
 
     public Chat getChatById(long id) {
         return chatDao.getChatById(id);
@@ -50,9 +50,9 @@ public class ChatRepository implements RowIdListener {
         return chatDao.getLatestChatMessage(id);
     }
 
-    public Integer getTotalUnreadMessagesCount(String id, String chatType) {
-        return chatDao.getTotalUnreadMessagesCount(id, Constants.CHAT_STATUS_NOT_SENT, Constants.CHAT_STATUS_SENT_BUT_NOT_DELIVERED, chatType);
-    }
+//    public Integer getTotalUnreadMessagesCount(String id, String chatType) {
+//        return chatDao.getTotalUnreadMessagesCount(id, Constants.CHAT_STATUS_NOT_SENT, Constants.CHAT_STATUS_SENT_BUT_NOT_DELIVERED, chatType);
+//    }
 
     public void insert(Chat chat, boolean isOwnMessage) {
         new InsertAsyncTask(chatDao, this, isOwnMessage).execute(chat);

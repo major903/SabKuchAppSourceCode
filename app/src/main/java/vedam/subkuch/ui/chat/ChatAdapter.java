@@ -1,6 +1,7 @@
 package vedam.subkuch.ui.chat;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -19,7 +22,6 @@ import java.util.List;
 
 import vedam.subkuch.R;
 import vedam.subkuch.db.chat.Chat;
-import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.DateTimeUtils;
 import vedam.subkuch.utils.UiUtil;
@@ -32,6 +34,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
     private List<Chat> chats = new ArrayList<>();
     private Context context;
+    String myId = AppPrefs.getPrefsUserId(context);
 
     ChatAdapter(Context context) {
         this.context = context;
@@ -49,19 +52,37 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         Chat chat = chats.get(position);
-        int status = chat.getStatus();
+        boolean status = chat.isStatus();
 
-        String myId = AppPrefs.getPrefsUserId(context);
-        if (status == Constants.CHAT_STATUS_DELIVERED)
-            holder.ivSent.setImageResource(R.drawable.ic_done_all_black_18dp);
-        else if (status == Constants.CHAT_STATUS_SENT_BUT_NOT_DELIVERED) {
+//        if (status == Constants.CHAT_STATUS_DELIVERED)
+//            holder.ivSent.setImageResource(R.drawable.ic_done_all_black_18dp);
+//        else if (status == Constants.CHAT_STATUS_SENT_BUT_NOT_DELIVERED) {
+//            holder.ivSent.setImageResource(R.drawable.ic_done_black_18dp);
+//        } else if (status == Constants.CHAT_STATUS_NOT_SENT) {
+//            holder.ivSent.setImageResource(R.drawable.baseline_schedule_black_18);
+//        } else {
+//            holder.ivSent.setImageResource(R.drawable.ic_done_all_black_18dp);
+//        }
+
+        if (status) {
             holder.ivSent.setImageResource(R.drawable.ic_done_black_18dp);
-        } else if (status == Constants.CHAT_STATUS_NOT_SENT) {
-            holder.ivSent.setImageResource(R.drawable.baseline_schedule_black_18);
+            ImageViewCompat.setImageTintList(
+                    holder.ivSent, ColorStateList.valueOf(
+                            ContextCompat.getColor(context, R.color.black)
+                    )
+            );
         } else {
             holder.ivSent.setImageResource(R.drawable.ic_done_all_black_18dp);
+            if (chat.isRead()) ImageViewCompat.setImageTintList(
+                    holder.ivSent, ColorStateList.valueOf(
+                            ContextCompat.getColor(context, R.color.blue_tick)
+                    ));
+            else ImageViewCompat.setImageTintList(
+                    holder.ivSent, ColorStateList.valueOf(
+                            ContextCompat.getColor(context, R.color.black)
+                    )
+            );
         }
-
         String fromId = chat.getFromProfileId();
         // else
         // img_sent.setVisibility(View.GONE);

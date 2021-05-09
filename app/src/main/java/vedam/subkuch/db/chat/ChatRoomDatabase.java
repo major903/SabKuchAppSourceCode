@@ -1,11 +1,12 @@
 package vedam.subkuch.db.chat;
 
+import android.content.Context;
+
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import android.content.Context;
 
-@Database(entities = {Chat.class}, version = 2)
+@Database(entities = {Chat.class}, version = 6)
 public abstract class ChatRoomDatabase extends RoomDatabase {
 
     public abstract ChatDao chatDao();

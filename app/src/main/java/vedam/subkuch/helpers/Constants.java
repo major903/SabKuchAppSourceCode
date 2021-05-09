@@ -184,4 +184,11 @@ public class Constants {
 
     public static final String NOTIFICATION_CHANNEL_ID = "GENERIC_NOTIFICATION_03";
     public static final String NOTIFICATION_CHANNEL_NAME = "SABKUCH_NOTIFICATION_CHANNEL";
+
+    public final static String TABLE_MESSAGES = "messages";
+    public final static String FromProfileId = "fromProfileId";
+    public final static String ToProfileId = "toProfileId";
+    public final static String read = "read";
+    public final static String idPair = "idPair";
+    public final static String timeStamp = "timeStamp";
 }

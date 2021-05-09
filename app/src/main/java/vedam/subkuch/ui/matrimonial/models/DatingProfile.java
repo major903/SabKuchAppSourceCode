@@ -3,6 +3,7 @@ package vedam.subkuch.ui.matrimonial.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import vedam.subkuch.db.chat.Chat;
 import vedam.subkuch.network.models.UserDetail.ImageObject;
 
 public class DatingProfile implements Parcelable {
@@ -128,6 +129,7 @@ public class DatingProfile implements Parcelable {
     private String SmokingType;
     private String Distance;
     private ImageObject[] ImagesList;
+    private Chat latestChat;
 
     protected DatingProfile(Parcel in) {
         ProfileId = in.readString();
@@ -763,5 +765,13 @@ public class DatingProfile implements Parcelable {
 
     public String getDistance() {
         return Distance;
+    }
+
+    public Chat getLatestChat() {
+        return latestChat;
+    }
+
+    public void setLatestChat(Chat latestChat) {
+        this.latestChat = latestChat;
     }
 }

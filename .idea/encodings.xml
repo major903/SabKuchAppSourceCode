@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Encoding" addBOMForNewFiles="with NO BOM">
+  <component name="Encoding">
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/MyFirebaseMessagingService.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/RegistrationIntentService.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/network/WebApi.java" charset="UTF-8" />
@@ -63,8 +63,8 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/network/models/searchProfile/SearchProfile.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/network/models/updateMatrimonial/MatrimonialRequest.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/network/models/updateMatrimonial/UpdateMatrimonialResponse.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/chat/ChatAdapter.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/chat/ChatFragment.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/chat/ChatAdapter.kt" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/chat/ChatFragment.kt" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/cropImage/CropImageActivity.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/matrimonial/editProfile/EditProfileFragment.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/matrimonial/editProfile/adapter/ImagesAdapter.java" charset="UTF-8" />
