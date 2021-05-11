@@ -7,11 +7,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ViewStub
+        <include
             android:id="@+id/vs_no_profiles"
+            layout="@layout/layout_no_profiles"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout="@layout/layout_no_profiles" />
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nsv_container"

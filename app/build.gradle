@@ -88,7 +88,6 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.3.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     annotationProcessor 'androidx.room:room-compiler:2.3.0'
-    implementation 'com.github.pwittchen:reactivenetwork-rx2:3.0.2'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.android.installreferrer:installreferrer:2.2'
     // Unit testing dependencies

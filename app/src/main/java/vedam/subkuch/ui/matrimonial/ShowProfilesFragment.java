@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateInterpolator;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -51,7 +49,6 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
     private int profileNo = 0;
     private boolean hasMoreProfiles = true;
     ArrayList<DatingProfile> datingProfiles = new ArrayList<>();
-    private View vEmptyInflated;
     private CardStackLayoutManager manager;
     private boolean isManual, isDating;
 
@@ -178,28 +175,30 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
     private void hideViewStub() {
 
         fragmentShowProfilesBinding.nsvContainer.setVisibility(View.VISIBLE);
-        if (vEmptyInflated != null)
-            vEmptyInflated.setVisibility(View.GONE);
+        fragmentShowProfilesBinding.vsNoProfiles.container.setVisibility(View.GONE);
+//        if (vEmptyInflated != null)
+//            vEmptyInflated.setVisibility(View.GONE);
     }
 
     private void showViewStub() {
 
-        if (vEmptyInflated == null && fragmentShowProfilesBinding.vsNoProfiles.getViewStub() != null)
-            vEmptyInflated = fragmentShowProfilesBinding.vsNoProfiles.getViewStub().inflate();
+//        if (vEmptyInflated == null && fragmentShowProfilesBinding.vsNoProfiles.getViewStub() != null)
+//            vEmptyInflated = fragmentShowProfilesBinding.vsNoProfiles.getViewStub().inflate();
 
         setViewStubChildViews();
-        vEmptyInflated.setVisibility(View.VISIBLE);
+//        vEmptyInflated.setVisibility(View.VISIBLE);
+        fragmentShowProfilesBinding.vsNoProfiles.container.setVisibility(View.VISIBLE);
         fragmentShowProfilesBinding.nsvContainer.setVisibility(View.GONE);
     }
 
     private void setViewStubChildViews() {
 
-        Button btEditProfile = vEmptyInflated.findViewById(R.id.bt_edit_profile);
+//        Button btEditProfile = vEmptyInflated.findViewById(R.id.bt_edit_profile);
         if (!isDating) {
-            TextView tvReasons = vEmptyInflated.findViewById(R.id.tv_reasons);
-            tvReasons.setText(R.string.no_profiles_reason_matrimonial);
+//            TextView tvReasons = vEmptyInflated.findViewById(R.id.tv_reasons);
+            fragmentShowProfilesBinding.vsNoProfiles.tvReasons.setText(R.string.no_profiles_reason_matrimonial);
         }
-        btEditProfile.setOnClickListener(v -> addFragmentWithAnimation(R.id.content_frame,
+        fragmentShowProfilesBinding.vsNoProfiles.btEditProfile.setOnClickListener(v -> addFragmentWithAnimation(R.id.content_frame,
                 EditProfileFragment.newInstance(isDating), Constants.TAG_PROFILE_FRAGMENT, true));
     }
 
@@ -233,7 +232,7 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
                     LikeDislikeResponse.class, onErrorListener);
         else
             DataFetcher.setMatrimonyLikeDislike(context, new Gson().toJson(likeDislike), onLikeDislikeSuccessListener,
-                LikeDislikeResponse.class, onErrorListener);
+                    LikeDislikeResponse.class, onErrorListener);
     }
 
     private void swipe(int reactionType) {
