@@ -183,13 +183,17 @@ object DataFetcher {
         errorListener: Response.ErrorListener?,
         categoryId: String?,
         subCategoryId: String?,
-        search: String?
+        search: String?,
+        pageIndex: Int,
+        pageSize: Int
     ) {
         val url = String.format(
-            "%s/Directory/GetBusiness?SubCategoryId=%s&search=%s",
+            "%s/Directory/GetBusiness?SubCategoryId=%s&PageIndex=%d&PageSize=%d",
             NetworkConstants.END_POINT2,
             subCategoryId,
-            AppUtil.deNull(search)
+            pageIndex,
+            pageSize,
+            AppUtil.deNull(search),
         )
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }

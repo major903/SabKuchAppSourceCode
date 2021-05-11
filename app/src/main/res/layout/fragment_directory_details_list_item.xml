@@ -1,150 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/myshape_6"
-    android:orientation="vertical"
-    android:padding="@dimen/margin_8dp">
+<layout>
 
-    <TextView
-        android:id="@+id/tvName"
-        style="@style/TextViewBlackHeading"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        tools:text="@string/err" />
-
-    <TextView
-        android:id="@+id/tvDealingIn"
+    <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/cv_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:text="@string/err" />
+        android:layout_marginVertical="@dimen/margin_4dp"
+        app:cardCornerRadius="@dimen/margin_4dp">
 
-    <LinearLayout
-        android:id="@+id/ll_ratings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <RatingBar
-            android:id="@+id/rb_rating"
-            style="@style/RatingBarSmall"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/margin_8dp"
-            android:rating="3"
-            android:theme="@style/RatingBarSmall" />
+            android:orientation="vertical"
+            android:padding="@dimen/margin_12dp">
 
-        <TextView
-            android:id="@+id/tv_reviews"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="12sp"
-            tools:text="@string/err" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tvName"
+                style="@style/TextViewBlackHeading"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                tools:text="@string/err" />
 
-    <include layout="@layout/layout_direction" />
+            <TextView
+                android:id="@+id/tvDealingIn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                tools:text="@string/err" />
 
-    <TextView
-        android:id="@+id/tvDistance"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:text="@string/err" />
+            <LinearLayout
+                android:id="@+id/ll_ratings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/tvPhone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autoLink="phone"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:text="@string/err" />
+                <RatingBar
+                    android:id="@+id/rb_rating"
+                    style="@style/RatingBarSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:rating="3"
+                    android:theme="@style/RatingBarSmall" />
 
-    <TextView
-        android:id="@+id/tvMobile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autoLink="phone"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:text="@string/err" />
+                <TextView
+                    android:id="@+id/tv_reviews"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textSize="12sp"
+                    tools:text="@string/err" />
+            </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autoLink="email"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:text="@string/err" />
+            <include
+                android:id="@+id/direction_container"
+                layout="@layout/layout_direction" />
 
-    <TextView
-        android:id="@+id/tvWebsite"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autoLink="web"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:text="@string/err" />
+            <TextView
+                android:id="@+id/tvDistance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                tools:text="@string/err" />
 
-    <TextView
-        android:id="@+id/tvContactPerson"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:text="@string/err" />
+            <TextView
+                android:id="@+id/tvPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="phone"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                tools:text="@string/err" />
 
-    <TextView
-        android:id="@+id/tvLine1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:text="@string/err" />
+            <TextView
+                android:id="@+id/tvMobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="phone"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                tools:text="@string/err" />
 
-    <TextView
-        android:id="@+id/tvLine2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:text="@string/err" />
+            <TextView
+                android:id="@+id/tvEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="email"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                tools:text="@string/err" />
 
-    <RelativeLayout
-        android:id="@+id/rl_branches_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tvWebsite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                tools:text="@string/err" />
 
-        <TextView
-            style="@style/TextViewBlackHeading2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/margin_8dp"
-            android:layout_toLeftOf="@+id/iv_triangle"
-            android:ellipsize="end"
-            android:text="@string/branches"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/tvContactPerson"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                tools:text="@string/err" />
 
-        <ImageView
-            android:id="@+id/iv_triangle"
-            android:layout_width="@dimen/margin_24dp"
-            android:layout_height="@dimen/margin_24dp"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/baseline_expand_more_black_24dp" />
+            <TextView
+                android:id="@+id/tvLine1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                tools:text="@string/err" />
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/tvLine2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                tools:text="@string/err" />
 
-</LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

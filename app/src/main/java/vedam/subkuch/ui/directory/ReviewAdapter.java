@@ -1,7 +1,5 @@
 package vedam.subkuch.ui.directory;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,15 +7,20 @@ import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
 import vedam.subkuch.R;
 import vedam.subkuch.ui.directory.models.Review;
 import vedam.subkuch.utils.AppUtil;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewHolder> {
 
-    private Review[] reviews;
+    private final ArrayList<Review> reviews;
 
-    ReviewAdapter(Review[] reviews) {
+    ReviewAdapter(ArrayList<Review> reviews) {
         this.reviews = reviews;
     }
 
@@ -32,7 +35,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewHold
     @Override
     public void onBindViewHolder(@NonNull ReviewHolder holder, int position) {
 
-        Review review = reviews[position];
+        Review review = reviews.get(position);
 
         holder.tvName.setText(review.getUserName());
         holder.tvReviewComments.setText(review.getBusinessReview());
@@ -47,14 +50,14 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewHold
 
     @Override
     public int getItemCount() {
-        return reviews.length;
+        return reviews.size();
     }
 
     class ReviewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tvName;
-        private TextView tvReviewComments;
-        private RatingBar rbRating;
+        private final TextView tvName;
+        private final TextView tvReviewComments;
+        private final RatingBar rbRating;
 
         ReviewHolder(View itemView) {
             super(itemView);

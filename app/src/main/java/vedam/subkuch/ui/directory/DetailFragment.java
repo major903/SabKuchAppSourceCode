@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.squareup.picasso.Callback;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 import vedam.subkuch.R;
@@ -73,7 +74,7 @@ public class DetailFragment extends BaseFragment {
 
     private void initUI() {
 
-        if (directoryDetail.getReviews().length > 0) {
+        if (directoryDetail.getReviews() != null && directoryDetail.getReviews().size() > 0) {
             fragmentDetailBinding.rvReviews.setLayoutManager(new LinearLayoutManager(context));
             fragmentDetailBinding.rvReviews.setNestedScrollingEnabled(false);
             fragmentDetailBinding.rvReviews.setAdapter(new ReviewAdapter(directoryDetail.getReviews()));
@@ -85,11 +86,11 @@ public class DetailFragment extends BaseFragment {
 
     private void bindData() {
 
-        if (!TextUtils.isEmpty(directoryDetail.getBusinessImage())) {
+        if (!TextUtils.isEmpty(directoryDetail.getImage())) {
             fragmentDetailBinding.ivEvent.setVisibility(View.VISIBLE);
 
             UiUtil.setImageView(new ImageSetter.ImageBuilder(context)
-                    .setImageLink(directoryDetail.getBusinessImage())
+                    .setImageLink(directoryDetail.getImage())
                     .setDefaults()
                     .setTarget(fragmentDetailBinding.ivEvent)
                     .setCallback(new Callback() {
@@ -113,11 +114,11 @@ public class DetailFragment extends BaseFragment {
 
         if (!TextUtils.isEmpty(directoryDetail.getAvegrageOfRating()) && AppUtil.isNumeric(directoryDetail.getAvegrageOfRating())) {
             fragmentDetailBinding.rbRating.setVisibility(View.VISIBLE);
-            fragmentDetailBinding.rbRating.setRating(Float.valueOf(directoryDetail.getAvegrageOfRating()));
+            fragmentDetailBinding.rbRating.setRating(Float.parseFloat(directoryDetail.getAvegrageOfRating()));
         } else
             fragmentDetailBinding.rbRating.setVisibility(View.GONE);
 
-        int noOfReviews = directoryDetail.getReviews().length;
+        int noOfReviews = directoryDetail.getReviews().size();
         if (noOfReviews != 0)
             UiUtil.setTextView(fragmentDetailBinding.tvReviews, String.format(Locale.US, "(%d %s)", noOfReviews,
                     AppUtil.getSingularOrPluralString("Review", noOfReviews)));
@@ -125,7 +126,7 @@ public class DetailFragment extends BaseFragment {
             fragmentDetailBinding.tvReviews.setVisibility(View.GONE);
 
         setTopContainer();
-        if (directoryDetail.getBusinessAddresses().length > 1)
+        if (directoryDetail.getAddresses() != null && directoryDetail.getAddresses().size() > 1)
             setAddressContainer();
         else
             fragmentDetailBinding.llBranches.setVisibility(View.GONE);
@@ -137,10 +138,10 @@ public class DetailFragment extends BaseFragment {
 
     private void setTopContainer() {
 
-        if (directoryDetail.getBusinessAddresses().length < 1)
+        if (directoryDetail.getAddresses().size() < 1)
             return;
 
-        BusinessAddress businessAddress = directoryDetail.getBusinessAddresses()[0];
+        BusinessAddress businessAddress = directoryDetail.getAddresses().get(0);
         businessAddress.setCity(directoryDetail.getCity());
         setText(fragmentDetailBinding.tvWebsite, "Website :", directoryDetail.getWebsite());
 
@@ -157,7 +158,7 @@ public class DetailFragment extends BaseFragment {
         UiUtil.setTextView(fragmentDetailBinding.tvLine1, businessAddress.getInfoLine1());
         UiUtil.setTextView(fragmentDetailBinding.tvLine2, businessAddress.getInfoLine2());
 
-        int noOfReviews = directoryDetail.getReviews().length;
+        int noOfReviews = directoryDetail.getReviews().size();
         if (noOfReviews != 0) {
             fragmentDetailBinding.llRatings.setVisibility(View.VISIBLE);
             UiUtil.setTextView(fragmentDetailBinding.tvReviews, String.format(Locale.US, "(%d %s)", noOfReviews,
@@ -182,10 +183,10 @@ public class DetailFragment extends BaseFragment {
 
     private void setAddressContainer() {
 
-        BusinessAddress[] businessAddresses = directoryDetail.getBusinessAddresses();
+        ArrayList<BusinessAddress> businessAddresses = directoryDetail.getAddresses();
 
-        for (int i = 1; i < businessAddresses.length; i++) {
-            BusinessAddress businessAddress = businessAddresses[i];
+        for (int i = 1; i < businessAddresses.size(); i++) {
+            BusinessAddress businessAddress = businessAddresses.get(i);
             businessAddress.setCity(directoryDetail.getCity());
             String formattedAddress = AppUtil.getFormattedAddress(businessAddress);
             View view = getLayoutInflater().inflate(R.layout.fragment_directory_details_child_list_item_2, fragmentDetailBinding.llContainer, false);
@@ -253,13 +254,11 @@ public class DetailFragment extends BaseFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()) {
-            case R.id.action_add_review:
-                startActivity(new Intent(getActivity(), AddReviewActivity.class)
-                        .putExtra(Constants.EXTRA_BUSINESS_ID, directoryDetail.getBusinessID()));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.action_add_review) {
+            startActivity(new Intent(getActivity(), AddReviewActivity.class)
+                    .putExtra(Constants.EXTRA_BUSINESS_ID, directoryDetail.getBusinessID()));
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 }

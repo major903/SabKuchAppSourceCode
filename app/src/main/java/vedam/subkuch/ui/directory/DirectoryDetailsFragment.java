@@ -9,11 +9,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Response;
 
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseFragment;
+import vedam.subkuch.databinding.FragmentDirectoryDetailsBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.interfaces.OnListViewItemClickListener;
 import vedam.subkuch.network.DataFetcher;
@@ -36,7 +39,14 @@ public class DirectoryDetailsFragment extends BaseFragment implements OnListView
 
     private String categoryId;
     private String subCategoryId;
-    private ExpandableListView expandableListView;
+    private DirectoryDetailsAdapter adapter;
+    private FragmentDirectoryDetailsBinding binding;
+    private LinearLayoutManager linearLayoutManager;
+    private int pageNo = 1;
+    private final int pageSize = 15;
+    private boolean hasMoreProjects = true;
+    private boolean loading = true;
+    private final ArrayList<Business> businessList = new ArrayList<>();
 
     public DirectoryDetailsFragment() {
         // Required empty public constructor
@@ -63,12 +73,17 @@ public class DirectoryDetailsFragment extends BaseFragment implements OnListView
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_directory_details, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_directory_details, container, false);
+        return binding.getRoot();
     }
 
     public void onViewCreated(@NonNull View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
-        expandableListView = v.findViewById(R.id.expandableListView);
+        linearLayoutManager = new LinearLayoutManager(context);
+        binding.rvDirectory.setLayoutManager(linearLayoutManager);
+        adapter = new DirectoryDetailsAdapter(this);
+        binding.rvDirectory.setAdapter(adapter);
+        binding.rvDirectory.addOnScrollListener(new DirectoryOnScrollListener());
         getDirectoryDetails();
     }
 
@@ -76,24 +91,31 @@ public class DirectoryDetailsFragment extends BaseFragment implements OnListView
     private void getDirectoryDetails() {
 
         UiUtil.showProgressDialog(context, getString(R.string.please_wait));
-        DataFetcher.getDirectoryDetails(context, onDirectoryDetailSuccessListener, DirectoryDetailResponse.class, onErrorListener, categoryId, subCategoryId, null);
+        DataFetcher.getDirectoryDetails(context, onDirectoryDetailSuccessListener,
+                DirectoryDetailResponse.class, onErrorListener, categoryId, subCategoryId,
+                null, pageNo, pageSize);
     }
 
-    private Response.Listener<DirectoryDetailResponse> onDirectoryDetailSuccessListener = response -> {
+    private final Response.Listener<DirectoryDetailResponse> onDirectoryDetailSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
         if (getActivity() != null)
             if (response != null && response.getStatus().equals(Constants.TRUE)) {
-            loadValues(response.getBusinessesResult().getBusinesses());
-        } else
-            UiUtil.showToast(context, getString(R.string.no_data));
+                ArrayList<Business> businesses = response.getBusinessesResult().getBusinesses();
+                hasMoreProjects = businesses.size() >= pageSize;
+                loading = true;
+                loadValues(businesses);
+            } else
+                UiUtil.showToast(context, getString(R.string.no_data));
     };
 
     private void loadValues(ArrayList<Business> response) {
 
-        DirectoryDetailAdapter directoryDetailAdapter = new DirectoryDetailAdapter(context, response, this);
-        expandableListView.setAdapter(directoryDetailAdapter);
-//        expandableListView.setOnGroupClickListener(this);
+        if (response != null && !response.isEmpty()) {
+            pageNo++;
+            businessList.addAll(response);
+            adapter.submitList(businessList, () -> adapter.notifyDataSetChanged());
+        }
     }
 
     @Override
@@ -127,6 +149,39 @@ public class DirectoryDetailsFragment extends BaseFragment implements OnListView
             Business directoryDetail = (Business) item;
             addFragmentWithAnimation(R.id.content_frame, DetailFragment.newInstance(directoryDetail),
                     null, true);
+        }
+    }
+
+    public class DirectoryOnScrollListener extends RecyclerView.OnScrollListener {
+
+        @Override
+        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            /*final Picasso picasso = Picasso.get();
+
+            if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                picasso.resumeTag(context);
+            } else {
+                picasso.pauseTag(context);
+            }*/
+        }
+
+        @Override
+        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+            if (dy > 0) //check for scroll down
+            {
+                int visibleItemCount = linearLayoutManager.getChildCount();
+                int totalItemCount = linearLayoutManager.getItemCount();
+                int pastVisibleItems = linearLayoutManager.findFirstVisibleItemPosition();
+
+                if (loading) {
+                    if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                        loading = false;
+                        if (hasMoreProjects) getDirectoryDetails();
+
+                    }
+                }
+            }
         }
     }
 }
