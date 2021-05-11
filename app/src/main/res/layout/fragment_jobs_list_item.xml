@@ -1,67 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
+    android:id="@+id/cv_search"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/myshape_6"
-    android:orientation="vertical"
-    android:padding="@dimen/margin_8dp">
+    android:layout_marginVertical="@dimen/margin_4dp"
+    app:cardCornerRadius="@dimen/margin_4dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:padding="@dimen/margin_16dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_organisation"
+                style="@style/TextViewBlackHeading"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/margin_8dp"
+                android:layout_toLeftOf="@+id/ib_share"
+                tools:text="@string/err" />
+
+            <ImageButton
+                android:id="@+id/ib_share"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignTop="@+id/tv_organisation"
+                android:layout_alignBottom="@+id/tv_organisation"
+                android:layout_alignParentRight="true"
+                android:background="@color/transparent"
+                android:tint="@color/black"
+                app:srcCompat="@drawable/ic_baseline_share_16" />
+        </RelativeLayout>
 
         <TextView
-            android:id="@+id/tv_organisation"
-            style="@style/TextViewBlackHeading"
-            android:layout_width="fill_parent"
+            android:id="@+id/tv_deals"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/margin_8dp"
-            android:layout_toLeftOf="@+id/ib_share"
             tools:text="@string/err" />
 
-        <ImageButton
-            android:id="@+id/ib_share"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignTop="@+id/tv_organisation"
-            android:layout_alignBottom="@+id/tv_organisation"
-            android:layout_alignParentRight="true"
-            android:background="@color/transparent"
-            android:tint="@color/black"
-            app:srcCompat="@drawable/ic_baseline_share_16" />
-    </RelativeLayout>
+        <include layout="@layout/layout_direction" />
 
-    <TextView
-        android:id="@+id/tv_deals"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="@string/err" />
+        <TextView
+            android:id="@+id/tvDistance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            tools:text="@string/err" />
 
-    <include layout="@layout/layout_direction" />
+        <TextView
+            android:id="@+id/tv_position"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
+            tools:text="@string/err" />
 
-    <TextView
-        android:id="@+id/tvDistance"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        tools:text="@string/err" />
+        <TextView
+            android:id="@+id/tv_contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8dp"
+            tools:text="@string/err" />
 
-    <TextView
-        android:id="@+id/tv_position"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_16dp"
-        tools:text="@string/err" />
-
-    <TextView
-        android:id="@+id/tv_contact"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_8dp"
-        tools:text="@string/err" />
-
-</LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

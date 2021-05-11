@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import vedam.subkuch.R;
 import vedam.subkuch.network.models.classifieds.Classified;
 import vedam.subkuch.utils.AppUtil;
+import vedam.subkuch.utils.DateTimeUtils;
 import vedam.subkuch.utils.ImageSetter;
 import vedam.subkuch.utils.UiUtil;
 
@@ -45,7 +46,7 @@ public class ClassifiedDetailsAdapter extends RecyclerView.Adapter<ClassifiedDet
 
         Classified classified = classifieds.get(position);
 
-//        UiUtil.setTextView(holder.tvUserName, getNameAndDate(classified));
+        UiUtil.setTextView(holder.tvUserName, getNameAndDate(classified));
         UiUtil.setTextView(holder.tvTitle, classified.getTitle());
         UiUtil.setTextView(holder.tvAbout, classified.getAbout());
         UiUtil.setTextView(holder.tvDistance, classified.getFormattedDistance());
@@ -96,9 +97,9 @@ public class ClassifiedDetailsAdapter extends RecyclerView.Adapter<ClassifiedDet
         StringBuilder sb = new StringBuilder();
         if (!TextUtils.isEmpty(classified.getFirstName()))
             sb.append(classified.getFirstName());
-//        if (!TextUtils.isEmpty(classified.getUpdatedAt()))
-//            sb.append(" ").append(DateTimeUtils.getFormattedDate(classified.getUpdatedAt(),
-//                    DateTimeUtils.DATE_TIME_FORMAT_1, DateTimeUtils.DATE_FORMAT_5));
+        if (!TextUtils.isEmpty(classified.getUpdatedAt()))
+            sb.append(" ").append(DateTimeUtils.getFormattedDate(classified.getUpdatedAt(),
+                    DateTimeUtils.DATE_TIME_FORMAT_1, DateTimeUtils.DATE_FORMAT_5));
         return sb.toString().trim();
     }
 
@@ -118,7 +119,7 @@ public class ClassifiedDetailsAdapter extends RecyclerView.Adapter<ClassifiedDet
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-//        private TextView tvUserName;
+        private TextView tvUserName;
         private TextView tvTitle;
         private TextView tvAbout;
         private TextView tvAddress;
@@ -133,7 +134,7 @@ public class ClassifiedDetailsAdapter extends RecyclerView.Adapter<ClassifiedDet
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_title);
-//            tvUserName = itemView.findViewById(R.id.tv_user_name);
+            tvUserName = itemView.findViewById(R.id.tv_user_name);
             tvAbout = itemView.findViewById(R.id.tv_about);
             tvAddress = itemView.findViewById(R.id.tv_address);
             tvDistance = itemView.findViewById(R.id.tv_distance);

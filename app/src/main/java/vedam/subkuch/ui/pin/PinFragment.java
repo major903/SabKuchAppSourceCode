@@ -36,10 +36,11 @@ import vedam.subkuch.utils.UiUtil;
  */
 public class PinFragment extends BaseFragment {
 
-    private FragmentPinBinding fragmentPinBinding;
+    private FragmentPinBinding binding;
     private int code;
     private String previousPin;
     private boolean isDating;
+
     public PinFragment() {
         // Required empty public constructor
     }
@@ -65,8 +66,8 @@ public class PinFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        fragmentPinBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_pin, container, false);
-        return fragmentPinBinding.getRoot();
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_pin, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -81,15 +82,18 @@ public class PinFragment extends BaseFragment {
 
         switch (code) {
             case Constants.SET_PIN_CODE:
-                fragmentPinBinding.tvTitle.setText(getString(R.string.set_pin));
+                binding.tvMessage.setVisibility(View.VISIBLE);
+                binding.tvTitle.setText(getString(R.string.set_pin));
                 break;
             case Constants.RE_ENTER_PIN_CODE:
-                fragmentPinBinding.tvTitle.setText(getString(R.string.re_enter_pin));
+                binding.tvMessage.setVisibility(View.VISIBLE);
+                binding.tvTitle.setText(getString(R.string.re_enter_pin));
                 break;
             case Constants.ENTER_PIN_CODE:
-                fragmentPinBinding.tvTitle.setText(getString(R.string.enter_pin));
-                fragmentPinBinding.tvWarning.setVisibility(View.GONE);
-                fragmentPinBinding.tvWarning2.setVisibility(View.GONE);
+                binding.tvMessage.setVisibility(View.GONE);
+                binding.tvTitle.setText(getString(R.string.enter_pin));
+                binding.tvWarning.setVisibility(View.GONE);
+                binding.tvWarning2.setVisibility(View.GONE);
                 break;
 
         }
@@ -97,12 +101,12 @@ public class PinFragment extends BaseFragment {
 
     private void bindCallbacks() {
 
-        fragmentPinBinding.etPin1.addTextChangedListener(generalTextWatcher);
-        fragmentPinBinding.etPin2.addTextChangedListener(generalTextWatcher);
-        fragmentPinBinding.etPin3.addTextChangedListener(generalTextWatcher);
-        fragmentPinBinding.etPin4.addTextChangedListener(generalTextWatcher);
+        binding.etPin1.addTextChangedListener(generalTextWatcher);
+        binding.etPin2.addTextChangedListener(generalTextWatcher);
+        binding.etPin3.addTextChangedListener(generalTextWatcher);
+        binding.etPin4.addTextChangedListener(generalTextWatcher);
 
-        fragmentPinBinding.btSubmit.setOnClickListener(v -> submit());
+        binding.btSubmit.setOnClickListener(v -> submit());
     }
 
     private void submit() {
@@ -159,8 +163,8 @@ public class PinFragment extends BaseFragment {
 
     private String getPin() {
 
-        return fragmentPinBinding.etPin1.getText().toString() + fragmentPinBinding.etPin2.getText().toString() +
-                fragmentPinBinding.etPin3.getText().toString() + fragmentPinBinding.etPin4.getText().toString();
+        return binding.etPin1.getText().toString() + binding.etPin2.getText().toString() +
+                binding.etPin3.getText().toString() + binding.etPin4.getText().toString();
     }
 
     private boolean checkPin() {
@@ -195,8 +199,8 @@ public class PinFragment extends BaseFragment {
 
     private boolean validateError() {
 
-        return !TextUtils.isEmpty(fragmentPinBinding.etPin1.getText()) && !TextUtils.isEmpty(fragmentPinBinding.etPin2.getText())
-                && !TextUtils.isEmpty(fragmentPinBinding.etPin3.getText()) && !TextUtils.isEmpty(fragmentPinBinding.etPin4.getText());
+        return !TextUtils.isEmpty(binding.etPin1.getText()) && !TextUtils.isEmpty(binding.etPin2.getText())
+                && !TextUtils.isEmpty(binding.etPin3.getText()) && !TextUtils.isEmpty(binding.etPin4.getText());
     }
 
     private TextWatcher generalTextWatcher = new TextWatcher() {
@@ -214,17 +218,17 @@ public class PinFragment extends BaseFragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (fragmentPinBinding.etPin1.getText().hashCode() == s.hashCode()) {
-                setEditText(s, null, fragmentPinBinding.etPin2);
-            } else if (fragmentPinBinding.etPin2.getText().hashCode() == s.hashCode()) {
-                setEditText(s, fragmentPinBinding.etPin1, fragmentPinBinding.etPin3);
-            } else if (fragmentPinBinding.etPin3.getText().hashCode() == s.hashCode()) {
-                setEditText(s, fragmentPinBinding.etPin2, fragmentPinBinding.etPin4);
-            } else if (fragmentPinBinding.etPin4.getText().hashCode() == s.hashCode()) {
-                setEditText(s, fragmentPinBinding.etPin3, null);
+            if (binding.etPin1.getText().hashCode() == s.hashCode()) {
+                setEditText(s, null, binding.etPin2);
+            } else if (binding.etPin2.getText().hashCode() == s.hashCode()) {
+                setEditText(s, binding.etPin1, binding.etPin3);
+            } else if (binding.etPin3.getText().hashCode() == s.hashCode()) {
+                setEditText(s, binding.etPin2, binding.etPin4);
+            } else if (binding.etPin4.getText().hashCode() == s.hashCode()) {
+                setEditText(s, binding.etPin3, null);
                 if (!TextUtils.isEmpty(s)) {
-                    fragmentPinBinding.etPin4.clearFocus();
-                    UiUtil.hideKeyBoard(context, fragmentPinBinding.etPin4);
+                    binding.etPin4.clearFocus();
+                    UiUtil.hideKeyBoard(context, binding.etPin4);
                 }
             }
         }

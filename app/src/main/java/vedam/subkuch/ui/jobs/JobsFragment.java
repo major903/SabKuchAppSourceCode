@@ -1,11 +1,7 @@
 package vedam.subkuch.ui.jobs;
 
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -17,21 +13,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.Response;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseFragment;
 import vedam.subkuch.databinding.FragmentJobsBinding;
 import vedam.subkuch.helpers.Constants;
+import vedam.subkuch.interfaces.OnListViewItemClickListener;
 import vedam.subkuch.network.DataFetcher;
+import vedam.subkuch.network.models.ShareResponse;
 import vedam.subkuch.ui.jobs.models.Job;
 import vedam.subkuch.ui.jobs.models.JobCategory;
 import vedam.subkuch.ui.jobs.models.JobResponse;
+import vedam.subkuch.ui.jobs.models.Post;
+import vedam.subkuch.utils.ListItemClickAction;
+import vedam.subkuch.utils.ShareUtils;
 import vedam.subkuch.utils.UiUtil;
 
-public class JobsFragment extends BaseFragment {
+public class JobsFragment extends BaseFragment implements OnListViewItemClickListener {
 
     private String categoryId;
     private FragmentJobsBinding fragmentJobsBinding;
@@ -132,7 +139,7 @@ public class JobsFragment extends BaseFragment {
 
         linearLayoutManager = new LinearLayoutManager(context);
         fragmentJobsBinding.rvJobs.setLayoutManager(linearLayoutManager);
-        adapter = new JobsAdapter(context, jobsList);
+        adapter = new JobsAdapter(context, jobsList, this);
         fragmentJobsBinding.rvJobs.setHasFixedSize(true);
         fragmentJobsBinding.rvJobs.setAdapter(adapter);
         fragmentJobsBinding.rvJobs.addOnScrollListener(new JobsOnScrollListener());
@@ -205,6 +212,60 @@ public class JobsFragment extends BaseFragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public <E> void onItemClick(E item, int position, View view, ListItemClickAction action) {
+
+        if (item instanceof Job)
+            getShareMessage((Job) item);
+    }
+
+    private void getShareMessage(Job job) {
+        UiUtil.showProgressDialog(context, R.string.loading);
+        DataFetcher.getShareContent(context, onShareSuccessListener(job), ShareResponse.class, onErrorListener);
+
+    }
+
+    private Response.Listener<ShareResponse> onShareSuccessListener(Job job) {
+
+        return response -> {
+            if (response != null && response.getReturnMessage().equals(Constants.SUCCESS) && response.getReturnData() != null) {
+
+                ShareUtils.shareMessage(context, String.format("Sharing this job ad with you. If you want to find jobs near your home install Sabkuch App from the link given below. \n\n" +
+                                "https://play.google.com/store/apps/details?id=vedam.subkuch&referrer=%s\n\n%s", getCode(response.getReturnData()),
+                        JobsFragment.this.getShareJobPost(job)), null);
+                UiUtil.cancelProgressDialog();
+
+            } else {
+                UiUtil.cancelProgressDialog();
+                UiUtil.showToast(context, JobsFragment.this.getString(R.string.err_occurred));
+            }
+        };
+    }
+
+    private String getCode(String returnData) {
+        return returnData.split("referrer=")[1];
+    }
+
+
+    private CharSequence getShareJobPost(Job job) {
+
+        if (job == null || job.getPosts() == null || job.getPosts().isEmpty())
+            return null;
+
+        StringBuilder sbPost = new StringBuilder();
+
+        if (job.getPosts().size() == 1)
+            sbPost.append(job.getPosts().get(0).getJobTitle());
+        else
+            for (int i = 0; i < job.getPosts().size(); i++) {
+                Post post = job.getPosts().get(i);
+                sbPost.append(String.format(Locale.US, "%d) %s ", i + 1, post.getJobTitle()));
+            }
+
+        return String.format(Locale.US, "%s dealing in %s is looking for %s\n%s", job.getOrganisationName(),
+                job.getDealingIn(), sbPost.toString().trim(), job.getHowToContact());
     }
 
     public class JobsOnScrollListener extends RecyclerView.OnScrollListener {

@@ -16,25 +16,26 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import vedam.subkuch.R;
+import vedam.subkuch.interfaces.OnListViewItemClickListener;
 import vedam.subkuch.ui.jobs.models.Job;
 import vedam.subkuch.ui.jobs.models.Post;
 import vedam.subkuch.uicomponent.CustomTypefaceSpan;
 import vedam.subkuch.utils.AppUtil;
-import vedam.subkuch.utils.ShareUtils;
 import vedam.subkuch.utils.UiUtil;
 
 public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
 
     private ArrayList<Job> jobs;
     private Context context;
+    private OnListViewItemClickListener listener;
 
 
-    JobsAdapter(Context context, ArrayList<Job> jobs) {
+    JobsAdapter(Context context, ArrayList<Job> jobs, OnListViewItemClickListener listener) {
         this.jobs = jobs;
         this.context = context;
+        this.listener = listener;
     }
 
     @NonNull
@@ -71,8 +72,8 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
             holder.ibDirection.setVisibility(View.GONE);
 
         holder.ibShare.setOnClickListener(view -> {
-            ShareUtils.shareMessage(context, String.format("Sharing this job ad with you. If you want to find jobs near your home install Sabkuch App from the link given below. \n\n" +
-                    "https://play.google.com/store/apps/details?id=vedam.subkuch&referrer={0}\n\n%s", getShareJobPost(job)), null);
+            if (listener != null)
+                listener.onItemClick(job, position, null, null);
         });
     }
 
@@ -102,25 +103,6 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
                 fullString.append("\n\n");
         }
         return fullString;
-    }
-
-    private CharSequence getShareJobPost(Job job) {
-
-        if (job == null || job.getPosts() == null || job.getPosts().isEmpty())
-            return null;
-
-        StringBuilder sbPost = new StringBuilder();
-
-        if (job.getPosts().size() == 1)
-            sbPost.append(job.getPosts().get(0).getJobTitle());
-        else
-            for (int i = 0; i < job.getPosts().size(); i++) {
-                Post post = job.getPosts().get(i);
-                sbPost.append(String.format(Locale.US, "%d) %s ", i + 1, post.getJobTitle()));
-            }
-
-        return String.format(Locale.US, "%s dealing in %s is looking for %s\n%s", job.getOrganisationName(),
-                job.getDealingIn(), sbPost.toString().trim(), job.getHowToContact());
     }
 
     @Override

@@ -15,7 +15,7 @@
     <string name="retry">Retry</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="given_name">Given Name</string>
+    <string name="given_name">First Name</string>
     <string name="surname">Surname</string>
     <string name="mobile_number">Mobile Number</string>
     <string name="email_id">Email Id</string>
@@ -369,4 +369,5 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="title_activity_dating_profile">DatingProfileActivity</string>
+    <string name="pin_message">Your Dating / Matrimonial profile does not exist. Set up a pin and go to edit profile section to create your Dating / Matrimonial profile.</string>
 </resources>

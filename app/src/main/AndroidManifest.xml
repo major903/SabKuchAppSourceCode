@@ -28,6 +28,11 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup" >
         <activity
+            android:name=".ui.movies.DatingProfileActivity"
+            android:label="@string/title_activity_dating_profile"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
             android:name=".ui.matrimonial.DatingProfileActivity"
             android:label="@string/title_activity_dating_profile"
             android:theme="@style/AppTheme.NoActionBar" >
