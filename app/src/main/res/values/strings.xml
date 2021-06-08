@@ -196,8 +196,8 @@
     <string name="please_enter_pin">Please enter PIN</string>
     <string name="incorrect_pin">Incorrect Pin</string>
     <string name="pin_mismatch">Pin mismatch</string>
-    <string name="no_profiles_reason_dating">Reason 1 : You have not enabled Dating. Go to profile\nReason 2 : No more profiles to show</string>
-    <string name="no_profiles_reason_matrimonial">Reason 1 : You have not enabled Matrimonial. Go to profile\nReason 2 : No more profiles to show</string>
+    <string name="no_profiles_reason_dating">Reasons\n1. You have not created your profile for dating. Please click on Profile under Menu.\n\n2. Free account allows only 10 matches. Pay Rs. 1000 for unlimited matches for lifetime. Click here to pay.\n\n3. No more profiles to show.</string>
+    <string name="no_profiles_reason_matrimonial">Reasons\n1. You have not created your profile for matrimonial. Please click on Profile under Menu.\n\n2. Free account allows only 10 matches. Pay Rs. 1000 for unlimited matches for lifetime. Click here to pay.\n\n3. No more profiles to show.</string>
     <string name="liked">Liked</string>
     <string name="disliked">Disliked</string>
 

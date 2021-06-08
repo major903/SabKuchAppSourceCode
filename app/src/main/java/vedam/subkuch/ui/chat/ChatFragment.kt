@@ -35,7 +35,6 @@ class ChatFragment : BaseFragment() {
     var chatAdapter: ChatAdapter? = null
     private var senderName: String? = null
     private var chatToId: String? = null
-    private var isConnected = false
     private val firestore: FirebaseFirestore by lazy { Firebase.firestore }
     private var snapshotListener: ListenerRegistration? = null
     private val viewModel: ChatViewModel by activityViewModels()
@@ -104,14 +103,9 @@ class ChatFragment : BaseFragment() {
                 context, "Empty message!",
                 Toast.LENGTH_SHORT
             ).show() else {
-                if (!isConnected) Toast.makeText(
-                    context, "No Internet connection.",
-                    Toast.LENGTH_SHORT
-                ).show() else {
-                    val message = fragmentChatBinding!!.etMessage.text.toString().trim { it <= ' ' }
-                    storeMessage(message)
-                    fragmentChatBinding!!.etMessage.setText("")
-                }
+                val message = fragmentChatBinding!!.etMessage.text.toString().trim { it <= ' ' }
+                storeMessage(message)
+                fragmentChatBinding!!.etMessage.setText("")
             }
         }
     }
@@ -141,15 +135,6 @@ class ChatFragment : BaseFragment() {
 //            .observe(this, { chats: List<Chat?>? -> chatAdapter!!.setChat(chats) })
     }
 
-    fun setIsConnected(isConnected: Boolean) {
-        LogUtils.LOGD(TAG, isConnected.toString())
-        this.isConnected = isConnected
-        if (isConnected) {
-            fragmentChatBinding!!.flInternetConnection.visibility = View.GONE
-//            connectWebSocket()
-        } else fragmentChatBinding!!.flInternetConnection.visibility = View.VISIBLE
-    }
-
     private fun storeMessage(message: String) {
         val chat = Chat()
         chat.fromProfileId = AppPrefs.getPrefsUserId(context)
@@ -168,7 +153,8 @@ class ChatFragment : BaseFragment() {
     private fun storeLatestMessage() {
 
 
-        firestore.collection(Constants.TABLE_MESSAGES).orderBy(Constants.timeStamp, Query.Direction.DESCENDING).limit(1)
+        firestore.collection(Constants.TABLE_MESSAGES)
+            .orderBy(Constants.timeStamp, Query.Direction.DESCENDING).limit(1)
             .get().addOnSuccessListener {
                 if (it.isEmpty) return@addOnSuccessListener
 

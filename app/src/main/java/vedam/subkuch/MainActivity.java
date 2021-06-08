@@ -10,7 +10,7 @@ import vedam.subkuch.ui.home.HomeActivity;
 import vedam.subkuch.ui.profile.RegisterUserActivity;
 import vedam.subkuch.utils.AppPrefs;
 
-public class MainActivity extends AppCompatActivity {
+public class  MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

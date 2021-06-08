@@ -46,11 +46,11 @@ import vedam.subkuch.ui.events.EventActivity;
 import vedam.subkuch.ui.inbox.InboxActivity;
 import vedam.subkuch.ui.jobs.JobCategoryActivity;
 import vedam.subkuch.ui.jobs.models.AddResponse;
+import vedam.subkuch.ui.matrimonial.ShowProfilesActivity;
 import vedam.subkuch.ui.movies.MoviesActivity;
 import vedam.subkuch.ui.needs.NeedsActivity;
 import vedam.subkuch.ui.offers.OffersActivity;
 import vedam.subkuch.ui.phonebook.PhoneBookActivity;
-import vedam.subkuch.ui.pin.PinActivity;
 import vedam.subkuch.ui.profile.EditProfileActivity;
 import vedam.subkuch.ui.public_utility.PublicUtilityActivity;
 import vedam.subkuch.ui.stafftrack.StaffTrackActivity;
@@ -413,7 +413,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     public void datingClick(View v) {
         if (isEnabled(v))
-            startActivity(new Intent(this, PinActivity.class).putExtra(Constants.EXTRA_IS_DATING, true));
+            startActivity(new Intent(this, ShowProfilesActivity.class).putExtra(Constants.EXTRA_IS_DATING, true));
+//            startActivity(new Intent(this, PinActivity.class).putExtra(Constants.EXTRA_IS_DATING, true));
         else {
             String message = ((Node) v.getTag()).getMessage();
             if (!TextUtils.isEmpty(message))
@@ -423,7 +424,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     public void matrimonialClick(View v) {
         if (isEnabled(v))
-            startActivity(new Intent(this, PinActivity.class).putExtra(Constants.EXTRA_IS_DATING, false));
+            startActivity(new Intent(this, ShowProfilesActivity.class).putExtra(Constants.EXTRA_IS_DATING, false));
+//            startActivity(new Intent(this, PinActivity.class).putExtra(Constants.EXTRA_IS_DATING, false));
         else {
             String message = ((Node) v.getTag()).getMessage();
             if (!TextUtils.isEmpty(message))

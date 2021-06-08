@@ -147,7 +147,7 @@ public class DetailFragment extends BaseFragment {
 
         fragmentDetailBinding.tvName.setText(directoryDetail.getBusinessName());
 
-        UiUtil.setTextView(fragmentDetailBinding.tvDistance, businessAddress.getDistance());
+        UiUtil.setTextView(businessAddress.getDistance(), "KMs away", fragmentDetailBinding.tvDistance);
         setText(fragmentDetailBinding.tvDealingIn, "Dealing in :", businessAddress.getDealingIn());
         String formattedAddress = AppUtil.getFormattedAddress(businessAddress);
         UiUtil.setTextView(fragmentDetailBinding.tvAddress, formattedAddress);

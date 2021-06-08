@@ -1,7 +1,13 @@
 package vedam.subkuch.ui.matrimonial;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -198,8 +204,37 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
 //            TextView tvReasons = vEmptyInflated.findViewById(R.id.tv_reasons);
             fragmentShowProfilesBinding.vsNoProfiles.tvReasons.setText(R.string.no_profiles_reason_matrimonial);
         }
+        setClickableSpan();
         fragmentShowProfilesBinding.vsNoProfiles.btEditProfile.setOnClickListener(v -> addFragmentWithAnimation(R.id.content_frame,
                 EditProfileFragment.newInstance(isDating), Constants.TAG_PROFILE_FRAGMENT, true));
+    }
+
+    private void setClickableSpan() {
+        String txt = getString(R.string.no_profiles_reason_dating);
+        if (!isDating)
+            txt = getString(R.string.no_profiles_reason_matrimonial);
+
+        SpannableString ss = new SpannableString(txt);
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(View textView) {
+                AppUtil.openUrl(context, Constants.PAYMENT_LINK);
+            }
+
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setUnderlineText(true);
+            }
+        };
+        if (isDating)
+            ss.setSpan(clickableSpan, 183, 193, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        else
+            ss.setSpan(clickableSpan, 188, 198, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        fragmentShowProfilesBinding.vsNoProfiles.tvReasons.setText(ss);
+        fragmentShowProfilesBinding.vsNoProfiles.tvReasons.setMovementMethod(LinkMovementMethod.getInstance());
+        fragmentShowProfilesBinding.vsNoProfiles.tvReasons.setHighlightColor(Color.TRANSPARENT);
     }
 
     private void bindCallbacks() {

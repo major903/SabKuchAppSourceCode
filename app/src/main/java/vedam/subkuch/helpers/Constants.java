@@ -192,4 +192,6 @@ public class Constants {
     public final static String read = "read";
     public final static String idPair = "idPair";
     public final static String timeStamp = "timeStamp";
+
+    public final static String PAYMENT_LINK = "https://vedam-it.com/payment.html";
 }
