@@ -1,18 +1,13 @@
 package vedam.subkuch.ui.shopping
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Callback
-import vedam.subkuch.databinding.FragmentDirectoryDetailsListItemBinding
 import vedam.subkuch.databinding.ShoppingSubcategoryListItemBinding
 import vedam.subkuch.interfaces.OnListViewItemClickListener
 import vedam.subkuch.network.models.shopping.ShoppingSubCategory
-import vedam.subkuch.ui.directory.DirectoryDetailsAdapter
-import vedam.subkuch.ui.directory.models.Business
 import vedam.subkuch.utils.ImageSetter
 import vedam.subkuch.utils.ListItemClickAction
 import vedam.subkuch.utils.UiUtil
@@ -44,7 +39,7 @@ class SubCatAdapter constructor(private val listener: OnListViewItemClickListene
                     .setDefaults()
                     .setTarget(binding.iv)
                     .build())
-            binding.tvName.text = subCat?.Name
+            UiUtil.setTextView(binding.tvName, subCat?.Name)
             binding.root.setOnClickListener {
                 listener?.onItemClick(
                         subCat,

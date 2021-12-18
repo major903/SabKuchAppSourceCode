@@ -130,6 +130,7 @@ class ShoppingFragment : BaseFragment(), OnListViewItemClickListener {
     }
 
     override fun <E> onItemClick(item: E, position: Int, view: View?, action: ListItemClickAction?) {
-
+        if (item is ShoppingSubCategory)
+            addFragmentWithAnimation(R.id.content_frame, ProductsFragment.newInstance(item.ShoppingSubcatid, item.Name), null, true)
     }
 }

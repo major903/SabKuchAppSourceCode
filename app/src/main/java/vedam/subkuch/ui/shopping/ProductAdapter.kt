@@ -39,9 +39,10 @@ class ProductAdapter constructor(private val listener: OnListViewItemClickListen
                     .setDefaults()
                     .setTarget(binding.ivProduct)
                     .build())
-            binding.tvName.text = "${product?.ItemName ?: ""}\n${product?.ItemCode ?: ""}"
-            binding.tvDescription.text = product?.ItemDescriptionShort
-            binding.tvPrice.text = product?.BrandName
+            UiUtil.setTextView(binding.tvName, "${product?.ItemName ?: ""}\n${product?.ItemCode ?: ""}")
+            UiUtil.setTextView(binding.tvDescription, product?.ItemDescriptionShort)
+            UiUtil.setTextView(binding.tvPrice, product?.BrandName)
+
             binding.root.setOnClickListener {
                 listener?.onItemClick(
                         product,
