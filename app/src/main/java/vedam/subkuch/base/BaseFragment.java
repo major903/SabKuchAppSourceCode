@@ -289,4 +289,5 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
         if (getGlobalFragmentInteractionListener() != null)
             getGlobalFragmentInteractionListener().requestLocation(false);
     }
+
 }

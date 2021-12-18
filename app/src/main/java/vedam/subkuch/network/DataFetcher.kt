@@ -164,6 +164,71 @@ object DataFetcher {
     }
 
     @JvmStatic
+    fun <T> getShoppingSubCategories(
+            context: Context?,
+            updateSuccessListener: Response.Listener<T>?,
+            repClass: Type?,
+            errorListener: Response.ErrorListener?,
+    ) {
+        val url = String.format(
+                "%s/api/Shopping/GetShoppingSubcategories",
+                NetworkConstants.END_POINT2
+        )
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+    }
+
+    @JvmStatic
+    fun <T> getProducts(
+            context: Context?,
+            updateSuccessListener: Response.Listener<T>?,
+            repClass: Type?,
+            errorListener: Response.ErrorListener?,
+            subCategoryId: String?,
+    ) {
+        val url = String.format(
+                "%s/api/Shopping/GetProducts?subcategoryId=%s",
+                NetworkConstants.END_POINT2,
+                subCategoryId,
+        )
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+    }
+
+    @JvmStatic
+    fun <T> getHomeProducts(
+            context: Context?,
+            updateSuccessListener: Response.Listener<T>?,
+            repClass: Type?,
+            errorListener: Response.ErrorListener?,
+            pageIndex: Int,
+            pageSize: Int
+    ) {
+        val url = String.format(
+                "%s/api/Shopping/GetHomeProducts?PageIndex=%d&PageSize=%d",
+                NetworkConstants.END_POINT2,
+                pageIndex,
+                pageSize
+        )
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+    }
+
+    @JvmStatic
+    fun <T> getShoppingProductDetails(
+            context: Context?,
+            updateSuccessListener: Response.Listener<T>?,
+            repClass: Type?,
+            errorListener: Response.ErrorListener?,
+            shoppingId: String,
+    ) {
+        val url = String.format(
+                "%s/api/Shopping/GetProductDetails?shoppingId=%s",
+                NetworkConstants.END_POINT2,
+                shoppingId
+
+        )
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+    }
+
+    @JvmStatic
     fun <T> getUtilitySubCategories(
         context: Context?,
         updateSuccessListener: Response.Listener<T>?,

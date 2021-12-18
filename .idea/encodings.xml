@@ -78,6 +78,7 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/ui/matrimonial/preference/view/PerferenceFragmentView.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/utils/FilesFunctions.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/utils/FrequentFunctions.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/utils/ItemOffsetDecoration.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/vedam/subkuch/utils/Validations.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_done_all_black_18dp.png" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_done_black_18dp.png" charset="UTF-8" />

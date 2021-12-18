@@ -53,6 +53,7 @@ import vedam.subkuch.ui.offers.OffersActivity;
 import vedam.subkuch.ui.phonebook.PhoneBookActivity;
 import vedam.subkuch.ui.profile.EditProfileActivity;
 import vedam.subkuch.ui.public_utility.PublicUtilityActivity;
+import vedam.subkuch.ui.shopping.ShoppingActivity;
 import vedam.subkuch.ui.stafftrack.StaffTrackActivity;
 import vedam.subkuch.ui.transport.TransportActivity;
 import vedam.subkuch.ui.vehicle.VehicleActivity;
@@ -377,8 +378,10 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     public void specialOfferClick(View v) {
 
-        if (isEnabled(v))
-            startActivity(new Intent(this, OffersActivity.class));
+        if (isEnabled(v)) {
+//            startActivity(new Intent(this, OffersActivity.class));
+            startActivity(new Intent(this, ShoppingActivity.class));
+        }
         else {
             String message = ((Node) v.getTag()).getMessage();
             if (!TextUtils.isEmpty(message))
