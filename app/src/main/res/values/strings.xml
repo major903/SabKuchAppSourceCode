@@ -337,7 +337,7 @@
     <string name="enter_work_details">Enter work details</string>
     <string name="public_utility">Public Utility</string>
     <string name="add_public_utility">Add Public Utility</string>
-    <string name="shopping">Shopping</string>
+    <string name="shopping">Window Shopping</string>
     <string name="classifieds">Classifieds</string>
     <string name="contact">Contact</string>
     <string name="rate">Rate</string>
@@ -374,4 +374,5 @@
     <string name="pin_message">Your Dating / Matrimonial profile does not exist. Set up a pin and go to edit profile section to create your Dating / Matrimonial profile.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="visit_directory_to_get_vendor_address">Visit Directory to get Vendor Address</string>
 </resources>

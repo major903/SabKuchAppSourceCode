@@ -2,18 +2,18 @@ package vedam.subkuch.network.models;
 
 public class SubCategory {
 
-    private String SubCategoryId;
+    private String SubCategoryCityId;
 
     private String Description;
 
     private String SubCategoryName;
 
     public String getSubCategoryId() {
-        return SubCategoryId;
+        return SubCategoryCityId;
     }
 
-    public void setSubCategoryId(String SubCategoryId) {
-        this.SubCategoryId = SubCategoryId;
+    public void setSubCategoryId(String SubCategoryCityId) {
+        this.SubCategoryCityId = SubCategoryCityId;
     }
 
     public String getDescription() {

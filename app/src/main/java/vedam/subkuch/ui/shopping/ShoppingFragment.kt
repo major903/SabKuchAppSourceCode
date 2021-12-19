@@ -1,5 +1,7 @@
 package vedam.subkuch.ui.shopping
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -114,8 +116,10 @@ class ShoppingFragment : BaseFragment(), OnListViewItemClickListener {
     inner class ShoppingOnScrollListener : RecyclerView.OnScrollListener() {
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
             if (dy > 0) //check for scroll down
             {
+//                binding?.rvSubcategories?.hide()
                 val visibleItemCount: Int = layoutManager!!.childCount
                 val totalItemCount: Int = layoutManager!!.itemCount
                 val pastVisibleItems: Int = layoutManager!!.findFirstVisibleItemPosition()
@@ -125,7 +129,11 @@ class ShoppingFragment : BaseFragment(), OnListViewItemClickListener {
                         if (hasMoreProjects) getProducts()
                     }
                 }
+                return
             }
+//            if (dy < 0) {
+//                binding?.rvSubcategories?.show()
+//            }
         }
     }
 
@@ -133,4 +141,39 @@ class ShoppingFragment : BaseFragment(), OnListViewItemClickListener {
         if (item is ShoppingSubCategory)
             addFragmentWithAnimation(R.id.content_frame, ProductsFragment.newInstance(item.ShoppingSubcatid, item.Name), null, true)
     }
+}
+
+fun View.fadeOut() {
+    val duration = resources.getInteger(android.R.integer.config_shortAnimTime)
+    animate().alpha(0f).setDuration(duration.toLong())
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    visibility = View.GONE
+                    alpha = 1f
+                }
+            })
+}
+
+fun View.fadeIn() {
+    val duration = resources.getInteger(android.R.integer.config_shortAnimTime)
+    alpha = 0f
+    visibility = View.VISIBLE
+    animate().alpha(1f).setDuration(duration.toLong())
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+
+                }
+            })
+}
+
+fun View.hide() {
+    this.visibility = View.GONE
+}
+
+fun View.invisible() {
+    this.visibility = View.INVISIBLE
+}
+
+fun View.show() {
+    this.visibility = View.VISIBLE
 }

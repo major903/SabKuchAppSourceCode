@@ -8,44 +8,68 @@
         android:layout_height="match_parent"
         android:background="@color/white">
 
-        <TextView
-            android:id="@+id/tv_heading"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_heading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_16dp"
-            android:text="Some Text"
-            android:textColor="@color/black"
-            android:textStyle="bold"
+            android:layout_marginHorizontal="@dimen/margin_8dp"
+            android:layout_marginBottom="@dimen/margin_4dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/margin_4dp"
+            app:cardElevation="@dimen/margin_2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_subcategories"
+            <TextView
+                android:id="@+id/tv_heading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_8dp"
+                android:text="@string/visit_directory_to_get_vendor_address"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_subcategories"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
-            android:clipToPadding="false"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/margin_8dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginHorizontal="@dimen/margin_16dp"
+            android:layout_marginBottom="@dimen/margin_8dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/margin_4dp"
+            app:cardElevation="@dimen/margin_2dp"
+            app:layout_constraintBottom_toTopOf="@id/rv_products"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_heading"
-            tools:itemCount="10"
-            tools:listitem="@layout/shopping_subcategory_list_item" />
+            app:layout_constraintTop_toBottomOf="@id/cv_heading">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_subcategories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_8dp"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="10"
+                tools:listitem="@layout/shopping_subcategory_list_item" />
+        </androidx.cardview.widget.CardView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_products"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:clipToPadding="false"
-            android:padding="@dimen/margin_8dp"
+            android:paddingVertical="@dimen/margin_8dp"
+            android:paddingHorizontal="@dimen/margin_16dp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_subcategories"
+            app:layout_constraintTop_toBottomOf="@id/cv_subcategories"
             app:spanCount="2"
             tools:itemCount="6"
             tools:listitem="@layout/product_list_item" />

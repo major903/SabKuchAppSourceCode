@@ -19,6 +19,9 @@ data class Product(
         @SerializedName("CityId") var CityId: Int? = null,
         @SerializedName("Isactive") var Isactive: Boolean? = null,
         @SerializedName("CreatedBy") var CreatedBy: String? = null,
-        @SerializedName("CreatedOn") var CreatedOn: String? = null
+        @SerializedName("CreatedOn") var CreatedOn: String? = null,
+        @SerializedName("Price") var Price: String? = null,
+        @SerializedName("VendorName") var VendorName: String? = null,
+        @SerializedName("Distance") var Distance: String? = null
 
 )

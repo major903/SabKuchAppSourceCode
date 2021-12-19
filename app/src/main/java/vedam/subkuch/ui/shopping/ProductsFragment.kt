@@ -18,6 +18,7 @@ import vedam.subkuch.network.models.shopping.Product
 import vedam.subkuch.utils.ItemOffsetDecoration
 import vedam.subkuch.utils.ListItemClickAction
 import vedam.subkuch.utils.UiUtil
+import java.util.*
 
 class ProductsFragment : BaseFragment(), OnListViewItemClickListener {
 
@@ -25,6 +26,11 @@ class ProductsFragment : BaseFragment(), OnListViewItemClickListener {
     private var productsAdapter: ProductAdapter? = null
     private var subcategoryId: String? = null
     private var subcategoryName: String? = null
+    private var loading = true
+    private var pageNo = 1
+    private val pageSize = 20
+    private var hasMoreProjects = true
+    private val productsList = ArrayList<Product>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,13 +63,15 @@ class ProductsFragment : BaseFragment(), OnListViewItemClickListener {
     private fun getProducts() {
         UiUtil.showProgressDialog(context, getString(R.string.please_wait))
         val type = object : TypeToken<BaseShoppingResponse<Product>>() {}.type
-        DataFetcher.getProducts(context, onProductsSuccessListener, type, onErrorListener, subcategoryId)
+        DataFetcher.getProducts(context, onProductsSuccessListener, type, onErrorListener, subcategoryId, pageNo, pageSize)
     }
 
     private val onProductsSuccessListener: Response.Listener<BaseShoppingResponse<Product>> = Response.Listener { response ->
         UiUtil.cancelProgressDialog()
         if (activity != null) if (response != null && response.status == true) {
             if (response.result?.list?.size ?: 0 > 0) {
+                hasMoreProjects = response.result?.list?.size!! >= pageSize
+                loading = true
                 loadProducts(response.result?.list)
             } else UiUtil.showToast(context, getString(R.string.no_products_found))
         } else UiUtil.showToast(context, getString(R.string.err_occurred))
@@ -71,7 +79,11 @@ class ProductsFragment : BaseFragment(), OnListViewItemClickListener {
 
     private fun loadProducts(response: List<Product>?) {
         if (response != null && response.isNotEmpty()) {
-            productsAdapter?.submitList(response)
+            pageNo++
+            productsList.addAll(response)
+            productsAdapter?.submitList(productsList) {
+                productsAdapter?.notifyDataSetChanged()
+            }
         }
     }
 

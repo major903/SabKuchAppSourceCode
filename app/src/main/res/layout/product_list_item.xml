@@ -13,26 +13,47 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_16dp"
             android:background="@color/white"
             android:orientation="vertical">
 
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/iv_product"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="160dp"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/margin_8dp"
                 android:scaleType="centerCrop"
                 app:riv_oval="false"
                 tools:src="@drawable/grey" />
 
             <TextView
+                android:id="@+id/tv_brand"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:maxLines="2"
+                android:paddingHorizontal="@dimen/margin_8dp"
+                android:textSize="@dimen/text_size_14"
+                android:textStyle="bold"
+                tools:text="@string/err" />
+
+            <TextView
                 android:id="@+id/tv_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/margin_8dp"
                 android:maxLines="2"
-                android:textColor="@color/black"
                 android:paddingHorizontal="@dimen/margin_8dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_16"
+                tools:text="@string/err" />
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:maxLines="2"
+                android:paddingHorizontal="@dimen/margin_8dp"
+                android:textColor="@color/black"
                 android:textSize="@dimen/text_size_16"
                 tools:text="@string/err" />
 
@@ -47,16 +68,6 @@
                 android:textSize="@dimen/text_size_14"
                 tools:text="@string/err" />
 
-            <TextView
-                android:id="@+id/tv_price"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/margin_16dp"
-                android:maxLines="3"
-                android:paddingHorizontal="@dimen/margin_8dp"
-                android:textSize="@dimen/text_size_14"
-                android:textStyle="bold"
-                tools:text="@string/err" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

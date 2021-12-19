@@ -187,6 +187,7 @@ public class HelperVolley<T> {
                 if (headers == null || headers.equals(Collections.emptyMap())) {
                     headers = new HashMap<>();
                     String authenticationKey = AppPrefs.getPrefsToken(context);
+                    System.out.println(authenticationKey);
                     if (authenticationKey != null) {
                         headers.put("Authorization", authenticationKey);
                     }
