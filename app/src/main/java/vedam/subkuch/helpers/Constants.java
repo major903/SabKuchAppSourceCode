@@ -14,6 +14,7 @@ public class Constants {
     }
 
     public static final String EXTRA_IMAGE_URL = "EXTRA_IMAGE_URL";
+    public static final String EXTRA_URL = "EXTRA_URL";
     public static final String EXTRA_RECEIVER = "EXTRA_RECEIVER";
     public static final String EXTRA_DIRECTORY_DETAIL = "EXTRA_DIRECTORY_DETAIL";
     public static final String EXTRA_COUNTRY_CODE = "EXTRA_COUNTRY_CODE";
@@ -27,6 +28,7 @@ public class Constants {
     public static final String EXTRA_CATEGORY_NAME = "EXTRA_CATEGORY_NAME";
     public static final String EXTRA_SUB_CATEGORY_NAME = "EXTRA_SUB_CATEGORY_NAME";
     public static final String EXTRA_SUB_CATEGORY_ID = "EXTRA_SUB_CATEGORY_ID";
+    public static final String EXTRA_SHOPPING_ID = "EXTRA_SHOPPING_ID";
     public static final String EXTRA_ID = "EXTRA_ID";
     public static final String EXTRA_IMAGE_ITEMS = "EXTRA_IMAGE_ITEMS";
     public static final String EXTRA_IMAGE_URI = "EXTRA_IMAGE_URI";

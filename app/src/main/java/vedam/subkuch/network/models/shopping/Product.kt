@@ -4,13 +4,13 @@ import com.google.gson.annotations.SerializedName
 
 data class Product(
 
-        @SerializedName("ShoppingId") var ShoppingId: Int? = null,
+        @SerializedName("ShoppingId") var ShoppingId: String? = null,
         @SerializedName("ShoppingSubcatid") var ShoppingSubcatid: Int? = null,
         @SerializedName("BrandName") var BrandName: String? = null,
         @SerializedName("ItemCode") var ItemCode: String? = null,
         @SerializedName("ItemName") var ItemName: String? = null,
         @SerializedName("ItemDescriptionShort") var ItemDescriptionShort: String? = null,
-        @SerializedName("ItemDescriptionLong") var ItemDescriptionLong: String? = null,
+        @SerializedName("itemdescriptionlong") var ItemDescriptionLong: String? = null,
         @SerializedName("Image1") var Image1: String? = null,
         @SerializedName("Image2") var Image2: String? = null,
         @SerializedName("Image3") var Image3: String? = null,

@@ -7,6 +7,11 @@ public class ProfileData {
     private String LastName;
 
     private String Mobile;
+    private String RefferalCode;
+
+    public String getRefferalCode() {
+        return RefferalCode;
+    }
 
     public String getFirstName() {
         return FirstName;

@@ -78,6 +78,7 @@
                 android:layout_marginLeft="@dimen/margin_16dp"
                 android:layout_marginTop="@dimen/margin_16dp"
                 android:layout_marginRight="@dimen/margin_16dp"
+                android:visibility="gone"
                 android:text="@string/country" />
 
             <FrameLayout
@@ -86,6 +87,7 @@
                 android:layout_marginLeft="@dimen/margin_16dp"
                 android:layout_marginTop="@dimen/margin_4dp"
                 android:layout_marginRight="@dimen/margin_16dp"
+                android:visibility="gone"
                 android:background="@drawable/edit_text_border">
 
                 <Spinner
@@ -102,6 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_16dp"
                 android:layout_marginTop="@dimen/margin_16dp"
+                android:visibility="gone"
                 android:layout_marginRight="@dimen/margin_16dp"
                 android:text="@string/city" />
 
@@ -111,6 +114,7 @@
                 android:layout_marginLeft="@dimen/margin_16dp"
                 android:layout_marginTop="@dimen/margin_4dp"
                 android:layout_marginRight="@dimen/margin_16dp"
+                android:visibility="gone"
                 android:background="@drawable/edit_text_border">
 
                 <Spinner
@@ -226,6 +230,7 @@
             <Button
                 android:id="@+id/bt_add_branch"
                 style="@style/ButtonBlue"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_16dp"

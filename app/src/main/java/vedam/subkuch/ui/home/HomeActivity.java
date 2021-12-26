@@ -49,7 +49,6 @@ import vedam.subkuch.ui.jobs.models.AddResponse;
 import vedam.subkuch.ui.matrimonial.ShowProfilesActivity;
 import vedam.subkuch.ui.movies.MoviesActivity;
 import vedam.subkuch.ui.needs.NeedsActivity;
-import vedam.subkuch.ui.offers.OffersActivity;
 import vedam.subkuch.ui.phonebook.PhoneBookActivity;
 import vedam.subkuch.ui.profile.EditProfileActivity;
 import vedam.subkuch.ui.public_utility.PublicUtilityActivity;
@@ -58,6 +57,7 @@ import vedam.subkuch.ui.stafftrack.StaffTrackActivity;
 import vedam.subkuch.ui.transport.TransportActivity;
 import vedam.subkuch.ui.vehicle.VehicleActivity;
 import vedam.subkuch.ui.wallet.WalletActivity;
+import vedam.subkuch.uicomponent.BaseWebActivity;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.ImageSetter;
@@ -86,6 +86,9 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         activityHomeBinding.navView.setNavigationItemSelectedListener(this);
         TextView tvName = activityHomeBinding.navView.getHeaderView(0).findViewById(R.id.tv_name);
         tvName.setText(AppPrefs.getPrefsUserName(this));
+
+        View view = activityHomeBinding.navView.findViewById(R.id.ll_tnc);
+        view.setOnClickListener(v -> AppUtil.openUrl(this, Constants.PRIVACY_POLICY_URL));
 
         handleReferral();
         registerFCM();
@@ -254,7 +257,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     private void setImage(ImageView ivDirectory, int resourceId, Node feature) {
         ivDirectory.setTag(feature);
         UiUtil.setImageView(new ImageSetter.ImageBuilder(this)
-                .setImageResource(resourceId)
+                .setImageLink(feature.getIconUrl())
+                .setErrorResource(resourceId)
                 .setTarget(ivDirectory).build());
     }
 
@@ -381,8 +385,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         if (isEnabled(v)) {
 //            startActivity(new Intent(this, OffersActivity.class));
             startActivity(new Intent(this, ShoppingActivity.class));
-        }
-        else {
+        } else {
             String message = ((Node) v.getTag()).getMessage();
             if (!TextUtils.isEmpty(message))
                 UiUtil.showDialog(this, ((Node) v.getTag()).getMessage(), true);
@@ -553,8 +556,11 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             startActivity(new Intent(this, InboxActivity.class));
         } else if (id == R.id.nav_contribute) {
             startActivity(new Intent(this, StaffTrackActivity.class));
-        } else if (id == R.id.nav_privacy) {
-            AppUtil.openUrl(this, Constants.PRIVACY_POLICY_URL);
+        } else if (id == R.id.nav_cashback) {
+            startActivity(new Intent(this, BaseWebActivity.class)
+                    .putExtra(Constants.EXTRA_NAME, getString(R.string.cashback))
+                    .putExtra(Constants.EXTRA_URL, "https://www.vedam-it.com/cashback.html"));
+//            AppUtil.openUrl(this, Constants.PRIVACY_POLICY_URL);
         }
 
         activityHomeBinding.drawerLayout.closeDrawer(GravityCompat.START);

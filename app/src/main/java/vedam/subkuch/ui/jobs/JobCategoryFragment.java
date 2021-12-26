@@ -1,11 +1,7 @@
 package vedam.subkuch.ui.jobs;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -21,7 +17,6 @@ import vedam.subkuch.R;
 import vedam.subkuch.base.BaseListFragment;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
-import vedam.subkuch.ui.jobs.jobmela.JobMelaActivity;
 import vedam.subkuch.ui.jobs.models.JobCategory;
 import vedam.subkuch.ui.jobs.models.JobCategoryResponse;
 import vedam.subkuch.utils.UiUtil;
@@ -88,7 +83,7 @@ public class JobCategoryFragment extends BaseListFragment {
                 null, true, 0, 0, 0, 0);
     }
 
-    @Override
+    /*@Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.jobs, menu);
         super.onCreateOptionsMenu(menu, inflater);
@@ -104,5 +99,5 @@ public class JobCategoryFragment extends BaseListFragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
+    }*/
 }

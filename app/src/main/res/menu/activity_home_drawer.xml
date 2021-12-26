@@ -13,6 +13,10 @@
             android:icon="@drawable/ic_menu_wallet"
             android:title="@string/my_wallet" />
         <item
+            android:id="@+id/nav_cashback"
+            android:icon="@drawable/ic_menu_wallet"
+            android:title="@string/cashback" />
+        <item
             android:id="@+id/nav_inbox"
             android:icon="@drawable/ic_menu_inbox"
             android:title="@string/inbox" />
@@ -20,10 +24,6 @@
             android:id="@+id/nav_contribute"
             android:icon="@drawable/baseline_room_black_24"
             android:title="@string/contribute" />
-        <item
-            android:id="@+id/nav_privacy"
-            android:icon="@drawable/ic_menu_privacy"
-            android:title="@string/privacy_policy" />
     </group>
 
 </menu>

@@ -2,7 +2,6 @@ package vedam.subkuch.ui.wallet;
 
 import android.app.Activity;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -13,6 +12,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.databinding.DataBindingUtil;
 
 import com.android.volley.Response;
 
@@ -116,9 +117,10 @@ public class WalletActivity extends BaseActivity {
         activityWalletBinding.llContainer.setVisibility(View.VISIBLE);
         UiUtil.setTextViewWithBoldPrefix(this, "Member Name : ",
                 AppUtil.getFullName(profileData.getFirstName(), profileData.getLastName()), activityWalletBinding.tvName);
-        UiUtil.setTextViewWithBoldPrefix(this, "Phone No. : ", profileData.getMobile(), activityWalletBinding.tvMobile);
+        UiUtil.setTextViewWithBoldPrefix(this, "Referral Code : ", profileData.getRefferalCode(), activityWalletBinding.tvMobile);
         UiUtil.setTextViewWithBoldPrefix(this, "Total Earnings : ", walletDetails.getTotalReferralIncome(), activityWalletBinding.tvTotalEarnings);
-        UiUtil.setTextViewWithBoldPrefix(this, "Points Earned : ", walletDetails.getTotalPointsEarned(), activityWalletBinding.tvPointsEarned);
+//        UiUtil.setTextViewWithBoldPrefix(this, "Points Earned : ", walletDetails.getTotalPointsEarned(), activityWalletBinding.tvPointsEarned);
+        activityWalletBinding.tvPointsEarned.setVisibility(View.GONE);
         UiUtil.setTextViewWithBoldPrefix(this, "Withdrawal : ", walletDetails.getTotalWithdrawal(), activityWalletBinding.tvWithdrawal);
         UiUtil.setTextViewWithBoldPrefix(this, "Available Amount : ", walletDetails.getAvailableBalance(), activityWalletBinding.tvAvailableAmount);
         UiUtil.setTextView(activityWalletBinding.tvTncTitle, termsCondition.getTitle());

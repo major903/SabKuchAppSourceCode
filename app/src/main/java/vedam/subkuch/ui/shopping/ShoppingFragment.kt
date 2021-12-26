@@ -1,7 +1,5 @@
 package vedam.subkuch.ui.shopping
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +17,6 @@ import vedam.subkuch.network.DataFetcher
 import vedam.subkuch.network.models.shopping.BaseShoppingResponse
 import vedam.subkuch.network.models.shopping.Product
 import vedam.subkuch.network.models.shopping.ShoppingSubCategory
-import vedam.subkuch.utils.ItemOffsetDecoration
 import vedam.subkuch.utils.ListItemClickAction
 import vedam.subkuch.utils.UiUtil
 import java.util.*
@@ -36,6 +33,7 @@ class ShoppingFragment : BaseFragment(), OnListViewItemClickListener {
     private var pageNo = 1
     private val pageSize = 20
     private var hasMoreProjects = true
+    private var selectedSubCategoryId: String? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         // Inflate the layout for this fragment
@@ -57,9 +55,9 @@ class ShoppingFragment : BaseFragment(), OnListViewItemClickListener {
         binding?.rvSubcategories?.adapter = subCatAdapter
         binding?.rvProducts?.adapter = productsAdapter
         binding?.rvProducts?.layoutManager = layoutManager
-        val dimen = resources.getDimensionPixelSize(R.dimen.margin_8dp)
-        val itemDecoration = ItemOffsetDecoration(2, dimen, false)
-        binding?.rvProducts?.addItemDecoration(itemDecoration)
+//        val dimen = resources.getDimensionPixelSize(R.dimen.margin_8dp)
+//        val itemDecoration = ItemOffsetDecoration(2, dimen, false)
+//        binding?.rvProducts?.addItemDecoration(itemDecoration)
         binding?.rvProducts?.addOnScrollListener(ShoppingOnScrollListener())
     }
 
@@ -69,10 +67,21 @@ class ShoppingFragment : BaseFragment(), OnListViewItemClickListener {
         DataFetcher.getShoppingSubCategories(context, onSubcategoriesSuccessListener, type, onErrorListener)
     }
 
-    private fun getProducts() {
+    private fun getProducts(subCatId: String? = null) {
         UiUtil.showProgressDialog(context, getString(R.string.please_wait))
         val type = object : TypeToken<BaseShoppingResponse<Product>>() {}.type
-        DataFetcher.getHomeProducts(context, onProductsSuccessListener, type, onErrorListener, pageNo, pageSize)
+        if (subCatId == null) {
+            if (selectedSubCategoryId != null) {
+                DataFetcher.getProducts(context, onProductsSuccessListener, type, onErrorListener, selectedSubCategoryId, pageNo, pageSize)
+            } else {
+                DataFetcher.getHomeProducts(context, onProductsSuccessListener, type, onErrorListener, pageNo, pageSize)
+            }
+        } else {
+            pageNo = 1
+            productsList.clear()
+            DataFetcher.getProducts(context, onProductsSuccessListener, type, onErrorListener, subCatId, pageNo, pageSize)
+            selectedSubCategoryId = subCatId
+        }
     }
 
     private val onSubcategoriesSuccessListener: Response.Listener<BaseShoppingResponse<ShoppingSubCategory>> = Response.Listener { response ->
@@ -91,8 +100,18 @@ class ShoppingFragment : BaseFragment(), OnListViewItemClickListener {
                 hasMoreProjects = response.result?.list?.size!! >= pageSize
                 loading = true
                 loadProducts(response.result?.list)
-            } else UiUtil.showToast(context, getString(R.string.no_products_found))
-        } else UiUtil.showToast(context, getString(R.string.err_occurred))
+            } else {
+                productsAdapter?.submitList(emptyList()) {
+                    productsAdapter?.notifyDataSetChanged()
+                }
+                UiUtil.showToast(context, getString(R.string.no_products_found))
+            }
+        } else {
+            UiUtil.showToast(context, getString(R.string.err_occurred))
+            productsAdapter?.submitList(emptyList()) {
+                productsAdapter?.notifyDataSetChanged()
+            }
+        }
     }
 
     private fun loadSubcategories(list: List<ShoppingSubCategory>?) {
@@ -138,32 +157,14 @@ class ShoppingFragment : BaseFragment(), OnListViewItemClickListener {
     }
 
     override fun <E> onItemClick(item: E, position: Int, view: View?, action: ListItemClickAction?) {
-        if (item is ShoppingSubCategory)
-            addFragmentWithAnimation(R.id.content_frame, ProductsFragment.newInstance(item.ShoppingSubcatid, item.Name), null, true)
+        if (item is ShoppingSubCategory) {
+            getProducts(item.ShoppingSubcatid)
+            setTitle(item.Name)
+//            addFragmentWithAnimation(R.id.content_frame, ProductsFragment.newInstance(item.ShoppingSubcatid, item.Name), null, true)
+        } else if (item is Product) {
+            addFragmentWithAnimation(R.id.content_frame, ProductDetailsFragment.newInstance(item.ShoppingId, item.ItemName), null, true)
+        }
     }
-}
-
-fun View.fadeOut() {
-    val duration = resources.getInteger(android.R.integer.config_shortAnimTime)
-    animate().alpha(0f).setDuration(duration.toLong())
-            .setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    visibility = View.GONE
-                    alpha = 1f
-                }
-            })
-}
-
-fun View.fadeIn() {
-    val duration = resources.getInteger(android.R.integer.config_shortAnimTime)
-    alpha = 0f
-    visibility = View.VISIBLE
-    animate().alpha(1f).setDuration(duration.toLong())
-            .setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-
-                }
-            })
 }
 
 fun View.hide() {

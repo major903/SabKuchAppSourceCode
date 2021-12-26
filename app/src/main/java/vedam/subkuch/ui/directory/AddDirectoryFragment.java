@@ -1,6 +1,8 @@
 package vedam.subkuch.ui.directory;
 
 
+import static android.app.Activity.RESULT_OK;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -50,8 +52,6 @@ import vedam.subkuch.ui.jobs.models.CitiesResponse;
 import vedam.subkuch.ui.jobs.models.City;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.UiUtil;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -366,10 +366,10 @@ public class AddDirectoryFragment extends BaseAddImagesFragment implements Adapt
             errorMessage = R.string.select_a_category;
         else if (TextUtils.isEmpty(subcategoryId))
             errorMessage = R.string.select_a_sub_category;
-        else if (TextUtils.isEmpty(countryId))
-            errorMessage = R.string.select_a_country;
-        else if (TextUtils.isEmpty(cityId))
-            errorMessage = R.string.select_a_city;
+//        else if (TextUtils.isEmpty(countryId))
+//            errorMessage = R.string.select_a_country;
+//        else if (TextUtils.isEmpty(cityId))
+//            errorMessage = R.string.select_a_city;
         else if (TextUtils.isEmpty(fragmentAddDirectoryBinding.etBusinessName.getText()))
             errorMessage = R.string.enter_business_name;
 //        else if (getImageItemMap().isEmpty())
