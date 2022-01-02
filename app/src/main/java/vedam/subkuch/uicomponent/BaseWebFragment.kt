@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import vedam.subkuch.R
@@ -42,8 +43,10 @@ class BaseWebFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         val webView = view.findViewById<WebView>(R.id.webview)
         webView.loadUrl(url!!)
+        webView.clearCache(true)
         val webSettings = webView.settings
         webSettings.javaScriptEnabled = true
+        webSettings.cacheMode = WebSettings.LOAD_NO_CACHE
         webView.webViewClient = MyWebViewClient()
     }
 

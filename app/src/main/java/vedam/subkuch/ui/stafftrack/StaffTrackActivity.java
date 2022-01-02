@@ -1,5 +1,7 @@
 package vedam.subkuch.ui.stafftrack;
 
+import static vedam.subkuch.utils.AppUtil.deNull;
+
 import android.location.Location;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -18,13 +20,12 @@ import vedam.subkuch.base.BaseActivity;
 import vedam.subkuch.databinding.ActivityStaffTrackBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
+import vedam.subkuch.network.models.AddEventResponse;
 import vedam.subkuch.network.models.MessageRequest;
 import vedam.subkuch.ui.jobs.models.AddResponse;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.UiUtil;
-
-import static vedam.subkuch.utils.AppUtil.deNull;
 
 public class StaffTrackActivity extends BaseActivity {
 
@@ -71,6 +72,8 @@ public class StaffTrackActivity extends BaseActivity {
 
         latitude = String.valueOf(location.getLatitude());
         longitude = String.valueOf(location.getLongitude());
+        DataFetcher.updateLocation(this, null, AddEventResponse.class, null, String.valueOf(location.getLatitude())
+                , String.valueOf(location.getLongitude()));
     }
 
     private void submit() {

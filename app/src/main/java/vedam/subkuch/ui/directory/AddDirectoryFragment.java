@@ -3,7 +3,6 @@ package vedam.subkuch.ui.directory;
 
 import static android.app.Activity.RESULT_OK;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,11 +23,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.Response;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -277,20 +270,20 @@ public class AddDirectoryFragment extends BaseAddImagesFragment implements Adapt
         else
             b.setVisibility(View.GONE);
 
-        Button btLocation = v.findViewById(R.id.bt_add_location);
-
-        btLocation.setOnClickListener(view1 -> {
-            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-
-            try {
-                viewTappedForLocation = v;
-                startActivityForResult(builder.build(getActivity()), Constants.REQUEST_PLACE_PICKER);
-            } catch (GooglePlayServicesRepairableException e) {
-                e.printStackTrace();
-            } catch (GooglePlayServicesNotAvailableException e) {
-                e.printStackTrace();
-            }
-        });
+//        Button btLocation = v.findViewById(R.id.bt_add_location);
+//
+//        btLocation.setOnClickListener(view1 -> {
+//            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+//
+//            try {
+//                viewTappedForLocation = v;
+//                startActivityForResult(builder.build(getActivity()), Constants.REQUEST_PLACE_PICKER);
+//            } catch (GooglePlayServicesRepairableException e) {
+//                e.printStackTrace();
+//            } catch (GooglePlayServicesNotAvailableException e) {
+//                e.printStackTrace();
+//            }
+//        });
 
         alBranches.add(v);
         fragmentAddDirectoryBinding.llContainer.addView(v, params);
@@ -303,8 +296,8 @@ public class AddDirectoryFragment extends BaseAddImagesFragment implements Adapt
         AddBusinessRequest addBusinessRequest = new AddBusinessRequest();
         addBusinessRequest.setCategoryID(categoryId);
         addBusinessRequest.setSubCategoryID(subcategoryId);
-        addBusinessRequest.setCountryid(countryId);
-        addBusinessRequest.setCityid(cityId);
+//        addBusinessRequest.setCountryid(countryId);
+//        addBusinessRequest.setCityid(cityId);
         addBusinessRequest.setBusinessName(fragmentAddDirectoryBinding.etBusinessName.getText().toString());
         addBusinessRequest.setWebsite(fragmentAddDirectoryBinding.etWebsite.getText().toString());
         if (!getImageItemMap().isEmpty())
@@ -337,9 +330,9 @@ public class AddDirectoryFragment extends BaseAddImagesFragment implements Adapt
             businessAddress.setInfoLine1(AppUtil.deNull(etInfo1.getText().toString()));
             businessAddress.setInfoLine2(AppUtil.deNull(etInfo2.getText().toString()));
 
-            LatLng latLng = (LatLng) v.getTag();
-            businessAddress.setLatitude(String.valueOf(latLng.latitude));
-            businessAddress.setLongitude(String.valueOf(latLng.longitude));
+//            LatLng latLng = (LatLng) v.getTag();
+//            businessAddress.setLatitude(String.valueOf(latLng.latitude));
+//            businessAddress.setLongitude(String.valueOf(latLng.longitude));
 
             alBusinessAddresses.add(businessAddress);
         }
@@ -393,15 +386,15 @@ public class AddDirectoryFragment extends BaseAddImagesFragment implements Adapt
 //                    errorMessage = R.string.enter_phone_or_cellphone;
                 else if (!TextUtils.isEmpty(etEmail.getText()) && !AppUtil.validateEmail(etEmail.getText().toString()))
                     errorMessage = R.string.enter_valid_email;
-                else if (v.getTag() == null)
-                    errorMessage = R.string.add_a_location_for_a_branch;
+//                else if (v.getTag() == null)
+//                    errorMessage = R.string.add_a_location_for_a_branch;
             }
         }
 
         return errorMessage;
     }
 
-    @Override
+/*    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constants.REQUEST_PLACE_PICKER) {
             if (resultCode == RESULT_OK) {
@@ -418,7 +411,7 @@ public class AddDirectoryFragment extends BaseAddImagesFragment implements Adapt
             }
         } else
             super.onActivityResult(requestCode, resultCode, data);
-    }
+    }*/
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

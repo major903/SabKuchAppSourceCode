@@ -1,6 +1,5 @@
 package vedam.subkuch.ui.jobs;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -16,11 +15,6 @@ import android.widget.LinearLayout;
 import androidx.databinding.DataBindingUtil;
 
 import com.android.volley.Response;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -45,7 +39,7 @@ public class AddJobsActivity extends BaseActivity {
     private ActivityAddJobsBinding activityAddJobsBinding;
     private String jobCategoryId;
     private ArrayList<View> alJobs = new ArrayList<>();
-    private LatLng latLng;
+//    private LatLng latLng;
     private String cityId;
 
     @Override
@@ -164,7 +158,7 @@ public class AddJobsActivity extends BaseActivity {
                 UiUtil.showToast(this, getString(R.string.no_more_jobs));
         });
 
-        activityAddJobsBinding.btAddLocation.setOnClickListener(view -> {
+        /*activityAddJobsBinding.btAddLocation.setOnClickListener(view -> {
             PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
             try {
@@ -174,7 +168,7 @@ public class AddJobsActivity extends BaseActivity {
             } catch (GooglePlayServicesNotAvailableException e) {
                 e.printStackTrace();
             }
-        });
+        });*/
 
     }
 
@@ -207,8 +201,8 @@ public class AddJobsActivity extends BaseActivity {
         jobRequest.setHowToContact(activityAddJobsBinding.etContact.getText().toString());
         jobRequest.setOrganisationName(activityAddJobsBinding.etCompanyName.getText().toString());
         jobRequest.setCityID(cityId);
-        jobRequest.setLatitude(String.valueOf(latLng.latitude));
-        jobRequest.setLongitude(String.valueOf(latLng.longitude));
+//        jobRequest.setLatitude(String.valueOf(latLng.latitude));
+//        jobRequest.setLongitude(String.valueOf(latLng.longitude));
 
         ArrayList<Post> alPosts = new ArrayList<>();
         for (View v : alJobs) {
@@ -257,8 +251,8 @@ public class AddJobsActivity extends BaseActivity {
             errorMessage = R.string.enter_contact;
         else if (TextUtils.isEmpty(cityId))
             errorMessage = R.string.select_a_city;
-        else if (latLng == null)
-            errorMessage = R.string.add_a_location;
+//        else if (latLng == null)
+//            errorMessage = R.string.add_a_location;
         else if (alJobs.isEmpty())
             errorMessage = R.string.add_one_job;
         else {
@@ -279,7 +273,7 @@ public class AddJobsActivity extends BaseActivity {
         return errorMessage;
     }
 
-    @Override
+   /* @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constants.REQUEST_PLACE_PICKER) {
             if (resultCode == RESULT_OK) {
@@ -289,5 +283,5 @@ public class AddJobsActivity extends BaseActivity {
             }
         } else
             super.onActivityResult(requestCode, resultCode, data);
-    }
+    }*/
 }

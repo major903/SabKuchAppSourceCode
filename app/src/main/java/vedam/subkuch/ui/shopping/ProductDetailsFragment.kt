@@ -1,15 +1,23 @@
 package vedam.subkuch.ui.shopping
 
+import android.Manifest
 import android.graphics.Color
 import android.os.Bundle
 import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.android.volley.Response
 import com.google.gson.reflect.TypeToken
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionDeniedResponse
+import com.karumi.dexter.listener.PermissionGrantedResponse
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.single.PermissionListener
 import vedam.subkuch.R
 import vedam.subkuch.base.BaseFragment
 import vedam.subkuch.databinding.FragmentProductDetailsBinding
@@ -58,11 +66,63 @@ class ProductDetailsFragment : BaseFragment() {
 
     private fun initUI() {
         binding?.ivShare?.setOnClickListener {
-            val text = "${mTitle}\nSharing this item with you. If you wish to do window shopping in your city install Sabkuch App from the link given below. \n" +
-                    "\n" +
-                    "https://play.google.com/store/apps/details?id=vedam.subkuch&referrer=KK47"
-            ShareUtils.shareImageWithMessage(context, imageUrl, text, null)
+            requestPermissions()
         }
+    }
+
+    private fun requestPermissions() {
+        Dexter.withContext(context).withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .withListener(object : PermissionListener {
+                    override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
+                        val text = "${mTitle}\n\nSharing this item with you. If you wish to do window shopping in your city install Sabkuch App from the link given below. \n" +
+                                "\n" +
+                                "https://play.google.com/store/apps/details?id=vedam.subkuch&referrer=KK47"
+                        ShareUtils.shareImageWithMessage(context, imageUrl, text, null, object : ShareUtilsListener {
+                            override fun onShareStarted() {
+                                UiUtil.showProgressDialog(context, getString(R.string.please_wait))
+                            }
+
+                            override fun onShared() {
+                                UiUtil.cancelProgressDialog()
+                            }
+
+                            override fun onShareError(e: Exception?) {
+                                Toast.makeText(
+                                        context,
+                                        R.string.err_unknown,
+                                        Toast.LENGTH_LONG
+                                ).show()
+                            }
+
+                            override fun onTargetAppNotInstalledError() {
+                                Toast.makeText(
+                                        context,
+                                        R.string.err_unknown,
+                                        Toast.LENGTH_LONG
+                                ).show()
+                            }
+
+                        })
+                    }
+
+                    override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
+                        p0?.let {
+                            if (it.isPermanentlyDenied) {
+                                activity?.let { act ->
+                                    ShareUtils.showSettingsDialog(act)
+                                }
+                            }
+                        }
+                    }
+
+                    override fun onPermissionRationaleShouldBeShown(
+                            p0: PermissionRequest?,
+                            p1: PermissionToken?
+                    ) {
+                        p1?.continuePermissionRequest()
+                    }
+
+                }).check()
     }
 
     private val onSubcategoriesSuccessListener: Response.Listener<BaseShoppingResponse<Product>> = Response.Listener { response ->
@@ -108,4 +168,11 @@ class ProductDetailsFragment : BaseFragment() {
             }
         }
     }
+}
+
+interface ShareUtilsListener {
+    fun onShareStarted()
+    fun onShared()
+    fun onShareError(e: Exception?)
+    fun onTargetAppNotInstalledError()
 }

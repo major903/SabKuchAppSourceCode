@@ -24,6 +24,7 @@
         android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
         <activity
@@ -240,6 +241,8 @@
             android:name=".RegistrationIntentService"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+
+
     </application>
 
 </manifest>

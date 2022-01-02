@@ -10,8 +10,8 @@ android {
         applicationId "vedam.subkuch"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 46
-        versionName "1.0.8"
+        versionCode 48
+        versionName "1.0.9"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -114,5 +114,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
     implementation "com.github.bumptech.glide:annotations:4.12.0"
     implementation "com.github.bumptech.glide:okhttp3-integration:4.12.0"
+    implementation "com.karumi:dexter:6.2.1"
 
 }

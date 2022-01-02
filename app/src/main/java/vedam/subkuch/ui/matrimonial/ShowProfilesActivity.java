@@ -1,6 +1,12 @@
 package vedam.subkuch.ui.matrimonial;
 
 
+import static vedam.subkuch.helpers.Constants.TAG_CHATS_FRAGMENT;
+import static vedam.subkuch.helpers.Constants.TAG_MATCHES_FRAGMENT;
+import static vedam.subkuch.helpers.Constants.TAG_PREFERENCES_FRAGMENT;
+import static vedam.subkuch.helpers.Constants.TAG_PROFILE_FRAGMENT;
+import static vedam.subkuch.helpers.Constants.TAG_SHOW_PROFILES_FRAGMENT;
+
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -26,17 +32,13 @@ import vedam.subkuch.R;
 import vedam.subkuch.base.BaseActivity;
 import vedam.subkuch.databinding.ActivityShowProfilesBinding;
 import vedam.subkuch.helpers.Constants;
+import vedam.subkuch.network.DataFetcher;
+import vedam.subkuch.network.models.AddEventResponse;
 import vedam.subkuch.ui.chat.ChatListFragment;
 import vedam.subkuch.ui.home.HomeActivity;
 import vedam.subkuch.ui.matrimonial.editProfile.EditProfileFragment;
 import vedam.subkuch.ui.matrimonial.preference.PreferenceFragment;
 import vedam.subkuch.utils.AppPrefs;
-
-import static vedam.subkuch.helpers.Constants.TAG_CHATS_FRAGMENT;
-import static vedam.subkuch.helpers.Constants.TAG_MATCHES_FRAGMENT;
-import static vedam.subkuch.helpers.Constants.TAG_PREFERENCES_FRAGMENT;
-import static vedam.subkuch.helpers.Constants.TAG_PROFILE_FRAGMENT;
-import static vedam.subkuch.helpers.Constants.TAG_SHOW_PROFILES_FRAGMENT;
 
 public class ShowProfilesActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, FragmentManager.OnBackStackChangedListener {
@@ -168,6 +170,8 @@ public class ShowProfilesActivity extends BaseActivity
     @Override
     public void onLocationChanged(Location location) {
         super.onLocationChanged(location);
+        DataFetcher.updateLocation(this, null, AddEventResponse.class, null, String.valueOf(location.getLatitude())
+                , String.valueOf(location.getLongitude()));
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
         if (fragment instanceof EditProfileFragment)
             ((EditProfileFragment) fragment).onLocationChanged(location);
