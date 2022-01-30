@@ -38,6 +38,7 @@
     <string name="otp">Enter OTP</string>
     <string name="enter_otp_manually">We have sent a One Time Password to your registered mobile. Please enter the OTP.</string>
     <string name="otp_sent">OTP sent successfully</string>
+    <string name="otp_verified">OTP verified successfully</string>
     <string name="verification">Verification</string>
     <string name="error_field_required">This field is required</string>
     <string name="incorrect_otp">Entered OTP is not correct</string>
@@ -203,7 +204,7 @@
     <string name="disliked">Disliked</string>
 
     <string name="about_me">About Me</string>
-    <string name="discard">discard</string>
+    <string name="discard">Discard</string>
     <string name="Crop">Crop</string>
     <string name="selectreligion">Select Religion</string>
     <string name="select_caste">Select Caste</string>

@@ -57,6 +57,7 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:padding="@dimen/dp_eight"
+        android:background="@color/white"
         android:weightSum="2">
 
         <Button
@@ -69,7 +70,7 @@
             android:layout_weight="1"
             android:padding="@dimen/dp_eight"
             android:text="@string/Crop"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/white"
             android:textSize="@dimen/sp_eighteen" />
 
         <Button
@@ -82,7 +83,7 @@
             android:layout_weight="1"
             android:padding="@dimen/dp_eight"
             android:text="@string/discard"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/white"
             android:textSize="@dimen/sp_eighteen" />
     </LinearLayout>
 

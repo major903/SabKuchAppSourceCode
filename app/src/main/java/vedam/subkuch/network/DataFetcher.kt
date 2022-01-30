@@ -70,6 +70,26 @@ object DataFetcher {
         HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
+    @JvmStatic
+    fun <T> verifyOtp(
+            context: Context?,
+            updateSuccessListener: Response.Listener<T>?,
+            repClass: Class<T>?,
+            errorListener: Response.ErrorListener?,
+            countryCode: String?,
+            phoneNumber: String?,
+            otp: String?
+    ) {
+        val url = String.format(
+                "%s/api/login/otps/verify/%s/%s/%s",
+                NetworkConstants.END_POINT2,
+                countryCode,
+                phoneNumber,
+                otp
+        )
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+    }
+
     fun <T> getFeatures(
             context: Context?,
             updateSuccessListener: Response.Listener<T>?,

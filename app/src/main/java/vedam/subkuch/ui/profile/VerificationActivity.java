@@ -1,5 +1,11 @@
 package vedam.subkuch.ui.profile;
 
+import static vedam.subkuch.utils.AppPrefs.PREFS_IF_USER_LOGGED_IN;
+import static vedam.subkuch.utils.AppPrefs.PREFS_IS_REFERRAL_DONE;
+import static vedam.subkuch.utils.AppPrefs.PREFS_TOKEN;
+import static vedam.subkuch.utils.AppPrefs.PREFS_USER_ID;
+import static vedam.subkuch.utils.AppPrefs.PREFS_USER_NAME;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,7 +15,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
@@ -25,23 +30,17 @@ import vedam.subkuch.network.WebServices;
 import vedam.subkuch.network.models.OtpResponse;
 import vedam.subkuch.network.models.Profile;
 import vedam.subkuch.network.models.ProfileResponse;
+import vedam.subkuch.network.models.VerifyOtpResponse;
 import vedam.subkuch.ui.home.HomeActivity;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.UiUtil;
-
-import static vedam.subkuch.utils.AppPrefs.PREFS_IF_USER_LOGGED_IN;
-import static vedam.subkuch.utils.AppPrefs.PREFS_IS_REFERRAL_DONE;
-import static vedam.subkuch.utils.AppPrefs.PREFS_TOKEN;
-import static vedam.subkuch.utils.AppPrefs.PREFS_USER_ID;
-import static vedam.subkuch.utils.AppPrefs.PREFS_USER_NAME;
 
 
 public class VerificationActivity extends BaseActivity {
 
     // UI references.
     private EditText etOtp;
-    private String sentOtp;
     private Profile profile;
     private int noOfAttempts;
     private VerificationIdlingResource idlingResource;
@@ -129,13 +128,9 @@ public class VerificationActivity extends BaseActivity {
     }
 
     private void sendVerifyOtpRequest(String otp) {
-
-        if (otp.equalsIgnoreCase(sentOtp)) {
-            registerUser();
-        } else {
-            noOfAttempts++;
-            Toast.makeText(this, getString(R.string.incorrect_otp), Toast.LENGTH_SHORT).show();
-        }
+        UiUtil.showProgressDialog(this, getString(R.string.please_wait));
+        String countryCode = AppPrefs.getInstance(this).getSharedPreferences().getString(Constants.EXTRA_COUNTRY_CODE, "91");
+        DataFetcher.verifyOtp(this, onVerifyOtpSuccessListener, VerifyOtpResponse.class, onErrorListener, countryCode, profile.getMobile(), otp);
     }
 
     private void registerUser() {
@@ -156,19 +151,26 @@ public class VerificationActivity extends BaseActivity {
         }
     }
 
-    private Response.Listener<OtpResponse> onOtpSuccessListener = new Response.Listener<OtpResponse>() {
-        @Override
-        public void onResponse(OtpResponse response) {
+    private Response.Listener<OtpResponse> onOtpSuccessListener = response -> {
 
-            UiUtil.cancelProgressDialog();
-            if (response != null && response.getStatus().equals(Constants.STATUS_SUCCESS)) {
-                sentOtp = response.getOTP();
-                UiUtil.showToast(VerificationActivity.this, getString(R.string.otp_sent));
-            } else {
-                UiUtil.showToast(VerificationActivity.this, getString(R.string.err_occurred));
-            }
-            getIdlingResource();
-            setIdleState(true, response);
+        UiUtil.cancelProgressDialog();
+        if (response != null && response.getStatus().equals(Constants.STATUS_SUCCESS)) {
+            UiUtil.showToast(VerificationActivity.this, getString(R.string.otp_sent));
+        } else {
+            UiUtil.showToast(VerificationActivity.this, getString(R.string.err_occurred));
+        }
+        getIdlingResource();
+        setIdleState(true, response);
+    };
+
+    private Response.Listener<VerifyOtpResponse> onVerifyOtpSuccessListener = response -> {
+
+        UiUtil.cancelProgressDialog();
+        if (response != null && Constants.TRUE.equals(response.getIsVerified())) {
+            UiUtil.showToast(VerificationActivity.this, getString(R.string.otp_verified));
+            registerUser();
+        } else {
+            UiUtil.showToast(VerificationActivity.this, getString(R.string.err_occurred));
         }
     };
 
