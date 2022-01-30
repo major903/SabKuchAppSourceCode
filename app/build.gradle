@@ -10,8 +10,8 @@ android {
         applicationId "vedam.subkuch"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 48
-        versionName "1.0.9"
+        versionCode 49
+        versionName "1.0.10"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
