@@ -662,7 +662,7 @@ object DataFetcher {
     fun <T> getJobQualifications(
             context: Context?,
             updateSuccessListener: Response.Listener<T>?,
-            repClass: Class<T>?,
+            repClass: Type?,
             errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/Master/GetJobQualifications", NetworkConstants.END_POINT2)
@@ -673,7 +673,7 @@ object DataFetcher {
     fun <T> getJobExperiences(
             context: Context?,
             updateSuccessListener: Response.Listener<T>?,
-            repClass: Class<T>?,
+            repClass: Type?,
             errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/Master/GetJobExpereince", NetworkConstants.END_POINT2)
@@ -684,7 +684,7 @@ object DataFetcher {
     fun <T> getJobSalaries(
             context: Context?,
             updateSuccessListener: Response.Listener<T>?,
-            repClass: Class<T>?,
+            repClass: Type?,
             errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/Master/GetJobSalaries", NetworkConstants.END_POINT2)
@@ -711,7 +711,7 @@ object DataFetcher {
             context: Context?,
             json: String?,
             updateSuccessListener: Response.Listener<T>?,
-            repClass: Class<T>?,
+            repClass: Type?,
             errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/Jobs/AddJobProfile", NetworkConstants.END_POINT2)
@@ -731,7 +731,7 @@ object DataFetcher {
             context: Context?,
             dataPartMap: Map<String?, DataPart?>?,
             updateSuccessListener: Response.Listener<T>?,
-            repClass: Class<T>?,
+            repClass: Type?,
             errorListener: Response.ErrorListener?
     ) {
         val map: MutableMap<String, String> = HashMap()
@@ -1177,7 +1177,7 @@ object DataFetcher {
     fun <T> getWalletDetails(
             context: Context?,
             updateSuccessListener: Response.Listener<T>?,
-            repClass: Class<T>?,
+            repClass: Type?,
             errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/Referral/GetMyWallet", NetworkConstants.END_POINT2)
@@ -1188,7 +1188,7 @@ object DataFetcher {
     fun <T> getMyReferral(
             context: Context?,
             updateSuccessListener: Response.Listener<T>?,
-            repClass: Class<T>?,
+            repClass: Type?,
             errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/Referral/GetMyReferral", NetworkConstants.END_POINT2)
@@ -1220,7 +1220,7 @@ object DataFetcher {
             context: Context?,
             json: String?,
             updateSuccessListener: Response.Listener<T>?,
-            repClass: Class<T>?,
+            repClass: Type?,
             errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/Referral/Withdrawal", NetworkConstants.END_POINT2)

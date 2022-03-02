@@ -5,5 +5,5 @@ package vedam.subkuch.utils;
  * For project RelayServices
  */
 public enum ListItemClickAction {
-    EDIT, DELETE, SELECT
+    EDIT, DELETE, SELECT, SELECT_POST
 }

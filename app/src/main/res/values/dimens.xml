@@ -42,6 +42,7 @@
     <dimen name="sp_eighteen">18sp</dimen>
     <dimen name="dp_eight">8dp</dimen>
     <dimen name="dp_sixteen">16dp</dimen>
+    <dimen name="margin_100dp">100dp</dimen>
     <dimen name="margin_136dp">136dp</dimen>
     <dimen name="margin_28dp">28dp</dimen>
 </resources>

@@ -69,6 +69,7 @@ abstract class BaseAddImageFragment : BaseFragment() {
     }
 
     private fun bindCallbacks() {
+        ivPicture?.setOnClickListener { dialogBuilderPickImage() }
         llEditPicture?.setOnClickListener { dialogBuilderPickImage() }
     }
 

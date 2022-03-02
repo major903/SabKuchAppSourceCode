@@ -1,17 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
 
+        <TextView
+            android:id="@+id/tv_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="all"
+            android:paddingHorizontal="@dimen/margin_16dp"
+            android:paddingTop="@dimen/margin_16dp"
+            android:text="@string/no_money"
+            android:textSize="@dimen/text_size_16"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
         <ScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/ll_container">
+            android:layout_above="@+id/bt_submit"
+            android:layout_below="@+id/tv_message"
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -24,6 +40,67 @@
                     style="@style/TextViewBlackHeading"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@string/your_qualification" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_4dp"
+                    android:background="@drawable/edit_text_border">
+
+                    <Spinner
+                        android:id="@+id/sp_qualification"
+                        style="@style/SpinnerStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/SpinnerStyle" />
+                </FrameLayout>
+
+                <TextView
+                    style="@style/TextViewBlackHeading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_16dp"
+                    android:text="@string/your_experience" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_4dp"
+                    android:background="@drawable/edit_text_border">
+
+                    <Spinner
+                        android:id="@+id/sp_experience"
+                        style="@style/SpinnerStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/SpinnerStyle" />
+                </FrameLayout>
+
+                <TextView
+                    style="@style/TextViewBlackHeading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_16dp"
+                    android:text="@string/tell_us_more_about_your_work_experience" />
+
+                <EditText
+                    android:id="@+id/et_more_experience"
+                    style="@style/EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_4dp"
+                    android:gravity="top"
+                    android:hint="@string/optional_freshers"
+                    android:inputType="textMultiLine"
+                    android:lines="3"
+                    android:padding="@dimen/margin_8dp" />
+
+                <TextView
+                    style="@style/TextViewBlackHeading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_16dp"
                     android:text="@string/do_you_own_a_two_wheeler" />
 
                 <RadioGroup
@@ -80,71 +157,36 @@
                     android:paddingBottom="@dimen/margin_4dp"
                     android:text="@string/upload_your_profile_picture" />
 
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollbars="none">
 
-                    <LinearLayout
-                        android:id="@+id/ll_add_picture"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/iv_picture"
+                    android:layout_width="@dimen/margin_100dp"
+                    android:layout_height="@dimen/margin_100dp"
+                    android:layout_marginTop="@dimen/margin_8dp"
+                    android:background="@color/transparent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/placeholder_small"
+                    app:riv_border_color="@color/colorPrimary"
+                    app:riv_border_width="@dimen/margin_2dp"
+                    app:riv_corner_radius="@dimen/margin_8dp"
+                    app:riv_oval="false" />
 
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/cv_add_picture"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:foreground="@drawable/dotted_shape_rad4"
-                            app:cardBackgroundColor="@color/white"
-                            app:cardCornerRadius="@dimen/margin_4dp">
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center"
-                                android:layout_margin="@dimen/margin_16dp"
-                                android:gravity="center"
-                                android:orientation="vertical">
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/ico_add_photo" />
-
-                            </LinearLayout>
-                        </androidx.cardview.widget.CardView>
-
-                    </LinearLayout>
-                </HorizontalScrollView>
             </LinearLayout>
         </ScrollView>
 
-        <LinearLayout
-            android:id="@+id/ll_container"
+        <Button
+            android:id="@+id/bt_submit"
+            style="@style/ButtonBlue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:layout_marginStart="@dimen/margin_16dp"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:layout_marginEnd="@dimen/margin_16dp"
+            android:layout_marginBottom="@dimen/margin_16dp"
+            android:text="@string/i_agree"
+            android:visibility="gone" />
 
-            <Button
-                android:id="@+id/bt_previous"
-                style="@style/ButtonBlue"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_16dp"
-                android:layout_weight="1"
-                android:text="@string/previous" />
-
-            <Button
-                android:id="@+id/bt_submit"
-                style="@style/ButtonBlue"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_16dp"
-                android:layout_weight="1"
-                android:text="@string/submit" />
-        </LinearLayout>
     </RelativeLayout>
 </layout>

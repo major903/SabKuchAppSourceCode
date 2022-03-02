@@ -30,6 +30,7 @@ import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.interfaces.OnListViewItemClickListener;
 import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.network.models.ShareResponse;
+import vedam.subkuch.ui.jobs.jobmela.JobMelaActivity;
 import vedam.subkuch.ui.jobs.models.Job;
 import vedam.subkuch.ui.jobs.models.JobCategory;
 import vedam.subkuch.ui.jobs.models.JobResponse;
@@ -219,6 +220,9 @@ public class JobsFragment extends BaseFragment implements OnListViewItemClickLis
 
         if (item instanceof Job)
             getShareMessage((Job) item);
+        else if (item instanceof Post) {
+            startActivity(new Intent(context, JobMelaActivity.class).putExtra(Constants.EXTRA_DATA, (Post) item));
+        }
     }
 
     private void getShareMessage(Job job) {

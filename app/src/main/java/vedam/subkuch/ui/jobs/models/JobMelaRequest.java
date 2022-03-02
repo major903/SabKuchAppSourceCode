@@ -21,10 +21,6 @@ public class JobMelaRequest implements Parcelable {
 
     private String JobSalaryId;
 
-    public JobMelaRequest() {
-    }
-
-
     protected JobMelaRequest(Parcel in) {
         JobExperienceDetails = in.readString();
         JobTypes = in.createStringArray();
@@ -36,6 +32,7 @@ public class JobMelaRequest implements Parcelable {
         JobQualificationId = in.readString();
         JobExperienceId = in.readString();
         JobSalaryId = in.readString();
+        JobpostId = in.readString();
     }
 
     @Override
@@ -48,6 +45,7 @@ public class JobMelaRequest implements Parcelable {
         dest.writeString(JobQualificationId);
         dest.writeString(JobExperienceId);
         dest.writeString(JobSalaryId);
+        dest.writeString(JobpostId);
     }
 
     @Override
@@ -66,6 +64,36 @@ public class JobMelaRequest implements Parcelable {
             return new JobMelaRequest[size];
         }
     };
+
+    public Boolean getOwnTwoWheeler() {
+        return IsOwnTwoWheeler;
+    }
+
+    public void setOwnTwoWheeler(Boolean ownTwoWheeler) {
+        IsOwnTwoWheeler = ownTwoWheeler;
+    }
+
+    public Boolean getInterestedInJob() {
+        return IsInterestedInJob;
+    }
+
+    public void setInterestedInJob(Boolean interestedInJob) {
+        IsInterestedInJob = interestedInJob;
+    }
+
+    public String getJobpostId() {
+        return JobpostId;
+    }
+
+    public void setJobpostId(String jobpostId) {
+        JobpostId = jobpostId;
+    }
+
+    private String JobpostId;
+
+    public JobMelaRequest() {
+    }
+
 
     public String getJobExperienceDetails() {
         return JobExperienceDetails;

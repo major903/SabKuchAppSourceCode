@@ -184,7 +184,7 @@
     <string name="select_a_job_qualification">Select your job qualification</string>
     <string name="select_a_salary">Select your expected salary</string>
     <string name="enter_experience_details">Enter experience details</string>
-    <string name="job_profile_added">Job profile added successfully</string>
+    <string name="job_profile_added">Job application submitted successfully</string>
     <string name="optional_freshers">Optional for freshers</string>
     <string name="select_a_job_experience">Select your job experience</string>
     <string name="profile_updated_successfully">Profile updated successfully</string>
@@ -381,4 +381,7 @@
     <string name="dialog_permission_message">This app needs permission to use this feature. You can grant them in app settings.</string>
     <string name="go_to_settings">GOTO SETTINGS</string>
     <string name="cancel">Cancel</string>
+    <string name="i_agree">I Agree</string>
+    <string name="no_money">Available Amount in Wallet : %d\n\nApplying to a job costs Rs. 10. You don\'t have balance in your wallet. You can earn by sharing App or sharing job ads with your friends. Click here for details</string>
+    <string name="yes_money">Available Amount in Wallet = %d\n\nApplying for a Job costs Rs. 10. Proceed only if you are ready to pay the fee. </string>
 </resources>

@@ -83,21 +83,21 @@ public class JobCategoryFragment extends BaseListFragment {
                 null, true, 0, 0, 0, 0);
     }
 
-    /*@Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.jobs, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.action_job_mela:
-                startActivity(new Intent(getActivity(), JobMelaActivity.class));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }*/
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        inflater.inflate(R.menu.jobs, menu);
+//        super.onCreateOptionsMenu(menu, inflater);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//
+//        switch (item.getItemId()) {
+//            case R.id.action_job_mela:
+//                startActivity(new Intent(getActivity(), JobMelaActivity.class));
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 }

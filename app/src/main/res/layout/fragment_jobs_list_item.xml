@@ -57,12 +57,12 @@
             android:textColor="@color/black"
             tools:text="@string/err" />
 
-        <TextView
-            android:id="@+id/tv_position"
+        <LinearLayout
+            android:id="@+id/ll_position"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
-            tools:text="@string/err" />
+            android:orientation="vertical" />
 
         <TextView
             android:id="@+id/tv_contact"
