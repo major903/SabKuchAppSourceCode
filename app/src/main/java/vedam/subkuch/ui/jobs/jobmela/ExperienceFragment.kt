@@ -123,7 +123,7 @@ class ExperienceFragment : BaseFragment(), OnItemSelectedListener {
     }
 
     private operator fun next() {
-        jobMelaRequest!!.jobQualificationId = jobQualificationId
+//        jobMelaRequest!!.jobQualificationId = jobQualificationId
         jobMelaRequest!!.jobExperienceId = jobExperienceId
         jobMelaRequest!!.jobExperienceDetails =
             fragmentExperienceBinding!!.etMoreExperience.text.toString()

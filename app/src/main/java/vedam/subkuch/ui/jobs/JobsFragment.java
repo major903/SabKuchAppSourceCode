@@ -202,14 +202,14 @@ public class JobsFragment extends BaseFragment implements OnListViewItemClickLis
             case R.id.action_add:
                 startActivity(new Intent(getActivity(), AddJobsActivity.class));
                 return true;
-            case R.id.action_search:
-                if (fragmentJobsBinding.cvSearch.getVisibility() == View.VISIBLE)
-                    fragmentJobsBinding.cvSearch.setVisibility(View.GONE);
-                else {
-                    fragmentJobsBinding.etSearch.requestFocus();
-                    fragmentJobsBinding.cvSearch.setVisibility(View.VISIBLE);
-                }
-                return true;
+//            case R.id.action_search:
+//                if (fragmentJobsBinding.cvSearch.getVisibility() == View.VISIBLE)
+//                    fragmentJobsBinding.cvSearch.setVisibility(View.GONE);
+//                else {
+//                    fragmentJobsBinding.etSearch.requestFocus();
+//                    fragmentJobsBinding.cvSearch.setVisibility(View.VISIBLE);
+//                }
+//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -268,8 +268,8 @@ public class JobsFragment extends BaseFragment implements OnListViewItemClickLis
                 sbPost.append(String.format(Locale.US, "%d) %s ", i + 1, post.getJobTitle()));
             }
 
-        return String.format(Locale.US, "%s dealing in %s is looking for %s\n%s", job.getOrganisationName(),
-                job.getDealingIn(), sbPost.toString().trim(), job.getHowToContact());
+        return String.format(Locale.US, "%s dealing in %s located in %s is looking for %s\n%s", job.getOrganisationName(),
+                job.getDealingIn(), job.getCity(), sbPost.toString().trim(), job.getHowToContact());
     }
 
     public class JobsOnScrollListener extends RecyclerView.OnScrollListener {

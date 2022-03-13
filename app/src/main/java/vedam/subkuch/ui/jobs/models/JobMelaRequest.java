@@ -7,7 +7,15 @@ public class JobMelaRequest implements Parcelable {
 
     private String JobExperienceDetails;
 
-    private String[] JobTypes;
+    public int[] getJobTypes() {
+        return JobTypes;
+    }
+
+    public void setJobTypes(int[] jobTypes) {
+        JobTypes = jobTypes;
+    }
+
+    private int[] JobTypes;
 
     private Boolean IsOwnTwoWheeler;
 
@@ -15,21 +23,22 @@ public class JobMelaRequest implements Parcelable {
 
     private Boolean IsInterestedInJob;
 
-    private String JobQualificationId;
+    private String JobQualification;
 
     private String JobExperienceId;
+    private String JobExpName;
 
     private String JobSalaryId;
 
     protected JobMelaRequest(Parcel in) {
         JobExperienceDetails = in.readString();
-        JobTypes = in.createStringArray();
+        JobTypes = in.createIntArray();
         byte tmpIsOwnTwoWheeler = in.readByte();
         IsOwnTwoWheeler = tmpIsOwnTwoWheeler == 0 ? null : tmpIsOwnTwoWheeler == 1;
         UserId = in.readString();
         byte tmpIsInterestedInJob = in.readByte();
         IsInterestedInJob = tmpIsInterestedInJob == 0 ? null : tmpIsInterestedInJob == 1;
-        JobQualificationId = in.readString();
+        JobQualification = in.readString();
         JobExperienceId = in.readString();
         JobSalaryId = in.readString();
         JobpostId = in.readString();
@@ -38,11 +47,11 @@ public class JobMelaRequest implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(JobExperienceDetails);
-        dest.writeStringArray(JobTypes);
+        dest.writeIntArray(JobTypes);
         dest.writeByte((byte) (IsOwnTwoWheeler == null ? 0 : IsOwnTwoWheeler ? 1 : 2));
         dest.writeString(UserId);
         dest.writeByte((byte) (IsInterestedInJob == null ? 0 : IsInterestedInJob ? 1 : 2));
-        dest.writeString(JobQualificationId);
+        dest.writeString(JobQualification);
         dest.writeString(JobExperienceId);
         dest.writeString(JobSalaryId);
         dest.writeString(JobpostId);
@@ -103,14 +112,6 @@ public class JobMelaRequest implements Parcelable {
         this.JobExperienceDetails = JobExpereinceDetails;
     }
 
-    public String[] getJobTypes() {
-        return JobTypes;
-    }
-
-    public void setJobTypes(String[] JobTypes) {
-        this.JobTypes = JobTypes;
-    }
-
     public Boolean getIsOwnTwoWheeler() {
         return IsOwnTwoWheeler;
     }
@@ -135,16 +136,20 @@ public class JobMelaRequest implements Parcelable {
         this.IsInterestedInJob = IsInterestedInJob;
     }
 
-    public String getJobQualificationId() {
-        return JobQualificationId;
+    public String getJobQualification() {
+        return JobQualification;
     }
 
-    public void setJobQualificationId(String JobQualificationId) {
-        this.JobQualificationId = JobQualificationId;
+    public void setJobQualification(String JobQualification) {
+        this.JobQualification = JobQualification;
     }
 
     public String getJobExperienceId() {
         return JobExperienceId;
+    }
+
+    public String getJobExpName() {
+        return JobExpName;
     }
 
     public void setJobExperienceId(String JobExpereince) {

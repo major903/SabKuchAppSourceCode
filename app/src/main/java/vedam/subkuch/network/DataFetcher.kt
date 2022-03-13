@@ -694,7 +694,7 @@ object DataFetcher {
     fun <T> getJobProfile(
             context: Context?,
             updateSuccessListener: Response.Listener<T>?,
-            repClass: Class<T>?,
+            repClass: Type?,
             errorListener: Response.ErrorListener?
     ) {
         val userId = AppPrefs.getPrefsUserId(context)

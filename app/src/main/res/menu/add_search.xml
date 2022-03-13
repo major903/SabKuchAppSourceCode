@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/action_search"
-        android:icon="@drawable/baseline_search_white_24dp"
-        android:title="@string/search_jobs"
-        app:showAsAction="ifRoom" />
+<!--    <item-->
+<!--        android:id="@+id/action_search"-->
+<!--        android:icon="@drawable/baseline_search_white_24dp"-->
+<!--        android:title="@string/search_jobs"-->
+<!--        app:showAsAction="ifRoom" />-->
 
     <item
         android:id="@+id/action_add"

@@ -7,26 +7,9 @@ public class Post implements Parcelable {
 
     private String JobCategoryId;
 
-    public String getJobpostId() {
-        return JobpostId;
-    }
-
-    public void setJobpostId(String jobpostId) {
-        JobpostId = jobpostId;
-    }
-
-    private String JobpostId;
-    private String Requirement;
-
-    private String JobTitle;
-    private Boolean IsApply;
-
-    public Post() {
-
-    }
-
     protected Post(Parcel in) {
         JobCategoryId = in.readString();
+        JobpostId = in.readString();
         Requirement = in.readString();
         JobTitle = in.readString();
         byte tmpIsApply = in.readByte();
@@ -36,6 +19,7 @@ public class Post implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(JobCategoryId);
+        dest.writeString(JobpostId);
         dest.writeString(Requirement);
         dest.writeString(JobTitle);
         dest.writeByte((byte) (IsApply == null ? 0 : IsApply ? 1 : 2));
@@ -57,6 +41,24 @@ public class Post implements Parcelable {
             return new Post[size];
         }
     };
+
+    public String getJobpostId() {
+        return JobpostId;
+    }
+
+    public void setJobpostId(String jobpostId) {
+        JobpostId = jobpostId;
+    }
+
+    private String JobpostId;
+    private String Requirement;
+
+    private String JobTitle;
+    private Boolean IsApply;
+
+    public Post() {
+
+    }
 
     public Boolean getApply() {
         return IsApply;

@@ -42,19 +42,29 @@
                     android:layout_height="wrap_content"
                     android:text="@string/your_qualification" />
 
-                <FrameLayout
+                <EditText
+                    android:id="@+id/et_qualification"
+                    style="@style/EditTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_4dp"
-                    android:background="@drawable/edit_text_border">
+                    android:hint="@string/e_g_graduate"
+                    android:inputType="textMultiLine"
+                    android:padding="@dimen/margin_8dp" />
 
-                    <Spinner
-                        android:id="@+id/sp_qualification"
-                        style="@style/SpinnerStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:theme="@style/SpinnerStyle" />
-                </FrameLayout>
+                <!--                <FrameLayout-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginTop="@dimen/margin_4dp"-->
+                <!--                    android:background="@drawable/edit_text_border">-->
+
+                <!--                    <Spinner-->
+                <!--                        android:id="@+id/sp_qualification"-->
+                <!--                        style="@style/SpinnerStyle"-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:theme="@style/SpinnerStyle" />-->
+                <!--                </FrameLayout>-->
 
                 <TextView
                     style="@style/TextViewBlackHeading"

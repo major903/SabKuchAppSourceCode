@@ -1,7 +1,6 @@
 package vedam.subkuch.ui.profile;
 
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.location.Location;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -9,6 +8,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+
+import androidx.databinding.DataBindingUtil;
 
 import com.android.volley.Response;
 import com.tsongkha.spinnerdatepicker.DatePickerDialog;
@@ -55,7 +56,7 @@ public class RegisterUserActivity extends BaseActivity implements DatePickerFrag
 
     private void getCities() {
 
-        UiUtil.showProgressDialog(this, getString(R.string.loading));
+//        UiUtil.showProgressDialog(this, getString(R.string.loading));
         DataFetcher.getCities(this, onCitiesSuccessListener, CitiesResponse.class, onErrorListener);
     }
 

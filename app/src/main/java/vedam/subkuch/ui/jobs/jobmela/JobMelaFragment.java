@@ -98,7 +98,7 @@ public class JobMelaFragment extends BaseFragment implements OnListViewItemClick
 
     private void next() {
         JobMelaRequest jobMelaRequest = new JobMelaRequest();
-        jobMelaRequest.setJobTypes(getJobTypeIds());
+//        jobMelaRequest.setJobTypes(getJobTypeIds());
         jobMelaRequest.setIsInterestedInJob(isAttending);
         Bundle args = new Bundle();
         args.putParcelable(Constants.EXTRA_DATA, jobMelaRequest);

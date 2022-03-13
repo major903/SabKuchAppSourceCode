@@ -18,6 +18,7 @@ import android.widget.CompoundButton
 import androidx.databinding.DataBindingUtil
 import com.android.volley.Response
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import vedam.subkuch.R
 import vedam.subkuch.base.BaseAddImageFragment
 import vedam.subkuch.databinding.FragmentSubmitBinding
@@ -27,9 +28,7 @@ import vedam.subkuch.network.DataFetcher.getJobSalaries
 import vedam.subkuch.network.DataFetcher.uploadJobProfileImage
 import vedam.subkuch.network.DataFetcher.withdraw
 import vedam.subkuch.network.NetworkConstants
-import vedam.subkuch.network.models.DataPart
-import vedam.subkuch.network.models.GeneralResponse
-import vedam.subkuch.network.models.WithdrawalRequest
+import vedam.subkuch.network.models.*
 import vedam.subkuch.network.models.wallet.WalletResponse
 import vedam.subkuch.ui.jobs.models.*
 import vedam.subkuch.ui.shopping.show
@@ -47,9 +46,11 @@ class ApplyJobFragment : BaseAddImageFragment(), OnItemSelectedListener {
     private var jobMelaRequest: JobMelaRequest? = null
     private var post: Post? = null
     private var salaryId: String? = null
-    private var jobQualificationId: String? = null
     private var jobExperienceId: String? = null
     private var walletResponse: WalletResponse? = null
+    private var jobExperiences: ArrayList<JobExperience>? = null
+    private var jobSalaries: ArrayList<JobSalary>? = null
+    private var stack = Stack<Any>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,6 +81,31 @@ class ApplyJobFragment : BaseAddImageFragment(), OnItemSelectedListener {
         loadUI()
     }
 
+    private val onViewJobSuccessListener =
+        Response.Listener { response: BaseGetMasterModel<JobMelaRequest>? ->
+            fillJobDetails(response?.returnData?.get(0))
+        }
+
+    private fun fillJobDetails(response: JobMelaRequest?) {
+        binding?.etMoreExperience?.setText(response?.jobExperienceDetails ?: "")
+        binding?.etQualification?.setText(response?.jobQualification ?: "")
+        if (response?.isOwnTwoWheeler == true)
+            binding?.rbYes?.isChecked = true
+        else
+            binding?.rbNo?.isChecked = true
+        response?.jobExpName?.let { expName ->
+            val expPos = jobExperiences?.indexOfFirst { it.jobExpName == expName } ?: 0
+            if (expPos >= 0)
+                binding?.spExperience?.setSelection(expPos)
+        }
+
+        response?.jobSalaryId?.let { salId ->
+            val pos = jobSalaries?.indexOfFirst { it.jobSalaryId == salId } ?: 0
+            if (pos >= 0)
+                binding?.spSalaryExpected?.setSelection(pos)
+        }
+    }
+
     private fun loadUI() {
         UiUtil.cancelProgressDialog()
         val balance =
@@ -90,8 +116,10 @@ class ApplyJobFragment : BaseAddImageFragment(), OnItemSelectedListener {
             binding?.tvMessage?.text = getString(R.string.yes_money, balance)
             binding?.scrollView?.show()
             binding?.btSubmit?.show()
+            stack.add(Any())
+            stack.add(Any())
             getSalaries()
-            getJobQualifications()
+//            getJobQualifications()
             getJobExperiences()
         } else {
             binding?.tvMessage?.show()
@@ -111,6 +139,16 @@ class ApplyJobFragment : BaseAddImageFragment(), OnItemSelectedListener {
             binding?.tvMessage?.text = ss
             binding?.tvMessage?.highlightColor = Color.TRANSPARENT
         }
+    }
+
+    private fun getViewProfile() {
+        val type = object : TypeToken<BaseGetMasterModel<JobMelaRequest>>() {}.type
+        DataFetcher.getJobProfile(
+            context,
+            onViewJobSuccessListener,
+            type,
+            onErrorListener
+        )
     }
 
     private fun getWalletDetails() {
@@ -136,12 +174,15 @@ class ApplyJobFragment : BaseAddImageFragment(), OnItemSelectedListener {
     private val onExperienceSuccessListener =
         Response.Listener { response: JobExperienceResponse? ->
             UiUtil.cancelProgressDialog()
+            stack.pop()
             if (activity != null) if (response != null && response.returnMessage == Constants.SUCCESS) {
                 setJobExperiences(response.returnData)
+                checkAndViewProfile()
             } else UiUtil.showToast(context, getString(R.string.no_data))
         }
 
     private fun setJobExperiences(jobExperiences: ArrayList<JobExperience>) {
+        this.jobExperiences = jobExperiences
         val jobExperience = JobExperience()
         jobExperience.jobExpName = getString(R.string.select_a_job_experience)
         jobExperiences.add(0, jobExperience)
@@ -155,35 +196,35 @@ class ApplyJobFragment : BaseAddImageFragment(), OnItemSelectedListener {
     }
 
     private fun getJobQualifications() {
-        UiUtil.showProgressDialog(context, R.string.please_wait)
-        DataFetcher.getJobQualifications(
-            context,
-            onQualifySuccessListener,
-            JobQualificationResponse::class.java,
-            onErrorListener
-        )
+//        UiUtil.showProgressDialog(context, R.string.please_wait)
+//        DataFetcher.getJobQualifications(
+//            context,
+//            onQualifySuccessListener,
+//            JobQualificationResponse::class.java,
+//            onErrorListener
+//        )
     }
 
-    private val onQualifySuccessListener =
-        Response.Listener { response: JobQualificationResponse? ->
-            UiUtil.cancelProgressDialog()
-            if (activity != null) if (response != null && response.returnMessage == Constants.SUCCESS) {
-                setJobQualifications(response.returnData)
-            } else UiUtil.showToast(context, getString(R.string.no_data))
-        }
+//    private val onQualifySuccessListener =
+//        Response.Listener { response: JobQualificationResponse? ->
+//            UiUtil.cancelProgressDialog()
+//            if (activity != null) if (response != null && response.returnMessage == Constants.SUCCESS) {
+//                setJobQualifications(response.returnData)
+//            } else UiUtil.showToast(context, getString(R.string.no_data))
+//        }
 
-    private fun setJobQualifications(jobQualifications: ArrayList<JobQualification>) {
-        val jobQualification = JobQualification()
-        jobQualification.qualificationName = getString(R.string.select_a_job_qualification)
-        jobQualifications.add(0, jobQualification)
-        val adapter = ArrayAdapter(
-            context,
-            android.R.layout.simple_spinner_dropdown_item, jobQualifications
-        )
-        binding?.spQualification?.adapter = adapter
-        binding?.spQualification?.onItemSelectedListener = this
-        binding?.spQualification?.setSelection(0)
-    }
+//    private fun setJobQualifications(jobQualifications: ArrayList<JobQualification>) {
+//        val jobQualification = JobQualification()
+//        jobQualification.qualificationName = getString(R.string.select_a_job_qualification)
+//        jobQualifications.add(0, jobQualification)
+//        val adapter = ArrayAdapter(
+//            context,
+//            android.R.layout.simple_spinner_dropdown_item, jobQualifications
+//        )
+//        binding?.spQualification?.adapter = adapter
+//        binding?.spQualification?.onItemSelectedListener = this
+//        binding?.spQualification?.setSelection(0)
+//    }
 
     private fun getSalaries() {
         UiUtil.showProgressDialog(context, R.string.please_wait)
@@ -197,12 +238,15 @@ class ApplyJobFragment : BaseAddImageFragment(), OnItemSelectedListener {
 
     private val onSalarySuccessListener = Response.Listener { response: JobSalaryResponse? ->
         UiUtil.cancelProgressDialog()
+        stack.pop()
         if (response != null && response.returnMessage == Constants.SUCCESS) {
             setJobSalaries(response.returnData)
+            checkAndViewProfile()
         } else UiUtil.showToast(context, getString(R.string.no_data))
     }
 
     private fun setJobSalaries(jobSalaries: ArrayList<JobSalary>) {
+        this.jobSalaries = jobSalaries
         val jobSalary = JobSalary()
         jobSalary.salary = getString(R.string.select_a_salary)
         jobSalaries.add(0, jobSalary)
@@ -213,6 +257,12 @@ class ApplyJobFragment : BaseAddImageFragment(), OnItemSelectedListener {
         binding!!.spSalaryExpected.adapter = adapter
         binding!!.spSalaryExpected.onItemSelectedListener = this
         binding!!.spSalaryExpected.setSelection(0)
+    }
+
+    private fun checkAndViewProfile() {
+        if (stack.isEmpty()) {
+            getViewProfile()
+        }
     }
 
     private fun bindCallbacks() {
@@ -286,10 +336,10 @@ class ApplyJobFragment : BaseAddImageFragment(), OnItemSelectedListener {
         jobMelaRequest = JobMelaRequest()
         jobMelaRequest!!.jobpostId = post?.jobpostId
         jobMelaRequest!!.userId = userId
-        jobMelaRequest!!.jobpostId = post?.jobCategoryId
         jobMelaRequest!!.isOwnTwoWheeler = isTwoWheelerOwner
         jobMelaRequest!!.jobSalaryId = salaryId
-        jobMelaRequest!!.jobQualificationId = jobQualificationId
+        jobMelaRequest!!.jobTypes = intArrayOf(0)
+        jobMelaRequest!!.jobQualification = binding!!.etQualification.text.toString()
         jobMelaRequest!!.jobExperienceId = jobExperienceId
         jobMelaRequest!!.jobExperienceDetails =
             binding!!.etMoreExperience.text.toString()
@@ -315,7 +365,7 @@ class ApplyJobFragment : BaseAddImageFragment(), OnItemSelectedListener {
 
     private fun validateErrorMessage(): Int {
         var errorMessage = 0
-        if (TextUtils.isEmpty(jobQualificationId)) errorMessage =
+        if (binding?.etQualification?.text?.isBlank() == true) errorMessage =
             R.string.select_a_job_qualification else if (TextUtils.isEmpty(jobExperienceId)) errorMessage =
             R.string.select_a_job_experience else if (jobExperienceId != Constants.FRESHER && TextUtils.isEmpty(
                 binding?.etMoreExperience?.text
@@ -329,8 +379,8 @@ class ApplyJobFragment : BaseAddImageFragment(), OnItemSelectedListener {
 
     override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
         when (parent.id) {
-            R.id.sp_qualification -> jobQualificationId =
-                (parent.getItemAtPosition(position) as JobQualification).qulaificationId
+//            R.id.sp_qualification -> jobQualificationId =
+//                (parent.getItemAtPosition(position) as JobQualification).qulaificationId
             R.id.sp_experience -> jobExperienceId =
                 (parent.getItemAtPosition(position) as JobExperience).jobExpId
             R.id.sp_salary_expected -> salaryId =

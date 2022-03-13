@@ -1,29 +1,29 @@
 package vedam.subkuch.ui.jobs
 
 import android.content.Context
-import vedam.subkuch.interfaces.OnListViewItemClickListener
-import androidx.recyclerview.widget.RecyclerView
-import android.view.ViewGroup
-import android.view.LayoutInflater
-import vedam.subkuch.R
-import vedam.subkuch.utils.UiUtil
-import android.text.TextUtils
-import vedam.subkuch.utils.AppUtil
-import android.widget.LinearLayout
-import vedam.subkuch.ui.jobs.models.Post
-import android.text.SpannableStringBuilder
-import android.text.style.MetricAffectingSpan
-import vedam.subkuch.uicomponent.CustomTypefaceSpan
 import android.graphics.Typeface
 import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.TextUtils
+import android.text.style.MetricAffectingSpan
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
+import vedam.subkuch.R
+import vedam.subkuch.interfaces.OnListViewItemClickListener
 import vedam.subkuch.ui.jobs.models.Job
+import vedam.subkuch.ui.jobs.models.Post
+import vedam.subkuch.uicomponent.CustomTypefaceSpan
+import vedam.subkuch.utils.AppUtil
 import vedam.subkuch.utils.ListItemClickAction
-import java.util.ArrayList
+import vedam.subkuch.utils.UiUtil
+import java.util.*
 
 class JobsAdapter constructor(
     private val context: Context,
@@ -47,7 +47,7 @@ class JobsAdapter constructor(
             holder.tvLocation
         )
         UiUtil.setTextView(holder.tvContact, job.howToContact)
-        if (job.posts != null && !job.posts.isEmpty()) setPosition(
+        if (job.posts != null && job.posts.isNotEmpty()) setPosition(
             holder.llPosition,
             job.posts
         ) else holder.llPosition.visibility = View.GONE
