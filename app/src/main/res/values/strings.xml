@@ -385,4 +385,5 @@
     <string name="no_money">Available Amount in Wallet : %d\n\nApplying to a job costs Rs. 10. You don\'t have balance in your wallet. You can earn by sharing App or sharing job ads with your friends. Click here for details</string>
     <string name="yes_money">Available Amount in Wallet = %d\n\nApplying for a Job costs Rs. 10. Proceed only if you are ready to pay the fee. </string>
     <string name="e_g_graduate">Example : M Sc. Micro Biology</string>
+    <string name="search_directory">Search Directory</string>
 </resources>

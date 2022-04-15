@@ -14,4 +14,8 @@ data class Business(
     val Website: String? = null,
     val Country: String? = null,
     val City: String? = null,
-) : Parcelable
+) : Parcelable {
+    override fun toString(): String {
+        return BusinessName ?: ""
+    }
+}

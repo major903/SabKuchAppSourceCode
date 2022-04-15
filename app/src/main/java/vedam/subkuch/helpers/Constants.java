@@ -13,6 +13,7 @@ public class Constants {
     Constants() {
     }
 
+    public static final String MAPS_API_KEY = "AIzaSyBbJyPcubEVE_QvTqRps5vLq7329EcU8b0";
     public static final String EXTRA_IMAGE_URL = "EXTRA_IMAGE_URL";
     public static final String EXTRA_URL = "EXTRA_URL";
     public static final String EXTRA_RECEIVER = "EXTRA_RECEIVER";

@@ -7,6 +7,7 @@
         <entry key="app/src/main/res/drawable/r_corner_fill_blue_light.xml" value="0.29074074074074074" />
         <entry key="app/src/main/res/drawable/selector_rounded_fill_blue_button.xml" value="0.29074074074074074" />
         <entry key="app/src/main/res/layout/activity_add_jobs.xml" value="0.3" />
+        <entry key="app/src/main/res/layout/activity_add_need.xml" value="0.3282051282051282" />
         <entry key="app/src/main/res/layout/activity_crop_image.xml" value="0.24259259259259258" />
         <entry key="app/src/main/res/layout/activity_directory.xml" value="0.16210739614994935" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.335" />
@@ -15,7 +16,10 @@
         <entry key="app/src/main/res/layout/activity_wallet.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_withdrawal.xml" value="0.3333333333333333" />
         <entry key="app/src/main/res/layout/fragment_add_directory.xml" value="0.3282051282051282" />
+        <entry key="app/src/main/res/layout/fragment_add_event.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_add_public_utility.xml" value="0.3282051282051282" />
         <entry key="app/src/main/res/layout/fragment_blank.xml" value="0.16210739614994935" />
+        <entry key="app/src/main/res/layout/fragment_directory.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.24259259259259258" />
         <entry key="app/src/main/res/layout/fragment_event.xml" value="0.3282051282051282" />
         <entry key="app/src/main/res/layout/fragment_experience.xml" value="0.3333333333333333" />
@@ -32,6 +36,7 @@
         <entry key="app/src/main/res/menu/activity_home_drawer.xml" value="0.3282051282051282" />
         <entry key="app/src/main/res/menu/add_search.xml" value="0.3282051282051282" />
         <entry key="app/src/main/res/menu/jobs.xml" value="0.3282051282051282" />
+        <entry key="leku/src/main/res/layout/leku_toolbar_search.xml" value="0.1" />
       </map>
     </option>
   </component>
@@ -79,7 +84,7 @@
       </value>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
