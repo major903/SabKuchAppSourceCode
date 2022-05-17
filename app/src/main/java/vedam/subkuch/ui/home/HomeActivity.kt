@@ -150,13 +150,11 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     private fun addContact(result: BroadQuery.Result) {
+        val userId = AppPrefs.getPrefsUserId(this)
         val list = arrayListOf<ContactObject>()
-        var i = 0;
         result.forEach {
-            if (i == 2)
-                return@forEach
             val contactObj =
-                ContactObject(Userid = it.idOrNull, Name = it.displayNamePrimary, Status = true)
+                ContactObject(Userid = userId, Name = it.displayNamePrimary, Status = true)
 
             if (it.hasPhoneNumber == true) {
                 for ((index, phone) in it.phoneList().withIndex()) {
@@ -172,7 +170,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             }
             if (!TextUtils.isEmpty(contactObj.Mobile1))
                 list.add(contactObj)
-            i++;
         }
 
         val type = object : TypeToken<BaseResponse<String>>() {}.type
