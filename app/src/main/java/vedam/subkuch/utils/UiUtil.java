@@ -192,7 +192,7 @@ public class UiUtil {
         setTypeface(tvMessage, font2);
     }
 
-    private static void setTypeface(TextView tv, Typeface font) {
+    public static void setTypeface(TextView tv, Typeface font) {
         if (tv != null)
             tv.setTypeface(font);
     }

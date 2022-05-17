@@ -135,6 +135,26 @@ object DataFetcher {
     }
 
     @JvmStatic
+    fun <T> addContacts(
+        context: Context?,
+        json: String?,
+        updateSuccessListener: Response.Listener<T>?,
+        repClass: Type?,
+        errorListener: Response.ErrorListener?
+    ) {
+        val url = String.format("%s/api/Message/AddUserContact", NetworkConstants.END_POINT2)
+        HelperVolley.callApiWithBody(
+            context,
+            url,
+            null,
+            updateSuccessListener,
+            json,
+            repClass,
+            errorListener
+        )
+    }
+
+    @JvmStatic
     fun <T> getCountries(
         context: Context?,
         updateSuccessListener: Response.Listener<T>?,
@@ -1182,7 +1202,7 @@ object DataFetcher {
     fun <T> getShareContent(
         context: Context?,
         updateSuccessListener: Response.Listener<T>?,
-        repClass: Class<T>?,
+        repClass: Type?,
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/Referral/ShareContent", NetworkConstants.END_POINT2)
@@ -1216,7 +1236,7 @@ object DataFetcher {
         context: Context?,
         json: String?,
         updateSuccessListener: Response.Listener<T>?,
-        repClass: Class<T>?,
+        repClass: Type?,
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/UserProfile/LinkReferral", NetworkConstants.END_POINT2)
