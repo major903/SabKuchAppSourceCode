@@ -113,7 +113,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val dialog = AlertDialog.Builder(this)
             .setCancelable(false)
             .setMessage(message)
-            .setPositiveButton("Add Contacts") { dialogInterface: DialogInterface, i: Int ->
+            .setPositiveButton("Ok") { dialogInterface: DialogInterface, i: Int ->
                 attemptAddContacts()
                 dialogInterface.dismiss()
             }
@@ -152,9 +152,13 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private fun addContact(result: BroadQuery.Result) {
         val userId = AppPrefs.getPrefsUserId(this)
         val list = arrayListOf<ContactObject>()
+        var i = 0
         result.forEach {
+            if (i==2){
+                return@forEach
+            }
             val contactObj =
-                ContactObject(Userid = userId, Name = it.displayNamePrimary, Status = true)
+                ContactObject(Userid = userId, Name = it.displayNamePrimary, Status = 1)
 
             if (it.hasPhoneNumber == true) {
                 for ((index, phone) in it.phoneList().withIndex()) {
@@ -170,6 +174,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             }
             if (!TextUtils.isEmpty(contactObj.Mobile1))
                 list.add(contactObj)
+            i++
         }
 
         val type = object : TypeToken<BaseResponse<String>>() {}.type
@@ -177,7 +182,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     private fun updateStatus() {
-        val obj = ContactObject(Status = true)
+        val obj = ContactObject(Userid = AppPrefs.getPrefsUserId(this), Status = 1)
         val list = arrayListOf(obj)
         val type = object : TypeToken<BaseResponse<String>>() {}.type
         DataFetcher.addContacts(this, Gson().toJson(list), onAddContactSuccessListener, type, null)

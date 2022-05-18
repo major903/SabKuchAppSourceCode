@@ -6,6 +6,6 @@ data class ContactObject(
     var Mobile1: String? = null,
     var Mobile2: String? = null,
     var Mobile3: String? = null,
-    val Status: Boolean? = null,
+    val Status: Int? = null,
     val CityId: String? = "0",
 )
