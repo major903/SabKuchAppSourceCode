@@ -71,30 +71,39 @@ import vedam.subkuch.utils.*
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener,
     InstallReferrerStateListener {
-    private var activityHomeBinding: ActivityHomeBinding? = null
+    private var binding: ActivityHomeBinding? = null
     private var referrerClient: InstallReferrerClient? = null
+    val iconHash = mapOf(
+        1 to R.drawable.ic_menu_profile,
+        2 to R.drawable.ic_menu_wallet,
+        3 to R.drawable.ic_menu_wallet,
+        4 to R.drawable.ic_menu_inbox,
+        5 to R.drawable.baseline_room_black_24
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activityHomeBinding = DataBindingUtil.setContentView(
+        binding = DataBindingUtil.setContentView(
             this, R.layout.activity_home
         )
         requestLocation(false)
+        getMenus()
         getFeatures()
         getBroadCastMessage()
         val toggle = ActionBarDrawerToggle(
             this,
-            activityHomeBinding!!.drawerLayout,
+            binding!!.drawerLayout,
             toolbar,
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         )
-        activityHomeBinding!!.drawerLayout.addDrawerListener(toggle)
+        binding!!.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-        activityHomeBinding!!.navView.setNavigationItemSelectedListener(this)
+        binding!!.navView.setNavigationItemSelectedListener(this)
         val tvName =
-            activityHomeBinding!!.navView.getHeaderView(0).findViewById<TextView>(R.id.tv_name)
+            binding!!.navView.getHeaderView(0).findViewById<TextView>(R.id.tv_name)
         tvName.text = AppPrefs.getPrefsUserName(this)
-        val view = activityHomeBinding!!.navView.findViewById<View>(R.id.ll_tnc)
+        val view = binding!!.navView.findViewById<View>(R.id.ll_tnc)
         view.setOnClickListener { v: View? -> AppUtil.openUrl(this, Constants.PRIVACY_POLICY_URL) }
         handleReferral()
         registerFCM()
@@ -152,11 +161,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private fun addContact(result: BroadQuery.Result) {
         val userId = AppPrefs.getPrefsUserId(this)
         val list = arrayListOf<ContactObject>()
-        var i = 0
         result.forEach {
-            if (i==2){
-                return@forEach
-            }
             val contactObj =
                 ContactObject(Userid = userId, Name = it.displayNamePrimary, Status = 1)
 
@@ -174,7 +179,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             }
             if (!TextUtils.isEmpty(contactObj.Mobile1))
                 list.add(contactObj)
-            i++
         }
 
         val type = object : TypeToken<BaseResponse<String>>() {}.type
@@ -241,6 +245,41 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         )
     }
 
+    private fun getMenus() {
+        UiUtil.showProgressDialog(this, getString(R.string.please_wait))
+        val type = object : TypeToken<BaseResponse<ArrayList<ArrayList<OMenu>>>>() {}.type
+        DataFetcher.getMenus(
+            this,
+            onMenuSuccessListener,
+            type,
+            onErrorListener
+        )
+    }
+
+    private val onMenuSuccessListener =
+        Response.Listener { response: BaseResponse<ArrayList<ArrayList<OMenu>>>? ->
+            UiUtil.cancelProgressDialog()
+            if (response != null) {
+                if (response.returnCode == Constants.SUCCESS_RETURN_CODE) {
+                    setMenu(response.returnData)
+                } else if (!TextUtils.isEmpty(response.returnMessage)) UiUtil.showToast(
+                    this@HomeActivity,
+                    response.returnMessage
+                )
+            } else UiUtil.showToast(this@HomeActivity, getString(R.string.err_occurred))
+        }
+
+    private fun setMenu(menus: ArrayList<ArrayList<OMenu>>?) {
+        menus?.get(0)?.let {
+            binding?.navView?.menu?.clear()
+            for (menu in it) {
+                val a = binding?.navView?.menu?.add(0, menu.MenuId, 0, menu.name)
+                a?.setIcon(iconHash[menu.MenuId] ?: R.drawable.ic_menu_inbox)
+            }
+            binding?.navView?.invalidate()
+        }
+    }
+
     private fun getFeatures() {
         UiUtil.showProgressDialog(this, getString(R.string.please_wait))
         getFeatures2(
@@ -256,7 +295,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         if (response != null) {
             if (response.returnCode == Constants.SUCCESS_RETURN_CODE) {
                 enableFeatures(response.returnData)
-                activityHomeBinding!!.root.findViewById<View>(R.id.ll_container).visibility =
+                binding!!.root.findViewById<View>(R.id.ll_container).visibility =
                     View.VISIBLE
             } else if (!TextUtils.isEmpty(response.returnMessage)) UiUtil.showToast(
                 this@HomeActivity,
@@ -324,23 +363,23 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             when (feature.name) {
                 Constants.Directory -> {
                     val ivDirectory =
-                        activityHomeBinding!!.root.findViewById<ImageView>(R.id.iv_directory)
+                        binding!!.root.findViewById<ImageView>(R.id.iv_directory)
                     ivDirectory.visibility = View.VISIBLE
                     setImage(ivDirectory, R.drawable.directory, feature)
                 }
                 Constants.Events -> {
-                    val ivEvent = activityHomeBinding!!.root.findViewById<ImageView>(R.id.iv_events)
+                    val ivEvent = binding!!.root.findViewById<ImageView>(R.id.iv_events)
                     ivEvent.visibility = View.VISIBLE
                     setImage(ivEvent, R.drawable.events, feature)
                 }
                 Constants.Jobs -> {
-                    val ivJobs = activityHomeBinding!!.root.findViewById<ImageView>(R.id.iv_jobs)
+                    val ivJobs = binding!!.root.findViewById<ImageView>(R.id.iv_jobs)
                     ivJobs.visibility = View.VISIBLE
                     setImage(ivJobs, R.drawable.jobs, feature)
                 }
                 Constants.Movies -> {
                     val ivMovies =
-                        activityHomeBinding!!.root.findViewById<ImageView>(R.id.iv_movies)
+                        binding!!.root.findViewById<ImageView>(R.id.iv_movies)
                     ivMovies.visibility = View.VISIBLE
                     setImage(ivMovies, R.drawable.movies, feature)
                 }
@@ -362,18 +401,18 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         for (feature in nodes) {
             when (feature.name) {
                 Constants.Ask_Me -> {
-                    val ivAskMe = activityHomeBinding!!.root.findViewById<ImageView>(R.id.iv_ask_me)
+                    val ivAskMe = binding!!.root.findViewById<ImageView>(R.id.iv_ask_me)
                     ivAskMe.visibility = View.VISIBLE
                     setImage(ivAskMe, R.drawable.ask, feature)
                 }
                 Constants.Classifieds -> {
                     val ivClassifieds =
-                        activityHomeBinding!!.root.findViewById<ImageView>(R.id.iv_classifieds)
+                        binding!!.root.findViewById<ImageView>(R.id.iv_classifieds)
                     ivClassifieds.visibility = View.VISIBLE
                     setImage(ivClassifieds, R.drawable.classifieds, feature)
                 }
                 Constants.Needs -> {
-                    val ivNeeds = activityHomeBinding!!.root.findViewById<ImageView>(R.id.iv_needs)
+                    val ivNeeds = binding!!.root.findViewById<ImageView>(R.id.iv_needs)
                     ivNeeds.visibility = View.VISIBLE
                     setImage(ivNeeds, R.drawable.needs, feature)
                 }
@@ -386,13 +425,13 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             when (feature.name) {
                 Constants.Dating -> {
                     val ivDating =
-                        activityHomeBinding!!.root.findViewById<ImageView>(R.id.iv_dating)
+                        binding!!.root.findViewById<ImageView>(R.id.iv_dating)
                     ivDating.visibility = View.VISIBLE
                     setImage(ivDating, R.drawable.dating, feature)
                 }
                 Constants.Matrimonial -> {
                     val ivMatrimonial =
-                        activityHomeBinding!!.root.findViewById<ImageView>(R.id.iv_matrimonial)
+                        binding!!.root.findViewById<ImageView>(R.id.iv_matrimonial)
                     ivMatrimonial.visibility = View.VISIBLE
                     setImage(ivMatrimonial, R.drawable.matrimonial, feature)
                 }
@@ -405,18 +444,18 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             when (feature.name) {
                 Constants.Phone_book -> {
                     val ivPhoneBook =
-                        activityHomeBinding!!.root.findViewById<ImageView>(R.id.iv_phone_book)
+                        binding!!.root.findViewById<ImageView>(R.id.iv_phone_book)
                     ivPhoneBook.visibility = View.VISIBLE
                     setImage(ivPhoneBook, R.drawable.phonebook, feature)
                 }
                 Constants.Public_Transport_Timings -> {
-                    val ivBus = activityHomeBinding!!.root.findViewById<ImageView>(R.id.iv_bus)
+                    val ivBus = binding!!.root.findViewById<ImageView>(R.id.iv_bus)
                     ivBus.visibility = View.VISIBLE
                     setImage(ivBus, R.drawable.bustrain, feature)
                 }
                 Constants.Public_Utility -> {
                     val ivPublicUtility =
-                        activityHomeBinding!!.root.findViewById<ImageView>(R.id.iv_public_utility)
+                        binding!!.root.findViewById<ImageView>(R.id.iv_public_utility)
                     ivPublicUtility.visibility = View.VISIBLE
                     setImage(ivPublicUtility, R.drawable.public_utility, feature)
                 }
@@ -429,17 +468,17 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             when (feature.name) {
                 Constants.Goods_Transport -> {
                     val ivTransport =
-                        activityHomeBinding!!.root.findViewById<ImageView>(R.id.iv_transport)
+                        binding!!.root.findViewById<ImageView>(R.id.iv_transport)
                     ivTransport.visibility = View.VISIBLE
                     setImage(ivTransport, 0, feature)
                 }
                 Constants.Gift_A_Life -> {
-                    val ivGift = activityHomeBinding!!.root.findViewById<ImageView>(R.id.iv_gift)
+                    val ivGift = binding!!.root.findViewById<ImageView>(R.id.iv_gift)
                     ivGift.visibility = View.VISIBLE
                     setImage(ivGift, 0, feature)
                 }
                 Constants.Offers -> {
-                    val ivOffers = activityHomeBinding!!.root.findViewById<ImageView>(R.id.iv_offer)
+                    val ivOffers = binding!!.root.findViewById<ImageView>(R.id.iv_offer)
                     ivOffers.visibility = View.VISIBLE
                     setImage(ivOffers, R.drawable.offers, feature)
                 }
@@ -588,8 +627,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         startActivity(new Intent(this,Info.class));
     }*/
     override fun onBackPressed() {
-        if (activityHomeBinding!!.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            activityHomeBinding!!.drawerLayout.closeDrawer(GravityCompat.START)
+        if (binding!!.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding!!.drawerLayout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
         }
@@ -598,15 +637,15 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         val id = item.itemId
-        if (id == R.id.nav_edit_profile) {
+        if (id == 1) {
             startActivity(Intent(this, EditProfileActivity::class.java))
-        } else if (id == R.id.nav_wallet) {
+        } else if (id == 2) {
             startActivity(Intent(this, WalletActivity::class.java))
-        } else if (id == R.id.nav_inbox) {
+        } else if (id == 4) {
             startActivity(Intent(this, InboxActivity::class.java))
-        } else if (id == R.id.nav_contribute) {
+        } else if (id == 5) {
             startActivity(Intent(this, StaffTrackActivity::class.java))
-        } else if (id == R.id.nav_cashback) {
+        } else if (id == 3) {
             startActivity(
                 Intent(this, BaseWebActivity::class.java)
                     .putExtra(Constants.EXTRA_NAME, getString(R.string.cashback))
@@ -614,7 +653,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             )
             //            AppUtil.openUrl(this, Constants.PRIVACY_POLICY_URL);
         }
-        activityHomeBinding!!.drawerLayout.closeDrawer(GravityCompat.START)
+        binding!!.drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 

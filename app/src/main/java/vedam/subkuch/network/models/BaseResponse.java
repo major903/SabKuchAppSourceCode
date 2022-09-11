@@ -1,13 +1,13 @@
 package vedam.subkuch.network.models;
 
 public class BaseResponse<T> {
-    private String ReturnCode;
+    private int ReturnCode;
 
     private T ReturnData;
 
     private String ReturnMessage;
 
-    public String getReturnCode() {
+    public int getReturnCode() {
         return ReturnCode;
     }
 

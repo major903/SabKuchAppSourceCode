@@ -177,6 +177,18 @@ object DataFetcher {
     }
 
     @JvmStatic
+    fun <T> getMenus(
+        context: Context?,
+        updateSuccessListener: Response.Listener<T>?,
+        repClass: Type?,
+        errorListener: Response.ErrorListener?
+    ) {
+        val userId = AppPrefs.getPrefsUserId(context)
+        val url = String.format("%s/api/AllAPI/GetMenus?UserId=%s", NetworkConstants.END_POINT2, userId)
+        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+    }
+
+    @JvmStatic
     fun <T> getCategories(
         context: Context?,
         updateSuccessListener: Response.Listener<T>?,
