@@ -68,8 +68,8 @@ public class VehicleTimingFragment extends BaseFragment {
     }
 
     private void getTimings() {
-        UiUtil.showProgressDialog(context, R.string.please_wait);
-        DataFetcher.getVehicleTimings(context, onVehicleSuccessListener, VehicleTimingResponse.class,
+        UiUtil.showProgressDialog(mContext, R.string.please_wait);
+        DataFetcher.getVehicleTimings(mContext, onVehicleSuccessListener, VehicleTimingResponse.class,
                 onErrorListener, vehicleType, cityName);
 
     }
@@ -80,13 +80,13 @@ public class VehicleTimingFragment extends BaseFragment {
         if (response != null && response.getReturnMessage().equalsIgnoreCase(Constants.SUCCESS)) {
             loadValues(response.getReturnData());
         } else
-            UiUtil.showToast(context, getString(R.string.no_data));
+            UiUtil.showToast(mContext, getString(R.string.no_data));
     };
 
     private void loadValues(ArrayList<VehicleTiming> returnData) {
 
-        VehicleTimingAdapter adapter = new VehicleTimingAdapter(context, returnData);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        VehicleTimingAdapter adapter = new VehicleTimingAdapter(mContext, returnData);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setAdapter(adapter);
     }
 }

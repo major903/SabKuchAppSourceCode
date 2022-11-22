@@ -1,5 +1,8 @@
 package vedam.subkuch.base;
 
+import static vedam.subkuch.base.BaseActivity.TAG;
+import static vedam.subkuch.helpers.Constants.REQUEST_PICK_IMAGE_FROM_GALLERY;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -55,9 +58,6 @@ import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.LogUtils;
 import vedam.subkuch.utils.UiUtil;
 
-import static vedam.subkuch.base.BaseActivity.TAG;
-import static vedam.subkuch.helpers.Constants.REQUEST_PICK_IMAGE_FROM_GALLERY;
-
 
 public abstract class BaseAddImagesFragment extends BaseFragment {
 
@@ -89,7 +89,7 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
         @Override
         public boolean onLongClick(final View v) {
 
-            UiUtil.showConfirmationDialog(context, "Are you sure you want to delete this image?", new DialogInterface.OnClickListener() {
+            UiUtil.showConfirmationDialog(mContext, "Are you sure you want to delete this image?", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     int tag = (int) v.getTag();
@@ -129,11 +129,11 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
     protected void onErrorReceived(VolleyError error) {
 
         if (error instanceof NetworkError) {
-            UiUtil.showToast(context, getString(R.string.connectionError));
+            UiUtil.showToast(mContext, getString(R.string.connectionError));
         } else if (error instanceof TimeoutError) {
-            UiUtil.showToast(context, getString(R.string.timeoutError));
+            UiUtil.showToast(mContext, getString(R.string.timeoutError));
         } else if (error instanceof ParseError) {
-            UiUtil.showToast(context, getString(R.string.err_parsing));
+            UiUtil.showToast(mContext, getString(R.string.err_parsing));
         } else if (error instanceof AuthFailureError || (error.networkResponse != null &&
                 error.networkResponse.statusCode == NetworkConstants.CODE_UNAUTHORIZED)) {
             logout();
@@ -154,18 +154,18 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
                 ErrorResponse errorResponse = new Gson().fromJson(response, ErrorResponse.class);
 
                 if (!TextUtils.isEmpty(errorResponse.getReturnMessage()))
-                    UiUtil.showToast(context, errorResponse.getReturnMessage());
+                    UiUtil.showToast(mContext, errorResponse.getReturnMessage());
                 else if (!TextUtils.isEmpty(errorResponse.getMessage()))
-                    UiUtil.showToast(context, errorResponse.getMessage());
+                    UiUtil.showToast(mContext, errorResponse.getMessage());
                 else
-                    UiUtil.showToast(context, getString(R.string.err_occurred));
+                    UiUtil.showToast(mContext, getString(R.string.err_occurred));
             } catch (Exception exception) {
                 FirebaseCrashlytics.getInstance().recordException(exception);
                 exception.printStackTrace();
-                UiUtil.showToast(context, getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, getString(R.string.err_occurred));
             }
         } else {
-            UiUtil.showToast(context, getString(R.string.err_unknown));
+            UiUtil.showToast(mContext, getString(R.string.err_unknown));
         }
     }
 
@@ -202,7 +202,7 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
     }
 
     protected void dialogBuilderPickImage() {
-        PickImageDialog pickImageDialog = new PickImageDialog(context);
+        PickImageDialog pickImageDialog = new PickImageDialog(mContext);
         pickImageDialog.setCancelable(true);
         Window window = pickImageDialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
@@ -217,7 +217,7 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
                         List<String> permissions = new ArrayList<>();
                         permissions.add(Manifest.permission.CAMERA);
                         permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                        if (AppUtil.checkPermissions(context, permissions))
+                        if (AppUtil.checkPermissions(mContext, permissions))
                             launchCamera();
                         else
                             getPermissionToAccessUserCamera();
@@ -225,7 +225,7 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
                     case PickImageDialog.KEY_GALLERY:
                         List<String> permissions2 = new ArrayList<>();
                         permissions2.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                        if (AppUtil.checkPermissions(context, permissions2))
+                        if (AppUtil.checkPermissions(mContext, permissions2))
                             getImageFromGallery();
                         else
                             getPermissionToAccessExternalStorage();
@@ -243,12 +243,12 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
         // in Marshmallow
         // 2) Always check for permission (even if permission has already been granted)
         // since the user can revoke permissions at any time through Settings
-        int hasCameraAccessPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA);
-        int hasExternalStorageAccessPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int hasCameraAccessPermission = ContextCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA);
+        int hasExternalStorageAccessPermission = ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (hasCameraAccessPermission != PackageManager.PERMISSION_GRANTED || hasExternalStorageAccessPermission != PackageManager.PERMISSION_GRANTED) {
             if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) || shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 //Show Tutorial Screen which image and text and button.
-                UiUtil.showDialog(context, context.getString(R.string.camera_rationale), (dialog, which) -> requestPermissions(Constants.CAMERA_GALLERY_GROUP_PERMISSION,
+                UiUtil.showDialog(mContext, mContext.getString(R.string.camera_rationale), (dialog, which) -> requestPermissions(Constants.CAMERA_GALLERY_GROUP_PERMISSION,
                         Constants.PERMISSIONS_REQUEST_CAMERA), true);
                 return;
             }
@@ -263,11 +263,11 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
 
     //region Helper methods for Gallery Permission
     private void getPermissionToAccessExternalStorage() {
-        int hasExternalStorageAccessPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int hasExternalStorageAccessPermission = ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (hasExternalStorageAccessPermission != PackageManager.PERMISSION_GRANTED) {
             if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 //Show Tutorial Screen which image and text and button.
-                UiUtil.showDialog(context, context.getString(R.string.external_storage_rationale), (dialog, which) -> requestPermissions(Constants.READ_WRITE_EXTERNAL_GROUP_PERMISSION,
+                UiUtil.showDialog(mContext, mContext.getString(R.string.external_storage_rationale), (dialog, which) -> requestPermissions(Constants.READ_WRITE_EXTERNAL_GROUP_PERMISSION,
                         Constants.PERMISSIONS_REQUEST_STORAGE), true);
                 return;
             }
@@ -281,7 +281,7 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
 
     private void showSettingsDialog(String message) {
 
-        UiUtil.showDialog(context, message, (dialogInterface, i) -> AppUtil.openAppSettings(context), true);
+        UiUtil.showDialog(mContext, message, (dialogInterface, i) -> AppUtil.openAppSettings(mContext), true);
     }
 
     private void launchCamera() {
@@ -324,8 +324,8 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
         // Store image in dcim
         File file;
         try {
-            file = File.createTempFile(String.format("image%s", new Date().getTime()), ".jpg", context.getExternalCacheDir());
-            Uri imgUri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
+            file = File.createTempFile(String.format("image%s", new Date().getTime()), ".jpg", mContext.getExternalCacheDir());
+            Uri imgUri = FileProvider.getUriForFile(mContext, mContext.getApplicationContext().getPackageName() + ".provider", file);
             this.imagePath = file.getAbsolutePath();
             return imgUri;
         } catch (IOException e) {
@@ -344,19 +344,19 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
             try {
                 //Getting the Bitmap from Gallery
                 if (uri.getScheme().equals("content")) {
-                    InputStream is = context.getContentResolver().openInputStream(uri);
-                    File file = File.createTempFile(String.format("image%s", new Date().getTime()), ".jpg", context.getExternalCacheDir());
+                    InputStream is = mContext.getContentResolver().openInputStream(uri);
+                    File file = File.createTempFile(String.format("image%s", new Date().getTime()), ".jpg", mContext.getExternalCacheDir());
                     copyInputStreamToFile(is, file);
 
                     String filePath = file.getAbsolutePath();
 
                     Bitmap rotatedImage = UiUtil.rotateImageIfRequired(filePath);
-                    Bitmap thumbnailBitmap = UiUtil.getThumbnail(context, rotatedImage);
+                    Bitmap thumbnailBitmap = UiUtil.getThumbnail(mContext, rotatedImage);
 
                     //Setting the Bitmap to ImageView
                     createImageView(thumbnailBitmap, filePath);
                 } else {
-                    UiUtil.showToast(context, getString(R.string.cannot_get_image));
+                    UiUtil.showToast(mContext, getString(R.string.cannot_get_image));
                     noImageAdded();
                 }
             } catch (IOException e) {
@@ -367,7 +367,7 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
         } else if (requestCode == Constants.REQUEST_PICK_IMAGE_FROM_CAMERA) {
             try {
                 Bitmap rotatedImage = UiUtil.rotateImageIfRequired(imagePath);
-                Bitmap decodedBitmap = UiUtil.getThumbnail(context, rotatedImage);
+                Bitmap decodedBitmap = UiUtil.getThumbnail(mContext, rotatedImage);
                 if (decodedBitmap != null) {
                     createImageView(decodedBitmap, imagePath);
                 } else {
@@ -415,12 +415,12 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
 
 
         if (llAddPicture != null) {
-            RoundedImageView imageView = new RoundedImageView(context);
+            RoundedImageView imageView = new RoundedImageView(mContext);
             LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(cvAddPicture.getWidth(), cvAddPicture.getHeight());
-            param.setMargins(AppUtil.dpToPx(context, 8), 0, 0, 0);
+            param.setMargins(AppUtil.dpToPx(mContext, 8), 0, 0, 0);
             param.gravity = Gravity.CENTER_VERTICAL;
             imageView.setLayoutParams(param);
-            imageView.setCornerRadius(AppUtil.dpToPx(context, 8));
+            imageView.setCornerRadius(AppUtil.dpToPx(mContext, 8));
             imageView.setImageBitmap(bitmap);
             imageView.setTag(imageCount);
             imageView.setOnClickListener(imageOnClickListener);

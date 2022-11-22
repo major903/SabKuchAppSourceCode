@@ -75,7 +75,7 @@ public class DetailFragment extends BaseFragment {
     private void initUI() {
 
         if (directoryDetail.getReviews() != null && directoryDetail.getReviews().size() > 0) {
-            fragmentDetailBinding.rvReviews.setLayoutManager(new LinearLayoutManager(context));
+            fragmentDetailBinding.rvReviews.setLayoutManager(new LinearLayoutManager(mContext));
             fragmentDetailBinding.rvReviews.setNestedScrollingEnabled(false);
             fragmentDetailBinding.rvReviews.setAdapter(new ReviewAdapter(directoryDetail.getReviews()));
         } else {
@@ -89,7 +89,7 @@ public class DetailFragment extends BaseFragment {
         if (!TextUtils.isEmpty(directoryDetail.getImage())) {
             fragmentDetailBinding.ivEvent.setVisibility(View.VISIBLE);
 
-            UiUtil.setImageView(new ImageSetter.ImageBuilder(context)
+            UiUtil.setImageView(new ImageSetter.ImageBuilder(mContext)
                     .setImageLink(directoryDetail.getImage())
                     .setDefaults()
                     .setTarget(fragmentDetailBinding.ivEvent)
@@ -175,7 +175,7 @@ public class DetailFragment extends BaseFragment {
             fragmentDetailBinding.ibDirection.setVisibility(View.VISIBLE);
             fragmentDetailBinding.ibDirection.setOnClickListener(view -> {
                 String webURL = "https://www.google.com/maps/dir/?api=1&" + "destination=" + businessAddress.getLatitude() + "%2C" + businessAddress.getLongitude();
-                AppUtil.openUrl(context, webURL);
+                AppUtil.openUrl(mContext, webURL);
             });
         } else
             fragmentDetailBinding.ibDirection.setVisibility(View.GONE);
@@ -226,7 +226,7 @@ public class DetailFragment extends BaseFragment {
                 ibDirection.setVisibility(View.VISIBLE);
                 ibDirection.setOnClickListener(v -> {
                     String webURL = "https://www.google.com/maps/dir/?api=1&" + "destination=" + businessAddress.getLatitude() + "%2C" + businessAddress.getLongitude();
-                    AppUtil.openUrl(context, webURL);
+                    AppUtil.openUrl(mContext, webURL);
                 });
             } else
                 ibDirection.setVisibility(View.GONE);

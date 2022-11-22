@@ -54,8 +54,8 @@ public class TransportFragment extends BaseFragment {
     }
 
     private void getUserTypeId() {
-        UiUtil.showProgressDialog(context, getString(R.string.loading));
-        DataFetcher.getProfile(context, onProfileSuccessListener, ProfileResponse.class, onErrorListener);
+        UiUtil.showProgressDialog(mContext, getString(R.string.loading));
+        DataFetcher.getProfile(mContext, onProfileSuccessListener, ProfileResponse.class, onErrorListener);
 
     }
 
@@ -66,15 +66,15 @@ public class TransportFragment extends BaseFragment {
                     response.getReturnData() != null && response.getReturnData().size() > 0) {
                 userTypeId = response.getReturnData().get(0).getUserTypeId();
             } else {
-                UiUtil.showToast(context, getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, getString(R.string.err_occurred));
             }
     };
 
     private void bindCallbacks() {
 
-        fragmentTransportBinding.ibBookFlight.setOnClickListener(v -> UiUtil.showToast(context, getString(R.string.coming_soon)));
+        fragmentTransportBinding.ibBookFlight.setOnClickListener(v -> UiUtil.showToast(mContext, getString(R.string.coming_soon)));
 
-        fragmentTransportBinding.ibBookHotels.setOnClickListener(v -> UiUtil.showToast(context, getString(R.string.coming_soon)));
+        fragmentTransportBinding.ibBookHotels.setOnClickListener(v -> UiUtil.showToast(mContext, getString(R.string.coming_soon)));
 
         fragmentTransportBinding.ibBookTransport.setOnClickListener(v -> showBookings());
     }
@@ -82,7 +82,7 @@ public class TransportFragment extends BaseFragment {
     private void showBookings() {
 
         if (userTypeId == 0)
-            UiUtil.showToast(context, getString(R.string.no_user_type));
+            UiUtil.showToast(mContext, getString(R.string.no_user_type));
         else if (userTypeId == Constants.USER_TYPE_TRANSPORT)
             addFragmentWithAnimation(R.id.content_frame, AllBookingsFragment.newInstance(), null, true);
         else

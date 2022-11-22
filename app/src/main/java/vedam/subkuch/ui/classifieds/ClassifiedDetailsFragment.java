@@ -81,19 +81,19 @@ public class ClassifiedDetailsFragment extends BaseFragment {
 
     private void initUI() {
 
-        linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager = new LinearLayoutManager(mContext);
         binding.rvClassifieds.setLayoutManager(linearLayoutManager);
         binding.rvClassifieds.setHasFixedSize(true);
-        adapter = new ClassifiedDetailsAdapter(context, classifieds);
+        adapter = new ClassifiedDetailsAdapter(mContext, classifieds);
         binding.rvClassifieds.setAdapter(adapter);
         binding.rvClassifieds.addOnScrollListener(new ClassifiedDetailsFragment.OnScrollListener());
     }
 
     private void getClassifieds() {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
         Type type = new TypeToken<BaseGetMasterModel<Classified>>() {
         }.getType();
-        DataFetcher.getClassifieds(context, onGetClassifiedsSuccessListener, type, onErrorListener, pageNo, pageSize, subCategoryId);
+        DataFetcher.getClassifieds(mContext, onGetClassifiedsSuccessListener, type, onErrorListener, pageNo, pageSize, subCategoryId);
 
     }
 
@@ -107,9 +107,9 @@ public class ClassifiedDetailsFragment extends BaseFragment {
                     loading = true;
                     loadValues(response.getReturnData());
                 } else
-                    UiUtil.showToast(context, getString(R.string.no_ads_found));
+                    UiUtil.showToast(mContext, getString(R.string.no_ads_found));
             } else
-                UiUtil.showToast(context, getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, getString(R.string.err_occurred));
     };
 
 
@@ -133,7 +133,7 @@ public class ClassifiedDetailsFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
-                startActivity(new Intent(context, AddClassifiedsActivity.class));
+                startActivity(new Intent(mContext, AddClassifiedsActivity.class));
                 break;
             case R.id.action_edit:
                 addFragmentWithAnimation(R.id.content_frame, MyClassifiedFragment.newInstance(), null, true);

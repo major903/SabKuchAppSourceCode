@@ -78,17 +78,17 @@ public class AllBookingsFragment extends BaseFragment {
 
     private void initUI() {
 
-        linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager = new LinearLayoutManager(mContext);
         fragmentAllBookingsBinding.rvEvents.setLayoutManager(linearLayoutManager);
         fragmentAllBookingsBinding.rvEvents.setHasFixedSize(true);
-        adapter = new AllBookingsAdapter(context, needBookings);
+        adapter = new AllBookingsAdapter(mContext, needBookings);
         fragmentAllBookingsBinding.rvEvents.setAdapter(adapter);
         fragmentAllBookingsBinding.rvEvents.addOnScrollListener(new OnScrollListener());
     }
 
     private void getAllBookings() {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
-        DataFetcher.getAllNeeds(context, onNeedsSuccessListener, NeedResponse.class, onErrorListener, provider.getProviderId(), pageNo, pageSize);
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
+        DataFetcher.getAllNeeds(mContext, onNeedsSuccessListener, NeedResponse.class, onErrorListener, provider.getProviderId(), pageNo, pageSize);
 
     }
 
@@ -102,9 +102,9 @@ public class AllBookingsFragment extends BaseFragment {
                     loading = true;
                     loadValues(response.getReturnData());
                 } else
-                    UiUtil.showToast(context, getString(R.string.no_needs_found));
+                    UiUtil.showToast(mContext, getString(R.string.no_needs_found));
             } else
-                UiUtil.showToast(context, getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, getString(R.string.err_occurred));
     };
 
     private void loadValues(ArrayList<Need> response) {

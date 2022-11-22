@@ -88,14 +88,14 @@ public class ViewProfileFragment extends BaseFragment {
 
     private void showWarning() {
 
-        UiUtil.showConfirmationDialog(context, getString(R.string.are_you_sure_unmatch), (dialog, which) -> setUnmatch(), (dialog, which) -> dialog.dismiss(), true);
+        UiUtil.showConfirmationDialog(mContext, getString(R.string.are_you_sure_unmatch), (dialog, which) -> setUnmatch(), (dialog, which) -> dialog.dismiss(), true);
     }
 
     private void initUI() {
 
         if (datingProfile.getImagesList() != null && datingProfile.getImagesList().size() > 0) {
             String imageLink = datingProfile.getImagesList().get(0).getImage();
-            UiUtil.setImageView(new ImageSetter.ImageBuilder(context)
+            UiUtil.setImageView(new ImageSetter.ImageBuilder(mContext)
                     .setImageLink(imageLink)
                     .setPlaceholderResource(R.drawable.placeholder)
                     .setErrorResource(R.drawable.placeholder)
@@ -116,30 +116,30 @@ public class ViewProfileFragment extends BaseFragment {
 
         UiUtil.setTextView(binding.tvAbout, datingProfile.getAboutMe());
         UiUtil.setTextView(binding.tvDistance, datingProfile.getDistance());
-        UiUtil.setTextViewWithBoldPrefix(context, "Marital Status :", datingProfile.getMaritalStatusName(), binding.tvMaritalStatus);
-        UiUtil.setTextViewWithBoldPrefix(context, "Mother Tongue :", datingProfile.getMothertongueName(), binding.tvMotherTongue);
-        UiUtil.setTextViewWithBoldPrefix(context, "Occupation :", datingProfile.getOccupationName(), binding.tvOccupation);
-        UiUtil.setTextViewWithBoldPrefix(context, "Qualification :", datingProfile.getQualificationName(), binding.tvQualification);
-        UiUtil.setTextViewWithBoldPrefix(context, "Annual Income :", datingProfile.getIncome(), binding.tvAnnualIncome);
-        UiUtil.setTextViewWithBoldPrefix(context, "Body Type :", datingProfile.getBodyTypeName(), binding.tvBodyType);
-        UiUtil.setTextViewWithBoldPrefix(context, "Complexion :", datingProfile.getComplexionName(), binding.tvComplexion);
-        UiUtil.setTextViewWithBoldPrefix(context, "Height :", datingProfile.getHeight(), binding.tvHeight);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Marital Status :", datingProfile.getMaritalStatusName(), binding.tvMaritalStatus);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Mother Tongue :", datingProfile.getMothertongueName(), binding.tvMotherTongue);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Occupation :", datingProfile.getOccupationName(), binding.tvOccupation);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Qualification :", datingProfile.getQualificationName(), binding.tvQualification);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Annual Income :", datingProfile.getIncome(), binding.tvAnnualIncome);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Body Type :", datingProfile.getBodyTypeName(), binding.tvBodyType);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Complexion :", datingProfile.getComplexionName(), binding.tvComplexion);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Height :", datingProfile.getHeight(), binding.tvHeight);
         if (!isDating)
-            UiUtil.setTextViewWithBoldPrefix(context, "Weight :", datingProfile.getWeight(), binding.tvWeight);
+            UiUtil.setTextViewWithBoldPrefix(mContext, "Weight :", datingProfile.getWeight(), binding.tvWeight);
         else
             binding.tvWeight.setVisibility(View.GONE);
-        UiUtil.setTextViewWithBoldPrefix(context, "Religion :", datingProfile.getReligionName(), binding.tvReligion);
-        UiUtil.setTextViewWithBoldPrefix(context, "Caste :", datingProfile.getMasterCastName(), binding.tvCaste);
-        UiUtil.setTextViewWithBoldPrefix(context, "Gothra :", datingProfile.getGotraName(), binding.tvGothra);
-        UiUtil.setTextViewWithBoldPrefix(context, "Nakshatra :", datingProfile.getNakshatraName(), binding.tvNakshatra);
-        UiUtil.setTextViewWithBoldPrefix(context, "Dosham :", datingProfile.getDoshamName(), binding.tvDosham);
-        UiUtil.setTextViewWithBoldPrefix(context, "Food Habit :", datingProfile.getFoodHabitsName(), binding.tvFoodHabit);
-        UiUtil.setTextViewWithBoldPrefix(context, "Drinking Habit :", datingProfile.getDrinkingStatusName(), binding.tvDrinkingHabit);
-        UiUtil.setTextViewWithBoldPrefix(context, "Smoking Habit :", datingProfile.getSmokingType(), binding.tvSmokingHabit);
-        UiUtil.setTextViewWithBoldPrefix(context, "Physical Status :", datingProfile.getPhysicalStatusName(), binding.tvPhysicalStatus);
-        UiUtil.setTextViewWithBoldPrefix(context, "Living With :", datingProfile.getLivingWithName(), binding.tvLivingWith);
-        UiUtil.setTextViewWithBoldPrefix(context, "Owns a Car :", datingProfile.getOwnCarType(), binding.tvOwnCar);
-        UiUtil.setTextViewWithBoldPrefix(context, "Owns a House :", datingProfile.getOwnHouseType(), binding.tvOwnHouse);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Religion :", datingProfile.getReligionName(), binding.tvReligion);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Caste :", datingProfile.getMasterCastName(), binding.tvCaste);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Gothra :", datingProfile.getGotraName(), binding.tvGothra);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Nakshatra :", datingProfile.getNakshatraName(), binding.tvNakshatra);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Dosham :", datingProfile.getDoshamName(), binding.tvDosham);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Food Habit :", datingProfile.getFoodHabitsName(), binding.tvFoodHabit);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Drinking Habit :", datingProfile.getDrinkingStatusName(), binding.tvDrinkingHabit);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Smoking Habit :", datingProfile.getSmokingType(), binding.tvSmokingHabit);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Physical Status :", datingProfile.getPhysicalStatusName(), binding.tvPhysicalStatus);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Living With :", datingProfile.getLivingWithName(), binding.tvLivingWith);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Owns a Car :", datingProfile.getOwnCarType(), binding.tvOwnCar);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Owns a House :", datingProfile.getOwnHouseType(), binding.tvOwnHouse);
     }
 
     @SuppressWarnings("SuspiciousNameCombination")
@@ -147,24 +147,24 @@ public class ViewProfileFragment extends BaseFragment {
 
         int width = binding.cvImage.getMeasuredWidth();
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(width, width);
-        params.bottomMargin = AppUtil.dpToPx(context, 28);
+        params.bottomMargin = AppUtil.dpToPx(mContext, 28);
         binding.cvImage.setLayoutParams(params);
     }
 
     private void setUnmatch() {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
 
         LikeDislike likeDislike = new LikeDislike();
-        String userId = AppPrefs.getPrefsUserId(context);
+        String userId = AppPrefs.getPrefsUserId(mContext);
         likeDislike.setProfileId(userId);
         likeDislike.setReactionType(Constants.REACTION_TYPE_UN_MATCH);
         likeDislike.setTargetProfileId(datingProfile.getProfileId());
 
         if (isDating)
-            DataFetcher.setDatingLikeDislike(context, new Gson().toJson(likeDislike), onLikeDislikeSuccessListener,
+            DataFetcher.setDatingLikeDislike(mContext, new Gson().toJson(likeDislike), onLikeDislikeSuccessListener,
                     LikeDislikeResponse.class, onErrorListener);
         else
-            DataFetcher.setMatrimonyLikeDislike(context, new Gson().toJson(likeDislike), onLikeDislikeSuccessListener,
+            DataFetcher.setMatrimonyLikeDislike(mContext, new Gson().toJson(likeDislike), onLikeDislikeSuccessListener,
                     LikeDislikeResponse.class, onErrorListener);
     }
 
@@ -173,11 +173,11 @@ public class ViewProfileFragment extends BaseFragment {
         UiUtil.cancelProgressDialog();
         if (getActivity() != null)
             if (response != null && response.getReturnMessage().equals(Constants.SUCCESS) && response.getLikeDislike() != null) {
-                UiUtil.showToast(context, getString(R.string.unmatched));
+                UiUtil.showToast(mContext, getString(R.string.unmatched));
                 if (getGlobalFragmentInteractionListener() != null)
                     getGlobalFragmentInteractionListener().setFragmentResult(Activity.RESULT_OK, null);
             } else
-                UiUtil.showToast(context, getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, getString(R.string.err_occurred));
     };
 
     @Override
@@ -190,7 +190,7 @@ public class ViewProfileFragment extends BaseFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_chats) {
-            Intent intent = new Intent(context, ChatActivity.class);
+            Intent intent = new Intent(mContext, ChatActivity.class);
             intent.putExtra(Constants.EXTRA_NAME, AppUtil.deNull(datingProfile.getFirstName()));
             intent.putExtra(Constants.EXTRA_CHAT_TO_ID, datingProfile.getProfileId());
             intent.putExtra(Constants.EXTRA_IS_DATING, isDating);

@@ -41,8 +41,8 @@ abstract class BaseAddImageFragment : BaseFragment() {
                 try {
                     //Getting the Bitmap from Gallery
                     if ("content" == result?.scheme) {
-                        val `is` = context.contentResolver.openInputStream(result)
-                        val file = File.createTempFile(String.format("image%s", Date().time), ".jpg", context.externalCacheDir)
+                        val `is` = mContext?.contentResolver?.openInputStream(result)
+                        val file = File.createTempFile(String.format("image%s", Date().time), ".jpg", mContext?.externalCacheDir)
                         copyInputStreamToFile(`is`, file)
                         val filePath = file.absolutePath
 
@@ -52,7 +52,7 @@ abstract class BaseAddImageFragment : BaseFragment() {
                         //Setting the Bitmap to ImageView
                         startCrop(filePath)
                     } else {
-                        UiUtil.showToast(context, getString(R.string.cannot_get_image))
+                        UiUtil.showToast(mContext, getString(R.string.cannot_get_image))
                         noImageAdded()
                     }
                 } catch (e: IOException) {
@@ -78,7 +78,7 @@ abstract class BaseAddImageFragment : BaseFragment() {
     }
 
     protected fun dialogBuilderPickImage() {
-        val pickImageDialog = PickImageDialog(context)
+        val pickImageDialog = PickImageDialog(mContext)
         pickImageDialog.setCancelable(true)
         val window = pickImageDialog.window
         window!!.setGravity(Gravity.BOTTOM)
@@ -91,7 +91,7 @@ abstract class BaseAddImageFragment : BaseFragment() {
                     val permissions: MutableList<String> = ArrayList()
                     permissions.add(permission.CAMERA)
                     permissions.add(permission.WRITE_EXTERNAL_STORAGE)
-                    if (AppUtil.checkPermissions(context, permissions)) launchCamera() else {
+                    if (AppUtil.checkPermissions(mContext, permissions)) launchCamera() else {
                         requestPermissions(arrayOf(permission.CAMERA, permission.WRITE_EXTERNAL_STORAGE),
                                 Constants.PERMISSIONS_REQUEST_CAMERA)
                     }
@@ -99,7 +99,7 @@ abstract class BaseAddImageFragment : BaseFragment() {
                 PickImageDialog.KEY_GALLERY -> {
                     val permissions2: MutableList<String> = ArrayList()
                     permissions2.add(permission.WRITE_EXTERNAL_STORAGE)
-                    if (AppUtil.checkPermissions(context, permissions2)) getImageFromGallery() else {
+                    if (AppUtil.checkPermissions(mContext, permissions2)) getImageFromGallery() else {
                         requestPermissions(arrayOf(permission.WRITE_EXTERNAL_STORAGE),
                                 Constants.PERMISSIONS_REQUEST_STORAGE)
                     }
@@ -110,7 +110,7 @@ abstract class BaseAddImageFragment : BaseFragment() {
     }
 
     private fun showSettingsDialog(message: String) {
-        UiUtil.showDialog(context, message, { _: DialogInterface?, i: Int -> AppUtil.openAppSettings(context) }, false)
+        UiUtil.showDialog(mContext, message, { _: DialogInterface?, i: Int -> AppUtil.openAppSettings(mContext) }, false)
     }
 
     private fun launchCamera() {
@@ -126,8 +126,8 @@ abstract class BaseAddImageFragment : BaseFragment() {
         // Store image in dcim
         val file: File
         try {
-            file = File.createTempFile(String.format("image%s", Date().time), ".jpg", context.externalCacheDir)
-            val imgUri = FileProvider.getUriForFile(context, context.applicationContext.packageName + ".provider", file)
+            file = File.createTempFile(String.format("image%s", Date().time), ".jpg", mContext?.externalCacheDir)
+            val imgUri = FileProvider.getUriForFile(requireContext(), mContext?.applicationContext?.packageName + ".provider", file)
             imagePath = file.absolutePath
             return imgUri
         } catch (e: IOException) {
@@ -141,7 +141,7 @@ abstract class BaseAddImageFragment : BaseFragment() {
         if (requestCode == Constants.REQUEST_PICK_IMAGE_FROM_CAMERA) {
             try {
                 val rotatedImage = UiUtil.rotateImageIfRequired(imagePath)
-                val decodedBitmap = UiUtil.getThumbnail(context, rotatedImage)
+                val decodedBitmap = UiUtil.getThumbnail(mContext, rotatedImage)
                 if (decodedBitmap != null) {
                     startCrop(imagePath)
                 } else {
@@ -155,7 +155,7 @@ abstract class BaseAddImageFragment : BaseFragment() {
         } else if (requestCode == Constants.REQUEST_CROP_IMAGE) {
             if (resultCode == Activity.RESULT_OK) {
                 val fileName = data!!.getStringExtra(Constants.EXTRA_FILE_NAME)
-                val bitmap = ImageUtil.getBitmapFromInternalStorage(context, fileName)
+                val bitmap = ImageUtil.getBitmapFromInternalStorage(mContext, fileName)
                 setImageView(bitmap, getImageUriFromFileName(fileName))
             }
         } else {
@@ -164,7 +164,7 @@ abstract class BaseAddImageFragment : BaseFragment() {
     }
 
     private fun getImageUriFromFileName(fileName: String?): String {
-        val file = File(context.filesDir.toString() + File.separator + fileName)
+        val file = File(mContext?.filesDir.toString() + File.separator + fileName)
         return file.absolutePath
     }
 
@@ -176,7 +176,7 @@ abstract class BaseAddImageFragment : BaseFragment() {
 
     private fun startCrop(imageUri: String?) {
         if (imageUri == null) return
-        val intent = Intent(context, CropImageActivity::class.java)
+        val intent = Intent(mContext, CropImageActivity::class.java)
         intent.putExtra(Constants.EXTRA_IMAGE_URI, imageUri)
         startActivityForResult(intent, Constants.REQUEST_CROP_IMAGE)
     }

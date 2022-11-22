@@ -5,15 +5,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Response
 import com.google.android.gms.tasks.Tasks
-import com.google.firebase.firestore.*
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import vedam.subkuch.R
 import vedam.subkuch.base.BaseFragment
 import vedam.subkuch.databinding.FragmentChatListBinding
 import vedam.subkuch.db.chat.LatestChat
@@ -26,7 +27,6 @@ import vedam.subkuch.utils.AppPrefs
 import vedam.subkuch.utils.AppUtil
 import vedam.subkuch.utils.ListItemClickAction
 import vedam.subkuch.utils.UiUtil
-import vedam.subkuch.R
 
 
 class ChatListFragment : BaseFragment(), OnListViewItemClickListener {
@@ -69,10 +69,10 @@ class ChatListFragment : BaseFragment(), OnListViewItemClickListener {
     private fun getLatestChats() {
 
         val task1 = Firebase.firestore.collection(Constants.TABLE_LATEST_CHAT)
-            .whereEqualTo(Constants.ToProfileId, AppPrefs.getPrefsUserId(context)).get()
+            .whereEqualTo(Constants.ToProfileId, AppPrefs.getPrefsUserId(mContext)).get()
 
         val task2 = Firebase.firestore.collection(Constants.TABLE_LATEST_CHAT)
-            .whereEqualTo(Constants.FromProfileId, AppPrefs.getPrefsUserId(context)).get()
+            .whereEqualTo(Constants.FromProfileId, AppPrefs.getPrefsUserId(mContext)).get()
 
         Tasks.whenAllSuccess<QuerySnapshot>(task1, task2).addOnSuccessListener {
             for (snapshot in it)
@@ -88,7 +88,7 @@ class ChatListFragment : BaseFragment(), OnListViewItemClickListener {
 
     private fun filterChatList() {
 
-        val myId = AppPrefs.getPrefsUserId(context)
+        val myId = AppPrefs.getPrefsUserId(mContext)
         datingProfiles?.let { list ->
             for (profile in list) {
                 val idPair = myId.getIdPair(profile.ProfileId!!)
@@ -101,7 +101,7 @@ class ChatListFragment : BaseFragment(), OnListViewItemClickListener {
                 adapter?.submitList(chatList)
             else
                 Toast.makeText(
-                    context,
+                    mContext,
                     "No Chats. Go to your Matches to start a Chat.",
                     Toast.LENGTH_LONG
                 ).show()
@@ -127,8 +127,8 @@ class ChatListFragment : BaseFragment(), OnListViewItemClickListener {
     }
 
     private fun initUI() {
-        fragmentChatListBinding!!.rvChatList.layoutManager = LinearLayoutManager(context)
-        adapter = ChatListAdapter(context, this)
+        fragmentChatListBinding!!.rvChatList.layoutManager = LinearLayoutManager(mContext)
+        adapter = ChatListAdapter(requireContext(), this)
         fragmentChatListBinding!!.rvChatList.adapter = adapter
 
     }
@@ -141,16 +141,16 @@ class ChatListFragment : BaseFragment(), OnListViewItemClickListener {
     }
 
     private fun getMatchedProfiles() {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait))
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait))
         if (isDating) DataFetcher.getDatingMatchedChatProfiles(
-            context,
+            mContext,
             onMatchedProfilesSuccessListener,
             DatingProfileResponse::class.java,
             onErrorListener,
             1,
             pageSize
         ) else DataFetcher.getMatrimonialMatchedChatProfiles(
-            context,
+            mContext,
             onMatchedProfilesSuccessListener,
             DatingProfileResponse::class.java,
             onErrorListener,
@@ -160,7 +160,7 @@ class ChatListFragment : BaseFragment(), OnListViewItemClickListener {
     }
 
     private fun startChatActivity(datingProfile: DatingProfile) {
-        val intent = Intent(context, ChatActivity::class.java)
+        val intent = Intent(mContext, ChatActivity::class.java)
         intent.putExtra(Constants.EXTRA_NAME, AppUtil.deNull(datingProfile.FirstName))
         intent.putExtra(Constants.EXTRA_CHAT_TO_ID, datingProfile.ProfileId)
         intent.putExtra(Constants.EXTRA_IS_DATING, isDating)
@@ -177,11 +177,11 @@ class ChatListFragment : BaseFragment(), OnListViewItemClickListener {
                     getLatestChats()
                 } else {
                     UiUtil.cancelProgressDialog()
-                    UiUtil.showToast(context, getString(R.string.no_matches_found))
+                    UiUtil.showToast(mContext, getString(R.string.no_matches_found))
                 }
             } else {
                 UiUtil.cancelProgressDialog()
-                UiUtil.showToast(context, getString(R.string.err_occurred))
+                UiUtil.showToast(mContext, getString(R.string.err_occurred))
             }
         }
 

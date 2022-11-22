@@ -51,7 +51,7 @@ class ShoppingFragment : BaseFragment(), OnListViewItemClickListener {
     private fun initUI() {
         subCatAdapter = SubCatAdapter(this)
         productsAdapter = ProductAdapter(this)
-        layoutManager = GridLayoutManager(context, 2)
+        layoutManager = GridLayoutManager(mContext, 2)
         binding?.rvSubcategories?.adapter = subCatAdapter
         binding?.rvProducts?.adapter = productsAdapter
         binding?.rvProducts?.layoutManager = layoutManager
@@ -62,24 +62,24 @@ class ShoppingFragment : BaseFragment(), OnListViewItemClickListener {
     }
 
     private fun getSubcategories() {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait))
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait))
         val type = object : TypeToken<BaseShoppingResponse<ShoppingSubCategory>>() {}.type
-        DataFetcher.getShoppingSubCategories(context, onSubcategoriesSuccessListener, type, onErrorListener)
+        DataFetcher.getShoppingSubCategories(mContext, onSubcategoriesSuccessListener, type, onErrorListener)
     }
 
     private fun getProducts(subCatId: String? = null) {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait))
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait))
         val type = object : TypeToken<BaseShoppingResponse<Product>>() {}.type
         if (subCatId == null) {
             if (selectedSubCategoryId != null) {
-                DataFetcher.getProducts(context, onProductsSuccessListener, type, onErrorListener, selectedSubCategoryId, pageNo, pageSize)
+                DataFetcher.getProducts(mContext, onProductsSuccessListener, type, onErrorListener, selectedSubCategoryId, pageNo, pageSize)
             } else {
-                DataFetcher.getHomeProducts(context, onProductsSuccessListener, type, onErrorListener, pageNo, pageSize)
+                DataFetcher.getHomeProducts(mContext, onProductsSuccessListener, type, onErrorListener, pageNo, pageSize)
             }
         } else {
             pageNo = 1
             productsList.clear()
-            DataFetcher.getProducts(context, onProductsSuccessListener, type, onErrorListener, subCatId, pageNo, pageSize)
+            DataFetcher.getProducts(mContext, onProductsSuccessListener, type, onErrorListener, subCatId, pageNo, pageSize)
             selectedSubCategoryId = subCatId
         }
     }
@@ -89,8 +89,8 @@ class ShoppingFragment : BaseFragment(), OnListViewItemClickListener {
         if (activity != null) if (response != null && response.status == true) {
             if (response.result?.list?.size ?: 0 > 0) {
                 loadSubcategories(response.result?.list)
-            } else UiUtil.showToast(context, getString(R.string.no_data))
-        } else UiUtil.showToast(context, getString(R.string.err_occurred))
+            } else UiUtil.showToast(mContext, getString(R.string.no_data))
+        } else UiUtil.showToast(mContext, getString(R.string.err_occurred))
     }
 
     private val onProductsSuccessListener: Response.Listener<BaseShoppingResponse<Product>> = Response.Listener { response ->
@@ -104,10 +104,10 @@ class ShoppingFragment : BaseFragment(), OnListViewItemClickListener {
                 productsAdapter?.submitList(emptyList()) {
                     productsAdapter?.notifyDataSetChanged()
                 }
-                UiUtil.showToast(context, getString(R.string.no_products_found))
+                UiUtil.showToast(mContext, getString(R.string.no_products_found))
             }
         } else {
-            UiUtil.showToast(context, getString(R.string.err_occurred))
+            UiUtil.showToast(mContext, getString(R.string.err_occurred))
             productsAdapter?.submitList(emptyList()) {
                 productsAdapter?.notifyDataSetChanged()
             }

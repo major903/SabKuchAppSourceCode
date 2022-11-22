@@ -50,13 +50,13 @@ public class InboxFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rvInbox = view.findViewById(R.id.rv_inbox);
-        rvInbox.setLayoutManager(new LinearLayoutManager(context));
+        rvInbox.setLayoutManager(new LinearLayoutManager(mContext));
         getInbox();
     }
 
     private void getInbox() {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
-        DataFetcher.getInbox(context, onInboxSuccessListener, InboxResponse.class, onErrorListener);
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
+        DataFetcher.getInbox(mContext, onInboxSuccessListener, InboxResponse.class, onErrorListener);
     }
 
     private Response.Listener<InboxResponse> onInboxSuccessListener = response -> {
@@ -67,13 +67,13 @@ public class InboxFragment extends BaseFragment {
                 if (response.getReturnData().size() > 0) {
                     loadValues(response.getReturnData());
                 } else
-                    UiUtil.showToast(context, getString(R.string.no_data));
+                    UiUtil.showToast(mContext, getString(R.string.no_data));
             } else
-                UiUtil.showToast(context, getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, getString(R.string.err_occurred));
     };
 
     private void loadValues(ArrayList<Inbox> returnData) {
 
-        rvInbox.setAdapter(new InboxAdapter(context, returnData));
+        rvInbox.setAdapter(new InboxAdapter(mContext, returnData));
     }
 }

@@ -2,6 +2,7 @@ package vedam.subkuch.network
 
 import android.content.Context
 import com.android.volley.Response
+import com.google.protobuf.TypeOrBuilder
 import vedam.subkuch.network.models.DataPart
 import vedam.subkuch.utils.AppPrefs
 import vedam.subkuch.utils.AppUtil
@@ -482,7 +483,7 @@ object DataFetcher {
         context: Context?,
         json: String?,
         updateSuccessListener: Response.Listener<T>?,
-        repClass: Class<T>?,
+        repClass: Type?,
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/AllAPI/AskmePost", NetworkConstants.END_POINT)
@@ -572,7 +573,7 @@ object DataFetcher {
     fun <T> getAskCategories(
         context: Context?,
         updateSuccessListener: Response.Listener<T>?,
-        repClass: Class<T>?,
+        repClass: Type?,
         errorListener: Response.ErrorListener?
     ) {
         val userId = AppPrefs.getPrefsUserId(context)

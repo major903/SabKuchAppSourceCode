@@ -67,17 +67,17 @@ public class MyBookingsFragment extends BaseFragment implements MyBookingsAdapte
 
     private void initUI() {
 
-        linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager = new LinearLayoutManager(mContext);
         fragmentMyBookingsBinding.rvEvents.setLayoutManager(linearLayoutManager);
         fragmentMyBookingsBinding.rvEvents.setHasFixedSize(true);
-        adapter = new MyBookingsAdapter(context, transportBookings, this);
+        adapter = new MyBookingsAdapter(mContext, transportBookings, this);
         fragmentMyBookingsBinding.rvEvents.setAdapter(adapter);
         fragmentMyBookingsBinding.rvEvents.addOnScrollListener(new OnScrollListener());
     }
 
     private void getMyBookings() {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
-        DataFetcher.getMyTransportBookings(context, onTransportBookingsSuccessListener, TransportBookingResponse.class, onErrorListener, pageNo, pageSize);
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
+        DataFetcher.getMyTransportBookings(mContext, onTransportBookingsSuccessListener, TransportBookingResponse.class, onErrorListener, pageNo, pageSize);
 
     }
 
@@ -91,9 +91,9 @@ public class MyBookingsFragment extends BaseFragment implements MyBookingsAdapte
                     loading = true;
                     loadValues(response.getReturnData());
                 } else
-                    UiUtil.showToast(context, getString(R.string.no_transport_booking_found));
+                    UiUtil.showToast(mContext, getString(R.string.no_transport_booking_found));
             } else
-                UiUtil.showToast(context, getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, getString(R.string.err_occurred));
     };
 
     private void loadValues(ArrayList<TransportBooking> response) {
@@ -115,7 +115,7 @@ public class MyBookingsFragment extends BaseFragment implements MyBookingsAdapte
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_add) {
-            startActivityForResult(new Intent(context, AddTransportActivity.class), Constants.REQUEST_ADD_TRANSPORT);
+            startActivityForResult(new Intent(mContext, AddTransportActivity.class), Constants.REQUEST_ADD_TRANSPORT);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -147,8 +147,8 @@ public class MyBookingsFragment extends BaseFragment implements MyBookingsAdapte
     }
 
     private void markComplete(String transportId) {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
-        DataFetcher.setTransportBookingComplete(context, onTransportCompleteSuccessListener, AddResponse.class, onErrorListener, transportId);
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
+        DataFetcher.setTransportBookingComplete(mContext, onTransportCompleteSuccessListener, AddResponse.class, onErrorListener, transportId);
 
     }
 
@@ -157,11 +157,11 @@ public class MyBookingsFragment extends BaseFragment implements MyBookingsAdapte
         UiUtil.cancelProgressDialog();
         if (getActivity() != null)
             if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
-                UiUtil.showToast(context, getString(R.string.booking_completed_successfully));
+                UiUtil.showToast(mContext, getString(R.string.booking_completed_successfully));
                 setDefaults();
                 getMyBookings();
             } else
-                UiUtil.showToast(context, getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, getString(R.string.err_occurred));
     };
     public class OnScrollListener extends RecyclerView.OnScrollListener {
 

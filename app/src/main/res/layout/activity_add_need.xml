@@ -10,10 +10,26 @@
 
         <include layout="@layout/toolbar" />
 
+
+        <TextView
+            android:id="@+id/tv_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="all"
+            android:paddingHorizontal="@dimen/margin_16dp"
+            android:paddingTop="@dimen/margin_16dp"
+            android:text="@string/no_money"
+            android:textSize="@dimen/text_size_16"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
         <ScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="false">
+            android:clipToPadding="false"
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -51,8 +67,8 @@
                     style="@style/TextViewBlackHeading2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_16dp"
                     android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_16dp"
                     android:layout_marginRight="@dimen/margin_16dp"
                     android:text="@string/work_location" />
 

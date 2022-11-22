@@ -220,13 +220,13 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         });
 
         mPresenter = new PerferenceFragmentPresenter(this);
-        mPresenter.getPerference(AppPrefs.getPrefsUserId(context), isDating);
+        mPresenter.getPerference(AppPrefs.getPrefsUserId(mContext), isDating);
     }
 
 
     @Override
     public void showProgressBar() {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
     }
 
     @Override
@@ -734,11 +734,11 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
 //            baseshowFeedbackMessage(rootLayout, getString(R.string.empty_living_with));
 //        } else {
 
-        FrequentFunctions.hideKeyBoard(context, view);
+        FrequentFunctions.hideKeyBoard(mContext, view);
 
 
         MatrimonialRequest matrimonialRequest = new MatrimonialRequest();
-        matrimonialRequest.setProfileId(Integer.parseInt(AppPrefs.getPrefsUserId(context)));
+        matrimonialRequest.setProfileId(Integer.parseInt(AppPrefs.getPrefsUserId(mContext)));
         matrimonialRequest.setCityId(selectedCityId);
 //            matrimonialRequest.setCountryId(Constants.COUNTRY_ID);
         matrimonialRequest.setReligionId(selectedReligionId);

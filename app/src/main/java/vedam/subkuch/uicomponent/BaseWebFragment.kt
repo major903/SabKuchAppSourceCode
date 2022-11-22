@@ -54,7 +54,7 @@ class BaseWebFragment : BaseFragment() {
         override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
             super.onPageStarted(view, url, favicon)
             if (activity != null)
-                UiUtil.showProgressDialog(context, getString(R.string.loading))
+                UiUtil.showProgressDialog(mContext, getString(R.string.loading))
         }
 
         override fun onPageFinished(view: WebView?, url: String?) {

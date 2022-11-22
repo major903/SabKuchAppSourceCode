@@ -2,8 +2,14 @@ package vedam.subkuch.ui.classifieds
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
 import android.text.TextUtils
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -20,6 +26,7 @@ import vedam.subkuch.R
 import vedam.subkuch.base.BaseAddImagesFragment
 import vedam.subkuch.databinding.FragmentAddClassifiedBinding
 import vedam.subkuch.helpers.Constants
+import vedam.subkuch.network.DataFetcher
 import vedam.subkuch.network.DataFetcher.addClassified
 import vedam.subkuch.network.DataFetcher.getCities
 import vedam.subkuch.network.DataFetcher.getClassifiedSubCategories
@@ -29,12 +36,13 @@ import vedam.subkuch.network.NetworkConstants
 import vedam.subkuch.network.models.DataPart
 import vedam.subkuch.network.models.GeneralResponse
 import vedam.subkuch.network.models.classifieds.*
+import vedam.subkuch.network.models.wallet.WalletResponse
 import vedam.subkuch.ui.jobs.models.CitiesResponse
 import vedam.subkuch.ui.jobs.models.City
+import vedam.subkuch.ui.shopping.show
 import vedam.subkuch.utils.AppPrefs
 import vedam.subkuch.utils.AppUtil
 import vedam.subkuch.utils.UiUtil
-import java.util.*
 
 class AddClassifiedFragment : BaseAddImagesFragment(), AdapterView.OnItemSelectedListener {
     private var binding: FragmentAddClassifiedBinding? = null
@@ -44,6 +52,9 @@ class AddClassifiedFragment : BaseAddImagesFragment(), AdapterView.OnItemSelecte
     private var cityId: String? = null
     private var successMessage: String? = null
     private var isProperty = false
+    private var walletResponse: WalletResponse? = null
+    private var menuItem: MenuItem? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -61,12 +72,63 @@ class AddClassifiedFragment : BaseAddImagesFragment(), AdapterView.OnItemSelecte
         getCategories()
         getCities()
         bindCallbacks()
+        getWalletDetails()
+    }
+
+    private fun getWalletDetails() {
+        UiUtil.showProgressDialog(mContext, R.string.please_wait)
+        DataFetcher.getWalletDetails(
+            mContext,
+            onWalletSuccessListener,
+            WalletResponse::class.java,
+            onErrorListener
+        )
+    }
+
+    private val onWalletSuccessListener = Response.Listener { response: WalletResponse? ->
+        walletResponse = response
+        loadUI()
+    }
+
+    private fun loadUI() {
+        UiUtil.cancelProgressDialog()
+        val balance =
+            (walletResponse?.returnData?.wallet?.availableBalance?.split(".")?.get(1))?.trim()
+                ?.toIntOrNull() ?: 0
+        if (balance >= 10) {
+            menuItem?.isVisible = true
+            binding?.tvMessage?.show()
+            binding?.tvMessage?.text = getString(R.string.yes_money_classifieds, balance)
+            binding?.scrollView?.show()
+        } else {
+            menuItem?.isVisible = false
+            binding?.tvMessage?.show()
+            val ss = SpannableString(getString(R.string.no_money_classifieds, balance))
+            val clickableSpan: ClickableSpan = object : ClickableSpan() {
+                override fun onClick(textView: View) {
+                    AppUtil.openUrl(mContext, "https://vedam-it.com/sabkuch.html")
+                }
+
+                override fun updateDrawState(ds: TextPaint) {
+                    super.updateDrawState(ds)
+                    ds.isUnderlineText = true
+                }
+            }
+            ss.setSpan(
+                clickableSpan,
+                ss.indexOf("Click"),
+                ss.indexOf("Click") + 10,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            binding?.tvMessage?.movementMethod = LinkMovementMethod.getInstance()
+            binding?.tvMessage?.text = ss
+            binding?.tvMessage?.highlightColor = Color.TRANSPARENT
+        }
     }
 
     private fun getCategories() {
-        UiUtil.showProgressDialog(context, R.string.please_wait)
         val type = object : TypeToken<ClassifiedResponse<ClassifiedCategory?>?>() {}.type
-        getClassifiedsCategories(context, onCategorySuccessListener, type, onErrorListener)
+        getClassifiedsCategories(mContext, onCategorySuccessListener, type, onErrorListener)
     }
 
     private val onCategorySuccessListener =
@@ -74,7 +136,7 @@ class AddClassifiedFragment : BaseAddImagesFragment(), AdapterView.OnItemSelecte
             UiUtil.cancelProgressDialog()
             if (activity != null) if (response != null && response.returnMessage == Constants.SUCCESS) {
                 setCategories(response.returnData)
-            } else UiUtil.showToast(context, getString(R.string.no_data))
+            } else UiUtil.showToast(mContext, getString(R.string.no_data))
         }
 
     private fun setCategories(categories: ArrayList<ClassifiedCategory>) {
@@ -82,7 +144,7 @@ class AddClassifiedFragment : BaseAddImagesFragment(), AdapterView.OnItemSelecte
         category.category = getString(R.string.select_a_category)
         categories.add(0, category)
         val adapter = ArrayAdapter(
-            context,
+            requireContext(),
             android.R.layout.simple_spinner_dropdown_item, categories
         )
         binding!!.spCategory.adapter = adapter
@@ -91,10 +153,10 @@ class AddClassifiedFragment : BaseAddImagesFragment(), AdapterView.OnItemSelecte
     }
 
     private fun getSubCategories() {
-        UiUtil.showProgressDialog(context, R.string.please_wait)
+        UiUtil.showProgressDialog(mContext, R.string.please_wait)
         val type = object : TypeToken<ClassifiedResponse<ClassifiedSubCategory?>?>() {}.type
         getClassifiedSubCategories(
-            context,
+            mContext,
             onSubCategorySuccessListener,
             type,
             onErrorListener,
@@ -107,7 +169,7 @@ class AddClassifiedFragment : BaseAddImagesFragment(), AdapterView.OnItemSelecte
             UiUtil.cancelProgressDialog()
             if (activity != null) if (response != null && response.returnMessage == Constants.SUCCESS) {
                 setSubcategories(response.returnData)
-            } else UiUtil.showToast(context, getString(R.string.err_occurred))
+            } else UiUtil.showToast(mContext, getString(R.string.err_occurred))
         }
 
     private fun setSubcategories(subCategories: ArrayList<ClassifiedSubCategory>) {
@@ -115,7 +177,7 @@ class AddClassifiedFragment : BaseAddImagesFragment(), AdapterView.OnItemSelecte
         subCategory.subCategory = getString(R.string.select_a_sub_category)
         subCategories.add(0, subCategory)
         val adapter = ArrayAdapter(
-            context,
+            requireContext(),
             android.R.layout.simple_spinner_dropdown_item, subCategories
         )
         binding!!.spSubCategory.adapter = adapter
@@ -124,8 +186,7 @@ class AddClassifiedFragment : BaseAddImagesFragment(), AdapterView.OnItemSelecte
     }
 
     private fun getCities() {
-        UiUtil.showProgressDialog(context, getString(R.string.loading))
-        getCities(context, onCitiesSuccessListener, CitiesResponse::class.java, onErrorListener)
+        getCities(mContext, onCitiesSuccessListener, CitiesResponse::class.java, onErrorListener)
     }
 
     private val onCitiesSuccessListener = Response.Listener { response: CitiesResponse? ->
@@ -133,7 +194,7 @@ class AddClassifiedFragment : BaseAddImagesFragment(), AdapterView.OnItemSelecte
         if (activity != null) if (response != null && response.returnMessage == Constants.SUCCESS) {
             setCities(response.returnData)
         } else {
-            UiUtil.showToast(context, getString(R.string.err_occurred))
+            UiUtil.showToast(mContext, getString(R.string.err_occurred))
         }
     }
 
@@ -142,7 +203,7 @@ class AddClassifiedFragment : BaseAddImagesFragment(), AdapterView.OnItemSelecte
         city.name = getString(R.string.select_a_city)
         cities.add(0, city)
         val adapter = ArrayAdapter(
-            context,
+            requireContext(),
             android.R.layout.simple_spinner_dropdown_item, cities
         )
         binding!!.spCity.adapter = adapter
@@ -162,7 +223,7 @@ class AddClassifiedFragment : BaseAddImagesFragment(), AdapterView.OnItemSelecte
                 .withZipCodeHidden()
                 .withGoogleTimeZoneEnabled()
                 .withVoiceSearchHidden()
-                .build(context)
+                .build(requireContext())
 
             startActivityForResult(locationPickerIntent, Constants.REQUEST_PLACE_PICKER)
         }
@@ -172,25 +233,30 @@ class AddClassifiedFragment : BaseAddImagesFragment(), AdapterView.OnItemSelecte
         super.onCreateOptionsMenu(menu, inflater)
         menu.clear()
         inflater.inflate(R.menu.done, menu)
+        menuItem = menu.findItem(R.id.action_done)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_done) {
             val errorMessage = validateErrorMessage()
             if (errorMessage == 0) {
-                submit()
-            } else UiUtil.showDialog(context, getString(errorMessage), true)
+                withdraw()
+            } else UiUtil.showDialog(mContext, getString(errorMessage), true)
             return true
         }
         return super.onOptionsItemSelected(item)
     }
 
+    override fun moneyWithdrawn() {
+        submit()
+    }
+
     private fun submit() {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait))
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait))
         val classifiedRequest = Classified()
         classifiedRequest.categoryId = categoryId
         classifiedRequest.subCategoryId = subcategoryId
-        classifiedRequest.userId = AppPrefs.getPrefsUserId(context)
+        classifiedRequest.userId = AppPrefs.getPrefsUserId(mContext)
         classifiedRequest.cityId = cityId
         classifiedRequest.locality = binding!!.etLocality.text.toString()
         classifiedRequest.rate = binding!!.etRate.text.toString()
@@ -201,7 +267,7 @@ class AddClassifiedFragment : BaseAddImagesFragment(), AdapterView.OnItemSelecte
         classifiedRequest.latitude = latLng!!.latitude.toString()
         classifiedRequest.longitude = latLng!!.longitude.toString()
         addClassified(
-            context,
+            mContext,
             Gson().toJson(classifiedRequest),
             onAddClassifiedSuccessListener,
             AddClassifiedResponse::class.java,
@@ -215,29 +281,29 @@ class AddClassifiedFragment : BaseAddImagesFragment(), AdapterView.OnItemSelecte
             if (activity != null) if (response != null && response.returnCode == Constants.SUCCESS_RETURN_CODE) {
                 successMessage = response.returnMessage
                 isImageAvailable(response.classified.postedAdId)
-            } else UiUtil.showToast(context, getString(R.string.err_occurred))
+            } else UiUtil.showToast(mContext, getString(R.string.err_occurred))
         }
 
     private fun isImageAvailable(classfiedId: String) {
         if (imageItemMap.size > 0) uploadClassifiedImage(classfiedId) else {
-            UiUtil.showToast(context, successMessage!!)
+            UiUtil.showToast(mContext, successMessage!!)
             if (globalFragmentInteractionListener != null) {
-                globalFragmentInteractionListener.setFragmentResult(Activity.RESULT_OK, null)
-                globalFragmentInteractionListener.finishActivity()
+                globalFragmentInteractionListener?.setFragmentResult(Activity.RESULT_OK, null)
+                globalFragmentInteractionListener?.finishActivity()
             }
         }
     }
 
     private fun uploadClassifiedImage(classfiedId: String) {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait))
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait))
         val params: MutableMap<String?, DataPart?> = HashMap()
         params[NetworkConstants.ProfileImage] = DataPart(
             AppUtil.getUniqueFileName(),
-            AppUtil.getBytesFromBitmap(AppUtil.getSingleBitmap(context, imageItemMap)),
+            AppUtil.getBytesFromBitmap(AppUtil.getSingleBitmap(mContext, imageItemMap)),
             NetworkConstants.JPEG_MIME_TYPE
         )
         uploadClassifiedImage(
-            context,
+            mContext,
             params,
             onImageUploadSuccessListener,
             GeneralResponse::class.java,
@@ -249,9 +315,9 @@ class AddClassifiedFragment : BaseAddImagesFragment(), AdapterView.OnItemSelecte
     private val onImageUploadSuccessListener = Response.Listener { response: GeneralResponse? ->
         UiUtil.cancelProgressDialog()
         if (activity != null) if (response != null && response.returnCode == Constants.SUCCESS_RETURN_CODE) {
-            UiUtil.showToast(context, successMessage!!)
+            UiUtil.showToast(mContext, successMessage!!)
             activity!!.finish()
-        } else UiUtil.showToast(context, getString(R.string.err_occurred))
+        } else UiUtil.showToast(mContext, getString(R.string.err_occurred))
     }
 
     private fun validateErrorMessage(): Int {

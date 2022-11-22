@@ -93,11 +93,11 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
     }
 
     private void getProfiles() {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
         if (isDating)
-            DataFetcher.getDatingProfile(context, onProfileSuccessListener, DatingProfileResponse.class, onErrorListener, pageNo, pageSize);
+            DataFetcher.getDatingProfile(mContext, onProfileSuccessListener, DatingProfileResponse.class, onErrorListener, pageNo, pageSize);
         else
-            DataFetcher.getMatrimonialProfile(context, onProfileSuccessListener, DatingProfileResponse.class, onErrorListener, pageNo, pageSize);
+            DataFetcher.getMatrimonialProfile(mContext, onProfileSuccessListener, DatingProfileResponse.class, onErrorListener, pageNo, pageSize);
     }
 
     private final Response.Listener<DatingProfileResponse> onProfileSuccessListener = response -> {
@@ -112,7 +112,7 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
                 } else
                     showViewStub();
             } else
-                UiUtil.showToast(context, getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, getString(R.string.err_occurred));
     };
 
     private void setDatingProfile() {
@@ -129,35 +129,35 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
         fragmentShowProfilesBinding.tvName.setText(AppUtil.getNameAndAge(datingProfile.getFirstName(), datingProfile.getAge()));
         UiUtil.setTextView(fragmentShowProfilesBinding.tvAbout, datingProfile.getAboutMe());
         UiUtil.setTextView(fragmentShowProfilesBinding.tvDistance, datingProfile.getDistance());
-        UiUtil.setTextViewWithBoldPrefix(context, "Marital Status :", datingProfile.getMaritalStatusName(), fragmentShowProfilesBinding.tvMaritalStatus);
-        UiUtil.setTextViewWithBoldPrefix(context, "Mother Tongue :", datingProfile.getMothertongueName(), fragmentShowProfilesBinding.tvMotherTongue);
-        UiUtil.setTextViewWithBoldPrefix(context, "Occupation :", datingProfile.getOccupationName(), fragmentShowProfilesBinding.tvOccupation);
-        UiUtil.setTextViewWithBoldPrefix(context, "Qualification :", datingProfile.getQualificationName(), fragmentShowProfilesBinding.tvQualification);
-        UiUtil.setTextViewWithBoldPrefix(context, "Annual Income :", datingProfile.getIncome(), fragmentShowProfilesBinding.tvAnnualIncome);
-        UiUtil.setTextViewWithBoldPrefix(context, "Body Type :", datingProfile.getBodyTypeName(), fragmentShowProfilesBinding.tvBodyType);
-        UiUtil.setTextViewWithBoldPrefix(context, "Complexion :", datingProfile.getComplexionName(), fragmentShowProfilesBinding.tvComplexion);
-        UiUtil.setTextViewWithBoldPrefix(context, "Height :", datingProfile.getHeight(), fragmentShowProfilesBinding.tvHeight);
-        UiUtil.setTextViewWithBoldPrefix(context, "Weight :", datingProfile.getWeight(), fragmentShowProfilesBinding.tvWeight);
-        UiUtil.setTextViewWithBoldPrefix(context, "Religion :", datingProfile.getReligionName(), fragmentShowProfilesBinding.tvReligion);
-        UiUtil.setTextViewWithBoldPrefix(context, "Caste :", datingProfile.getMasterCastName(), fragmentShowProfilesBinding.tvCaste);
-        UiUtil.setTextViewWithBoldPrefix(context, "Gothra :", datingProfile.getGotraName(), fragmentShowProfilesBinding.tvGothra);
-        UiUtil.setTextViewWithBoldPrefix(context, "Nakshatra :", datingProfile.getNakshatraName(), fragmentShowProfilesBinding.tvNakshatra);
-        UiUtil.setTextViewWithBoldPrefix(context, "Dosham :", datingProfile.getDoshamName(), fragmentShowProfilesBinding.tvDosham);
-        UiUtil.setTextViewWithBoldPrefix(context, "Food Habit :", datingProfile.getFoodHabitsName(), fragmentShowProfilesBinding.tvFoodHabit);
-        UiUtil.setTextViewWithBoldPrefix(context, "Drinking Habit :", datingProfile.getDrinkingStatusName(), fragmentShowProfilesBinding.tvDrinkingHabit);
-        UiUtil.setTextViewWithBoldPrefix(context, "Smoking Habit :", datingProfile.getSmokingType(), fragmentShowProfilesBinding.tvSmokingHabit);
-        UiUtil.setTextViewWithBoldPrefix(context, "Physical Status :", datingProfile.getPhysicalStatusName(), fragmentShowProfilesBinding.tvPhysicalStatus);
-        UiUtil.setTextViewWithBoldPrefix(context, "Living With :", datingProfile.getLivingWithName(), fragmentShowProfilesBinding.tvLivingWith);
-        UiUtil.setTextViewWithBoldPrefix(context, "Owns a Car :", datingProfile.getOwnCarType(), fragmentShowProfilesBinding.tvOwnCar);
-        UiUtil.setTextViewWithBoldPrefix(context, "Owns a House :", datingProfile.getOwnHouseType(), fragmentShowProfilesBinding.tvOwnHouse);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Marital Status :", datingProfile.getMaritalStatusName(), fragmentShowProfilesBinding.tvMaritalStatus);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Mother Tongue :", datingProfile.getMothertongueName(), fragmentShowProfilesBinding.tvMotherTongue);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Occupation :", datingProfile.getOccupationName(), fragmentShowProfilesBinding.tvOccupation);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Qualification :", datingProfile.getQualificationName(), fragmentShowProfilesBinding.tvQualification);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Annual Income :", datingProfile.getIncome(), fragmentShowProfilesBinding.tvAnnualIncome);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Body Type :", datingProfile.getBodyTypeName(), fragmentShowProfilesBinding.tvBodyType);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Complexion :", datingProfile.getComplexionName(), fragmentShowProfilesBinding.tvComplexion);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Height :", datingProfile.getHeight(), fragmentShowProfilesBinding.tvHeight);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Weight :", datingProfile.getWeight(), fragmentShowProfilesBinding.tvWeight);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Religion :", datingProfile.getReligionName(), fragmentShowProfilesBinding.tvReligion);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Caste :", datingProfile.getMasterCastName(), fragmentShowProfilesBinding.tvCaste);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Gothra :", datingProfile.getGotraName(), fragmentShowProfilesBinding.tvGothra);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Nakshatra :", datingProfile.getNakshatraName(), fragmentShowProfilesBinding.tvNakshatra);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Dosham :", datingProfile.getDoshamName(), fragmentShowProfilesBinding.tvDosham);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Food Habit :", datingProfile.getFoodHabitsName(), fragmentShowProfilesBinding.tvFoodHabit);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Drinking Habit :", datingProfile.getDrinkingStatusName(), fragmentShowProfilesBinding.tvDrinkingHabit);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Smoking Habit :", datingProfile.getSmokingType(), fragmentShowProfilesBinding.tvSmokingHabit);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Physical Status :", datingProfile.getPhysicalStatusName(), fragmentShowProfilesBinding.tvPhysicalStatus);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Living With :", datingProfile.getLivingWithName(), fragmentShowProfilesBinding.tvLivingWith);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Owns a Car :", datingProfile.getOwnCarType(), fragmentShowProfilesBinding.tvOwnCar);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Owns a House :", datingProfile.getOwnHouseType(), fragmentShowProfilesBinding.tvOwnHouse);
     }
 
 
     private void setAdapter() {
 
-        manager = new CardStackLayoutManager(context, this);
+        manager = new CardStackLayoutManager(mContext, this);
         manager.setCanScrollVertical(false);
-        ProfileStackAdapter adapter = new ProfileStackAdapter(context, datingProfiles);
+        ProfileStackAdapter adapter = new ProfileStackAdapter(mContext, datingProfiles);
         fragmentShowProfilesBinding.csvProfile.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -218,7 +218,7 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
         ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
-                AppUtil.openUrl(context, Constants.PAYMENT_LINK);
+                AppUtil.openUrl(mContext, Constants.PAYMENT_LINK);
             }
 
             @Override
@@ -253,20 +253,20 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
     }
 
     private void setLikeDislike(int reactionType) {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
         swipe(reactionType);
 
         LikeDislike likeDislike = new LikeDislike();
-        String userId = AppPrefs.getPrefsUserId(context);
+        String userId = AppPrefs.getPrefsUserId(mContext);
         likeDislike.setProfileId(userId);
         likeDislike.setReactionType(reactionType);
         likeDislike.setTargetProfileId(datingProfiles.get(profileNo).getProfileId());
 
         if (isDating)
-            DataFetcher.setDatingLikeDislike(context, new Gson().toJson(likeDislike), onLikeDislikeSuccessListener,
+            DataFetcher.setDatingLikeDislike(mContext, new Gson().toJson(likeDislike), onLikeDislikeSuccessListener,
                     LikeDislikeResponse.class, onErrorListener);
         else
-            DataFetcher.setMatrimonyLikeDislike(context, new Gson().toJson(likeDislike), onLikeDislikeSuccessListener,
+            DataFetcher.setMatrimonyLikeDislike(mContext, new Gson().toJson(likeDislike), onLikeDislikeSuccessListener,
                     LikeDislikeResponse.class, onErrorListener);
     }
 
@@ -297,11 +297,11 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
         UiUtil.cancelProgressDialog();
         if (getActivity() != null)
             if (response != null && response.getReturnMessage().equals(Constants.SUCCESS) && response.getLikeDislike() != null) {
-                UiUtil.showToast(context, getReactionString(response.getLikeDislike().getReactionType()));
+                UiUtil.showToast(mContext, getReactionString(response.getLikeDislike().getReactionType()));
                 changeUI();
             } else {
                 rewind();
-                UiUtil.showToast(context, getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, getString(R.string.err_occurred));
             }
     };
 

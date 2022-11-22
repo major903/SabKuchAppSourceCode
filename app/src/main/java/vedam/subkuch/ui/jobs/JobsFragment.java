@@ -138,9 +138,9 @@ public class JobsFragment extends BaseFragment implements OnListViewItemClickLis
 
     private void initUI() {
 
-        linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager = new LinearLayoutManager(mContext);
         fragmentJobsBinding.rvJobs.setLayoutManager(linearLayoutManager);
-        adapter = new JobsAdapter(context, jobsList, this);
+        adapter = new JobsAdapter(mContext, jobsList, this);
         fragmentJobsBinding.rvJobs.setHasFixedSize(true);
         fragmentJobsBinding.rvJobs.setAdapter(adapter);
         fragmentJobsBinding.rvJobs.addOnScrollListener(new JobsOnScrollListener());
@@ -148,8 +148,8 @@ public class JobsFragment extends BaseFragment implements OnListViewItemClickLis
 
     private void getJobs() {
 
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
-        DataFetcher.getJobs(context, onJobsSuccessListener, JobResponse.class, onErrorListener, categoryId, searchText, pageNo, pageSize);
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
+        DataFetcher.getJobs(mContext, onJobsSuccessListener, JobResponse.class, onErrorListener, categoryId, searchText, pageNo, pageSize);
     }
 
     private Response.Listener<JobResponse> onJobsSuccessListener = response -> {
@@ -162,9 +162,9 @@ public class JobsFragment extends BaseFragment implements OnListViewItemClickLis
                     loading = true;
                     loadValues(response.getJobsResult().getJobs());
                 } else
-                    UiUtil.showToast(context, getString(R.string.no_jobs_found));
+                    UiUtil.showToast(mContext, getString(R.string.no_jobs_found));
             } else
-                UiUtil.showToast(context, getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, getString(R.string.err_occurred));
     };
 
     private void loadValues(ArrayList<Job> returnData) {
@@ -221,13 +221,13 @@ public class JobsFragment extends BaseFragment implements OnListViewItemClickLis
         if (item instanceof Job)
             getShareMessage((Job) item);
         else if (item instanceof Post) {
-            startActivity(new Intent(context, JobMelaActivity.class).putExtra(Constants.EXTRA_DATA, (Post) item));
+            startActivity(new Intent(mContext, JobMelaActivity.class).putExtra(Constants.EXTRA_DATA, (Post) item));
         }
     }
 
     private void getShareMessage(Job job) {
-        UiUtil.showProgressDialog(context, R.string.loading);
-        DataFetcher.getShareContent(context, onShareSuccessListener(job), ShareResponse.class, onErrorListener);
+        UiUtil.showProgressDialog(mContext, R.string.loading);
+        DataFetcher.getShareContent(mContext, onShareSuccessListener(job), ShareResponse.class, onErrorListener);
 
     }
 
@@ -236,14 +236,14 @@ public class JobsFragment extends BaseFragment implements OnListViewItemClickLis
         return response -> {
             if (response != null && response.getReturnMessage().equals(Constants.SUCCESS) && response.getReturnData() != null) {
 
-                ShareUtils.shareMessage(context, String.format("Sharing this job ad with you. If you want to find jobs near your home install Sabkuch App from the link given below. \n\n" +
+                ShareUtils.shareMessage(mContext, String.format("Sharing this job ad with you. If you want to find jobs near your home install Sabkuch App from the link given below. \n\n" +
                                 "https://play.google.com/store/apps/details?id=vedam.subkuch&referrer=%s\n\n%s", getCode(response.getReturnData()),
                         JobsFragment.this.getShareJobPost(job)), null);
                 UiUtil.cancelProgressDialog();
 
             } else {
                 UiUtil.cancelProgressDialog();
-                UiUtil.showToast(context, JobsFragment.this.getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, JobsFragment.this.getString(R.string.err_occurred));
             }
         };
     }

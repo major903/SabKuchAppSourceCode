@@ -63,9 +63,9 @@ class SubmitFragment : BaseAddImagesFragment(), OnItemSelectedListener {
     }
 
     private fun getSalaries() {
-        UiUtil.showProgressDialog(context, R.string.please_wait)
+        UiUtil.showProgressDialog(mContext, R.string.please_wait)
         getJobSalaries(
-            context,
+            mContext,
             onSalarySuccessListener,
             JobSalaryResponse::class.java,
             onErrorListener
@@ -75,7 +75,7 @@ class SubmitFragment : BaseAddImagesFragment(), OnItemSelectedListener {
         UiUtil.cancelProgressDialog()
         if (response != null && response.returnMessage == Constants.SUCCESS) {
             setJobQualifications(response.returnData)
-        } else UiUtil.showToast(context, getString(R.string.no_data))
+        } else UiUtil.showToast(mContext, getString(R.string.no_data))
     }
 
     private fun setJobQualifications(jobSalaries: ArrayList<JobSalary>) {
@@ -83,7 +83,7 @@ class SubmitFragment : BaseAddImagesFragment(), OnItemSelectedListener {
         jobSalary.salary = getString(R.string.select_a_salary)
         jobSalaries.add(0, jobSalary)
         val adapter = ArrayAdapter(
-            context,
+            requireContext(),
             android.R.layout.simple_spinner_dropdown_item, jobSalaries
         )
         fragmentSubmitBinding!!.spSalaryExpected.adapter = adapter
@@ -97,7 +97,7 @@ class SubmitFragment : BaseAddImagesFragment(), OnItemSelectedListener {
             val errorMessage = validateErrorMessage()
             if (errorMessage == 0) {
                 submit()
-            } else UiUtil.showDialog(context, getString(errorMessage), true)
+            } else UiUtil.showDialog(mContext, getString(errorMessage), true)
         }
         fragmentSubmitBinding!!.rbYes.setOnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
             isTwoWheelerOwner = isChecked
@@ -108,15 +108,15 @@ class SubmitFragment : BaseAddImagesFragment(), OnItemSelectedListener {
     }
 
     private fun uploadImage() {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait))
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait))
         val params: MutableMap<String?, DataPart?> = HashMap()
         params[NetworkConstants.ProfileImage] = DataPart(
             AppUtil.getUniqueFileName(),
-            AppUtil.getBytesFromBitmap(AppUtil.getSingleBitmap(context, imageItemMap)),
+            AppUtil.getBytesFromBitmap(AppUtil.getSingleBitmap(mContext, imageItemMap)),
             NetworkConstants.JPEG_MIME_TYPE
         )
         uploadJobProfileImage(
-            context,
+            mContext,
             params,
             onImageUploadSuccessListener,
             GeneralResponse::class.java,
@@ -127,19 +127,19 @@ class SubmitFragment : BaseAddImagesFragment(), OnItemSelectedListener {
     private val onImageUploadSuccessListener = Response.Listener { response: GeneralResponse? ->
         UiUtil.cancelProgressDialog()
         if (activity != null) if (response != null && response.returnMessage == Constants.SUCCESS) {
-            UiUtil.showToast(context, getString(R.string.job_profile_added))
+            UiUtil.showToast(mContext, getString(R.string.job_profile_added))
             activity?.finish()
-        } else UiUtil.showToast(context, getString(R.string.err_occurred))
+        } else UiUtil.showToast(mContext, getString(R.string.err_occurred))
     }
 
     private fun submit() {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait))
-        val userId = AppPrefs.getPrefsUserId(context)
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait))
+        val userId = AppPrefs.getPrefsUserId(mContext)
         jobMelaRequest!!.userId = userId
         jobMelaRequest!!.isOwnTwoWheeler = isTwoWheelerOwner
         jobMelaRequest!!.jobSalaryId = salaryId
         addJobProfile(
-            context,
+            mContext,
             Gson().toJson(jobMelaRequest),
             onAddJobProfileSuccessListener,
             GeneralResponse::class.java,
@@ -151,10 +151,10 @@ class SubmitFragment : BaseAddImagesFragment(), OnItemSelectedListener {
         UiUtil.cancelProgressDialog()
         if (activity != null) if (response != null && response.returnMessage == Constants.SUCCESS) {
             if (imageItemMap.size > 0) uploadImage() else {
-                UiUtil.showToast(context, getString(R.string.job_profile_added))
+                UiUtil.showToast(mContext, getString(R.string.job_profile_added))
                 activity?.finish()
             }
-        } else UiUtil.showToast(context, getString(R.string.err_occurred))
+        } else UiUtil.showToast(mContext, getString(R.string.err_occurred))
     }
 
     private fun validateErrorMessage(): Int {

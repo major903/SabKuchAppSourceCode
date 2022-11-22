@@ -82,18 +82,18 @@ public class PublicUtilityFragment extends BaseFragment {
 
     private void initUI() {
 
-        linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager = new LinearLayoutManager(mContext);
         binding.rvUtilities.setLayoutManager(linearLayoutManager);
         binding.rvUtilities.setHasFixedSize(true);
-        adapter = new PublicUtilityAdapter(context, publicUtilities);
+        adapter = new PublicUtilityAdapter(mContext, publicUtilities);
         binding.rvUtilities.setAdapter(adapter);
         binding.rvUtilities.addOnScrollListener(new OnScrollListener());
     }
 
     private void getPublicUtilities() {
 
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
-        DataFetcher.getPublicUtilities(context, onDirectoryDetailSuccessListener, PublicUtilityResponse.class, onErrorListener, subCategoryId, pageNo, pageSize);
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
+        DataFetcher.getPublicUtilities(mContext, onDirectoryDetailSuccessListener, PublicUtilityResponse.class, onErrorListener, subCategoryId, pageNo, pageSize);
     }
 
     private Response.Listener<PublicUtilityResponse> onDirectoryDetailSuccessListener = response -> {
@@ -106,9 +106,9 @@ public class PublicUtilityFragment extends BaseFragment {
                     loading = true;
                     loadValues(response.getReturnData());
                 } else
-                    UiUtil.showToast(context, getString(R.string.no_data));
+                    UiUtil.showToast(mContext, getString(R.string.no_data));
             } else
-                UiUtil.showToast(context, getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, getString(R.string.err_occurred));
     };
 
     private void loadValues(ArrayList<PublicUtility> response) {

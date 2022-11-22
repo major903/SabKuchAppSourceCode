@@ -67,17 +67,17 @@ public class EventFragment extends BaseFragment {
 
     private void initUI() {
 
-        linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager = new LinearLayoutManager(mContext);
         fragmentEventBinding.rvEvents.setLayoutManager(linearLayoutManager);
         fragmentEventBinding.rvEvents.setHasFixedSize(true);
-        adapter = new EventAdapter(context, eventsList);
+        adapter = new EventAdapter(mContext, eventsList);
         fragmentEventBinding.rvEvents.setAdapter(adapter);
         fragmentEventBinding.rvEvents.addOnScrollListener(new EventsOnScrollListener());
     }
 
     public void getEvents() {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
-        DataFetcher.getEvents(context, onEventsSuccessListener, EventsResponse.class, onErrorListener, pageNo, pageSize);
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
+        DataFetcher.getEvents(mContext, onEventsSuccessListener, EventsResponse.class, onErrorListener, pageNo, pageSize);
 
     }
 
@@ -91,9 +91,9 @@ public class EventFragment extends BaseFragment {
                     loading = true;
                     loadValues(response.getReturnData());
                 } else
-                    UiUtil.showToast(context, getString(R.string.no_events_found));
+                    UiUtil.showToast(mContext, getString(R.string.no_events_found));
             } else
-                UiUtil.showToast(context, getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, getString(R.string.err_occurred));
     };
 
     /*private void startEventCalendarService(JSONArray jsonArray) {
@@ -126,7 +126,7 @@ public class EventFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
-                startActivity(new Intent(context, AddEventActivity.class));
+                startActivity(new Intent(mContext, AddEventActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);

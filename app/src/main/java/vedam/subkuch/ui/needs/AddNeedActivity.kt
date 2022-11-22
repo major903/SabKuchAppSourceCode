@@ -2,8 +2,14 @@ package vedam.subkuch.ui.needs
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
 import android.text.TextUtils
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -19,39 +25,100 @@ import vedam.subkuch.R
 import vedam.subkuch.base.BaseActivity
 import vedam.subkuch.databinding.ActivityAddNeedBinding
 import vedam.subkuch.helpers.Constants
+import vedam.subkuch.network.DataFetcher
 import vedam.subkuch.network.DataFetcher.addNeed
 import vedam.subkuch.network.DataFetcher.getProviders
 import vedam.subkuch.network.models.needs.AddNeedRequest
 import vedam.subkuch.network.models.needs.Provider
 import vedam.subkuch.network.models.needs.ProviderResponse
+import vedam.subkuch.network.models.wallet.WalletResponse
 import vedam.subkuch.ui.jobs.models.AddResponse
+import vedam.subkuch.ui.shopping.show
 import vedam.subkuch.utils.AppPrefs
+import vedam.subkuch.utils.AppUtil
 import vedam.subkuch.utils.UiUtil
-import java.util.*
 
 class AddNeedActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
     private var categoryId: String? = null
-    private var activityAddNeedBinding: ActivityAddNeedBinding? = null
+    private var binding: ActivityAddNeedBinding? = null
     private var latLng: LatLng? = null
+    private var walletResponse: WalletResponse? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activityAddNeedBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_need)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_add_need)
         setToolbarBackButton()
         setTitle(R.string.add_a_need)
         bindCallbacks()
         getCategories()
+        getWalletDetails()
+    }
+
+    private fun getWalletDetails() {
+        UiUtil.showProgressDialog(this, R.string.please_wait)
+        DataFetcher.getWalletDetails(
+            this,
+            onWalletSuccessListener,
+            WalletResponse::class.java,
+            onErrorListener
+        )
+    }
+
+    private val onWalletSuccessListener = Response.Listener { response: WalletResponse? ->
+        walletResponse = response
+        loadUI()
+    }
+
+    private fun loadUI() {
+        UiUtil.cancelProgressDialog()
+        val balance =
+            (walletResponse?.returnData?.wallet?.availableBalance?.split(".")?.get(1))?.trim()
+                ?.toIntOrNull() ?: 0
+        if (balance >= 10) {
+            binding?.tvMessage?.show()
+            binding?.tvMessage?.text = getString(R.string.yes_money_needs, balance)
+            binding?.scrollView?.show()
+            binding?.btSubmit?.show()
+        } else {
+            binding?.tvMessage?.show()
+            val ss = SpannableString(getString(R.string.no_money_needs, balance))
+            val clickableSpan: ClickableSpan = object : ClickableSpan() {
+                override fun onClick(textView: View) {
+                    AppUtil.openUrl(this@AddNeedActivity, "https://vedam-it.com/sabkuch.html")
+                }
+
+                override fun updateDrawState(ds: TextPaint) {
+                    super.updateDrawState(ds)
+                    ds.isUnderlineText = true
+                }
+            }
+            ss.setSpan(
+                clickableSpan,
+                ss.indexOf("Click"),
+                ss.indexOf("Click") + 10,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            binding?.tvMessage?.movementMethod = LinkMovementMethod.getInstance()
+            binding?.tvMessage?.text = ss
+            binding?.tvMessage?.highlightColor = Color.TRANSPARENT
+        }
+    }
+
+    override fun moneyWithdrawn() {
+        addNeed()
     }
 
     private fun bindCallbacks() {
-        activityAddNeedBinding!!.btSubmit.setOnClickListener { v: View? ->
+        binding!!.btSubmit.setOnClickListener { v: View? ->
             val errorMessage = validateErrorMessage()
-            if (errorMessage == 0) addNeed() else UiUtil.showDialog(
+            if (errorMessage == 0) withdraw()
+            else UiUtil.showDialog(
                 this,
                 getString(errorMessage),
                 true
             )
         }
-        activityAddNeedBinding!!.btAddLocation.setOnClickListener {
+        binding!!.btAddLocation.setOnClickListener {
             val locationPickerIntent = LocationPickerActivity.Builder()
                 .withGeolocApiKey(Constants.MAPS_API_KEY)
                 .withGooglePlacesApiKey(Constants.MAPS_API_KEY)
@@ -69,7 +136,7 @@ class AddNeedActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
     }
 
     private fun getCategories() {
-        UiUtil.showProgressDialog(this, R.string.please_wait)
+//        UiUtil.showProgressDialog(this, R.string.please_wait)
         getProviders(
             this,
             onProviderSuccessListener,
@@ -93,9 +160,9 @@ class AddNeedActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
             this,
             android.R.layout.simple_spinner_dropdown_item, categories
         )
-        activityAddNeedBinding!!.spCategory.adapter = adapter
-        activityAddNeedBinding!!.spCategory.onItemSelectedListener = this
-        activityAddNeedBinding!!.spCategory.setSelection(0)
+        binding!!.spCategory.adapter = adapter
+        binding!!.spCategory.onItemSelectedListener = this
+        binding!!.spCategory.setSelection(0)
     }
 
     private fun addNeed() {
@@ -103,8 +170,8 @@ class AddNeedActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
         val needRequest = AddNeedRequest()
         needRequest.userId = AppPrefs.getPrefsUserId(this)
         needRequest.needProviderId = categoryId
-        needRequest.workLocation = activityAddNeedBinding!!.etWorkLocation.text.toString()
-        needRequest.workDetails = activityAddNeedBinding!!.etWorkDetails.text.toString()
+        needRequest.workLocation = binding!!.etWorkLocation.text.toString()
+        needRequest.workDetails = binding!!.etWorkDetails.text.toString()
         needRequest.latitude = latLng!!.latitude.toString()
         needRequest.longitude = latLng!!.longitude.toString()
         addNeed(
@@ -129,11 +196,11 @@ class AddNeedActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
         var errorMessage = 0
         if (TextUtils.isEmpty(categoryId)) errorMessage =
             R.string.select_a_category else if (TextUtils.isEmpty(
-                activityAddNeedBinding!!.etWorkLocation.text
+                binding!!.etWorkLocation.text
             )
         ) errorMessage = R.string.enter_work_location else if (latLng == null) errorMessage =
             R.string.add_a_location_on_map else if (TextUtils.isEmpty(
-                activityAddNeedBinding!!.etWorkDetails.text
+                binding!!.etWorkDetails.text
             )
         ) errorMessage = R.string.enter_work_details
         return errorMessage
@@ -142,7 +209,7 @@ class AddNeedActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == Constants.REQUEST_PLACE_PICKER) {
             if (resultCode == Activity.RESULT_OK) {
-                activityAddNeedBinding?.tvLocation?.text = data?.getStringExtra(LOCATION_ADDRESS)
+                binding?.tvLocation?.text = data?.getStringExtra(LOCATION_ADDRESS)
                 latLng = LatLng(
                     data?.getDoubleExtra(LATITUDE, 0.0) ?: 0.0,
                     data?.getDoubleExtra(LONGITUDE, 0.0) ?: 0.0

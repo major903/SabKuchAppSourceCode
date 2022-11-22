@@ -134,28 +134,28 @@ public class PinFragment extends BaseFragment {
             bundle.putBoolean(Constants.EXTRA_IS_DATING, isDating);
             addFragmentWithAnimation(R.id.content_frame, PinFragment.newInstance(bundle), null, true);
         } else
-            UiUtil.showToast(context, getString(R.string.please_enter_pin));
+            UiUtil.showToast(mContext, getString(R.string.please_enter_pin));
     }
 
     private void setPin() {
         if (checkPin()) {
-            UiUtil.showProgressDialog(context, getString(R.string.please_wait));
-            DataFetcher.setAccessPin(context, new Gson().toJson(getPinRequest()), onPinSuccessListener, GeneralResponse.class, onErrorListener);
+            UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
+            DataFetcher.setAccessPin(mContext, new Gson().toJson(getPinRequest()), onPinSuccessListener, GeneralResponse.class, onErrorListener);
         }
     }
 
     private void verifyPin() {
         if (validateError()) {
-            UiUtil.showProgressDialog(context, getString(R.string.please_wait));
-            DataFetcher.verifyAccessPin(context, new Gson().toJson(getPinRequest()), onPinSuccessListener, GeneralResponse.class, onErrorListener);
+            UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
+            DataFetcher.verifyAccessPin(mContext, new Gson().toJson(getPinRequest()), onPinSuccessListener, GeneralResponse.class, onErrorListener);
         } else
-            UiUtil.showToast(context, getString(R.string.please_enter_pin));
+            UiUtil.showToast(mContext, getString(R.string.please_enter_pin));
     }
 
     private PinRequest getPinRequest() {
         PinRequest pinRequest = new PinRequest();
         String pin = getPin();
-        String userId = AppPrefs.getPrefsUserId(context);
+        String userId = AppPrefs.getPrefsUserId(mContext);
         pinRequest.setProfileId(userId);
         pinRequest.setAccessPin(pin);
         return pinRequest;
@@ -171,7 +171,7 @@ public class PinFragment extends BaseFragment {
         if (previousPin.equals(getPin()))
             return true;
         else {
-            UiUtil.showToast(context, getString(R.string.pin_mismatch));
+            UiUtil.showToast(mContext, getString(R.string.pin_mismatch));
             return false;
         }
     }
@@ -181,10 +181,10 @@ public class PinFragment extends BaseFragment {
         UiUtil.cancelProgressDialog();
         if (getActivity() != null)
             if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
-                startActivity(new Intent(context, ShowProfilesActivity.class).putExtra(Constants.EXTRA_IS_DATING, isDating));
+                startActivity(new Intent(mContext, ShowProfilesActivity.class).putExtra(Constants.EXTRA_IS_DATING, isDating));
                 getActivity().finish();
             } else
-                UiUtil.showToast(context, getString(R.string.incorrect_pin));
+                UiUtil.showToast(mContext, getString(R.string.incorrect_pin));
     };
 
 
@@ -192,7 +192,7 @@ public class PinFragment extends BaseFragment {
     protected void parseAndShowError(VolleyError error) {
         String errorMessage = error.getMessage();
         if (!TextUtils.isEmpty(errorMessage))
-            UiUtil.showToast(context, errorMessage);
+            UiUtil.showToast(mContext, errorMessage);
         else
             super.parseAndShowError(error);
     }
@@ -228,7 +228,7 @@ public class PinFragment extends BaseFragment {
                 setEditText(s, binding.etPin3, null);
                 if (!TextUtils.isEmpty(s)) {
                     binding.etPin4.clearFocus();
-                    UiUtil.hideKeyBoard(context, binding.etPin4);
+                    UiUtil.hideKeyBoard(mContext, binding.etPin4);
                 }
             }
         }

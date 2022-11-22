@@ -42,12 +42,12 @@ public class WithdrawalActivity extends BaseActivity {
 
         int errorMessage = validateErrorMessage();
         if (errorMessage == 0)
-            withdraw();
+            mWithdraw();
         else
             UiUtil.showDialog(this, getString(errorMessage), true);
     }
 
-    private void withdraw() {
+    private void mWithdraw() {
         UiUtil.showProgressDialog(this, getString(R.string.please_wait));
         WithdrawalRequest withdrawalRequest = new WithdrawalRequest();
         withdrawalRequest.setAmount(activityWithdrawalBinding.etWithdrawalAmount.getText().toString());

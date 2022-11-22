@@ -112,6 +112,6 @@
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/view_pop_window.xml" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/view_progress_dialog.xml" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/menu/share.xml" charset="UTF-8" />
-    <file url="PROJECT" charset="UTF-8" />
+    <file url="PROJECT" charset="ISO-8859-1" />
   </component>
 </project>

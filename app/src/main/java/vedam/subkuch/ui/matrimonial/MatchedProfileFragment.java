@@ -85,21 +85,21 @@ public class MatchedProfileFragment extends BaseFragment implements OnListViewIt
 
     private void initUI() {
 
-        linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager = new LinearLayoutManager(mContext);
         fragmentMatchedProfileBinding.rvMatchedProfile.setLayoutManager(linearLayoutManager);
         fragmentMatchedProfileBinding.rvMatchedProfile.setHasFixedSize(true);
-        adapter = new MatchedProfileAdapter(context, datingProfiles, this);
+        adapter = new MatchedProfileAdapter(mContext, datingProfiles, this);
         fragmentMatchedProfileBinding.rvMatchedProfile.setAdapter(adapter);
         fragmentMatchedProfileBinding.rvMatchedProfile.addOnScrollListener(new ProfilesOnScrollListener());
 
     }
 
     public void getMatchedProfiles() {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
         if (isDating)
-            DataFetcher.getDatingMatchedProfiles(context, onMatchedProfilesSuccessListener, DatingProfileResponse.class, onErrorListener, pageNo, pageSize);
+            DataFetcher.getDatingMatchedProfiles(mContext, onMatchedProfilesSuccessListener, DatingProfileResponse.class, onErrorListener, pageNo, pageSize);
         else
-            DataFetcher.getMatrimonialMatchedProfiles(context, onMatchedProfilesSuccessListener, DatingProfileResponse.class, onErrorListener, pageNo, pageSize);
+            DataFetcher.getMatrimonialMatchedProfiles(mContext, onMatchedProfilesSuccessListener, DatingProfileResponse.class, onErrorListener, pageNo, pageSize);
 
 
     }
@@ -114,9 +114,9 @@ public class MatchedProfileFragment extends BaseFragment implements OnListViewIt
                     loading = true;
                     loadValues(response.getReturnData());
                 } else
-                    UiUtil.showToast(context, getString(R.string.no_matches_found));
+                    UiUtil.showToast(mContext, getString(R.string.no_matches_found));
             } else
-                UiUtil.showToast(context, getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, getString(R.string.err_occurred));
     };
 
     private void loadValues(ArrayList<DatingProfile> response) {
@@ -138,7 +138,7 @@ public class MatchedProfileFragment extends BaseFragment implements OnListViewIt
 
     private void startViewProfileActivity(DatingProfile datingProfile) {
 
-        Intent intent = new Intent(context, ViewProfileActivity.class);
+        Intent intent = new Intent(mContext, ViewProfileActivity.class);
         intent.putExtra(Constants.EXTRA_NAME, AppUtil.deNull(datingProfile.getFirstName()));
         intent.putExtra(Constants.EXTRA_DATA, datingProfile);
         intent.putExtra(Constants.EXTRA_IS_DATING, isDating);

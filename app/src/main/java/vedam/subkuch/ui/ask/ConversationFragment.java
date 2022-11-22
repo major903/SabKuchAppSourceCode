@@ -86,17 +86,17 @@ public class ConversationFragment extends BaseFragment implements AskReplyListen
 
     private void initUI() {
 
-        linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager = new LinearLayoutManager(mContext);
         fragmentConversationBinding.rvQuestions.setLayoutManager(linearLayoutManager);
         fragmentConversationBinding.rvQuestions.setHasFixedSize(true);
-        adapter = new ConversationAdapter(context, conversations, this);
+        adapter = new ConversationAdapter(mContext, conversations, this);
         fragmentConversationBinding.rvQuestions.setAdapter(adapter);
         fragmentConversationBinding.rvQuestions.addOnScrollListener(new ConversationOnScrollListener());
     }
 
     private void getConversation() {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
-        DataFetcher.getAskConversation(context, onConversationSuccessListener, ConversationResponse.class,
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
+        DataFetcher.getAskConversation(mContext, onConversationSuccessListener, ConversationResponse.class,
                 onErrorListener, categoryId, pageNo, pageSize);
 
     }
@@ -111,9 +111,9 @@ public class ConversationFragment extends BaseFragment implements AskReplyListen
                     loading = true;
                     loadValues(response.getReturnData());
                 } else
-                    UiUtil.showToast(context, getString(R.string.no_data));
+                    UiUtil.showToast(mContext, getString(R.string.no_data));
             } else
-                UiUtil.showToast(context, getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, getString(R.string.err_occurred));
     };
 
     /*private void startEventCalendarService(JSONArray jsonArray) {
@@ -146,7 +146,7 @@ public class ConversationFragment extends BaseFragment implements AskReplyListen
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
-                startActivityForResult(new Intent(context, AddQuestionActivity.class), Constants.REQUEST_ADD_QUESTION);
+                startActivityForResult(new Intent(mContext, AddQuestionActivity.class), Constants.REQUEST_ADD_QUESTION);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -183,7 +183,7 @@ public class ConversationFragment extends BaseFragment implements AskReplyListen
 
     private void startAskReplyDialog(String questionId) {
 
-        AskReplyDialog askReplyDialog = new AskReplyDialog(context, this, questionId);
+        AskReplyDialog askReplyDialog = new AskReplyDialog(mContext, this, questionId);
         askReplyDialog.setCancelable(true);
         Window window = askReplyDialog.getWindow();
         if (window != null) {

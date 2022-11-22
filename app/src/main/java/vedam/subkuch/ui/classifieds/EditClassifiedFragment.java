@@ -106,10 +106,10 @@ public class EditClassifiedFragment extends BaseAddImagesFragment implements Ada
     }
 
     private void getCategories() {
-        UiUtil.showProgressDialog(context, R.string.please_wait);
+        UiUtil.showProgressDialog(mContext, R.string.please_wait);
         Type type = new TypeToken<ClassifiedResponse<ClassifiedCategory>>() {
         }.getType();
-        DataFetcher.getClassifiedsCategories(context, onCategorySuccessListener, type, onErrorListener);
+        DataFetcher.getClassifiedsCategories(mContext, onCategorySuccessListener, type, onErrorListener);
 
     }
 
@@ -120,7 +120,7 @@ public class EditClassifiedFragment extends BaseAddImagesFragment implements Ada
             if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
                 setCategories(response.getReturnData());
             } else
-                UiUtil.showToast(context, getString(R.string.no_data));
+                UiUtil.showToast(mContext, getString(R.string.no_data));
     };
 
     private void setCategories(ArrayList<ClassifiedCategory> categories) {
@@ -129,7 +129,7 @@ public class EditClassifiedFragment extends BaseAddImagesFragment implements Ada
         category.setCategory(getString(R.string.select_a_category));
         categories.add(0, category);
 
-        ArrayAdapter<ClassifiedCategory> adapter = new ArrayAdapter<>(context,
+        ArrayAdapter<ClassifiedCategory> adapter = new ArrayAdapter<>(mContext,
                 android.R.layout.simple_spinner_dropdown_item, categories);
         binding.spCategory.setAdapter(adapter);
         binding.spCategory.setOnItemSelectedListener(this);
@@ -146,10 +146,10 @@ public class EditClassifiedFragment extends BaseAddImagesFragment implements Ada
     }
 
     private void getSubCategories() {
-        UiUtil.showProgressDialog(context, R.string.please_wait);
+        UiUtil.showProgressDialog(mContext, R.string.please_wait);
         Type type = new TypeToken<ClassifiedResponse<ClassifiedSubCategory>>() {
         }.getType();
-        DataFetcher.getClassifiedSubCategories(context, onSubCategorySuccessListener, type, onErrorListener, categoryId);
+        DataFetcher.getClassifiedSubCategories(mContext, onSubCategorySuccessListener, type, onErrorListener, categoryId);
 
     }
 
@@ -159,7 +159,7 @@ public class EditClassifiedFragment extends BaseAddImagesFragment implements Ada
             if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
                 setSubcategories(response.getReturnData());
             } else
-                UiUtil.showToast(context, getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, getString(R.string.err_occurred));
     };
 
     private void setSubcategories(ArrayList<ClassifiedSubCategory> subCategories) {
@@ -168,7 +168,7 @@ public class EditClassifiedFragment extends BaseAddImagesFragment implements Ada
         subCategory.setSubCategory(getString(R.string.select_a_sub_category));
         subCategories.add(0, subCategory);
 
-        ArrayAdapter<ClassifiedSubCategory> adapter = new ArrayAdapter<>(context,
+        ArrayAdapter<ClassifiedSubCategory> adapter = new ArrayAdapter<>(mContext,
                 android.R.layout.simple_spinner_dropdown_item, subCategories);
         binding.spSubCategory.setAdapter(adapter);
         binding.spSubCategory.setOnItemSelectedListener(this);
@@ -186,8 +186,8 @@ public class EditClassifiedFragment extends BaseAddImagesFragment implements Ada
 
     private void getCities() {
 
-        UiUtil.showProgressDialog(context, getString(R.string.loading));
-        DataFetcher.getCities(context, onCitiesSuccessListener, CitiesResponse.class, onErrorListener);
+        UiUtil.showProgressDialog(mContext, getString(R.string.loading));
+        DataFetcher.getCities(mContext, onCitiesSuccessListener, CitiesResponse.class, onErrorListener);
     }
 
     private Response.Listener<CitiesResponse> onCitiesSuccessListener = response -> {
@@ -197,7 +197,7 @@ public class EditClassifiedFragment extends BaseAddImagesFragment implements Ada
             if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
                 setCities(response.getReturnData());
             } else {
-                UiUtil.showToast(context, getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, getString(R.string.err_occurred));
             }
 
 
@@ -209,7 +209,7 @@ public class EditClassifiedFragment extends BaseAddImagesFragment implements Ada
         city.setName(getString(R.string.select_a_city));
         cities.add(0, city);
 
-        ArrayAdapter<City> adapter = new ArrayAdapter<>(context,
+        ArrayAdapter<City> adapter = new ArrayAdapter<>(mContext,
                 android.R.layout.simple_spinner_dropdown_item, cities);
         binding.spCity.setAdapter(adapter);
         setSelectedCity(cities);
@@ -239,7 +239,7 @@ public class EditClassifiedFragment extends BaseAddImagesFragment implements Ada
             if (errorMessage == 0) {
                 submit();
             } else
-                UiUtil.showDialog(context, getString(errorMessage), true);
+                UiUtil.showDialog(mContext, getString(errorMessage), true);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -247,13 +247,13 @@ public class EditClassifiedFragment extends BaseAddImagesFragment implements Ada
 
     private void submit() {
 
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
 
         Classified classifiedRequest = new Classified();
         classifiedRequest.setClassifiedAdId(classified.getClassifiedAdId());
         classifiedRequest.setCategoryId(categoryId);
         classifiedRequest.setSubCategoryId(subcategoryId);
-        classifiedRequest.setUserId(AppPrefs.getPrefsUserId(context));
+        classifiedRequest.setUserId(AppPrefs.getPrefsUserId(mContext));
         classifiedRequest.setCityId(classified.getCityId());
         classifiedRequest.setLocality(binding.etLocality.getText().toString());
         classifiedRequest.setRate(binding.etRate.getText().toString());
@@ -262,7 +262,7 @@ public class EditClassifiedFragment extends BaseAddImagesFragment implements Ada
         classifiedRequest.setDailyDiscount(binding.etDiscount.getText().toString());
         classifiedRequest.setContact(binding.etContact.getText().toString());
 
-        DataFetcher.updateClassified(context, new Gson().toJson(classifiedRequest), onAddClassifiedSuccessListener, AddClassifiedResponse.class, onErrorListener);
+        DataFetcher.updateClassified(mContext, new Gson().toJson(classifiedRequest), onAddClassifiedSuccessListener, AddClassifiedResponse.class, onErrorListener);
     }
 
     private Response.Listener<AddClassifiedResponse> onAddClassifiedSuccessListener = response -> {
@@ -273,7 +273,7 @@ public class EditClassifiedFragment extends BaseAddImagesFragment implements Ada
                 successMessage = response.getReturnMessage();
                 isImageAvailable(response.getClassified().getPostedAdId());
             } else
-                UiUtil.showToast(context, getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, getString(R.string.err_occurred));
     };
 
     private void isImageAvailable(String classfiedId) {
@@ -281,7 +281,7 @@ public class EditClassifiedFragment extends BaseAddImagesFragment implements Ada
         if (getImageItemMap().size() > 0)
             uploadClassifiedImage(classfiedId);
         else {
-            UiUtil.showToast(context, successMessage);
+            UiUtil.showToast(mContext, successMessage);
             if (getGlobalFragmentInteractionListener() != null) {
                 getGlobalFragmentInteractionListener().finishActivity();
             }
@@ -290,13 +290,13 @@ public class EditClassifiedFragment extends BaseAddImagesFragment implements Ada
 
     private void uploadClassifiedImage(String classfiedId) {
 
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
         Map<String, DataPart> params = new HashMap<>();
         params.put(NetworkConstants.ProfileImage, new DataPart(AppUtil.getUniqueFileName(),
-                AppUtil.getBytesFromBitmap(AppUtil.getSingleBitmap(context, getImageItemMap()))
+                AppUtil.getBytesFromBitmap(AppUtil.getSingleBitmap(mContext, getImageItemMap()))
                 , NetworkConstants.JPEG_MIME_TYPE));
 
-        DataFetcher.uploadClassifiedImage(context, params, onImageUploadSuccessListener, GeneralResponse.class, onErrorListener, classfiedId);
+        DataFetcher.uploadClassifiedImage(mContext, params, onImageUploadSuccessListener, GeneralResponse.class, onErrorListener, classfiedId);
     }
 
     private Response.Listener<GeneralResponse> onImageUploadSuccessListener = response -> {
@@ -304,10 +304,10 @@ public class EditClassifiedFragment extends BaseAddImagesFragment implements Ada
         UiUtil.cancelProgressDialog();
         if (getActivity() != null)
             if (response != null && response.getReturnCode() == Constants.SUCCESS_RETURN_CODE) {
-                UiUtil.showToast(context, successMessage);
+                UiUtil.showToast(mContext, successMessage);
                 getActivity().finish();
             } else
-                UiUtil.showToast(context, getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, getString(R.string.err_occurred));
     };
 
 

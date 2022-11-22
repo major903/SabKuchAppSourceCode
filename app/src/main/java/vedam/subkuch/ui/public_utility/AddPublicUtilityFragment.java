@@ -88,8 +88,8 @@ public class AddPublicUtilityFragment extends BaseFragment implements AdapterVie
 
     private void getCities() {
 
-        UiUtil.showProgressDialog(context, getString(R.string.loading));
-        DataFetcher.getCities(context, onCitiesSuccessListener, CitiesResponse.class, onErrorListener);
+        UiUtil.showProgressDialog(mContext, getString(R.string.loading));
+        DataFetcher.getCities(mContext, onCitiesSuccessListener, CitiesResponse.class, onErrorListener);
     }
 
     private Response.Listener<CitiesResponse> onCitiesSuccessListener = response -> {
@@ -99,7 +99,7 @@ public class AddPublicUtilityFragment extends BaseFragment implements AdapterVie
             if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
                 setCities(response.getReturnData());
             } else {
-                UiUtil.showToast(context, getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, getString(R.string.err_occurred));
             }
 
 
@@ -111,7 +111,7 @@ public class AddPublicUtilityFragment extends BaseFragment implements AdapterVie
         city.setName(getString(R.string.select_a_city));
         cities.add(0, city);
 
-        ArrayAdapter<City> adapter = new ArrayAdapter<>(context,
+        ArrayAdapter<City> adapter = new ArrayAdapter<>(mContext,
                 android.R.layout.simple_spinner_dropdown_item, cities);
         binding.spCity.setAdapter(adapter);
         binding.spCity.setOnItemSelectedListener(this);
@@ -120,8 +120,8 @@ public class AddPublicUtilityFragment extends BaseFragment implements AdapterVie
 
     private void getCountries() {
 
-        UiUtil.showProgressDialog(context, getString(R.string.loading));
-        DataFetcher.getCountries(context, onCountriesSuccessListener, CountriesResponse.class, onErrorListener);
+        UiUtil.showProgressDialog(mContext, getString(R.string.loading));
+        DataFetcher.getCountries(mContext, onCountriesSuccessListener, CountriesResponse.class, onErrorListener);
     }
 
     private Response.Listener<CountriesResponse> onCountriesSuccessListener = response -> {
@@ -131,13 +131,13 @@ public class AddPublicUtilityFragment extends BaseFragment implements AdapterVie
             if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
                 setCountries(response.getCountries());
             } else {
-                UiUtil.showToast(context, getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, getString(R.string.err_occurred));
             }
     };
 
     private void setCountries(ArrayList<Country> countries) {
 
-        ArrayAdapter<Country> adapter = new ArrayAdapter<>(context,
+        ArrayAdapter<Country> adapter = new ArrayAdapter<>(mContext,
                 android.R.layout.simple_spinner_dropdown_item, countries);
         binding.spCountry.setAdapter(adapter);
         binding.spCountry.setOnItemSelectedListener(this);
@@ -169,7 +169,7 @@ public class AddPublicUtilityFragment extends BaseFragment implements AdapterVie
             if (errorMessage == 0) {
                 submit();
             } else
-                UiUtil.showDialog(context, getString(errorMessage), true);
+                UiUtil.showDialog(mContext, getString(errorMessage), true);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -192,7 +192,7 @@ public class AddPublicUtilityFragment extends BaseFragment implements AdapterVie
 
     private void submit() {
 
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
 
         AddPublicUtilityRequest addPublicUtilityRequest = new AddPublicUtilityRequest();
         addPublicUtilityRequest.setCountryId(countryId);
@@ -212,7 +212,7 @@ public class AddPublicUtilityFragment extends BaseFragment implements AdapterVie
         addPublicUtilityRequest.setLatitude(String.valueOf(latLng.latitude));
         addPublicUtilityRequest.setLongitude(String.valueOf(latLng.longitude));
 
-        DataFetcher.addBusiness(context, new Gson().toJson(addPublicUtilityRequest), onAddBusinessSuccessListener, AddResponse.class, onErrorListener);
+        DataFetcher.addBusiness(mContext, new Gson().toJson(addPublicUtilityRequest), onAddBusinessSuccessListener, AddResponse.class, onErrorListener);
     }
 
     private Response.Listener<AddResponse> onAddBusinessSuccessListener = response -> {
@@ -220,11 +220,11 @@ public class AddPublicUtilityFragment extends BaseFragment implements AdapterVie
         UiUtil.cancelProgressDialog();
         if (getActivity() != null)
             if (response != null && !TextUtils.isEmpty(response.getMessage())) {
-                UiUtil.showToast(context, response.getMessage());
+                UiUtil.showToast(mContext, response.getMessage());
                 getActivity().setResult(RESULT_OK);
                 getActivity().finish();
             } else
-                UiUtil.showToast(context, getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, getString(R.string.err_occurred));
     };
 
     private int validateErrorMessage() {
@@ -252,7 +252,7 @@ public class AddPublicUtilityFragment extends BaseFragment implements AdapterVie
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constants.REQUEST_PLACE_PICKER) {
             if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(context, data);
+                Place place = PlacePicker.getPlace(mContext, data);
                 latLng = place.getLatLng();
                 UiUtil.setTextView(binding.tvLocation, place.getName().toString());
             }

@@ -1,26 +1,24 @@
 package vedam.subkuch.ui.chat
 
-import vedam.subkuch.base.BaseFragment
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import vedam.subkuch.R
-import androidx.recyclerview.widget.LinearLayoutManager
-import android.widget.Toast
-import vedam.subkuch.utils.AppPrefs
-import vedam.subkuch.db.chat.Chat
-import vedam.subkuch.utils.LogUtils
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import okhttp3.*
+import vedam.subkuch.R
+import vedam.subkuch.base.BaseFragment
 import vedam.subkuch.databinding.FragmentChatBinding
+import vedam.subkuch.db.chat.Chat
 import vedam.subkuch.db.chat.LatestChat
 import vedam.subkuch.helpers.Constants
+import vedam.subkuch.utils.AppPrefs
 
 /**
  * A sends to B
@@ -70,7 +68,7 @@ class ChatFragment : BaseFragment() {
     private fun markRead() {
 
         firestore.collection(Constants.TABLE_MESSAGES)
-            .whereEqualTo(Constants.ToProfileId, AppPrefs.getPrefsUserId(context))
+            .whereEqualTo(Constants.ToProfileId, AppPrefs.getPrefsUserId(mContext))
             .whereEqualTo(Constants.FromProfileId, chatToId)
             .whereEqualTo(Constants.read, false).get().addOnSuccessListener {
                 it?.documents?.forEach { doc ->
@@ -80,10 +78,10 @@ class ChatFragment : BaseFragment() {
     }
 
     private fun init() {
-        chatAdapter = ChatAdapter(context)
+        chatAdapter = ChatAdapter(requireContext())
         fragmentChatBinding!!.rvChat.adapter = chatAdapter
         fragmentChatBinding!!.rvChat.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
+            LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, true)
 
         chatAdapter?.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
@@ -100,7 +98,7 @@ class ChatFragment : BaseFragment() {
             if (fragmentChatBinding!!.etMessage.text.toString()
                     .trim { it <= ' ' } == ""
             ) Toast.makeText(
-                context, "Empty message!",
+                mContext, "Empty message!",
                 Toast.LENGTH_SHORT
             ).show() else {
                 val message = fragmentChatBinding!!.etMessage.text.toString().trim { it <= ' ' }
@@ -112,7 +110,7 @@ class ChatFragment : BaseFragment() {
 
     private fun bindData() {
         snapshotListener = firestore.collection(Constants.TABLE_MESSAGES)
-            .whereEqualTo("idPair", AppPrefs.getPrefsUserId(context).getIdPair(chatToId!!))
+            .whereEqualTo("idPair", AppPrefs.getPrefsUserId(mContext).getIdPair(chatToId!!))
             .orderBy("timeStamp", Query.Direction.DESCENDING)
             .addSnapshotListener(MetadataChanges.INCLUDE) { snapshot, e ->
                 if (e != null || snapshot == null) {
@@ -137,7 +135,7 @@ class ChatFragment : BaseFragment() {
 
     private fun storeMessage(message: String) {
         val chat = Chat()
-        chat.fromProfileId = AppPrefs.getPrefsUserId(context)
+        chat.fromProfileId = AppPrefs.getPrefsUserId(mContext)
         chat.toProfileId = chatToId
         chat.message = message
         chat.senderName = senderName

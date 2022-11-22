@@ -68,13 +68,13 @@ public class JobMelaFragment extends BaseFragment implements OnListViewItemClick
 
     private void initUI() {
 
-        fragmentJobMelaBinding.rvJobType.setLayoutManager(new LinearLayoutManager(context));
+        fragmentJobMelaBinding.rvJobType.setLayoutManager(new LinearLayoutManager(mContext));
         fragmentJobMelaBinding.btNext.setOnClickListener(v -> {
             int errorMessage = validateErrorMessage();
             if (errorMessage == 0) {
                 next();
             } else
-                UiUtil.showDialog(context, getString(errorMessage), true);
+                UiUtil.showDialog(mContext, getString(errorMessage), true);
         });
         fragmentJobMelaBinding.rbYes.setOnCheckedChangeListener((buttonView, isChecked) -> {
             isAttending = isChecked;
@@ -117,8 +117,8 @@ public class JobMelaFragment extends BaseFragment implements OnListViewItemClick
 
     private void getJobTypes() {
 
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
-        DataFetcher.getJobTypes(context, onJobTypesSuccessListener, JobTypeResponse.class, onErrorListener);
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
+        DataFetcher.getJobTypes(mContext, onJobTypesSuccessListener, JobTypeResponse.class, onErrorListener);
     }
 
     private Response.Listener<JobTypeResponse> onJobTypesSuccessListener = response -> {
@@ -128,7 +128,7 @@ public class JobMelaFragment extends BaseFragment implements OnListViewItemClick
             if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
                 loadValues(response.getReturnData());
             } else
-                UiUtil.showToast(context, getString(R.string.no_data));
+                UiUtil.showToast(mContext, getString(R.string.no_data));
     };
 
     private void loadValues(ArrayList<JobType> returnData) {

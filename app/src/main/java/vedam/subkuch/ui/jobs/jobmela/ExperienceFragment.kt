@@ -53,9 +53,9 @@ class ExperienceFragment : BaseFragment(), OnItemSelectedListener {
     }
 
     private fun getJobExperiences() {
-        UiUtil.showProgressDialog(context, R.string.please_wait)
+        UiUtil.showProgressDialog(mContext, R.string.please_wait)
         getJobExperiences(
-            context,
+            mContext,
             onExperienceSuccessListener,
             JobExperienceResponse::class.java,
             onErrorListener
@@ -66,7 +66,7 @@ class ExperienceFragment : BaseFragment(), OnItemSelectedListener {
             UiUtil.cancelProgressDialog()
             if (activity != null) if (response != null && response.returnMessage == Constants.SUCCESS) {
                 setJobExperiences(response.returnData)
-            } else UiUtil.showToast(context, getString(R.string.no_data))
+            } else UiUtil.showToast(mContext, getString(R.string.no_data))
         }
 
     private fun setJobExperiences(jobExperiences: ArrayList<JobExperience>) {
@@ -74,7 +74,7 @@ class ExperienceFragment : BaseFragment(), OnItemSelectedListener {
         jobExperience.jobExpName = getString(R.string.select_a_job_experience)
         jobExperiences.add(0, jobExperience)
         val adapter = ArrayAdapter(
-            context,
+            requireContext(),
             android.R.layout.simple_spinner_dropdown_item, jobExperiences
         )
         fragmentExperienceBinding!!.spExperience.adapter = adapter
@@ -83,9 +83,9 @@ class ExperienceFragment : BaseFragment(), OnItemSelectedListener {
     }
 
     private fun getJobQualifications() {
-        UiUtil.showProgressDialog(context, R.string.please_wait)
+        UiUtil.showProgressDialog(mContext, R.string.please_wait)
         getJobQualifications(
-            context,
+            mContext,
             onQualifySuccessListener,
             JobQualificationResponse::class.java,
             onErrorListener
@@ -96,7 +96,7 @@ class ExperienceFragment : BaseFragment(), OnItemSelectedListener {
             UiUtil.cancelProgressDialog()
             if (activity != null) if (response != null && response.returnMessage == Constants.SUCCESS) {
                 setJobQualifications(response.returnData)
-            } else UiUtil.showToast(context, getString(R.string.no_data))
+            } else UiUtil.showToast(mContext, getString(R.string.no_data))
         }
 
     private fun setJobQualifications(jobQualifications: ArrayList<JobQualification>) {
@@ -104,7 +104,7 @@ class ExperienceFragment : BaseFragment(), OnItemSelectedListener {
         jobQualification.qualificationName = getString(R.string.select_a_job_qualification)
         jobQualifications.add(0, jobQualification)
         val adapter = ArrayAdapter(
-            context,
+            requireContext(),
             android.R.layout.simple_spinner_dropdown_item, jobQualifications
         )
         fragmentExperienceBinding!!.spQualification.adapter = adapter
@@ -118,7 +118,7 @@ class ExperienceFragment : BaseFragment(), OnItemSelectedListener {
             val errorMessage = validateErrorMessage()
             if (errorMessage == 0) {
                 next()
-            } else UiUtil.showDialog(context, getString(errorMessage), true)
+            } else UiUtil.showDialog(mContext, getString(errorMessage), true)
         }
     }
 

@@ -73,19 +73,19 @@ public class MyClassifiedFragment extends BaseFragment implements OnListViewItem
 
     private void initUI() {
 
-        linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager = new LinearLayoutManager(mContext);
         binding.rvClassifieds.setLayoutManager(linearLayoutManager);
         binding.rvClassifieds.setHasFixedSize(true);
-        adapter = new MyClassifiedsAdapter(context, classifieds, this);
+        adapter = new MyClassifiedsAdapter(mContext, classifieds, this);
         binding.rvClassifieds.setAdapter(adapter);
         binding.rvClassifieds.addOnScrollListener(new MyClassifiedFragment.OnScrollListener());
     }
 
     private void getClassifieds() {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
         Type type = new TypeToken<BaseGetMasterModel<Classified>>() {
         }.getType();
-        DataFetcher.getMyClassifieds(context, onGetClassifiedsSuccessListener, type, onErrorListener, pageNo, pageSize);
+        DataFetcher.getMyClassifieds(mContext, onGetClassifiedsSuccessListener, type, onErrorListener, pageNo, pageSize);
 
     }
 
@@ -99,9 +99,9 @@ public class MyClassifiedFragment extends BaseFragment implements OnListViewItem
                     loading = true;
                     loadValues(response.getReturnData());
                 } else
-                    UiUtil.showToast(context, getString(R.string.no_ads_found));
+                    UiUtil.showToast(mContext, getString(R.string.no_ads_found));
             } else
-                UiUtil.showToast(context, getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, getString(R.string.err_occurred));
     };
 
 
@@ -124,7 +124,7 @@ public class MyClassifiedFragment extends BaseFragment implements OnListViewItem
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_add) {
-            startActivity(new Intent(context, AddClassifiedsActivity.class));
+            startActivity(new Intent(mContext, AddClassifiedsActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -133,7 +133,7 @@ public class MyClassifiedFragment extends BaseFragment implements OnListViewItem
     public <E> void onItemClick(E item, int position, View view, ListItemClickAction action) {
         switch (action) {
             case EDIT:
-                Intent intent = new Intent(context, EditClassifiedActivity.class);
+                Intent intent = new Intent(mContext, EditClassifiedActivity.class);
                 intent.putExtra(Constants.EXTRA_DATA, (Classified) item);
                 startActivityForResult(intent, Constants.REQUEST_EDIT_AD);
                 break;
@@ -145,8 +145,8 @@ public class MyClassifiedFragment extends BaseFragment implements OnListViewItem
 
     private void deleteAd(Classified item) {
 
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
-        DataFetcher.deleteClassified(context, onDeleteSuccessListener, AddResponse.class, onErrorListener, item.getClassifiedAdId());
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
+        DataFetcher.deleteClassified(mContext, onDeleteSuccessListener, AddResponse.class, onErrorListener, item.getClassifiedAdId());
     }
 
     private Response.Listener<AddResponse> onDeleteSuccessListener = response -> {
@@ -154,10 +154,10 @@ public class MyClassifiedFragment extends BaseFragment implements OnListViewItem
         UiUtil.cancelProgressDialog();
         if (getActivity() != null)
             if (response != null && response.getReturnCode() == Constants.SUCCESS_RETURN_CODE) {
-                UiUtil.showToast(context, AppUtil.deNull(response.getReturnMessage()));
+                UiUtil.showToast(mContext, AppUtil.deNull(response.getReturnMessage()));
                 refreshData();
             } else
-                UiUtil.showToast(context, getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, getString(R.string.err_occurred));
     };
 
     private void refreshData() {

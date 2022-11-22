@@ -58,9 +58,9 @@ class ProductDetailsFragment : BaseFragment() {
     }
 
     private fun getProductDetails() {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait))
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait))
         val type = object : TypeToken<BaseShoppingResponse<Product>>() {}.type
-        DataFetcher.getShoppingProductDetails(context, onSubcategoriesSuccessListener, type, onErrorListener, shoppingId
+        DataFetcher.getShoppingProductDetails(mContext, onSubcategoriesSuccessListener, type, onErrorListener, shoppingId
                 ?: "")
     }
 
@@ -71,15 +71,15 @@ class ProductDetailsFragment : BaseFragment() {
     }
 
     private fun requestPermissions() {
-        Dexter.withContext(context).withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        Dexter.withContext(mContext).withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .withListener(object : PermissionListener {
                     override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
                         val text = "${mTitle}\n\nSharing this item with you. If you wish to do window shopping in your city install Sabkuch App from the link given below. \n" +
                                 "\n" +
                                 "https://play.google.com/store/apps/details?id=vedam.subkuch&referrer=KK47"
-                        ShareUtils.shareImageWithMessage(context, imageUrl, text, null, object : ShareUtilsListener {
+                        ShareUtils.shareImageWithMessage(requireContext(), imageUrl, text, null, object : ShareUtilsListener {
                             override fun onShareStarted() {
-                                UiUtil.showProgressDialog(context, getString(R.string.please_wait))
+                                UiUtil.showProgressDialog(mContext, getString(R.string.please_wait))
                             }
 
                             override fun onShared() {
@@ -88,7 +88,7 @@ class ProductDetailsFragment : BaseFragment() {
 
                             override fun onShareError(e: Exception?) {
                                 Toast.makeText(
-                                        context,
+                                        mContext,
                                         R.string.err_unknown,
                                         Toast.LENGTH_LONG
                                 ).show()
@@ -96,7 +96,7 @@ class ProductDetailsFragment : BaseFragment() {
 
                             override fun onTargetAppNotInstalledError() {
                                 Toast.makeText(
-                                        context,
+                                        mContext,
                                         R.string.err_unknown,
                                         Toast.LENGTH_LONG
                                 ).show()
@@ -130,13 +130,13 @@ class ProductDetailsFragment : BaseFragment() {
         if (activity != null) if (response != null && response.status == true) {
             if (response.result?.list?.size ?: 0 > 0) {
                 loadUI(response.result?.list)
-            } else UiUtil.showToast(context, getString(R.string.no_data))
-        } else UiUtil.showToast(context, getString(R.string.err_occurred))
+            } else UiUtil.showToast(mContext, getString(R.string.no_data))
+        } else UiUtil.showToast(mContext, getString(R.string.err_occurred))
     }
 
     private fun loadUI(list: List<Product>?) {
 
-        UiUtil.setImageView(ImageSetter.ImageBuilder(context)
+        UiUtil.setImageView(ImageSetter.ImageBuilder(mContext)
                 .setImageLink(list?.get(0)?.Image1)
                 .setDefaults()
                 .setTarget(binding?.ivProduct)
@@ -151,7 +151,7 @@ class ProductDetailsFragment : BaseFragment() {
         var str = SimpleSpanBuilder("")
         list?.forEach {
             if (it.Price != null)
-                str += SimpleSpanBuilder.Companion.Span("Rs. ${it.Price}", ForegroundColorSpan(ContextCompat.getColor(context, R.color.reddish_brown)))
+                str += SimpleSpanBuilder.Companion.Span("Rs. ${it.Price}", ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.reddish_brown)))
             if (it.VendorName != null)
                 str += SimpleSpanBuilder.Companion.Span(" ${it.VendorName}", ForegroundColorSpan(Color.BLACK))
             if (it.Distance != null)

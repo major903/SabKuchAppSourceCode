@@ -11,61 +11,82 @@
 
         <include layout="@layout/toolbar" />
 
+
         <TextView
-            style="@style/TextViewBlackHeading2"
+            android:id="@+id/tv_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_16dp"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:layout_marginRight="@dimen/margin_16dp"
-            android:text="@string/category" />
+            android:autoLink="all"
+            android:paddingHorizontal="@dimen/margin_16dp"
+            android:paddingTop="@dimen/margin_16dp"
+            android:text="@string/no_money"
+            android:textSize="@dimen/text_size_16"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
-        <FrameLayout
+        <LinearLayout
+            android:id="@+id/linear_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_16dp"
-            android:layout_marginTop="@dimen/margin_4dp"
-            android:layout_marginRight="@dimen/margin_16dp"
-            android:background="@drawable/edit_text_border">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
 
-            <Spinner
-                android:id="@+id/sp_category"
-                style="@style/SpinnerStyle"
+            <TextView
+                style="@style/TextViewBlackHeading2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:theme="@style/SpinnerStyle" />
-        </FrameLayout>
+                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:layout_marginRight="@dimen/margin_16dp"
+                android:text="@string/category" />
 
-        <TextView
-            style="@style/TextViewBlackHeading2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_16dp"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:layout_marginRight="@dimen/margin_16dp"
-            android:text="@string/question" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginTop="@dimen/margin_4dp"
+                android:layout_marginRight="@dimen/margin_16dp"
+                android:background="@drawable/edit_text_border">
 
-        <EditText
-            android:id="@+id/et_question"
-            style="@style/EditTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_16dp"
-            android:layout_marginTop="@dimen/margin_8dp"
-            android:layout_marginRight="@dimen/margin_16dp"
-            android:hint="@string/ask_hint"
-            android:inputType="textMultiLine"
-            android:lines="3"
-            android:padding="@dimen/margin_8dp" />
+                <Spinner
+                    android:id="@+id/sp_category"
+                    style="@style/SpinnerStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/SpinnerStyle" />
+            </FrameLayout>
 
-        <Button
-            android:id="@+id/bt_submit"
-            style="@style/ButtonBlue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:text="@string/submit" />
+            <TextView
+                style="@style/TextViewBlackHeading2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:layout_marginRight="@dimen/margin_16dp"
+                android:text="@string/question" />
 
+            <EditText
+                android:id="@+id/et_question"
+                style="@style/EditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginTop="@dimen/margin_8dp"
+                android:layout_marginRight="@dimen/margin_16dp"
+                android:hint="@string/ask_hint"
+                android:inputType="textMultiLine"
+                android:lines="3"
+                android:padding="@dimen/margin_8dp" />
+
+            <Button
+                android:id="@+id/bt_submit"
+                style="@style/ButtonBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:text="@string/submit" />
+        </LinearLayout>
     </LinearLayout>
 </layout>

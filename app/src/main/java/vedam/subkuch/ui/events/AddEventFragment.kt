@@ -68,7 +68,7 @@ class AddEventFragment : BaseAddImagesFragment(), DatePickerDialog.OnDateSetList
                 .withZipCodeHidden()
                 .withGoogleTimeZoneEnabled()
                 .withVoiceSearchHidden()
-                .build(context)
+                .build(requireContext())
 
             startActivityForResult(locationPickerIntent, Constants.REQUEST_PLACE_PICKER)
         }
@@ -83,7 +83,7 @@ class AddEventFragment : BaseAddImagesFragment(), DatePickerDialog.OnDateSetList
         val mMonth = c[Calendar.MONTH]
         val mDay = c[Calendar.DAY_OF_MONTH]
         SpinnerDatePickerDialogBuilder()
-            .context(context)
+            .context(mContext)
             .callback(this)
             .spinnerTheme(R.style.DatePickerTheme)
             .minDate(mYear, mMonth, mDay)
@@ -103,16 +103,16 @@ class AddEventFragment : BaseAddImagesFragment(), DatePickerDialog.OnDateSetList
             val errorMessage = validateErrorMessage()
             if (errorMessage == 0) {
                 createEvent()
-            } else UiUtil.showDialog(context, getString(errorMessage), true)
+            } else UiUtil.showDialog(mContext, getString(errorMessage), true)
         }
         return super.onOptionsItemSelected(item)
     }
 
     private fun createEvent() {
-        UiUtil.showProgressDialog(context, context.getString(R.string.please_wait))
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait))
         val request: MutableMap<String, String> = HashMap()
         //        request.put(Constants.Title, "Title");
-        val userId = AppPrefs.getPrefsUserId(context)
+        val userId = AppPrefs.getPrefsUserId(mContext)
         request[Constants.userid] = userId
         request[Constants.Date] = fragmentAddEventBinding!!.etDate.text.toString()
         request[Constants.Time] = fragmentAddEventBinding!!.etTime.text.toString()
@@ -127,7 +127,7 @@ class AddEventFragment : BaseAddImagesFragment(), DatePickerDialog.OnDateSetList
         /*if (!getImageItemMap().isEmpty())
             request.put(Constants.image, AppUtil.getBase64FromBitmap(AppUtil.getSingleBitmap(context, getImageItemMap())));*/
         addEvent(
-            context,
+            mContext,
             Gson().toJson(request),
             onAddEventSuccessListener,
             AddEventResponse::class.java,
@@ -140,28 +140,28 @@ class AddEventFragment : BaseAddImagesFragment(), DatePickerDialog.OnDateSetList
         if (activity != null) if (response != null && !TextUtils.isEmpty(response.returnMessage)) {
             successMessage = response.returnMessage
             isImageAvailable(response.returnData.id)
-        } else UiUtil.showToast(context, context.getString(R.string.err_occurred))
+        } else UiUtil.showToast(mContext, getString(R.string.err_occurred))
     }
 
     private fun isImageAvailable(eventId: String) {
         if (imageItemMap.size > 0) uploadEventImage(eventId) else {
-            UiUtil.showToast(context, successMessage!!)
+            UiUtil.showToast(mContext, successMessage!!)
             if (globalFragmentInteractionListener != null) {
-                globalFragmentInteractionListener.finishActivity()
+                globalFragmentInteractionListener?.finishActivity()
             }
         }
     }
 
     private fun uploadEventImage(eventId: String) {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait))
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait))
         val params: MutableMap<String?, DataPart?> = HashMap()
         params[NetworkConstants.ProfileImage] = DataPart(
             AppUtil.getUniqueFileName(),
-            AppUtil.getBytesFromBitmap(AppUtil.getSingleBitmap(context, imageItemMap)),
+            AppUtil.getBytesFromBitmap(AppUtil.getSingleBitmap(mContext, imageItemMap)),
             NetworkConstants.JPEG_MIME_TYPE
         )
         uploadEventImage(
-            context,
+            mContext,
             params,
             onImageUploadSuccessListener,
             GeneralResponse::class.java,
@@ -173,9 +173,9 @@ class AddEventFragment : BaseAddImagesFragment(), DatePickerDialog.OnDateSetList
     private val onImageUploadSuccessListener = Response.Listener { response: GeneralResponse? ->
         UiUtil.cancelProgressDialog()
         if (activity != null) if (response != null && Constants.SUCCESS == response.returnMessage) {
-            UiUtil.showToast(context, successMessage!!)
+            UiUtil.showToast(mContext, successMessage!!)
             activity!!.finish()
-        } else UiUtil.showToast(context, getString(R.string.err_occurred))
+        } else UiUtil.showToast(mContext, getString(R.string.err_occurred))
     }
 
     private fun validateErrorMessage(): Int {

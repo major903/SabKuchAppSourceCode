@@ -76,9 +76,9 @@ class AddDirectoryFragment : BaseAddImagesFragment(), AdapterView.OnItemSelected
 
     private val categories: Unit
         private get() {
-            UiUtil.showProgressDialog(context, R.string.please_wait)
+            UiUtil.showProgressDialog(mContext, R.string.please_wait)
             getCategories(
-                context,
+                mContext,
                 onCategorySuccessListener,
                 CategoryResponse::class.java,
                 onErrorListener
@@ -88,7 +88,7 @@ class AddDirectoryFragment : BaseAddImagesFragment(), AdapterView.OnItemSelected
         UiUtil.cancelProgressDialog()
         if (activity != null) if (response != null && response.status == Constants.TRUE) {
             setCategories(response.categoryResult.categories)
-        } else UiUtil.showToast(context, getString(R.string.no_data))
+        } else UiUtil.showToast(mContext, getString(R.string.no_data))
     }
 
     private fun setCategories(categories: ArrayList<Category>) {
@@ -96,7 +96,7 @@ class AddDirectoryFragment : BaseAddImagesFragment(), AdapterView.OnItemSelected
         category.name = getString(R.string.select_a_category)
         categories.add(0, category)
         val adapter = ArrayAdapter(
-            context,
+            requireContext(),
             android.R.layout.simple_spinner_dropdown_item, categories
         )
         fragmentAddDirectoryBinding!!.spCategory.adapter = adapter
@@ -104,22 +104,21 @@ class AddDirectoryFragment : BaseAddImagesFragment(), AdapterView.OnItemSelected
         fragmentAddDirectoryBinding!!.spCategory.setSelection(0)
     }
 
-    private val subCategories: Unit
-        private get() {
-            UiUtil.showProgressDialog(context, R.string.please_wait)
-            getSubCategories(
-                context,
-                onSubCategorySuccessListener,
-                SubCategoryResponse::class.java,
-                onErrorListener,
-                categoryId
-            )
-        }
+    private fun getSubCategories() {
+        UiUtil.showProgressDialog(mContext, R.string.please_wait)
+        getSubCategories(
+            mContext,
+            onSubCategorySuccessListener,
+            SubCategoryResponse::class.java,
+            onErrorListener,
+            categoryId
+        )
+    }
     private val onSubCategorySuccessListener = Response.Listener { response: SubCategoryResponse? ->
         UiUtil.cancelProgressDialog()
         if (activity != null) if (response != null && response.status == Constants.TRUE) {
             setSubcategories(response.subCategoryResult.subCategories)
-        } else UiUtil.showToast(context, getString(R.string.err_occurred))
+        } else UiUtil.showToast(mContext, getString(R.string.err_occurred))
     }
 
     private fun setSubcategories(subCategories: ArrayList<SubCategory>) {
@@ -127,7 +126,7 @@ class AddDirectoryFragment : BaseAddImagesFragment(), AdapterView.OnItemSelected
         subCategory.subCategoryName = getString(R.string.select_a_sub_category)
         subCategories.add(0, subCategory)
         val adapter = ArrayAdapter(
-            context,
+            requireContext(),
             android.R.layout.simple_spinner_dropdown_item, subCategories
         )
         fragmentAddDirectoryBinding!!.spSubCategory.adapter = adapter
@@ -137,15 +136,15 @@ class AddDirectoryFragment : BaseAddImagesFragment(), AdapterView.OnItemSelected
 
     private val cities: Unit
         private get() {
-            UiUtil.showProgressDialog(context, getString(R.string.loading))
-            getCities(context, onCitiesSuccessListener, CitiesResponse::class.java, onErrorListener)
+            UiUtil.showProgressDialog(mContext, getString(R.string.loading))
+            getCities(mContext, onCitiesSuccessListener, CitiesResponse::class.java, onErrorListener)
         }
     private val onCitiesSuccessListener = Response.Listener { response: CitiesResponse? ->
         UiUtil.cancelProgressDialog()
         if (activity != null) if (response != null && response.returnMessage == Constants.SUCCESS) {
             setCities(response.returnData)
         } else {
-            UiUtil.showToast(context, getString(R.string.err_occurred))
+            UiUtil.showToast(mContext, getString(R.string.err_occurred))
         }
     }
 
@@ -154,7 +153,7 @@ class AddDirectoryFragment : BaseAddImagesFragment(), AdapterView.OnItemSelected
         city.name = getString(R.string.select_a_city)
         cities.add(0, city)
         val adapter = ArrayAdapter(
-            context,
+            requireContext(),
             android.R.layout.simple_spinner_dropdown_item, cities
         )
         fragmentAddDirectoryBinding!!.spCity.adapter = adapter
@@ -164,9 +163,9 @@ class AddDirectoryFragment : BaseAddImagesFragment(), AdapterView.OnItemSelected
 
     private val countries: Unit
         private get() {
-            UiUtil.showProgressDialog(context, getString(R.string.loading))
+            UiUtil.showProgressDialog(mContext, getString(R.string.loading))
             getCountries(
-                context,
+                mContext,
                 onCountriesSuccessListener,
                 CountriesResponse::class.java,
                 onErrorListener
@@ -177,13 +176,13 @@ class AddDirectoryFragment : BaseAddImagesFragment(), AdapterView.OnItemSelected
         if (activity != null) if (response != null && response.returnMessage == Constants.SUCCESS) {
             setCountries(response.countries)
         } else {
-            UiUtil.showToast(context, getString(R.string.err_occurred))
+            UiUtil.showToast(mContext, getString(R.string.err_occurred))
         }
     }
 
     private fun setCountries(countries: ArrayList<Country>) {
         val adapter = ArrayAdapter(
-            context,
+            requireContext(),
             android.R.layout.simple_spinner_dropdown_item, countries
         )
         fragmentAddDirectoryBinding!!.spCountry.adapter = adapter
@@ -210,7 +209,7 @@ class AddDirectoryFragment : BaseAddImagesFragment(), AdapterView.OnItemSelected
             val errorMessage = validateErrorMessage()
             if (errorMessage == 0) {
                 submit()
-            } else UiUtil.showDialog(context, getString(errorMessage), true)
+            } else UiUtil.showDialog(mContext, getString(errorMessage), true)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -219,7 +218,7 @@ class AddDirectoryFragment : BaseAddImagesFragment(), AdapterView.OnItemSelected
         fragmentAddDirectoryBinding!!.btAddBranch.setOnClickListener { view: View? ->
             if (alBranches.size != 20) {
                 addBranch()
-            } else UiUtil.showToast(context, getString(R.string.no_more_branches))
+            } else UiUtil.showToast(mContext, getString(R.string.no_more_branches))
         }
     }
 
@@ -253,7 +252,7 @@ class AddDirectoryFragment : BaseAddImagesFragment(), AdapterView.OnItemSelected
                 .withZipCodeHidden()
                 .withGoogleTimeZoneEnabled()
                 .withVoiceSearchHidden()
-                .build(context)
+                .build(requireContext())
 
             startActivityForResult(locationPickerIntent, Constants.REQUEST_PLACE_PICKER)
         }
@@ -262,7 +261,7 @@ class AddDirectoryFragment : BaseAddImagesFragment(), AdapterView.OnItemSelected
     }
 
     private fun submit() {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait))
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait))
         val addBusinessRequest = AddBusinessRequest()
         addBusinessRequest.categoryID = categoryId
         addBusinessRequest.subCategoryID = subcategoryId
@@ -272,7 +271,7 @@ class AddDirectoryFragment : BaseAddImagesFragment(), AdapterView.OnItemSelected
             fragmentAddDirectoryBinding!!.etBusinessName.text.toString()
         addBusinessRequest.website = fragmentAddDirectoryBinding!!.etWebsite.text.toString()
         if (imageItemMap.isNotEmpty()) addBusinessRequest.businessImage =
-            AppUtil.getBase64FromBitmap(AppUtil.getSingleBitmap(context, imageItemMap))
+            AppUtil.getBase64FromBitmap(AppUtil.getSingleBitmap(mContext, imageItemMap))
         val alBusinessAddresses = ArrayList<BusinessAddress>()
         for (v in alBranches) {
             val businessAddress = BusinessAddress()
@@ -306,7 +305,7 @@ class AddDirectoryFragment : BaseAddImagesFragment(), AdapterView.OnItemSelected
         }
         addBusinessRequest.businessAddresses = alBusinessAddresses
         addBusiness(
-            context,
+            mContext,
             Gson().toJson(addBusinessRequest),
             onAddBusinessSuccessListener,
             AddResponse::class.java,
@@ -317,10 +316,10 @@ class AddDirectoryFragment : BaseAddImagesFragment(), AdapterView.OnItemSelected
     private val onAddBusinessSuccessListener = Response.Listener { response: AddResponse? ->
         UiUtil.cancelProgressDialog()
         if (activity != null) if (response != null && response.isStatus) {
-            UiUtil.showToast(context, response.message)
+            UiUtil.showToast(mContext, response.message)
             activity!!.setResult(RESULT_OK)
             activity!!.finish()
-        } else UiUtil.showToast(context, getString(R.string.err_occurred))
+        } else UiUtil.showToast(mContext, getString(R.string.err_occurred))
     }
 
     private fun validateErrorMessage(): Int {
@@ -383,7 +382,7 @@ class AddDirectoryFragment : BaseAddImagesFragment(), AdapterView.OnItemSelected
                 categoryId = (parent.getItemAtPosition(position) as Category).categoryId
                 if (!TextUtils.isEmpty(categoryId)) {
                     subcategoryId = null
-                    subCategories
+                    getSubCategories()
                 }
             }
             R.id.sp_sub_category -> subcategoryId =

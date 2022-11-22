@@ -156,7 +156,7 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
         super.onViewCreated(view, savedInstanceState);
         if (isDating)
             hideFields();
-        mPresenter.getUserDetail(AppPrefs.getPrefsUserId(context), isDating);
+        mPresenter.getUserDetail(AppPrefs.getPrefsUserId(mContext), isDating);
         requestLocation();
         setImagesLayout(view);
         bindData();
@@ -164,7 +164,7 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
 
     private void bindData() {
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext,
                 android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.interested_in_list));
         binding.spInterestedIn.setAdapter(adapter);
         binding.spInterestedIn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -229,7 +229,7 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
 
 
     public void btnUpdateClick(View view) {
-        FrequentFunctions.hideKeyBoard(context, view);
+        FrequentFunctions.hideKeyBoard(mContext, view);
         if (!isImageLinkPresent && getImageUri() == null) {
             baseshowFeedbackMessage(binding.rootLayout, getString(R.string.add_profile_pricture));
         } else if (selectedBodytypeId == 0) {
@@ -276,7 +276,7 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
     private void updateProfile() {
 
         UpdateProfileRequest updateProfileRequest = new UpdateProfileRequest();
-        updateProfileRequest.setProfileId(Integer.parseInt(AppPrefs.getPrefsUserId(context)));
+        updateProfileRequest.setProfileId(Integer.parseInt(AppPrefs.getPrefsUserId(mContext)));
         updateProfileRequest.setAboutMe(AppUtil.deNull(binding.etAboutMe.getText()));
         updateProfileRequest.setEMail(mEmail);
         updateProfileRequest.setUserTypeId(1);
@@ -329,10 +329,10 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
 
     private void uploadProfileImage() {
         object.add(new Object());
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
         Map<String, DataPart> params = new HashMap<>();
         params.put(NetworkConstants.ProfileImage, new DataPart(AppUtil.getUniqueFileName(),
-                AppUtil.getBytesFromBitmap(AppUtil.getBitmap(context, getImageUri()))
+                AppUtil.getBytesFromBitmap(AppUtil.getBitmap(mContext, getImageUri()))
                 , NetworkConstants.JPEG_MIME_TYPE));
 
 //        ImageIdRequest imageIdRequest = new ImageIdRequest();
@@ -344,9 +344,9 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
         System.out.println(new Gson().toJson(imageIdRequest));*/
 
         if (isDating)
-            DataFetcher.uploadDatingProfileImage(context, params, onImageUploadSuccessListener, GeneralResponse.class, onErrorListener);
+            DataFetcher.uploadDatingProfileImage(mContext, params, onImageUploadSuccessListener, GeneralResponse.class, onErrorListener);
         else
-            DataFetcher.uploadMatrimonialProfileImage(context, params, onImageUploadSuccessListener, GeneralResponse.class, onErrorListener);
+            DataFetcher.uploadMatrimonialProfileImage(mContext, params, onImageUploadSuccessListener, GeneralResponse.class, onErrorListener);
     }
 
     private Response.Listener<GeneralResponse> onImageUploadSuccessListener = response -> {
@@ -357,7 +357,7 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
             if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
                 checkAndFinish();
             } else
-                UiUtil.showToast(context, getString(R.string.err_occurred));
+                UiUtil.showToast(mContext, getString(R.string.err_occurred));
         }
     };
 
@@ -516,7 +516,7 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
 
     @Override
     public void showProgressBar() {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
     }
 
     @Override
@@ -587,7 +587,7 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
             String imageLink = returnDataBean.getImagesList()[0].getImage();
             if (!TextUtils.isEmpty(imageLink)) {
                 isImageLinkPresent = true;
-                UiUtil.setImageView(new ImageSetter.ImageBuilder(context)
+                UiUtil.setImageView(new ImageSetter.ImageBuilder(mContext)
                         .setImageLink(imageLink)
                         .setPlaceholderResource(R.drawable.placeholder_small)
                         .setErrorResource(R.drawable.placeholder_small)

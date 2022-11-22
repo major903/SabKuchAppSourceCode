@@ -93,7 +93,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val toggle = ActionBarDrawerToggle(
             this,
             binding!!.drawerLayout,
-            toolbar,
+            mToolbar,
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         )
@@ -227,14 +227,14 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
     }
 
-    override fun onLocationChanged(location: Location) {
+    override fun onLocationChanged(location: Location?) {
         updateLocation(
             this,
             onUpdateLocationSuccessListener,
             AddEventResponse::class.java,
             null,
-            location.latitude.toString(),
-            location.longitude.toString()
+            location?.latitude.toString(),
+            location?.longitude.toString()
         )
     }
 

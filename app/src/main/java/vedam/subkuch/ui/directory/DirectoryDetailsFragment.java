@@ -79,7 +79,7 @@ public class DirectoryDetailsFragment extends BaseFragment implements OnListView
 
     public void onViewCreated(@NonNull View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
-        linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager = new LinearLayoutManager(mContext);
         binding.rvDirectory.setLayoutManager(linearLayoutManager);
         adapter = new DirectoryDetailsAdapter(this);
         binding.rvDirectory.setAdapter(adapter);
@@ -90,8 +90,8 @@ public class DirectoryDetailsFragment extends BaseFragment implements OnListView
 
     private void getDirectoryDetails() {
 
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait));
-        DataFetcher.getDirectoryDetails(context, onDirectoryDetailSuccessListener,
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
+        DataFetcher.getDirectoryDetails(mContext, onDirectoryDetailSuccessListener,
                 DirectoryDetailResponse.class, onErrorListener, categoryId, subCategoryId,
                 null, pageNo, pageSize);
     }
@@ -106,7 +106,7 @@ public class DirectoryDetailsFragment extends BaseFragment implements OnListView
                 loading = true;
                 loadValues(businesses);
             } else
-                UiUtil.showToast(context, getString(R.string.no_data));
+                UiUtil.showToast(mContext, getString(R.string.no_data));
     };
 
     private void loadValues(ArrayList<Business> response) {

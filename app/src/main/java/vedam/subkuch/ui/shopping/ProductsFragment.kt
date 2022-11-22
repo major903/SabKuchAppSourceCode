@@ -61,9 +61,9 @@ class ProductsFragment : BaseFragment(), OnListViewItemClickListener {
     }
 
     private fun getProducts() {
-        UiUtil.showProgressDialog(context, getString(R.string.please_wait))
+        UiUtil.showProgressDialog(mContext, getString(R.string.please_wait))
         val type = object : TypeToken<BaseShoppingResponse<Product>>() {}.type
-        DataFetcher.getProducts(context, onProductsSuccessListener, type, onErrorListener, subcategoryId, pageNo, pageSize)
+        DataFetcher.getProducts(mContext, onProductsSuccessListener, type, onErrorListener, subcategoryId, pageNo, pageSize)
     }
 
     private val onProductsSuccessListener: Response.Listener<BaseShoppingResponse<Product>> = Response.Listener { response ->
@@ -73,8 +73,8 @@ class ProductsFragment : BaseFragment(), OnListViewItemClickListener {
                 hasMoreProjects = response.result?.list?.size!! >= pageSize
                 loading = true
                 loadProducts(response.result?.list)
-            } else UiUtil.showToast(context, getString(R.string.no_products_found))
-        } else UiUtil.showToast(context, getString(R.string.err_occurred))
+            } else UiUtil.showToast(mContext, getString(R.string.no_products_found))
+        } else UiUtil.showToast(mContext, getString(R.string.err_occurred))
     }
 
     private fun loadProducts(response: List<Product>?) {
