@@ -90,10 +90,11 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         getMenus()
         getFeatures()
         getBroadCastMessage()
+
         val toggle = ActionBarDrawerToggle(
             this,
             binding!!.drawerLayout,
-            mToolbar,
+            getToolbar(),
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         )

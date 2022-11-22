@@ -49,7 +49,7 @@ import vedam.subkuch.utils.UiUtil;
  */
 public class ShowProfilesFragment extends BaseFragment implements CardStackListener {
 
-    private FragmentShowProfilesBinding fragmentShowProfilesBinding;
+    private FragmentShowProfilesBinding binding;
     private int pageNo = 1;
     private final int pageSize = 20;
     private int profileNo = 0;
@@ -82,8 +82,8 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        fragmentShowProfilesBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_show_profiles, container, false);
-        return fragmentShowProfilesBinding.getRoot();
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_show_profiles, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -126,30 +126,30 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
     private void bindValues() {
 
         DatingProfile datingProfile = datingProfiles.get(profileNo);
-        fragmentShowProfilesBinding.tvName.setText(AppUtil.getNameAndAge(datingProfile.getFirstName(), datingProfile.getAge()));
-        UiUtil.setTextView(fragmentShowProfilesBinding.tvAbout, datingProfile.getAboutMe());
-        UiUtil.setTextView(fragmentShowProfilesBinding.tvDistance, datingProfile.getDistance());
-        UiUtil.setTextViewWithBoldPrefix(mContext, "Marital Status :", datingProfile.getMaritalStatusName(), fragmentShowProfilesBinding.tvMaritalStatus);
-        UiUtil.setTextViewWithBoldPrefix(mContext, "Mother Tongue :", datingProfile.getMothertongueName(), fragmentShowProfilesBinding.tvMotherTongue);
-        UiUtil.setTextViewWithBoldPrefix(mContext, "Occupation :", datingProfile.getOccupationName(), fragmentShowProfilesBinding.tvOccupation);
-        UiUtil.setTextViewWithBoldPrefix(mContext, "Qualification :", datingProfile.getQualificationName(), fragmentShowProfilesBinding.tvQualification);
-        UiUtil.setTextViewWithBoldPrefix(mContext, "Annual Income :", datingProfile.getIncome(), fragmentShowProfilesBinding.tvAnnualIncome);
-        UiUtil.setTextViewWithBoldPrefix(mContext, "Body Type :", datingProfile.getBodyTypeName(), fragmentShowProfilesBinding.tvBodyType);
-        UiUtil.setTextViewWithBoldPrefix(mContext, "Complexion :", datingProfile.getComplexionName(), fragmentShowProfilesBinding.tvComplexion);
-        UiUtil.setTextViewWithBoldPrefix(mContext, "Height :", datingProfile.getHeight(), fragmentShowProfilesBinding.tvHeight);
-        UiUtil.setTextViewWithBoldPrefix(mContext, "Weight :", datingProfile.getWeight(), fragmentShowProfilesBinding.tvWeight);
-        UiUtil.setTextViewWithBoldPrefix(mContext, "Religion :", datingProfile.getReligionName(), fragmentShowProfilesBinding.tvReligion);
-        UiUtil.setTextViewWithBoldPrefix(mContext, "Caste :", datingProfile.getMasterCastName(), fragmentShowProfilesBinding.tvCaste);
-        UiUtil.setTextViewWithBoldPrefix(mContext, "Gothra :", datingProfile.getGotraName(), fragmentShowProfilesBinding.tvGothra);
-        UiUtil.setTextViewWithBoldPrefix(mContext, "Nakshatra :", datingProfile.getNakshatraName(), fragmentShowProfilesBinding.tvNakshatra);
-        UiUtil.setTextViewWithBoldPrefix(mContext, "Dosham :", datingProfile.getDoshamName(), fragmentShowProfilesBinding.tvDosham);
-        UiUtil.setTextViewWithBoldPrefix(mContext, "Food Habit :", datingProfile.getFoodHabitsName(), fragmentShowProfilesBinding.tvFoodHabit);
-        UiUtil.setTextViewWithBoldPrefix(mContext, "Drinking Habit :", datingProfile.getDrinkingStatusName(), fragmentShowProfilesBinding.tvDrinkingHabit);
-        UiUtil.setTextViewWithBoldPrefix(mContext, "Smoking Habit :", datingProfile.getSmokingType(), fragmentShowProfilesBinding.tvSmokingHabit);
-        UiUtil.setTextViewWithBoldPrefix(mContext, "Physical Status :", datingProfile.getPhysicalStatusName(), fragmentShowProfilesBinding.tvPhysicalStatus);
-        UiUtil.setTextViewWithBoldPrefix(mContext, "Living With :", datingProfile.getLivingWithName(), fragmentShowProfilesBinding.tvLivingWith);
-        UiUtil.setTextViewWithBoldPrefix(mContext, "Owns a Car :", datingProfile.getOwnCarType(), fragmentShowProfilesBinding.tvOwnCar);
-        UiUtil.setTextViewWithBoldPrefix(mContext, "Owns a House :", datingProfile.getOwnHouseType(), fragmentShowProfilesBinding.tvOwnHouse);
+        binding.tvName.setText(AppUtil.getNameAndAge(datingProfile.getFirstName(), datingProfile.getAge()));
+        UiUtil.setTextView(binding.tvAbout, datingProfile.getAboutMe());
+        UiUtil.setTextView(binding.tvDistance, datingProfile.getDistance());
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Marital Status :", datingProfile.getMaritalStatusName(), binding.tvMaritalStatus);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Mother Tongue :", datingProfile.getMothertongueName(), binding.tvMotherTongue);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Occupation :", datingProfile.getOccupationName(), binding.tvOccupation);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Qualification :", datingProfile.getQualificationName(), binding.tvQualification);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Annual Income :", datingProfile.getIncome(), binding.tvAnnualIncome);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Body Type :", datingProfile.getBodyTypeName(), binding.tvBodyType);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Complexion :", datingProfile.getComplexionName(), binding.tvComplexion);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Height :", datingProfile.getHeight(), binding.tvHeight);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Weight :", datingProfile.getWeight(), binding.tvWeight);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Religion :", datingProfile.getReligionName(), binding.tvReligion);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Caste :", datingProfile.getMasterCastName(), binding.tvCaste);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Gothra :", datingProfile.getGotraName(), binding.tvGothra);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Nakshatra :", datingProfile.getNakshatraName(), binding.tvNakshatra);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Dosham :", datingProfile.getDoshamName(), binding.tvDosham);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Food Habit :", datingProfile.getFoodHabitsName(), binding.tvFoodHabit);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Drinking Habit :", datingProfile.getDrinkingStatusName(), binding.tvDrinkingHabit);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Smoking Habit :", datingProfile.getSmokingType(), binding.tvSmokingHabit);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Physical Status :", datingProfile.getPhysicalStatusName(), binding.tvPhysicalStatus);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Living With :", datingProfile.getLivingWithName(), binding.tvLivingWith);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Owns a Car :", datingProfile.getOwnCarType(), binding.tvOwnCar);
+        UiUtil.setTextViewWithBoldPrefix(mContext, "Owns a House :", datingProfile.getOwnHouseType(), binding.tvOwnHouse);
     }
 
 
@@ -158,30 +158,30 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
         manager = new CardStackLayoutManager(mContext, this);
         manager.setCanScrollVertical(false);
         ProfileStackAdapter adapter = new ProfileStackAdapter(mContext, datingProfiles);
-        fragmentShowProfilesBinding.csvProfile.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        binding.csvProfile.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                fragmentShowProfilesBinding.csvProfile.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                binding.csvProfile.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 ShowProfilesFragment.this.setLayoutParams();
             }
         });
-        fragmentShowProfilesBinding.csvProfile.setLayoutManager(manager);
-        fragmentShowProfilesBinding.csvProfile.setNestedScrollingEnabled(false);
-        fragmentShowProfilesBinding.csvProfile.setAdapter(adapter);
+        binding.csvProfile.setLayoutManager(manager);
+        binding.csvProfile.setNestedScrollingEnabled(false);
+        binding.csvProfile.setAdapter(adapter);
     }
 
     @SuppressWarnings("SuspiciousNameCombination")
     private void setLayoutParams() {
 
-        int width = fragmentShowProfilesBinding.csvProfile.getMeasuredWidth();
+        int width = binding.csvProfile.getMeasuredWidth();
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(width, width);
-        fragmentShowProfilesBinding.csvProfile.setLayoutParams(params);
+        binding.csvProfile.setLayoutParams(params);
     }
 
     private void hideViewStub() {
 
-        fragmentShowProfilesBinding.nsvContainer.setVisibility(View.VISIBLE);
-        fragmentShowProfilesBinding.vsNoProfiles.container.setVisibility(View.GONE);
+        binding.nsvContainer.setVisibility(View.VISIBLE);
+        binding.vsNoProfiles.container.setVisibility(View.GONE);
 //        if (vEmptyInflated != null)
 //            vEmptyInflated.setVisibility(View.GONE);
     }
@@ -193,8 +193,8 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
 
         setViewStubChildViews();
 //        vEmptyInflated.setVisibility(View.VISIBLE);
-        fragmentShowProfilesBinding.vsNoProfiles.container.setVisibility(View.VISIBLE);
-        fragmentShowProfilesBinding.nsvContainer.setVisibility(View.GONE);
+        binding.vsNoProfiles.container.setVisibility(View.VISIBLE);
+        binding.nsvContainer.setVisibility(View.GONE);
     }
 
     private void setViewStubChildViews() {
@@ -202,10 +202,10 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
 //        Button btEditProfile = vEmptyInflated.findViewById(R.id.bt_edit_profile);
         if (!isDating) {
 //            TextView tvReasons = vEmptyInflated.findViewById(R.id.tv_reasons);
-            fragmentShowProfilesBinding.vsNoProfiles.tvReasons.setText(R.string.no_profiles_reason_matrimonial);
+            binding.vsNoProfiles.tvReasons.setText(R.string.no_profiles_reason_matrimonial);
         }
         setClickableSpan();
-        fragmentShowProfilesBinding.vsNoProfiles.btEditProfile.setOnClickListener(v -> addFragmentWithAnimation(R.id.content_frame,
+        binding.vsNoProfiles.btEditProfile.setOnClickListener(v -> addFragmentWithAnimation(R.id.content_frame,
                 EditProfileFragment.newInstance(isDating), Constants.TAG_PROFILE_FRAGMENT, true));
     }
 
@@ -232,25 +232,26 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
         else
             ss.setSpan(clickableSpan, 188, 198, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        fragmentShowProfilesBinding.vsNoProfiles.tvReasons.setText(ss);
-        fragmentShowProfilesBinding.vsNoProfiles.tvReasons.setMovementMethod(LinkMovementMethod.getInstance());
-        fragmentShowProfilesBinding.vsNoProfiles.tvReasons.setHighlightColor(Color.TRANSPARENT);
+        binding.vsNoProfiles.tvReasons.setText(ss);
+        binding.vsNoProfiles.tvReasons.setMovementMethod(LinkMovementMethod.getInstance());
+        binding.vsNoProfiles.tvReasons.setHighlightColor(Color.TRANSPARENT);
     }
 
     private void bindCallbacks() {
 
-        fragmentShowProfilesBinding.fabLike.setOnClickListener(v ->
+        binding.fabLike.setOnClickListener(v ->
         {
             isManual = true;
             setLikeDislike(Constants.REACTION_TYPE_LIKE);
         });
 
-        fragmentShowProfilesBinding.fabDislike.setOnClickListener(v ->
+        binding.fabDislike.setOnClickListener(v ->
         {
             isManual = true;
             setLikeDislike(Constants.REACTION_TYPE_DISLIKE);
         });
     }
+
 
     private void setLikeDislike(int reactionType) {
         UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
@@ -284,12 +285,12 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
                 .setInterpolator(new AccelerateInterpolator())
                 .build();
         manager.setSwipeAnimationSetting(setting);
-        fragmentShowProfilesBinding.csvProfile.swipe();
+        binding.csvProfile.swipe();
     }
 
     private void rewind() {
 
-        fragmentShowProfilesBinding.csvProfile.rewind();
+        binding.csvProfile.rewind();
     }
 
     private Response.Listener<LikeDislikeResponse> onLikeDislikeSuccessListener = response -> {
