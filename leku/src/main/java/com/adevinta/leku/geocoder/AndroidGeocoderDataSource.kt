@@ -11,7 +11,7 @@ class AndroidGeocoderDataSource(private val geocoder: Geocoder) : GeocoderDataSo
 
     override fun getFromLocationName(query: String): List<Address> {
         return try {
-            geocoder.getFromLocationName(query, MAX_RESULTS)
+            geocoder.getFromLocationName(query, MAX_RESULTS)!!
         } catch (exception: IOException) {
             emptyList()
         }
@@ -21,7 +21,7 @@ class AndroidGeocoderDataSource(private val geocoder: Geocoder) : GeocoderDataSo
         return try {
             geocoder.getFromLocationName(
                 query, MAX_RESULTS, lowerLeft.latitude, lowerLeft.longitude, upperRight.latitude, upperRight.longitude
-            )
+            )!!
         } catch (exception: IOException) {
             emptyList()
         }
@@ -29,7 +29,7 @@ class AndroidGeocoderDataSource(private val geocoder: Geocoder) : GeocoderDataSo
 
     override fun getFromLocation(latitude: Double, longitude: Double): List<Address> {
         return try {
-            geocoder.getFromLocation(latitude, longitude, MAX_RESULTS)
+            geocoder.getFromLocation(latitude, longitude, MAX_RESULTS)!!
         } catch (exception: IOException) {
             emptyList()
         }

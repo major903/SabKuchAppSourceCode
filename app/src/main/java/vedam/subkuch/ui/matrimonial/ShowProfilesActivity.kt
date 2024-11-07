@@ -306,8 +306,8 @@ class ShowProfilesActivity : BaseActivity(), NavigationView.OnNavigationItemSele
 
     private fun setNotificationViews() {
         val vNotificationCount = menu!!.findItem(R.id.action_chats).actionView
-        tvNotificationCount = vNotificationCount.findViewById(R.id.tv_notification_count)
-        vNotificationCount.setOnClickListener { v: View? ->
+        tvNotificationCount = vNotificationCount?.findViewById(R.id.tv_notification_count)
+        vNotificationCount?.setOnClickListener { v: View? ->
             changeFragment(
                 newInstance(isDating),
                 Constants.TAG_CHATS_FRAGMENT
