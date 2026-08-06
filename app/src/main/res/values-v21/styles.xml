@@ -10,7 +10,7 @@
         <item name="windowNoTitle">true</item>
         <item name="textAllCaps">false</item>
         <item name="android:actionMenuTextAppearance">@style/MyMenuTextAppearance</item>
-        <item name="android:navigationBarColor">@color/black</item>
+        <item name="android:navigationBarColor">@color/white</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="colorControlNormal">@color/white</item>
     </style>

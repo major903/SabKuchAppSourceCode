@@ -18,4 +18,27 @@
     <color name="dark_phone_book">#91d8f7</color>
     <color name="transparent">#00000000</color>
     <color name="reddish_brown">#A52A2A</color>
+    <color name="brand_blue">#2563EB</color>
+    <color name="brand_blue_soft">#E8F0FF</color>
+    <color name="form_background">#F5F7FB</color>
+    <color name="form_text_primary">#152238</color>
+    <color name="form_text_secondary">#667085</color>
+    <color name="form_border">#CBD5E1</color>
+    <color name="form_border_soft">#E6EAF0</color>
+    <color name="form_field_stroke">#667085</color>
+    <color name="drawer_item_text">#344054</color>
+    <color name="drawer_item_selected_text">#0F4C9A</color>
+    <color name="drawer_item_selected_background">#E8F0FF</color>
+    <color name="wallet_screen_background">#F5F7FB</color>
+    <color name="wallet_surface">#FFFFFF</color>
+    <color name="wallet_text_primary">#172033</color>
+    <color name="wallet_text_secondary">#667085</color>
+    <color name="wallet_border">#E6EAF0</color>
+    <color name="wallet_hero_start">#173B78</color>
+    <color name="wallet_hero_end">#2563B8</color>
+    <color name="wallet_hero_secondary">#D9E7FF</color>
+    <color name="wallet_blue_soft">#EEF4FF</color>
+    <color name="learn_purple">#28146F</color>
+    <color name="learn_image_background">#DDD9F2</color>
+    <color name="learn_rating_star">#F59E0B</color>
 </resources>

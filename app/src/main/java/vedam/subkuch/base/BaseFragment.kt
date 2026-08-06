@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
-import com.android.volley.*
+import vedam.subkuch.network.*
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
@@ -53,12 +53,12 @@ abstract class BaseFragment : Fragment(), OnRefreshListener {
     protected var mPopupWindow: PopupWindow? = null
 
     @JvmField
-    protected var onErrorListener = Response.ErrorListener { error: VolleyError ->
+    protected var onErrorListener = Response.ErrorListener { error: ApiError ->
         LogUtils.LOGD("ERROR", error.message)
         if (activity != null) onErrorReceived(error)
     }
 
-    protected open fun onErrorReceived(error: VolleyError) {
+    protected open fun onErrorReceived(error: ApiError) {
         if (error is NetworkError) {
             UiUtil.showToast(mContext, getString(R.string.connectionError))
         } else if (error is TimeoutError) {
@@ -79,7 +79,7 @@ abstract class BaseFragment : Fragment(), OnRefreshListener {
         if (globalFragmentInteractionListener != null) globalFragmentInteractionListener!!.logout()
     }
 
-    protected open fun parseAndShowError(error: VolleyError) {
+    protected open fun parseAndShowError(error: ApiError) {
         val networkResponse = error.networkResponse
         if (networkResponse != null && networkResponse.data != null) {
             val response = String(networkResponse.data)
@@ -206,7 +206,7 @@ abstract class BaseFragment : Fragment(), OnRefreshListener {
     }
 
     fun onBackPressed() {
-        if (mContext is BaseActivity) (mContext as BaseActivity).onBackPressed()
+        if (mContext is BaseActivity) (mContext as BaseActivity).navigateBack()
     }
 
     /**
@@ -234,7 +234,7 @@ abstract class BaseFragment : Fragment(), OnRefreshListener {
             val snakbar = Snackbar.make(
                 view!!, message!!, Snackbar.LENGTH_LONG
             )
-            val tv = snakbar.view.findViewById<TextView>(R.id.snackbar_text)
+            val tv = snakbar.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
             tv.setTextColor(ContextCompat.getColor(activity!!, R.color.colorPrimary))
             snakbar.view.setBackgroundColor(
                 ContextCompat.getColor(

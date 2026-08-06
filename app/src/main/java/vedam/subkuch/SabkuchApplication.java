@@ -1,24 +1,20 @@
 package vedam.subkuch;
 
-import android.text.TextUtils;
+import android.app.Application;
 
-import androidx.multidex.MultiDexApplication;
+import vedam.subkuch.network.Response;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
-
-import vedam.subkuch.network.WebServices;
+import vedam.subkuch.network.DataFetcher;
+import vedam.subkuch.network.RegistrationMasterCache;
+import vedam.subkuch.network.models.RegistrationMasterResponse;
 
 /**
  * Created by naddy on 27/12/15.
  */
-public class SabkuchApplication extends MultiDexApplication {
+public class SabkuchApplication extends Application {
 
     public static final String TAG = SabkuchApplication.class
             .getSimpleName();
-
-    private RequestQueue mRequestQueue;
 
     private static SabkuchApplication mInstance;
 
@@ -26,35 +22,45 @@ public class SabkuchApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
-        new WebServices(getApplicationContext());
+        warmContributionMasterData();
+    }
+
+    private void warmContributionMasterData() {
+        if (!DataFetcher.isRegistrationApiConfigured()) return;
+
+        if (!RegistrationMasterCache.areStatesFresh(this)) {
+            DataFetcher.getRegistrationStates(this,
+                    new Response.Listener<RegistrationMasterResponse>() {
+                @Override
+                public void onResponse(RegistrationMasterResponse response) {
+                    if (hasMasterData(response)) {
+                        RegistrationMasterCache.putStates(SabkuchApplication.this,
+                                response.getReturnData());
+                    }
+                }
+            }, RegistrationMasterResponse.class, error -> { });
+        }
+        if (!RegistrationMasterCache.areDistrictsFresh(this)) {
+            DataFetcher.getRegistrationDistricts(this,
+                    new Response.Listener<RegistrationMasterResponse>() {
+                @Override
+                public void onResponse(RegistrationMasterResponse response) {
+                    if (hasMasterData(response)) {
+                        RegistrationMasterCache.putDistricts(SabkuchApplication.this,
+                                response.getReturnData());
+                    }
+                }
+            }, RegistrationMasterResponse.class, error -> { });
+        }
+    }
+
+    private boolean hasMasterData(RegistrationMasterResponse response) {
+        return response != null && response.getReturnData() != null
+                && !response.getReturnData().isEmpty();
     }
 
     public static synchronized SabkuchApplication getInstance() {
         return mInstance;
     }
 
-    public RequestQueue getRequestQueue() {
-        if (mRequestQueue == null) {
-            mRequestQueue = Volley.newRequestQueue(getApplicationContext());
-        }
-
-        return mRequestQueue;
-    }
-
-    public <T> void addToRequestQueue(Request<T> req, String tag) {
-        // set the default tag if tag is empty
-        req.setTag(TextUtils.isEmpty(tag) ? TAG : tag);
-        getRequestQueue().add(req);
-    }
-
-    public <T> void addToRequestQueue(Request<T> req) {
-        req.setTag(TAG);
-        getRequestQueue().add(req);
-    }
-
-    public void cancelPendingRequests(Object tag) {
-        if (mRequestQueue != null) {
-            mRequestQueue.cancelAll(tag);
-        }
-    }
 }

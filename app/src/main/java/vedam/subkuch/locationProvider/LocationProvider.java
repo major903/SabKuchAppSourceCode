@@ -9,27 +9,24 @@ import android.content.pm.PackageManager;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.CurrentLocationRequest;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResult;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.location.Priority;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.CancellationTokenSource;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
@@ -46,20 +43,28 @@ import vedam.subkuch.utils.UiUtil;
 /**
  * Created by nansari on 6/20/2016.
  */
-public enum LocationProvider implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public enum LocationProvider {
 
     /**
      * creates a singleton of {@link LocationProvider}
      */
     locationProvider;
 
-    private static GoogleApiClient mGoogleApiClient;
     private boolean isAddressRequested = false;
     private Activity activity;
     private LocationCallbacks locationCallbacks;
     private ScreenChangeListener screenChangeListener;
-    private LocationRequest mLocationRequest;
-    private static Object object = new Object();
+    private LocationRequest locationRequest;
+    private FusedLocationProviderClient fusedLocationClient;
+    private SettingsClient settingsClient;
+    private LocationCallback locationCallback;
+    private CancellationTokenSource currentLocationCancellationToken;
+    private boolean locationDelivered;
+    private final Handler locationHandler = new Handler(Looper.getMainLooper());
+    private final Runnable locationUpdateTimeout = this::stopLocationUpdates;
+
+    private static final long MAX_CACHED_LOCATION_AGE_MS = 60_000L;
+    private static final long CURRENT_LOCATION_TIMEOUT_MS = 10_000L;
 
     LocationProvider() {
 
@@ -81,39 +86,31 @@ public enum LocationProvider implements GoogleApiClient.ConnectionCallbacks, Goo
     }
 
     /**
-     * Initializes location callback and the Google API client
+     * Initializes the current fused location and settings clients.
      */
     private void init() {
-
-        // Create an instance of GoogleAPIClient.
-        if (mGoogleApiClient == null) {
-
-            mGoogleApiClient = new GoogleApiClient.Builder(activity)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build();
+        Context applicationContext = activity.getApplicationContext();
+        if (fusedLocationClient == null) {
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(applicationContext);
         }
-
+        if (settingsClient == null) {
+            settingsClient = LocationServices.getSettingsClient(applicationContext);
+        }
+        if (locationCallback == null) {
+            locationCallback = new LocationCallback() {
+                @Override
+                public void onLocationResult(LocationResult locationResult) {
+                    if (locationResult != null) {
+                        deliverLocation(locationResult.getLastLocation());
+                    }
+                }
+            };
+        }
     }
 
-    /**
-     * method which connects the Google API client.
-     */
-    private void connect() {
-        if (!mGoogleApiClient.isConnected())
-            mGoogleApiClient.connect();
-        else
-            attemptLocationFetch();
-    }
-
-    /**
-     * method which disconnects the Google API client.
-     */
     private void disconnect() {
-
-        mGoogleApiClient.disconnect();
-
+        cancelCurrentLocationRequest();
+        stopLocationUpdates();
     }
 
     /**
@@ -140,23 +137,16 @@ public enum LocationProvider implements GoogleApiClient.ConnectionCallbacks, Goo
     private void request(LocationCallbacks locationCallbacks) {
 
         this.activity = (Activity) locationCallbacks;
+        resetLocationRequestState();
 
         if (locationCallbacks instanceof ScreenChangeListener) {
             this.locationCallbacks = locationCallbacks;
             this.screenChangeListener = (ScreenChangeListener) locationCallbacks;
             init();
-            connect();
-//            createLocationRequest();
+            attemptLocationFetch();
         } else {
             throw new IllegalArgumentException("This Activity must implement LocationCallbacks and ScreenChangeLister to request Location");
         }
-
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-
-        attemptLocationFetch();
 
     }
 
@@ -178,45 +168,26 @@ public enum LocationProvider implements GoogleApiClient.ConnectionCallbacks, Goo
     }
 
     private void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(10000);
-        mLocationRequest.setFastestInterval(2000);
-        mLocationRequest.setNumUpdates(1);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest = new LocationRequest.Builder(2_000L)
+                .setMinUpdateIntervalMillis(1_000L)
+                .setMaxUpdates(1)
+                .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
+                .build();
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
-                .addLocationRequest(mLocationRequest);
+                .addLocationRequest(locationRequest);
 
-        PendingResult<LocationSettingsResult> result =
-                LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient,
-                        builder.build());
-
-        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
-            @Override
-            public void onResult(@NonNull LocationSettingsResult result) {
-                final Status status = result.getStatus();
-
-                //final LocationSettingsStates locationSettingsStates = result.getLocationSettingsStates();
-
-                switch (status.getStatusCode()) {
-                    case LocationSettingsStatusCodes.SUCCESS:
-                        // All location settings are satisfied. The client can
-                        // initialize location requests here.
-                        startLocationUpdates();
-                        break;
-                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                        // Location settings are not satisfied, but this can be fixed
-                        // by showing the user a dialog.
-                        if (locationCallbacks != null)
-                            locationCallbacks.onGpsOff(status);
-                        break;
-                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                        if (checkGPSManually())
-                            startLocationUpdates();
-                        break;
-                }
-            }
-        });
+        settingsClient.checkLocationSettings(builder.build())
+                .addOnSuccessListener(activity, response -> requestCurrentLocation())
+                .addOnFailureListener(activity, exception -> {
+                    if (exception instanceof ResolvableApiException && locationCallbacks != null) {
+                        locationCallbacks.onGpsOff((ResolvableApiException) exception);
+                    } else if (checkGPSManually()) {
+                        requestCurrentLocation();
+                    } else {
+                        FirebaseCrashlytics.getInstance().recordException(exception);
+                    }
+                });
     }
 
     /**
@@ -266,14 +237,82 @@ public enum LocationProvider implements GoogleApiClient.ConnectionCallbacks, Goo
         }
 
 //        toast("Fetching your current location. This may take time.");
-        if (mGoogleApiClient.isConnected())
-            LocationServices.FusedLocationApi.requestLocationUpdates(
-                    mGoogleApiClient, mLocationRequest, this);
+        if (!locationDelivered && fusedLocationClient != null && locationRequest != null) {
+            locationHandler.removeCallbacks(locationUpdateTimeout);
+            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback,
+                    Looper.getMainLooper());
+            locationHandler.postDelayed(locationUpdateTimeout, CURRENT_LOCATION_TIMEOUT_MS);
+        }
 
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
+    /**
+     * Requests one location using the fused client. A recent cached estimate is returned immediately;
+     * otherwise Google Play services computes a new high-accuracy fix.
+     */
+    private void requestCurrentLocation() {
+        if (fusedLocationClient == null || locationDelivered) {
+            return;
+        }
+
+        cancelCurrentLocationRequest();
+        final CancellationTokenSource cancellationToken = new CancellationTokenSource();
+        currentLocationCancellationToken = cancellationToken;
+
+        CurrentLocationRequest request = new CurrentLocationRequest.Builder()
+                .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
+                .setMaxUpdateAgeMillis(MAX_CACHED_LOCATION_AGE_MS)
+                .setDurationMillis(CURRENT_LOCATION_TIMEOUT_MS)
+                .build();
+
+        fusedLocationClient.getCurrentLocation(request, cancellationToken.getToken())
+                .addOnSuccessListener(activity, location -> {
+                    if (cancellationToken != currentLocationCancellationToken || locationDelivered) {
+                        return;
+                    }
+
+                    if (location != null) {
+                        deliverLocation(location);
+                    } else {
+                        startLocationUpdates();
+                    }
+                })
+                .addOnFailureListener(activity, exception -> {
+                    if (cancellationToken == currentLocationCancellationToken && !locationDelivered) {
+                        FirebaseCrashlytics.getInstance().recordException(exception);
+                        startLocationUpdates();
+                    }
+                });
+    }
+
+    private synchronized void resetLocationRequestState() {
+        locationDelivered = false;
+        cancelCurrentLocationRequest();
+        stopLocationUpdates();
+    }
+
+    private void cancelCurrentLocationRequest() {
+        if (currentLocationCancellationToken != null) {
+            currentLocationCancellationToken.cancel();
+            currentLocationCancellationToken = null;
+        }
+    }
+
+    private void stopLocationUpdates() {
+        locationHandler.removeCallbacks(locationUpdateTimeout);
+        if (fusedLocationClient != null && locationCallback != null) {
+            fusedLocationClient.removeLocationUpdates(locationCallback);
+        }
+    }
+
+    private synchronized void deliverLocation(Location location) {
+        if (location == null || locationDelivered) {
+            return;
+        }
+
+        locationDelivered = true;
+        cancelCurrentLocationRequest();
+        stopLocationUpdates();
 
         if (locationCallbacks != null)
             locationCallbacks.onLocationChanged(location);
@@ -283,12 +322,10 @@ public enum LocationProvider implements GoogleApiClient.ConnectionCallbacks, Goo
             return;
         }
 
-        if (!isAddressRequested)
-            disconnect();
-        else {
-            if (location != null)
-                fetchAddress(location);
-        }
+        if (isAddressRequested)
+            fetchAddress(location);
+
+        disconnect();
 
     }
 
@@ -306,13 +343,4 @@ public enum LocationProvider implements GoogleApiClient.ConnectionCallbacks, Goo
             screenChangeListener.handleServiceIntent(intent);
     }
 
-    @Override
-    public void onConnectionSuspended(int i) {
-        LogUtils.LOGD("LocationProvider", "suspended");
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        LogUtils.LOGD("LocationProvider", "failed");
-    }
 }

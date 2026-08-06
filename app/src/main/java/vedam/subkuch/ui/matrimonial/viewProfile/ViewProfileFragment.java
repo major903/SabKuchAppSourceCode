@@ -18,7 +18,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import com.android.volley.Response;
+import vedam.subkuch.network.Response;
 import com.google.gson.Gson;
 
 import vedam.subkuch.R;

@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import com.android.volley.Response;
+import vedam.subkuch.network.Response;
 
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseFragment;

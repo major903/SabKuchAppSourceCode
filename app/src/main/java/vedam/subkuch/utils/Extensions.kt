@@ -34,7 +34,7 @@ class Extensions {
                         before: Int,
                         count: Int
                     ) {
-                        offer(s)
+                        trySend(s)
                     }
                 }
                 addTextChangedListener(listener)

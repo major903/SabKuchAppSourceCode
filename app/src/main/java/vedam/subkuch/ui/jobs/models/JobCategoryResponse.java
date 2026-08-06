@@ -1,39 +1,30 @@
 package vedam.subkuch.ui.jobs.models;
 
+import java.util.ArrayList;
+
 public class JobCategoryResponse {
 
-    private String message;
+    private String ReturnCode;
 
-    private String status;
+    private String ReturnMessage;
 
-    private JobCategoriesResult JobCategoriesResult;
+    private ArrayList<JobCategory> ReturnData;
 
-    public String getMessage() {
-        return message;
+    public String getReturnCode() {
+        return ReturnCode;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public String getReturnMessage() {
+        return ReturnMessage;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public JobCategoriesResult getJobCategoriesResult() {
-        return JobCategoriesResult;
-    }
-
-    public void setJobCategoriesResult(JobCategoriesResult JobCategoriesResult) {
-        this.JobCategoriesResult = JobCategoriesResult;
+    public ArrayList<JobCategory> getReturnData() {
+        return ReturnData;
     }
 
     @Override
     public String toString() {
-        return "ClassPojo [message = " + message + ", status = " + status + ", JobCategoriesResult = " + JobCategoriesResult + "]";
+        return "JobCategoryResponse [ReturnCode = " + ReturnCode + ", ReturnMessage = "
+                + ReturnMessage + ", ReturnData = " + ReturnData + "]";
     }
 }

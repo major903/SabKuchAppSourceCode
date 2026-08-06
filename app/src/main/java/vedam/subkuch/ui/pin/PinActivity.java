@@ -2,7 +2,7 @@ package vedam.subkuch.ui.pin;
 
 import android.os.Bundle;
 
-import com.android.volley.Response;
+import vedam.subkuch.network.Response;
 import com.google.gson.Gson;
 
 import vedam.subkuch.R;

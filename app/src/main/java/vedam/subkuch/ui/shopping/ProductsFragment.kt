@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import com.android.volley.Response
+import vedam.subkuch.network.Response
 import com.google.gson.reflect.TypeToken
 import vedam.subkuch.R
 import vedam.subkuch.base.BaseFragment

@@ -16,8 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import vedam.subkuch.network.Response;
+import vedam.subkuch.network.ApiError;
 import com.google.gson.Gson;
 
 import vedam.subkuch.R;
@@ -189,7 +189,7 @@ public class PinFragment extends BaseFragment {
 
 
     @Override
-    protected void parseAndShowError(VolleyError error) {
+    protected void parseAndShowError(ApiError error) {
         String errorMessage = error.getMessage();
         if (!TextUtils.isEmpty(errorMessage))
             UiUtil.showToast(mContext, errorMessage);

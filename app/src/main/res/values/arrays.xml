@@ -6,6 +6,12 @@
         <item>Female</item>
     </string-array>
 
+    <string-array name="job_gender_list">
+        <item>Any gender</item>
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
     <string-array name="interested_in_list">
         <item>Yes</item>
         <item>No</item>

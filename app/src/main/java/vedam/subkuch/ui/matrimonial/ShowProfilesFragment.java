@@ -20,8 +20,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import vedam.subkuch.network.Response;
+import vedam.subkuch.network.ApiError;
 import com.google.gson.Gson;
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 import com.yuyakaido.android.cardstackview.CardStackListener;
@@ -307,7 +307,7 @@ public class ShowProfilesFragment extends BaseFragment implements CardStackListe
     };
 
     @Override
-    protected void onErrorReceived(VolleyError error) {
+    protected void onErrorReceived(ApiError error) {
         super.onErrorReceived(error);
         rewind();
     }

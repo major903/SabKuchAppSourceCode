@@ -1,6 +1,5 @@
 package vedam.subkuch.utils;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
@@ -25,6 +24,7 @@ import android.text.style.StyleSpan;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.widget.EditText;
@@ -52,8 +52,7 @@ import vedam.subkuch.uicomponent.CustomTypefaceSpan;
 public class UiUtil {
     private static final String TAG = "UiUtil";
 
-    private static ProgressDialog pDialog;
-    //private static TwoButtonDialog chatDialog_Tab, chatDialog_No, chatDialog_other;
+    private static AlertDialog pDialog;
 
     public static void showNoNetwork(Context context, View view, View.OnClickListener listener) {
 
@@ -63,7 +62,7 @@ public class UiUtil {
 
         snackbar.setActionTextColor(Color.RED);
         View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(R.id.snackbar_text);
+        TextView textView = (TextView) sbView.findViewById(com.google.android.material.R.id.snackbar_text);
         textView.setTextColor(Color.YELLOW);
         snackbar.show();
 
@@ -76,7 +75,7 @@ public class UiUtil {
         Snackbar snackbar = Snackbar
                 .make(view, msg, Snackbar.LENGTH_LONG);
         View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(R.id.snackbar_text);
+        TextView textView = (TextView) sbView.findViewById(com.google.android.material.R.id.snackbar_text);
         textView.setAllCaps(true);
         textView.setTextColor(Color.RED);
         snackbar.show();
@@ -108,29 +107,48 @@ public class UiUtil {
             return;
 
         try {
-            if (pDialog == null || !pDialog.isShowing())
-                pDialog = initProgressDialog(context);
+            if (pDialog == null || !pDialog.isShowing()) {
+                pDialog = initProgressDialog(context, msg, cancelable);
+            }
 
             if (title != null)
                 pDialog.setTitle(title);
-            pDialog.setMessage(msg);
             pDialog.setCanceledOnTouchOutside(cancelable);
             pDialog.setCancelable(cancelable);
-            pDialog.show();
+            if (!pDialog.isShowing()) {
+                pDialog.show();
+                // AlertDialog applies its theme window flags during show(), so disable
+                // dimming only after the window has been attached.
+                if (pDialog.getWindow() != null) {
+                    pDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+                    WindowManager.LayoutParams attributes = pDialog.getWindow().getAttributes();
+                    attributes.dimAmount = 0f;
+                    pDialog.getWindow().setAttributes(attributes);
+                }
+            }
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 
-    private static ProgressDialog initProgressDialog(Context context) {
+    private static AlertDialog initProgressDialog(Context context, String msg, boolean cancelable) {
+        View view = android.view.LayoutInflater.from(context).inflate(R.layout.dialog_progress, null);
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-            return new ProgressDialog(context);
-        else
-            return new ProgressDialog(context, R.style.AlertDialogTheme);
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setView(view)
+                .setCancelable(cancelable)
+                .create();
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+            // Keep the loading indicator visible without darkening the current screen.
+            dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        }
+
+        return dialog;
     }
 
-    public static ProgressDialog getProgressDialog() {
+    public static AlertDialog getProgressDialog() {
         return pDialog;
     }
 
@@ -139,7 +157,6 @@ public class UiUtil {
         try {
             if (pDialog != null && pDialog.isShowing()) {
                 pDialog.dismiss();
-                pDialog = null;
             }
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -212,12 +229,12 @@ public class UiUtil {
         builder.create().show();
     }
 
-    public static void showToast(Context context, @NonNull String msg) {
+    public static void showToast(Context context, @NonNull CharSequence msg) {
 
         showToast(context, msg, Toast.LENGTH_SHORT);
     }
 
-    public static void showToast(Context context, @NonNull String msg, int length) {
+    public static void showToast(Context context, @NonNull CharSequence msg, int length) {
         if (context == null)
             return;
         Toast toast = Toast.makeText(context, msg, length);

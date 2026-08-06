@@ -14,7 +14,7 @@ import com.adevinta.leku.LATITUDE
 import com.adevinta.leku.LOCATION_ADDRESS
 import com.adevinta.leku.LONGITUDE
 import com.adevinta.leku.LocationPickerActivity
-import com.android.volley.Response
+import vedam.subkuch.network.Response
 import com.google.android.gms.location.places.Place
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
@@ -61,8 +61,8 @@ class AddJobsActivity : BaseActivity() {
 
     private val onJobCategorySuccessListener = Response.Listener { response: JobCategoryResponse? ->
         UiUtil.cancelProgressDialog()
-        if (response != null && response.status == Constants.TRUE) {
-            setJobCategories(response.jobCategoriesResult.jobCategories)
+        if (response != null && response.returnData != null) {
+            setJobCategories(ArrayList(response.returnData))
         } else UiUtil.showToast(this, getString(R.string.err_occurred))
     }
 
@@ -154,6 +154,11 @@ class AddJobsActivity : BaseActivity() {
                 }
                 alJobs.add(v)
                 activityAddJobsBinding!!.llContainer.addView(v, params)
+                v.findViewById<Spinner>(R.id.sp_job_gender).adapter = ArrayAdapter(
+                    this,
+                    android.R.layout.simple_spinner_dropdown_item,
+                    resources.getStringArray(R.array.job_gender_list)
+                )
             } else UiUtil.showToast(this, getString(R.string.no_more_jobs))
         }
 
@@ -195,19 +200,30 @@ class AddJobsActivity : BaseActivity() {
         val jobRequest = JobRequest()
         jobRequest.dealingIn = activityAddJobsBinding!!.etDealingIn.text.toString()
         jobRequest.jobLocation = activityAddJobsBinding!!.etJobLocation.text.toString()
-        jobRequest.howToContact = activityAddJobsBinding!!.etContact.text.toString()
+        val mobile1 = activityAddJobsBinding!!.etMobile1.text.toString().trim()
+        val mobile2 = activityAddJobsBinding!!.etMobile2.text.toString().trim()
+        val email = activityAddJobsBinding!!.etContactEmail.text.toString().trim()
+        jobRequest.mobile1 = mobile1
+        jobRequest.mobile2 = mobile2
+        jobRequest.email = email
+        jobRequest.isCall = activityAddJobsBinding!!.cbCall.isChecked
+        jobRequest.isWhatsApp = activityAddJobsBinding!!.cbWhatsapp.isChecked
+        // Retain a readable fallback for servers/app versions that still use this field.
+        jobRequest.howToContact = buildContactSummary(mobile1, mobile2, email)
         jobRequest.organisationName = activityAddJobsBinding!!.etCompanyName.text.toString()
         jobRequest.cityID = cityId
         jobRequest.latitude = latLng!!.latitude.toString()
-        jobRequest.longitude = latLng!!.latitude.toString()
+        jobRequest.longitude = latLng!!.longitude.toString()
         val alPosts = ArrayList<Post>()
         for (v in alJobs) {
             val post = Post()
             post.jobCategoryId = jobCategoryId
             val etJobTitle = v.findViewById<EditText>(R.id.et_job_title)
             val etJobRequirement = v.findViewById<EditText>(R.id.et_job_requirement)
+            val spJobGender = v.findViewById<Spinner>(R.id.sp_job_gender)
             post.jobTitle = etJobTitle.text.toString()
             post.requirement = AppUtil.deNull(etJobRequirement.text)
+            post.gender = spJobGender.selectedItemPosition
             alPosts.add(post)
         }
         jobRequest.jobs = alPosts
@@ -248,9 +264,13 @@ class AddJobsActivity : BaseActivity() {
                 activityAddJobsBinding!!.etJobLocation.text
             )
         ) errorMessage = R.string.enter_job_location else if (TextUtils.isEmpty(
-                activityAddJobsBinding!!.etContact.text
-            )
+                activityAddJobsBinding!!.etMobile1.text
+            ) && TextUtils.isEmpty(activityAddJobsBinding!!.etContactEmail.text)
         ) errorMessage = R.string.enter_contact
+        else if (!TextUtils.isEmpty(activityAddJobsBinding!!.etMobile1.text) &&
+            !activityAddJobsBinding!!.cbCall.isChecked && !activityAddJobsBinding!!.cbWhatsapp.isChecked) errorMessage = R.string.enter_contact
+        else if (!TextUtils.isEmpty(activityAddJobsBinding!!.etContactEmail.text) &&
+            !AppUtil.validateEmail(activityAddJobsBinding!!.etContactEmail.text.toString())) errorMessage = R.string.enter_valid_email
         else if (latLng == null) errorMessage =
             R.string.add_a_location
         else if (TextUtils.isEmpty(cityId)) errorMessage =
@@ -270,6 +290,17 @@ class AddJobsActivity : BaseActivity() {
             }
         }
         return errorMessage
+    }
+
+    private fun buildContactSummary(mobile1: String, mobile2: String, email: String): String {
+        val numbers = listOf(mobile1, mobile2).filter { it.isNotEmpty() }.joinToString(", ")
+        val methods = mutableListOf<String>()
+        if (activityAddJobsBinding!!.cbCall.isChecked) methods.add(getString(R.string.call))
+        if (activityAddJobsBinding!!.cbWhatsapp.isChecked) methods.add(getString(R.string.whatsapp))
+        val summary = mutableListOf<String>()
+        if (numbers.isNotEmpty() && methods.isNotEmpty()) summary.add(methods.joinToString(" or ") + " " + numbers)
+        if (email.isNotEmpty()) summary.add("Send CV to $email")
+        return summary.joinToString(". ")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

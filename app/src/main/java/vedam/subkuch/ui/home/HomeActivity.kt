@@ -1,9 +1,11 @@
 package vedam.subkuch.ui.home
 
 import android.Manifest
+import android.content.pm.PackageManager
 import android.content.DialogInterface
 import android.content.Intent
 import android.location.Location
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.Menu
@@ -11,15 +13,20 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerClient.InstallReferrerResponse
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
-import com.android.volley.Response
+import vedam.subkuch.network.Response
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
@@ -66,19 +73,58 @@ import vedam.subkuch.ui.stafftrack.StaffTrackActivity
 import vedam.subkuch.ui.transport.TransportActivity
 import vedam.subkuch.ui.vehicle.VehicleActivity
 import vedam.subkuch.ui.wallet.WalletActivity
-import vedam.subkuch.uicomponent.BaseWebActivity
+import vedam.subkuch.update.AppUpdateManager
 import vedam.subkuch.utils.*
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener,
     InstallReferrerStateListener {
+    private companion object {
+        const val CASHBACK_MENU_ID = 3
+    }
+
     private var binding: ActivityHomeBinding? = null
     private var referrerClient: InstallReferrerClient? = null
+    private val notificationPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
     val iconHash = mapOf(
         1 to R.drawable.ic_menu_profile,
         2 to R.drawable.ic_menu_wallet,
-        3 to R.drawable.ic_menu_wallet,
         4 to R.drawable.ic_menu_inbox,
-        5 to R.drawable.baseline_room_black_24
+        5 to R.drawable.ic_drawer_contribute
+    )
+    private val featureViewIds = intArrayOf(
+        R.id.iv_directory,
+        R.id.iv_events,
+        R.id.iv_jobs,
+        R.id.iv_movies,
+        R.id.iv_classifieds,
+        R.id.iv_needs,
+        R.id.iv_ask_me,
+        R.id.iv_dating,
+        R.id.iv_matrimonial,
+        R.id.iv_public_utility,
+        R.id.iv_bus,
+        R.id.iv_phone_book,
+        R.id.iv_transport,
+        R.id.iv_offer,
+        R.id.iv_gift
+    )
+    private val fallbackFeatureIcons = mapOf(
+        R.id.iv_directory to R.drawable.directory,
+        R.id.iv_events to R.drawable.learn,
+        R.id.iv_jobs to R.drawable.jobs,
+        R.id.iv_movies to R.drawable.movies,
+        R.id.iv_classifieds to R.drawable.classifieds,
+        R.id.iv_needs to R.drawable.needs,
+        R.id.iv_ask_me to R.drawable.ask,
+        R.id.iv_dating to R.drawable.dating,
+        R.id.iv_matrimonial to R.drawable.matrimonial,
+        R.id.iv_public_utility to R.drawable.public_utility,
+        R.id.iv_bus to R.drawable.bustrain,
+        R.id.iv_phone_book to R.drawable.phonebook,
+        R.id.iv_transport to R.drawable.transport,
+        R.id.iv_offer to R.drawable.offers,
+        R.id.iv_gift to R.drawable.giftalife
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,11 +132,20 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         binding = DataBindingUtil.setContentView(
             this, R.layout.activity_home
         )
-        requestLocation(false)
-        getMenus()
-        getFeatures()
-        getBroadCastMessage()
-
+        showHomeImmediately()
+        binding!!.drawerLayout.setStatusBarBackgroundColor(getColor(R.color.colorPrimary))
+        // Keep the supplied vector colors instead of NavigationView's default gray tint.
+        binding!!.navView.itemIconTintList = null
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (binding!!.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    binding!!.drawerLayout.closeDrawer(GravityCompat.START)
+                } else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        })
         val toggle = ActionBarDrawerToggle(
             this,
             binding!!.drawerLayout,
@@ -104,10 +159,87 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val tvName =
             binding!!.navView.getHeaderView(0).findViewById<TextView>(R.id.tv_name)
         tvName.text = AppPrefs.getPrefsUserName(this)
-        val view = binding!!.navView.findViewById<View>(R.id.ll_tnc)
-        view.setOnClickListener { v: View? -> AppUtil.openUrl(this, Constants.PRIVACY_POLICY_URL) }
+        binding!!.navView.getHeaderView(0).findViewById<View>(R.id.btn_close_drawer)
+            .setOnClickListener { binding!!.drawerLayout.closeDrawer(GravityCompat.START) }
+        val privacyFooter = binding!!.navView.findViewById<View>(R.id.ll_tnc)
+        val initialPrivacyFooterLeft = privacyFooter.paddingLeft
+        val initialPrivacyFooterTop = privacyFooter.paddingTop
+        val initialPrivacyFooterRight = privacyFooter.paddingRight
+        val initialPrivacyFooterBottom = privacyFooter.paddingBottom
+        fun applyPrivacyFooterInsets(insets: WindowInsetsCompat) {
+            val footerInset = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
+            val rootInset = ViewCompat.getRootWindowInsets(privacyFooter)
+                ?.getInsets(WindowInsetsCompat.Type.navigationBars())
+                ?.bottom ?: 0
+            privacyFooter.setPadding(
+                initialPrivacyFooterLeft,
+                initialPrivacyFooterTop,
+                initialPrivacyFooterRight,
+                initialPrivacyFooterBottom + maxOf(footerInset, rootInset)
+            )
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(privacyFooter) { _, insets ->
+            applyPrivacyFooterInsets(insets)
+            insets
+        }
+        privacyFooter.post {
+            ViewCompat.getRootWindowInsets(privacyFooter)?.let(::applyPrivacyFooterInsets)
+        }
+        privacyFooter.setOnClickListener { AppUtil.openUrl(this, Constants.PRIVACY_POLICY_URL) }
         handleReferral()
-        registerFCM()
+        binding!!.root.post {
+            if (!isFinishing && !isDestroyed) {
+                requestLocation(false)
+                getMenus()
+                getFeatures()
+                getBroadCastMessage()
+                registerFCM()
+                requestNotificationPermissionIfNeeded()
+            }
+        }
+    }
+
+    private fun showHomeImmediately() {
+        val cachedFeatures = AppPrefs.getPrefsHomeFeatures(this)
+            .takeIf { it.isNotBlank() }
+            ?.let {
+                try {
+                    Gson().fromJson(it, Feature::class.java)
+                } catch (exception: Exception) {
+                    FirebaseCrashlytics.getInstance().recordException(exception)
+                    null
+                }
+            }
+
+        if (cachedFeatures != null) {
+            renderFeatures(cachedFeatures)
+        } else {
+            hideFeatureViews()
+            fallbackFeatureIcons.forEach { (viewId, drawableId) ->
+                binding!!.root.findViewById<ImageView>(viewId).apply {
+                    setImageResource(drawableId)
+                    visibility = View.VISIBLE
+                    isEnabled = false
+                }
+            }
+            binding!!.root.findViewById<View>(R.id.ll_container).visibility = View.VISIBLE
+        }
+    }
+
+    private fun renderFeatures(features: Feature) {
+        hideFeatureViews()
+        enableFeatures(features)
+        binding!!.root.findViewById<View>(R.id.ll_container).visibility = View.VISIBLE
+    }
+
+    private fun hideFeatureViews() {
+        featureViewIds.forEach { viewId ->
+            binding!!.root.findViewById<ImageView>(viewId).apply {
+                visibility = View.GONE
+                isEnabled = false
+                tag = null
+            }
+        }
     }
 
     private val onBroadcastSuccessListener = Response.Listener { response: BroadcastResponse? ->
@@ -160,11 +292,11 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     private fun addContact(result: BroadQuery.Result) {
-        val userId = AppPrefs.getPrefsUserId(this)
+        val userId = AppPrefs.getPrefsUserId(this).toIntOrNull() ?: return
         val list = arrayListOf<ContactObject>()
         result.forEach {
             val contactObj =
-                ContactObject(Userid = userId, Name = it.displayNamePrimary, Status = 1)
+                ContactObject(UserId = userId, Name = it.displayNamePrimary)
 
             if (it.hasPhoneNumber == true) {
                 for ((index, phone) in it.phoneList().withIndex()) {
@@ -187,7 +319,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     private fun updateStatus() {
-        val obj = ContactObject(Userid = AppPrefs.getPrefsUserId(this), Status = 1)
+        val userId = AppPrefs.getPrefsUserId(this).toIntOrNull() ?: return
+        val obj = ContactObject(UserId = userId)
         val list = arrayListOf(obj)
         val type = object : TypeToken<BaseResponse<String>>() {}.type
         DataFetcher.addContacts(this, Gson().toJson(list), onAddContactSuccessListener, type, null)
@@ -198,13 +331,23 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     private fun getBroadCastMessage() {
-        UiUtil.showProgressDialog(this, getString(R.string.please_wait))
         getBroadcastMessage(
             this,
             onBroadcastSuccessListener,
             BroadcastResponse::class.java,
             onErrorListener
         )
+    }
+
+    private fun requestNotificationPermissionIfNeeded() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
     }
 
     private fun registerFCM() {
@@ -247,7 +390,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     private fun getMenus() {
-        UiUtil.showProgressDialog(this, getString(R.string.please_wait))
         val type = object : TypeToken<BaseResponse<ArrayList<ArrayList<OMenu>>>>() {}.type
         DataFetcher.getMenus(
             this,
@@ -259,7 +401,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     private val onMenuSuccessListener =
         Response.Listener { response: BaseResponse<ArrayList<ArrayList<OMenu>>>? ->
-            UiUtil.cancelProgressDialog()
             if (response != null) {
                 if (response.returnCode == Constants.SUCCESS_RETURN_CODE) {
                     setMenu(response.returnData)
@@ -274,15 +415,29 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         menus?.get(0)?.let {
             binding?.navView?.menu?.clear()
             for (menu in it) {
+                if (menu.MenuId == CASHBACK_MENU_ID) continue
+
                 val a = binding?.navView?.menu?.add(0, menu.MenuId, 0, menu.name)
-                a?.setIcon(iconHash[menu.MenuId] ?: R.drawable.ic_menu_inbox)
+                a?.apply {
+                    setIcon(iconHash[menu.MenuId] ?: R.drawable.ic_menu_inbox)
+                    isCheckable = true
+                    isChecked = menu.MenuId == 1
+                }
+            }
+            binding?.navView?.menu?.add(
+                0,
+                R.id.nav_app_update,
+                0,
+                R.string.check_for_app_update
+            )?.apply {
+                setIcon(R.drawable.ic_drawer_update)
+                isCheckable = false
             }
             binding?.navView?.invalidate()
         }
     }
 
     private fun getFeatures() {
-        UiUtil.showProgressDialog(this, getString(R.string.please_wait))
         getFeatures2(
             this,
             onFeaturesSuccessListener,
@@ -292,12 +447,12 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     private val onFeaturesSuccessListener = Response.Listener { response: FeatureResponse? ->
-        UiUtil.cancelProgressDialog()
         if (response != null) {
             if (response.returnCode == Constants.SUCCESS_RETURN_CODE) {
-                enableFeatures(response.returnData)
-                binding!!.root.findViewById<View>(R.id.ll_container).visibility =
-                    View.VISIBLE
+                response.returnData?.let { features ->
+                    AppPrefs.setPrefsHomeFeatures(this, Gson().toJson(features))
+                    renderFeatures(features)
+                }
             } else if (!TextUtils.isEmpty(response.returnMessage)) UiUtil.showToast(
                 this@HomeActivity,
                 response.returnMessage
@@ -371,7 +526,9 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 Constants.Events -> {
                     val ivEvent = binding!!.root.findViewById<ImageView>(R.id.iv_events)
                     ivEvent.visibility = View.VISIBLE
-                    setImage(ivEvent, R.drawable.events, feature)
+                    ivEvent.tag = feature
+                    ivEvent.isEnabled = true
+                    ivEvent.setImageResource(R.drawable.learn)
                 }
                 Constants.Jobs -> {
                     val ivJobs = binding!!.root.findViewById<ImageView>(R.id.iv_jobs)
@@ -390,9 +547,11 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     private fun setImage(ivDirectory: ImageView, resourceId: Int, feature: Node) {
         ivDirectory.tag = feature
+        ivDirectory.isEnabled = true
         UiUtil.setImageView(
             ImageSetter.ImageBuilder(this)
                 .setImageLink(feature.iconUrl)
+                .setPlaceholderResource(resourceId)
                 .setErrorResource(resourceId)
                 .setTarget(ivDirectory).build()
         )
@@ -471,12 +630,12 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                     val ivTransport =
                         binding!!.root.findViewById<ImageView>(R.id.iv_transport)
                     ivTransport.visibility = View.VISIBLE
-                    setImage(ivTransport, 0, feature)
+                    setImage(ivTransport, R.drawable.transport, feature)
                 }
                 Constants.Gift_A_Life -> {
                     val ivGift = binding!!.root.findViewById<ImageView>(R.id.iv_gift)
                     ivGift.visibility = View.VISIBLE
-                    setImage(ivGift, 0, feature)
+                    setImage(ivGift, R.drawable.giftalife, feature)
                 }
                 Constants.Offers -> {
                     val ivOffers = binding!!.root.findViewById<ImageView>(R.id.iv_offer)
@@ -627,14 +786,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     {
         startActivity(new Intent(this,Info.class));
     }*/
-    override fun onBackPressed() {
-        if (binding!!.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            binding!!.drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
-    }
-
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         val id = item.itemId
@@ -646,14 +797,10 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             startActivity(Intent(this, InboxActivity::class.java))
         } else if (id == 5) {
             startActivity(Intent(this, StaffTrackActivity::class.java))
-        } else if (id == 3) {
-            startActivity(
-                Intent(this, BaseWebActivity::class.java)
-                    .putExtra(Constants.EXTRA_NAME, getString(R.string.cashback))
-                    .putExtra(Constants.EXTRA_URL, "https://www.vedam-it.com/cashback.html")
-            )
-            //            AppUtil.openUrl(this, Constants.PRIVACY_POLICY_URL);
+        } else if (id == R.id.nav_app_update) {
+            AppUpdateManager.checkForUpdates(this)
         }
+        if (id != R.id.nav_app_update) item.isChecked = true
         binding!!.drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }

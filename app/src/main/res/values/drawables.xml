@@ -1,6 +1,6 @@
 <resources>
-    <item name="ic_menu_profile" type="drawable">@drawable/baseline_account_box_black_18</item>
+    <item name="ic_menu_profile" type="drawable">@drawable/ic_drawer_profile</item>
     <item name="ic_menu_privacy" type="drawable">@drawable/baseline_copyright_black_18</item>
-    <item name="ic_menu_inbox" type="drawable">@drawable/baseline_inbox_black_18</item>
-    <item name="ic_menu_wallet" type="drawable">@drawable/baseline_money_black_18</item>
+    <item name="ic_menu_inbox" type="drawable">@drawable/ic_drawer_inbox</item>
+    <item name="ic_menu_wallet" type="drawable">@drawable/ic_drawer_wallet</item>
 </resources>

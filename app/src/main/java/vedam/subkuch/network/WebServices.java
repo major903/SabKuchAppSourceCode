@@ -12,7 +12,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import vedam.subkuch.BuildConfig;
 import vedam.subkuch.R;
+import vedam.subkuch.SabkuchApplication;
 import vedam.subkuch.network.handler.DeleteImageHandler;
 import vedam.subkuch.network.handler.GetAllCityHandler;
 import vedam.subkuch.network.handler.GetAnnualIncomeHandler;
@@ -92,7 +94,9 @@ public class WebServices {
         this.context = context;
         bearer = AppPrefs.getPrefsToken(context);
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        interceptor.setLevel(BuildConfig.DEBUG
+                ? HttpLoggingInterceptor.Level.BASIC
+                : HttpLoggingInterceptor.Level.NONE);
         OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
         api = new Retrofit.Builder()
@@ -104,7 +108,14 @@ public class WebServices {
 
     }
 
-    public static WebServices getInstance() {
+    public static synchronized WebServices getInstance() {
+        if (mInstance == null) {
+            SabkuchApplication application = SabkuchApplication.getInstance();
+            if (application == null) {
+                throw new IllegalStateException("Application is not initialized");
+            }
+            mInstance = new WebServices(application.getApplicationContext());
+        }
         return mInstance;
     }
 

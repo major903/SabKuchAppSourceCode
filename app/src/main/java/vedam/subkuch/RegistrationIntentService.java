@@ -18,14 +18,13 @@ package vedam.subkuch;
 
 import android.content.Context;
 import android.content.Intent;
-import android.provider.Settings;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.JobIntentService;
 
-import com.android.volley.Response;
+import vedam.subkuch.network.Response;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 
 import vedam.subkuch.helpers.Constants;
@@ -33,6 +32,7 @@ import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.network.models.PushNotificationRequest;
 import vedam.subkuch.network.models.classifieds.AddClassifiedResponse;
 import vedam.subkuch.utils.AppPrefs;
+import vedam.subkuch.utils.DeviceIdProvider;
 import vedam.subkuch.utils.LogUtils;
 import vedam.subkuch.utils.UiUtil;
 
@@ -59,7 +59,7 @@ public class RegistrationIntentService extends JobIntentService {
 
         try {
 
-            FirebaseInstanceId.getInstance().getInstanceId()
+            FirebaseMessaging.getInstance().getToken()
                     .addOnCompleteListener(task -> {
                         if (!task.isSuccessful()) {
                             LogUtils.LOGD(TAG, "getInstanceId failed", task.getException());
@@ -68,7 +68,7 @@ public class RegistrationIntentService extends JobIntentService {
 
                         // Get new Instance ID token
                         if (task.getResult() != null) {
-                            String token = task.getResult().getToken();
+                            String token = task.getResult();
                             LogUtils.LOGI(TAG, "FCM Registration Token: " + token);
 
                             boolean isUserLoggedIn = AppPrefs.getIsLoggedIn(getApplicationContext());
@@ -96,8 +96,7 @@ public class RegistrationIntentService extends JobIntentService {
         PushNotificationRequest request = new PushNotificationRequest();
         request.setUserId(AppPrefs.getPrefsUserId(this));
         request.setToken(token);
-        final String deviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(),
-                Settings.Secure.ANDROID_ID);
+        final String deviceId = DeviceIdProvider.getDeviceId(this);
         request.setDeviceId(deviceId);
         DataFetcher.registerForPush(this, new Gson().toJson(request), onRegisterPushSuccessListener, AddClassifiedResponse.class, null);
     }

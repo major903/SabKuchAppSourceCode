@@ -9,7 +9,7 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
-import com.android.volley.Response
+import vedam.subkuch.network.Response
 import vedam.subkuch.R
 import vedam.subkuch.base.BaseFragment
 import vedam.subkuch.databinding.FragmentExperienceBinding

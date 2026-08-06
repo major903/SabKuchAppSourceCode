@@ -16,7 +16,7 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.CompoundButton
 import androidx.databinding.DataBindingUtil
-import com.android.volley.Response
+import vedam.subkuch.network.Response
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import vedam.subkuch.R

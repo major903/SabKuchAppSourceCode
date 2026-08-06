@@ -13,13 +13,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.ListFragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkError;
-import com.android.volley.NetworkResponse;
-import com.android.volley.ParseError;
-import com.android.volley.Response;
-import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
+import vedam.subkuch.network.AuthFailureError;
+import vedam.subkuch.network.NetworkError;
+import vedam.subkuch.network.NetworkResponse;
+import vedam.subkuch.network.ParseError;
+import vedam.subkuch.network.Response;
+import vedam.subkuch.network.TimeoutError;
+import vedam.subkuch.network.ApiError;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -47,7 +47,7 @@ public class BaseListFragment extends ListFragment implements SwipeRefreshLayout
 
     };
 
-    private void onErrorReceived(VolleyError error) {
+    private void onErrorReceived(ApiError error) {
 
         if (error instanceof NetworkError) {
             UiUtil.showToast(context, getString(R.string.connectionError));
@@ -69,7 +69,7 @@ public class BaseListFragment extends ListFragment implements SwipeRefreshLayout
             getGlobalFragmentInteractionListener().logout();
     }
 
-    private void parseAndShowError(VolleyError error) {
+    private void parseAndShowError(ApiError error) {
 
         NetworkResponse networkResponse = error.networkResponse;
         if (networkResponse != null && networkResponse.data != null) {
@@ -205,7 +205,7 @@ public class BaseListFragment extends ListFragment implements SwipeRefreshLayout
     }
 
     public void onBackPressed() {
-        if (context instanceof BaseActivity) ((BaseActivity) context).onBackPressed();
+        if (context instanceof BaseActivity) ((BaseActivity) context).navigateBack();
     }
 
     /**

@@ -8,12 +8,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.volley.Response
+import vedam.subkuch.network.Response
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import vedam.subkuch.R
 import vedam.subkuch.base.BaseFragment
 import vedam.subkuch.databinding.FragmentChatListBinding
@@ -68,10 +67,10 @@ class ChatListFragment : BaseFragment(), OnListViewItemClickListener {
 
     private fun getLatestChats() {
 
-        val task1 = Firebase.firestore.collection(Constants.TABLE_LATEST_CHAT)
+        val task1 = FirebaseFirestore.getInstance().collection(Constants.TABLE_LATEST_CHAT)
             .whereEqualTo(Constants.ToProfileId, AppPrefs.getPrefsUserId(mContext)).get()
 
-        val task2 = Firebase.firestore.collection(Constants.TABLE_LATEST_CHAT)
+        val task2 = FirebaseFirestore.getInstance().collection(Constants.TABLE_LATEST_CHAT)
             .whereEqualTo(Constants.FromProfileId, AppPrefs.getPrefsUserId(mContext)).get()
 
         Tasks.whenAllSuccess<QuerySnapshot>(task1, task2).addOnSuccessListener {

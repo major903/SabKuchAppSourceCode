@@ -8,12 +8,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.android.volley.Response
+import vedam.subkuch.network.Response
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
@@ -37,12 +38,15 @@ import vedam.subkuch.ui.matrimonial.preference.PreferenceFragment
 import vedam.subkuch.ui.profile.EditProfileActivity
 import vedam.subkuch.ui.stafftrack.StaffTrackActivity
 import vedam.subkuch.ui.wallet.WalletActivity
-import vedam.subkuch.uicomponent.BaseWebActivity
 import vedam.subkuch.utils.AppPrefs
 import vedam.subkuch.utils.UiUtil
 
 class ShowProfilesActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener,
     FragmentManager.OnBackStackChangedListener {
+    private companion object {
+        const val CASHBACK_MENU_ID = 3
+    }
+
     private var binding: ActivityShowProfilesBinding? = null
     private var hmNavigationIds: HashMap<String?, Int>? = null
     private var isDating = false
@@ -53,14 +57,30 @@ class ShowProfilesActivity : BaseActivity(), NavigationView.OnNavigationItemSele
     val iconHash = mapOf(
         1 to R.drawable.ic_menu_profile,
         2 to R.drawable.ic_menu_wallet,
-        3 to R.drawable.ic_menu_wallet,
         4 to R.drawable.ic_menu_inbox,
-        5 to R.drawable.baseline_room_black_24
+        5 to R.drawable.ic_drawer_contribute
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_show_profiles)
+        // Keep the supplied vector colors instead of NavigationView's default gray tint.
+        binding!!.navView.itemIconTintList = null
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (binding!!.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    binding!!.drawerLayout.closeDrawer(GravityCompat.START)
+                    return
+                }
+                val backStackEntryCount = supportFragmentManager.backStackEntryCount
+                if (backStackEntryCount > 0) {
+                    if (backStackEntryCount == 1) finish() else supportFragmentManager.popBackStack()
+                } else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        })
         setTitle(R.string.profiles)
         setToolbarBackButton()
         initUI()
@@ -98,8 +118,14 @@ class ShowProfilesActivity : BaseActivity(), NavigationView.OnNavigationItemSele
         menus?.get(0)?.let {
             binding?.navView?.menu?.clear()
             for (menu in it) {
+                if (menu.MenuId == CASHBACK_MENU_ID) continue
+
                 val a = binding?.navView?.menu?.add(0, menu.MenuId, 0, menu.name)
-                a?.setIcon(iconHash[menu.MenuId] ?: R.drawable.ic_menu_inbox)
+                a?.apply {
+                    setIcon(iconHash[menu.MenuId] ?: R.drawable.ic_menu_inbox)
+                    isCheckable = true
+                    isChecked = menu.MenuId == 1
+                }
             }
             binding?.navView?.invalidate()
         }
@@ -160,6 +186,8 @@ class ShowProfilesActivity : BaseActivity(), NavigationView.OnNavigationItemSele
     private fun bindData() {
         val tvName = binding!!.navView.getHeaderView(0).findViewById<TextView>(R.id.tv_name)
         tvName.text = AppPrefs.getPrefsUserName(this)
+        binding!!.navView.getHeaderView(0).findViewById<View>(R.id.btn_close_drawer)
+            .setOnClickListener { binding!!.drawerLayout.closeDrawer(GravityCompat.START) }
     }
 
     private fun setCount(count: Int) {
@@ -185,19 +213,6 @@ class ShowProfilesActivity : BaseActivity(), NavigationView.OnNavigationItemSele
         hmNavigationIds!![Constants.TAG_CHATS_FRAGMENT] = R.id.nav_chats
     }
 
-    override fun onBackPressed() {
-        if (binding!!.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            binding!!.drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            val backStackEntryCount = supportFragmentManager.backStackEntryCount
-            if (backStackEntryCount > 0) {
-                if (backStackEntryCount == 1) finish() else supportFragmentManager.popBackStack()
-            } else {
-                super.onBackPressed()
-            }
-        }
-    }
-
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         val id = item.itemId
@@ -209,14 +224,8 @@ class ShowProfilesActivity : BaseActivity(), NavigationView.OnNavigationItemSele
             startActivity(Intent(this, InboxActivity::class.java))
         } else if (id == 5) {
             startActivity(Intent(this, StaffTrackActivity::class.java))
-        } else if (id == 3) {
-            startActivity(
-                Intent(this, BaseWebActivity::class.java)
-                    .putExtra(Constants.EXTRA_NAME, getString(R.string.cashback))
-                    .putExtra(Constants.EXTRA_URL, "https://www.vedam-it.com/cashback.html")
-            )
-            //            AppUtil.openUrl(this, Constants.PRIVACY_POLICY_URL);
         }
+        item.isChecked = true
         binding!!.drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }

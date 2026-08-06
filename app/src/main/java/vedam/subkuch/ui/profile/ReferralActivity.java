@@ -5,7 +5,7 @@ import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.android.volley.Response;
+import vedam.subkuch.network.Response;
 import com.google.gson.Gson;
 
 import vedam.subkuch.R;

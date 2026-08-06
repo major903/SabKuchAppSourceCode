@@ -1,8 +1,11 @@
 package vedam.subkuch.network
 
 import android.content.Context
-import com.android.volley.Response
-import com.google.protobuf.TypeOrBuilder
+import vedam.subkuch.network.Response
+import okhttp3.MultipartBody
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import vedam.subkuch.BuildConfig
 import vedam.subkuch.network.models.DataPart
 import vedam.subkuch.utils.AppPrefs
 import vedam.subkuch.utils.AppUtil
@@ -20,9 +23,10 @@ object DataFetcher {
         updateSuccessListener: Response.Listener<T>?,
         repClass: Class<T>?,
         errorListener: Response.ErrorListener?
-    ) {
-        val url = String.format("%s/api/UserProfile/AddProfile", NetworkConstants.END_POINT2)
-        HelperVolley.callApiWithBody(
+    ): Boolean {
+        if (!isRegistrationApiConfigured()) return false
+        val url = registrationUrl("UserProfile/AddProfile")
+        NetworkGateway.callApiWithBody(
             context,
             url,
             null,
@@ -31,18 +35,19 @@ object DataFetcher {
             repClass,
             errorListener
         )
+        return true
     }
 
     @JvmStatic
-    fun <T> editProfileMain(
+    fun <T> updateUser(
         context: Context?,
         json: String?,
         updateSuccessListener: Response.Listener<T>?,
         repClass: Class<T>?,
         errorListener: Response.ErrorListener?
     ) {
-        val url = String.format("%s/api/UserProfile/EditProfileMain", NetworkConstants.END_POINT2)
-        HelperVolley.callApiWithBody(
+        val url = registrationUrl("Users/update")
+        NetworkGateway.callApiWithBody(
             context,
             url,
             null,
@@ -68,7 +73,7 @@ object DataFetcher {
             countryCode,
             phoneNumber
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -88,7 +93,7 @@ object DataFetcher {
             phoneNumber,
             otp
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     fun <T> getFeatures(
@@ -100,7 +105,7 @@ object DataFetcher {
         val userId = AppPrefs.getPrefsUserId(context)
         val url =
             String.format("%s/api/Feature/GetByCity?UserId=%s", NetworkConstants.END_POINT2, userId)
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -116,7 +121,7 @@ object DataFetcher {
             NetworkConstants.END_POINT2,
             userId
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -132,7 +137,7 @@ object DataFetcher {
             NetworkConstants.END_POINT2,
             userId
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -143,8 +148,10 @@ object DataFetcher {
         repClass: Type?,
         errorListener: Response.ErrorListener?
     ) {
-        val url = String.format("%s/api/Message/AddUserContact", NetworkConstants.END_POINT2)
-        HelperVolley.callApiWithBody(
+        val url = registrationUrl("UserContacts/AddUserContacts")
+        // The endpoint creates a bulk contact import. Do not retry writes automatically,
+        // otherwise a timeout could result in duplicate contact records.
+        NetworkGateway.callApiWithBodyNoRetry(
             context,
             url,
             null,
@@ -163,7 +170,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/AllAPI/GetAllcountry", NetworkConstants.END_POINT)
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -173,8 +180,73 @@ object DataFetcher {
         repClass: Type?,
         errorListener: Response.ErrorListener?
     ) {
-        val url = String.format("%s/AllAPI/GetAllCity", NetworkConstants.END_POINT)
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        JobApiClient.enqueue(
+            JobApiClient.getApi().getCities(), repClass, updateSuccessListener, errorListener
+        )
+    }
+
+    @JvmStatic
+    fun <T> getRegistrationCountries(
+        context: Context?,
+        updateSuccessListener: Response.Listener<T>?,
+        repClass: Type?,
+        errorListener: Response.ErrorListener?
+    ) {
+        val url = registrationUrl("Master/GetCountries")
+        val headers = hashMapOf("CompanyId" to BuildConfig.REGISTRATION_COMPANY_ID)
+        NetworkGateway.callGetApiWithHeaders(context, url, null, updateSuccessListener, repClass, errorListener, headers)
+    }
+
+    @JvmStatic
+    fun <T> getRegistrationStates(
+        context: Context?, updateSuccessListener: Response.Listener<T>?, repClass: Type?, errorListener: Response.ErrorListener?
+    ) = getRegistrationMasterData(context, "GetStates", updateSuccessListener, repClass, errorListener)
+
+    @JvmStatic
+    fun <T> getRegistrationDistricts(
+        context: Context?, updateSuccessListener: Response.Listener<T>?, repClass: Type?, errorListener: Response.ErrorListener?
+    ) = getRegistrationMasterData(context, "GetDistricts", updateSuccessListener, repClass, errorListener)
+
+    @JvmStatic
+    fun <T> getRegistrationLanguages(
+        context: Context?, updateSuccessListener: Response.Listener<T>?, repClass: Type?, errorListener: Response.ErrorListener?
+    ) = getRegistrationMasterData(context, "GetLanguages", updateSuccessListener, repClass, errorListener)
+
+    private fun <T> getRegistrationMasterData(
+        context: Context?, path: String, updateSuccessListener: Response.Listener<T>?, repClass: Type?, errorListener: Response.ErrorListener?
+    ) {
+        val url = registrationUrl("Master/$path")
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+    }
+
+    @JvmStatic
+    fun isRegistrationApiConfigured(): Boolean = BuildConfig.REGISTRATION_API_BASE_URL.isNotBlank()
+
+    private fun registrationUrl(path: String): String =
+        "${BuildConfig.REGISTRATION_API_BASE_URL.trimEnd('/')}/api/$path"
+
+    @JvmStatic
+    fun <T> getLearnHome(
+        context: Context?,
+        updateSuccessListener: Response.Listener<T>?,
+        repClass: Class<T>?,
+        errorListener: Response.ErrorListener?
+    ) {
+        RegistrationApiClient.enqueue(
+            RegistrationApiClient.getApi().getLearnHomeRaw(), repClass, updateSuccessListener, errorListener
+        )
+    }
+
+    @JvmStatic
+    fun <T> getMyCourses(
+        context: Context?,
+        updateSuccessListener: Response.Listener<T>?,
+        repClass: Class<T>?,
+        errorListener: Response.ErrorListener?
+    ) {
+        RegistrationApiClient.enqueue(
+            RegistrationApiClient.getApi().getMyCoursesRaw(), repClass, updateSuccessListener, errorListener
+        )
     }
 
     @JvmStatic
@@ -186,7 +258,7 @@ object DataFetcher {
     ) {
         val userId = AppPrefs.getPrefsUserId(context)
         val url = String.format("%s/api/AllAPI/GetMenus?UserId=%s", NetworkConstants.END_POINT2, userId)
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -198,7 +270,7 @@ object DataFetcher {
     ) {
         val url =
             String.format("%s/api/JobsOld/Directory/GetCategories", NetworkConstants.END_POINT2)
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -213,7 +285,7 @@ object DataFetcher {
             "%s/api/JobsOld/Directory/SearchBusinesses?SearchText=%s",
             NetworkConstants.END_POINT2, searchTerm ?: ""
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -229,7 +301,7 @@ object DataFetcher {
             NetworkConstants.END_POINT2,
             categoryId
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -243,7 +315,7 @@ object DataFetcher {
             "%s/api/Shopping/GetShoppingSubcategories",
             NetworkConstants.END_POINT2
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -263,7 +335,7 @@ object DataFetcher {
             pageIndex,
             pageSize
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -281,7 +353,7 @@ object DataFetcher {
             pageIndex,
             pageSize
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -298,7 +370,7 @@ object DataFetcher {
             shoppingId
 
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -310,7 +382,7 @@ object DataFetcher {
     ) {
         val url =
             String.format("%s/api/PublicUtility/GetSubCategories", NetworkConstants.END_POINT2)
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -334,7 +406,7 @@ object DataFetcher {
             pageSize,
             AppUtil.deNull(search),
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -357,26 +429,7 @@ object DataFetcher {
             pageIndex,
             pageSize
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
-    }
-
-    @JvmStatic
-    fun <T> getEvents(
-        context: Context?,
-        updateSuccessListener: Response.Listener<T>?,
-        repClass: Class<T>?,
-        errorListener: Response.ErrorListener?,
-        pageIndex: Int,
-        pageSize: Int
-    ) {
-        val url = String.format(
-            Locale.US,
-            "%s/api/Events/GetEvents?PageIndex=%d&PageSize=%d",
-            NetworkConstants.END_POINT2,
-            pageIndex,
-            pageSize
-        )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -392,7 +445,7 @@ object DataFetcher {
             NetworkConstants.END_POINT,
             userId
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -410,7 +463,7 @@ object DataFetcher {
             userId,
             categoryId
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -420,8 +473,9 @@ object DataFetcher {
         repClass: Type?,
         errorListener: Response.ErrorListener?
     ) {
-        val url = String.format("%s/Jobs/GetCategories", NetworkConstants.END_POINT2)
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        JobApiClient.enqueue(
+            JobApiClient.getApi().getCategories(), repClass, updateSuccessListener, errorListener
+        )
     }
 
     @JvmStatic
@@ -433,18 +487,17 @@ object DataFetcher {
         categoryId: String?,
         search: String?,
         pageIndex: Int,
-        pageSize: Int
+        pageSize: Int,
+        gender: Int
     ) {
-        val url = String.format(
-            Locale.US,
-            "%s/Jobs/GetJobs?CategoryId=%s&JobTitle=%s&PageIndex=%d&PageSize=%d",
-            NetworkConstants.END_POINT2,
-            categoryId,
-            AppUtil.deNull(search),
-            pageIndex,
-            pageSize
+        // Matches: GET /api/Jobs/GetJobs?CategoryId=&JobTitle=&PageIndex=&PageSize=
+        // Build the query instead of interpolating values so job titles containing spaces,
+        // ampersands, or other reserved characters are sent correctly.
+        JobApiClient.enqueue(
+            JobApiClient.getApi().getJobs(
+                categoryId.orEmpty(), search.orEmpty(), pageIndex, pageSize, gender
+            ), repClass, updateSuccessListener, errorListener
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -455,7 +508,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/Movies/GetMovies", NetworkConstants.END_POINT2)
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -467,7 +520,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/Events/AddEvent", NetworkConstants.END_POINT2)
-        HelperVolley.callApiWithBody(
+        NetworkGateway.callApiWithBody(
             context,
             url,
             null,
@@ -487,7 +540,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/AllAPI/AskmePost", NetworkConstants.END_POINT)
-        HelperVolley.callApiWithBody(
+        NetworkGateway.callApiWithBody(
             context,
             url,
             null,
@@ -507,7 +560,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/Directory/ReviewRating", NetworkConstants.END_POINT2)
-        HelperVolley.callApiWithBody(
+        NetworkGateway.callApiWithBody(
             context,
             url,
             null,
@@ -526,15 +579,9 @@ object DataFetcher {
         repClass: Type?,
         errorListener: Response.ErrorListener?
     ) {
-        val url = String.format("%s/Jobs/AddJob", NetworkConstants.END_POINT2)
-        HelperVolley.callApiWithBody(
-            context,
-            url,
-            null,
-            updateSuccessListener,
-            json,
-            repClass,
-            errorListener
+        val requestBody = json.orEmpty().toRequestBody("application/json; charset=utf-8".toMediaType())
+        JobApiClient.enqueue(
+            JobApiClient.getApi().addJob(requestBody), repClass, updateSuccessListener, errorListener
         )
     }
 
@@ -547,7 +594,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/JobsOld/Directory/AddBusiness", NetworkConstants.END_POINT2)
-        HelperVolley.callApiWithBody(
+        NetworkGateway.callApiWithBody(
             context,
             url,
             null,
@@ -566,7 +613,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/Offers/GetOffers", NetworkConstants.END_POINT2)
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -582,7 +629,7 @@ object DataFetcher {
             NetworkConstants.END_POINT,
             userId
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -598,7 +645,7 @@ object DataFetcher {
             NetworkConstants.END_POINT,
             userId
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -613,7 +660,7 @@ object DataFetcher {
             userId,
             vehicletype
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -633,7 +680,7 @@ object DataFetcher {
             vehicletype,
             cityName
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -650,7 +697,7 @@ object DataFetcher {
             "%s/api/UserProfile/UserCurrentLocation?UserId=%s&Latitude=%s&Longitude=%s",
             NetworkConstants.END_POINT2, userId, latitude, longitude
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -673,7 +720,7 @@ object DataFetcher {
             pageSize,
             pageIndex
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -685,7 +732,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/AllAPI/AskmeReplay", NetworkConstants.END_POINT)
-        HelperVolley.callApiWithBody(
+        NetworkGateway.callApiWithBody(
             context,
             url,
             null,
@@ -703,8 +750,9 @@ object DataFetcher {
         repClass: Class<T>?,
         errorListener: Response.ErrorListener?
     ) {
-        val url = String.format("%s/api/Master/GetJobTypes", NetworkConstants.END_POINT2)
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        JobApiClient.enqueue(
+            JobApiClient.getApi().getJobTypes(), repClass, updateSuccessListener, errorListener
+        )
     }
 
     @JvmStatic
@@ -714,8 +762,9 @@ object DataFetcher {
         repClass: Type?,
         errorListener: Response.ErrorListener?
     ) {
-        val url = String.format("%s/api/Master/GetJobQualifications", NetworkConstants.END_POINT2)
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        JobApiClient.enqueue(
+            JobApiClient.getApi().getJobQualifications(), repClass, updateSuccessListener, errorListener
+        )
     }
 
     @JvmStatic
@@ -725,8 +774,9 @@ object DataFetcher {
         repClass: Type?,
         errorListener: Response.ErrorListener?
     ) {
-        val url = String.format("%s/api/Master/GetJobExpereince", NetworkConstants.END_POINT2)
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        JobApiClient.enqueue(
+            JobApiClient.getApi().getJobExperiences(), repClass, updateSuccessListener, errorListener
+        )
     }
 
     @JvmStatic
@@ -736,8 +786,9 @@ object DataFetcher {
         repClass: Type?,
         errorListener: Response.ErrorListener?
     ) {
-        val url = String.format("%s/api/Master/GetJobSalaries", NetworkConstants.END_POINT2)
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        JobApiClient.enqueue(
+            JobApiClient.getApi().getJobSalaries(), repClass, updateSuccessListener, errorListener
+        )
     }
 
     fun <T> getJobProfile(
@@ -747,12 +798,9 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val userId = AppPrefs.getPrefsUserId(context)
-        val url = String.format(
-            "%s/api/Jobs/ViewJobProfile?ProfileId=%s",
-            NetworkConstants.END_POINT2,
-            userId
+        JobApiClient.enqueue(
+            JobApiClient.getApi().getJobProfile(userId), repClass, updateSuccessListener, errorListener
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -763,15 +811,9 @@ object DataFetcher {
         repClass: Type?,
         errorListener: Response.ErrorListener?
     ) {
-        val url = String.format("%s/api/Jobs/AddJobProfile", NetworkConstants.END_POINT2)
-        HelperVolley.callApiWithBody(
-            context,
-            url,
-            null,
-            updateSuccessListener,
-            json,
-            repClass,
-            errorListener
+        val requestBody = json.orEmpty().toRequestBody("application/json; charset=utf-8".toMediaType())
+        JobApiClient.enqueue(
+            JobApiClient.getApi().addJobProfile(requestBody), repClass, updateSuccessListener, errorListener
         )
     }
 
@@ -783,18 +825,19 @@ object DataFetcher {
         repClass: Type?,
         errorListener: Response.ErrorListener?
     ) {
-        val map: MutableMap<String, String> = HashMap()
-        map[NetworkConstants.ProfileId] = AppPrefs.getPrefsUserId(context)
-        val url = String.format("%s/api/Jobs/UploadJobProfileImage", NetworkConstants.END_POINT2)
-        HelperVolley.callApiWithMultipartBody(
-            context,
-            url,
-            null,
-            updateSuccessListener,
-            map,
-            dataPartMap,
-            repClass,
-            errorListener
+        val profileId = AppPrefs.getPrefsUserId(context).toRequestBody("text/plain".toMediaType())
+        val files = ArrayList<MultipartBody.Part>()
+        dataPartMap?.forEach { (name, dataPart) ->
+            if (!name.isNullOrEmpty() && dataPart != null && dataPart.content != null) {
+                val contentType = dataPart.type?.takeIf { it.isNotBlank() }
+                    ?: "application/octet-stream"
+                val body = dataPart.content.toRequestBody(contentType.toMediaType())
+                files.add(MultipartBody.Part.createFormData(name, dataPart.fileName, body))
+            }
+        }
+        JobApiClient.enqueue(
+            JobApiClient.getApi().uploadJobProfileImage(profileId, files),
+            repClass, updateSuccessListener, errorListener
         )
     }
 
@@ -809,7 +852,7 @@ object DataFetcher {
         val map: MutableMap<String, String> = HashMap()
         map[NetworkConstants.ProfileId] = AppPrefs.getPrefsUserId(context)
         val url = String.format("%s/api/Matrimony/UploadProfileImage", NetworkConstants.END_POINT2)
-        HelperVolley.callApiWithMultipartBody(
+        NetworkGateway.callApiWithMultipartBody(
             context,
             url,
             null,
@@ -832,7 +875,7 @@ object DataFetcher {
         val map: MutableMap<String, String> = HashMap()
         map[NetworkConstants.ProfileId] = AppPrefs.getPrefsUserId(context)
         val url = String.format("%s/api/Dating/UploadProfileImage", NetworkConstants.END_POINT2)
-        HelperVolley.callApiWithMultipartBody(
+        NetworkGateway.callApiWithMultipartBody(
             context,
             url,
             null,
@@ -856,7 +899,7 @@ object DataFetcher {
         val map: MutableMap<String, String> = HashMap()
         map[NetworkConstants.EventId] = eventId
         val url = String.format("%s/api/Events/UploadEventImage", NetworkConstants.END_POINT2)
-        HelperVolley.callApiWithMultipartBody(
+        NetworkGateway.callApiWithMultipartBody(
             context,
             url,
             null,
@@ -881,7 +924,7 @@ object DataFetcher {
             NetworkConstants.END_POINT2,
             userId
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -897,7 +940,18 @@ object DataFetcher {
             NetworkConstants.END_POINT2,
             userId
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+    }
+
+    @JvmStatic
+    fun <T> getUserProfile(
+        context: Context?,
+        updateSuccessListener: Response.Listener<T>?,
+        repClass: Class<T>?,
+        errorListener: Response.ErrorListener?
+    ) {
+        val url = registrationUrl("Users")
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -909,7 +963,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/UserProfile/SetAccessPin", NetworkConstants.END_POINT2)
-        HelperVolley.callApiWithBody(
+        NetworkGateway.callApiWithBody(
             context,
             url,
             null,
@@ -929,7 +983,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/UserProfile/VerifyAccessPin", NetworkConstants.END_POINT2)
-        HelperVolley.callApiWithBody(
+        NetworkGateway.callApiWithBody(
             context,
             url,
             null,
@@ -958,7 +1012,7 @@ object DataFetcher {
             pageIndex,
             pageSize
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -979,7 +1033,7 @@ object DataFetcher {
             pageIndex,
             pageSize
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -991,7 +1045,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/Matrimony/SetLikeDislike", NetworkConstants.END_POINT2)
-        HelperVolley.callApiWithBody(
+        NetworkGateway.callApiWithBody(
             context,
             url,
             null,
@@ -1011,7 +1065,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/Dating/SetLikeDislike", NetworkConstants.END_POINT2)
-        HelperVolley.callApiWithBody(
+        NetworkGateway.callApiWithBody(
             context,
             url,
             null,
@@ -1040,7 +1094,7 @@ object DataFetcher {
             pageIndex,
             pageSize
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -1061,7 +1115,7 @@ object DataFetcher {
             pageIndex,
             pageSize
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     fun <T> getMatrimonialMatchedChatProfiles(
@@ -1081,7 +1135,7 @@ object DataFetcher {
             pageIndex,
             pageSize
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     fun <T> getDatingMatchedChatProfiles(
@@ -1101,7 +1155,7 @@ object DataFetcher {
             pageIndex,
             pageSize
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -1122,7 +1176,7 @@ object DataFetcher {
             pageIndex,
             pageSize
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -1143,7 +1197,7 @@ object DataFetcher {
             pageIndex,
             pageSize
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -1154,7 +1208,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/Master/GetTransportCoolie", NetworkConstants.END_POINT2)
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -1165,7 +1219,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/Master/GetTransportTypes", NetworkConstants.END_POINT2)
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -1177,7 +1231,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/Transport/AddTransport", NetworkConstants.END_POINT2)
-        HelperVolley.callApiWithBody(
+        NetworkGateway.callApiWithBody(
             context,
             url,
             null,
@@ -1200,7 +1254,7 @@ object DataFetcher {
             "%s/api/Transport/MarkComplete?TransportId=%s&UserId=%s", NetworkConstants.END_POINT2,
             transportId, AppPrefs.getPrefsUserId(context)
         )
-        HelperVolley.callApiWithBody(
+        NetworkGateway.callApiWithBody(
             context,
             url,
             null,
@@ -1219,7 +1273,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/Referral/ShareContent", NetworkConstants.END_POINT2)
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -1230,7 +1284,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/Referral/GetMyWallet", NetworkConstants.END_POINT2)
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -1241,7 +1295,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/Referral/GetMyReferral", NetworkConstants.END_POINT2)
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -1253,7 +1307,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/UserProfile/LinkReferral", NetworkConstants.END_POINT2)
-        HelperVolley.callApiWithBody(
+        NetworkGateway.callApiWithBody(
             context,
             url,
             null,
@@ -1273,7 +1327,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/Referral/Withdrawal", NetworkConstants.END_POINT2)
-        HelperVolley.callApiWithBody(
+        NetworkGateway.callApiWithBody(
             context,
             url,
             null,
@@ -1285,16 +1339,16 @@ object DataFetcher {
     }
 
     @JvmStatic
-    fun <T> addStaffTrackLocation(
+    fun <T> addDataEntry(
         context: Context?,
         json: String?,
         updateSuccessListener: Response.Listener<T>?,
         repClass: Class<T>?,
         errorListener: Response.ErrorListener?
-    ) {
-        val url =
-            String.format("%s/api/BusinessLocation/InsertLocation", NetworkConstants.END_POINT2)
-        HelperVolley.callApiWithBody(
+    ): Boolean {
+        if (!isRegistrationApiConfigured()) return false
+        val url = registrationUrl("DataEntry/AddDataEntry")
+        NetworkGateway.callApiWithBodyNoRetry(
             context,
             url,
             null,
@@ -1303,6 +1357,21 @@ object DataFetcher {
             repClass,
             errorListener
         )
+        return true
+    }
+
+    @JvmStatic
+    fun <T> getUniqueDataEntries(
+        context: Context?,
+        userId: Int,
+        updateSuccessListener: Response.Listener<T>?,
+        repClass: Type?,
+        errorListener: Response.ErrorListener?
+    ): Boolean {
+        if (!isRegistrationApiConfigured()) return false
+        val url = registrationUrl("DataEntry/GetUniqueDataEntries?UserId=$userId&pageIndex=1&pageSize=10")
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        return true
     }
 
     @JvmStatic
@@ -1313,7 +1382,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/Needs/GetProviders", NetworkConstants.END_POINT2)
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -1336,7 +1405,7 @@ object DataFetcher {
             pageIndex,
             pageSize
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -1359,7 +1428,7 @@ object DataFetcher {
             pageIndex,
             pageSize
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -1374,7 +1443,7 @@ object DataFetcher {
             "%s/api/Needs/MarkComplete?NeedId=%s&UserId=%s", NetworkConstants.END_POINT2,
             needId, AppPrefs.getPrefsUserId(context)
         )
-        HelperVolley.callApiWithBody(
+        NetworkGateway.callApiWithBody(
             context,
             url,
             null,
@@ -1394,7 +1463,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/Needs/PostNeed", NetworkConstants.END_POINT2)
-        HelperVolley.callApiWithBody(
+        NetworkGateway.callApiWithBody(
             context,
             url,
             null,
@@ -1413,7 +1482,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/Classified/Categories", NetworkConstants.END_POINT2)
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -1429,7 +1498,7 @@ object DataFetcher {
             NetworkConstants.END_POINT2,
             categoryId
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -1441,7 +1510,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url = String.format("%s/api/Classified/AddClassifiedAds", NetworkConstants.END_POINT2)
-        HelperVolley.callApiWithBody(
+        NetworkGateway.callApiWithBody(
             context,
             url,
             null,
@@ -1462,7 +1531,7 @@ object DataFetcher {
     ) {
         val url =
             String.format("%s/api/Classified/UpdateClassifiedAds", NetworkConstants.END_POINT2)
-        HelperVolley.callApiWithBody(
+        NetworkGateway.callApiWithBody(
             context,
             url,
             null,
@@ -1488,7 +1557,7 @@ object DataFetcher {
             adId,
             userId
         )
-        HelperVolley.callApiWithBody(
+        NetworkGateway.callApiWithBody(
             context,
             url,
             null,
@@ -1511,7 +1580,7 @@ object DataFetcher {
         val map: MutableMap<String, String> = HashMap()
         map[NetworkConstants.ClassifiedAdId] = classifiedId
         val url = String.format("%s/api/Classified/UploadImage", NetworkConstants.END_POINT2)
-        HelperVolley.callApiWithMultipartBody(
+        NetworkGateway.callApiWithMultipartBody(
             context,
             url,
             null,
@@ -1543,7 +1612,7 @@ object DataFetcher {
             pageIndex,
             pageSize
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -1564,7 +1633,7 @@ object DataFetcher {
             pageIndex,
             pageSize
         )
-        HelperVolley.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
     @JvmStatic
@@ -1577,7 +1646,7 @@ object DataFetcher {
     ) {
         val url =
             String.format("%s/api/PushNotification/RegisterDevice", NetworkConstants.END_POINT2)
-        HelperVolley.callApiWithBody(
+        NetworkGateway.callApiWithBody(
             context,
             url,
             null,

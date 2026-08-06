@@ -41,6 +41,8 @@
 -keep class vedam.subkuch.network.models.** { *; }
 -keepclassmembers public class vedam.subkuch.network.models.** { *; }
 
+-keep class vedam.subkuch.update.** { *; }
+
 -keep class vedam.subkuch.ui.ask.models.** { *; }
 -keepclassmembers class vedam.subkuch.ui.ask.models.** { *; }
 
@@ -176,4 +178,3 @@
 -keep class com.bumptech.glide.load.data.ParcelFileDescriptorRewinder$InternalRewinder {
   *** rewind();
 }
-

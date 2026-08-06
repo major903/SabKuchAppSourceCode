@@ -2,7 +2,7 @@ package vedam.subkuch.locationProvider;
 
 import android.location.Location;
 
-import com.google.android.gms.common.api.Status;
+import com.google.android.gms.common.api.ResolvableApiException;
 
 /**
  * Created by nansari on 6/22/2016.
@@ -25,8 +25,8 @@ public interface LocationCallbacks extends AddressCallback {
     /**
      * Called when user's GPS is off.
      *
-     * @param status gives detail about gps status
+     * @param exception can launch the system dialog for enabling location settings
      */
-    void onGpsOff(Status status);
+    void onGpsOff(ResolvableApiException exception);
 
 }

@@ -25,13 +25,13 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkError;
-import com.android.volley.NetworkResponse;
-import com.android.volley.ParseError;
-import com.android.volley.Response;
-import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
+import vedam.subkuch.network.AuthFailureError;
+import vedam.subkuch.network.NetworkError;
+import vedam.subkuch.network.NetworkResponse;
+import vedam.subkuch.network.ParseError;
+import vedam.subkuch.network.Response;
+import vedam.subkuch.network.TimeoutError;
+import vedam.subkuch.network.ApiError;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -126,7 +126,7 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
 
     };
 
-    protected void onErrorReceived(VolleyError error) {
+    protected void onErrorReceived(ApiError error) {
 
         if (error instanceof NetworkError) {
             UiUtil.showToast(mContext, getString(R.string.connectionError));
@@ -143,7 +143,7 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
         UiUtil.cancelProgressDialog();
     }
 
-    protected void parseAndShowError(VolleyError error) {
+    protected void parseAndShowError(ApiError error) {
 
         NetworkResponse networkResponse = error.networkResponse;
         if (networkResponse != null && networkResponse.data != null) {

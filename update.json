@@ -1,0 +1,7 @@
+{
+  "versionCode": 69,
+  "versionName": "1.10",
+  "apkUrl": "https://github.com/forexveda/SabkuchApp/releases/download/v1.10/SabKuch-v1.10-release.apk",
+  "changelog": "Added direct GitHub APK updates for team testing.",
+  "mandatory": false
+}

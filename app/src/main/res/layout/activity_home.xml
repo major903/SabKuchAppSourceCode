@@ -17,13 +17,19 @@
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_view"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/navigation_drawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:layout_marginRight="80dp"
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header_home"
-            app:itemTextColor="@color/black"
+            app:itemBackground="@drawable/bg_drawer_navigation_item"
+            app:itemIconTint="@null"
+            app:itemIconSize="32dp"
+            app:itemIconPadding="16dp"
+            app:itemTextAppearance="@style/NavDrawerItemTextAppearance"
+            app:itemHorizontalPadding="@dimen/margin_24dp"
+            app:itemTextColor="@color/drawer_item_text_tint"
+            app:itemVerticalPadding="@dimen/margin_12dp"
             app:menu="@menu/activity_home_drawer">
 
             <LinearLayout
@@ -33,15 +39,19 @@
                 android:layout_gravity="bottom"
                 android:clickable="true"
                 android:orientation="vertical"
-                android:focusable="true">
+                android:focusable="true"
+                android:paddingLeft="@dimen/margin_24dp"
+                android:paddingTop="@dimen/margin_16dp"
+                android:paddingRight="@dimen/margin_24dp"
+                android:paddingBottom="@dimen/margin_24dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/privacy_policy"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_8" />
+                    android:textColor="@color/drawer_item_text"
+                    android:textSize="@dimen/text_size_14" />
             </LinearLayout>
         </com.google.android.material.navigation.NavigationView>
 

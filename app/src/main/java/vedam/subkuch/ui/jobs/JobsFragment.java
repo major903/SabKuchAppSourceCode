@@ -18,7 +18,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.Response;
+import vedam.subkuch.network.Response;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -30,6 +30,7 @@ import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.interfaces.OnListViewItemClickListener;
 import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.network.models.ShareResponse;
+import vedam.subkuch.network.models.Profile;
 import vedam.subkuch.ui.jobs.jobmela.JobMelaActivity;
 import vedam.subkuch.ui.jobs.models.Job;
 import vedam.subkuch.ui.jobs.models.JobCategory;
@@ -38,6 +39,7 @@ import vedam.subkuch.ui.jobs.models.Post;
 import vedam.subkuch.utils.ListItemClickAction;
 import vedam.subkuch.utils.ShareUtils;
 import vedam.subkuch.utils.UiUtil;
+import vedam.subkuch.utils.AppPrefs;
 
 public class JobsFragment extends BaseFragment implements OnListViewItemClickListener {
 
@@ -51,6 +53,7 @@ public class JobsFragment extends BaseFragment implements OnListViewItemClickLis
     private int pageSize = 20;
     private boolean hasMoreProjects = true;
     private String searchText;
+    private boolean genderLookupAttempted;
 
     public JobsFragment() {
         // Required empty public constructor
@@ -94,6 +97,7 @@ public class JobsFragment extends BaseFragment implements OnListViewItemClickLis
         fragmentJobsBinding.etSearch.setOnEditorActionListener((textView, actionId, keyEvent) -> {
             if (actionId == EditorInfo.IME_ACTION_GO) {
                 searchText = textView.getText().toString();
+                setDefaults();
                 getJobs();
                 return true;
             }
@@ -148,21 +152,52 @@ public class JobsFragment extends BaseFragment implements OnListViewItemClickLis
 
     private void getJobs() {
 
+        // Use the current profile API as the source of truth, including after an upgrade.
+        if (!AppPrefs.isUserGenderFromCurrentApi(mContext) && !genderLookupAttempted) {
+            genderLookupAttempted = true;
+            DataFetcher.getUserProfile(mContext, onProfileGenderSuccessListener, Profile.class, onProfileGenderErrorListener);
+            return;
+        }
+
         UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
-        DataFetcher.getJobs(mContext, onJobsSuccessListener, JobResponse.class, onErrorListener, categoryId, searchText, pageNo, pageSize);
+        DataFetcher.getJobs(mContext, onJobsSuccessListener, JobResponse.class, onErrorListener, categoryId, searchText, pageNo, pageSize, AppPrefs.getPrefsUserGender(mContext));
+    }
+
+    private final Response.Listener<Profile> onProfileGenderSuccessListener = profile -> {
+        int gender = 0;
+        if (profile != null) gender = getGenderCode(profile.getGender());
+        AppPrefs.getInstance(mContext).getSharedPreferences().edit()
+                .putInt(AppPrefs.PREFS_USER_GENDER, gender)
+                .putBoolean(AppPrefs.PREFS_USER_GENDER_CURRENT_API, true).apply();
+        getJobs();
+    };
+
+    private final Response.ErrorListener onProfileGenderErrorListener = error -> {
+        // Do not prevent the jobs screen from loading if the legacy profile request fails.
+        getJobs();
+    };
+
+    private int getGenderCode(String gender) {
+        if (gender == null) return 0;
+        if ("1".equals(gender) || "male".equalsIgnoreCase(gender)) return 1;
+        if ("2".equals(gender) || "female".equalsIgnoreCase(gender)) return 2;
+        return 0;
     }
 
     private Response.Listener<JobResponse> onJobsSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
         if (getActivity() != null)
-            if (response != null && response.getStatus().equals(Constants.TRUE)) {
+            if (response != null && Constants.TRUE.equals(response.getStatus())
+                    && response.getJobsResult() != null && response.getJobsResult().getJobs() != null) {
                 if (!response.getJobsResult().getJobs().isEmpty()) {
                     hasMoreProjects = response.getJobsResult().getJobs().size() >= pageSize;
                     loading = true;
-                    loadValues(response.getJobsResult().getJobs());
-                } else
+                    loadValues(filterJobsForCurrentUser(response.getJobsResult().getJobs()));
+                } else {
+                    hasMoreProjects = false;
                     UiUtil.showToast(mContext, getString(R.string.no_jobs_found));
+                }
             } else
                 UiUtil.showToast(mContext, getString(R.string.err_occurred));
     };
@@ -174,6 +209,24 @@ public class JobsFragment extends BaseFragment implements OnListViewItemClickLis
             jobsList.addAll(returnData);
             adapter.notifyDataSetChanged();
         }
+    }
+
+    private ArrayList<Job> filterJobsForCurrentUser(ArrayList<Job> jobs) {
+        int userGender = AppPrefs.getPrefsUserGender(mContext);
+        if (userGender == 0) return jobs;
+        ArrayList<Job> matchingJobs = new ArrayList<>();
+        for (Job job : jobs) {
+            if (job.getPosts() == null) continue;
+            ArrayList<Post> matchingPosts = new ArrayList<>();
+            for (Post post : job.getPosts()) {
+                if (post.getGender() == 0 || post.getGender() == userGender) matchingPosts.add(post);
+            }
+            if (!matchingPosts.isEmpty()) {
+                job.setPosts(matchingPosts);
+                matchingJobs.add(job);
+            }
+        }
+        return matchingJobs;
     }
 
     @Override

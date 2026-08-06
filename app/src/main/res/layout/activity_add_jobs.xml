@@ -170,18 +170,73 @@
                     android:layout_marginLeft="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_16dp"
                     android:layout_marginRight="@dimen/margin_16dp"
-                    android:text="@string/how_to_contact" />
+                    android:text="@string/contact_numbers" />
 
                 <EditText
-                    android:id="@+id/et_contact"
+                    android:id="@+id/et_mobile1"
                     style="@style/EditTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_4dp"
                     android:layout_marginRight="@dimen/margin_16dp"
-                    android:hint="@string/how_to_apply"
-                    android:inputType="textMultiLine"
+                    android:hint="@string/primary_contact_number"
+                    android:inputType="phone"
+                    android:padding="@dimen/margin_8dp" />
+
+                <EditText
+                    android:id="@+id/et_mobile2"
+                    style="@style/EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_4dp"
+                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:hint="@string/secondary_contact_number"
+                    android:inputType="phone"
+                    android:padding="@dimen/margin_8dp" />
+
+                <TextView
+                    style="@style/TextViewBlackHeading2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_16dp"
+                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:text="@string/contact_methods" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:id="@+id/cb_call"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="@string/call" />
+
+                    <CheckBox
+                        android:id="@+id/cb_whatsapp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_16dp"
+                        android:text="@string/whatsapp" />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/et_contact_email"
+                    style="@style/EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_4dp"
+                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:hint="@string/send_cv_to"
+                    android:inputType="textEmailAddress"
                     android:padding="@dimen/margin_8dp" />
 
                 <LinearLayout

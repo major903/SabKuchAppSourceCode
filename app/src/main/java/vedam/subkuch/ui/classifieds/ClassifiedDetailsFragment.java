@@ -15,7 +15,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.Response;
+import vedam.subkuch.network.Response;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;

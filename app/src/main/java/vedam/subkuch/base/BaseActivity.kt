@@ -4,21 +4,30 @@ import android.Manifest
 import android.content.Intent
 import android.content.IntentSender.SendIntentException
 import android.content.pm.PackageManager
+import android.content.res.Configuration
+import android.graphics.Color
 import android.location.Address
 import android.location.Location
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
 import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.AnimRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
+import androidx.core.graphics.Insets
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
-import com.android.volley.*
-import com.google.android.gms.common.api.Status
+import vedam.subkuch.network.*
+import com.google.android.gms.common.api.ResolvableApiException
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
 import vedam.subkuch.R
@@ -48,12 +57,12 @@ abstract class BaseActivity : AppCompatActivity(), ScreenChangeListener,
     private var shouldForce = false
 
     @JvmField
-    protected var onErrorListener = Response.ErrorListener { error: VolleyError ->
+    protected var onErrorListener = Response.ErrorListener { error: ApiError ->
         LogUtils.LOGD("ERROR", error.message)
         onErrorReceived(error)
     }
 
-    protected fun onErrorReceived(error: VolleyError) {
+    protected fun onErrorReceived(error: ApiError) {
         if (error is NetworkError) {
             UiUtil.showToast(this, this.getString(R.string.connectionError))
         } else if (error is TimeoutError) {
@@ -70,7 +79,7 @@ abstract class BaseActivity : AppCompatActivity(), ScreenChangeListener,
         UiUtil.cancelProgressDialog()
     }
 
-    protected fun parseAndShowError(error: VolleyError) {
+    protected fun parseAndShowError(error: ApiError) {
         val networkResponse = error.networkResponse
         if (networkResponse != null && networkResponse.data != null) {
             val response = String(networkResponse.data)
@@ -132,7 +141,62 @@ abstract class BaseActivity : AppCompatActivity(), ScreenChangeListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        configureNavigationBarAppearance()
         //        AnalyticsManager.setupGoogleAnalyticsForActivity(this, this.getClass().getName());
+    }
+
+    private fun configureNavigationBarAppearance() {
+        val isLightMode =
+            resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK !=
+                Configuration.UI_MODE_NIGHT_YES
+        // Keep the app surface light; only the system navigation area follows night mode.
+        window.decorView.setBackgroundColor(Color.WHITE)
+        @Suppress("DEPRECATION")
+        window.navigationBarColor = if (isLightMode) Color.WHITE else Color.BLACK
+        WindowCompat.getInsetsController(window, window.decorView)
+            .isAppearanceLightNavigationBars = isLightMode
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            window.isNavigationBarContrastEnforced = true
+        }
+    }
+
+    override fun setContentView(layoutResID: Int) {
+        super.setContentView(layoutResID)
+        applyNavigationBarInsets()
+    }
+
+    override fun setContentView(view: View?) {
+        super.setContentView(view)
+        applyNavigationBarInsets()
+    }
+
+    override fun setContentView(view: View?, params: ViewGroup.LayoutParams?) {
+        super.setContentView(view, params)
+        applyNavigationBarInsets()
+    }
+
+    private fun applyNavigationBarInsets() {
+        val contentView = findViewById<View>(android.R.id.content) ?: return
+        val screenRoot = (contentView as? ViewGroup)?.getChildAt(0)
+        if (screenRoot?.fitsSystemWindows == true) return
+
+        val initialPaddingLeft = contentView.paddingLeft
+        val initialPaddingTop = contentView.paddingTop
+        val initialPaddingRight = contentView.paddingRight
+        val initialPaddingBottom = contentView.paddingBottom
+
+        ViewCompat.setOnApplyWindowInsetsListener(contentView) { view, windowInsets ->
+            val navigationBars: Insets =
+                windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            view.setPadding(
+                initialPaddingLeft + navigationBars.left,
+                initialPaddingTop,
+                initialPaddingRight + navigationBars.right,
+                initialPaddingBottom + navigationBars.bottom
+            )
+            windowInsets
+        }
+        ViewCompat.requestApplyInsets(contentView)
     }
 
     private fun setToolbar(): Boolean {
@@ -250,11 +314,15 @@ abstract class BaseActivity : AppCompatActivity(), ScreenChangeListener,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                onBackPressed()
+                navigateBack()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    fun navigateBack() {
+        onBackPressedDispatcher.onBackPressed()
     }
 
     /**
@@ -293,26 +361,6 @@ abstract class BaseActivity : AppCompatActivity(), ScreenChangeListener,
     }
 
     override fun onNoLocationPermission() {
-        if (!ActivityCompat.shouldShowRequestPermissionRationale(
-                this@BaseActivity,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-        ) {
-            UiUtil.showDialog(
-                this@BaseActivity, getString(R.string.allow_location_permission),
-                { dialog, which ->
-                    ActivityCompat.requestPermissions(
-                        this@BaseActivity,
-                        arrayOf(
-                            Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_COARSE_LOCATION
-                        ),
-                        Constants.PERMISSION_REQUEST_READ_LOCATION
-                    )
-                }, false
-            )
-            return
-        }
         ActivityCompat.requestPermissions(
             this,
             arrayOf(
@@ -328,11 +376,11 @@ abstract class BaseActivity : AppCompatActivity(), ScreenChangeListener,
     }
 
     override fun onAddressChanged(address: Address) {}
-    override fun onGpsOff(status: Status) {
+    override fun onGpsOff(exception: ResolvableApiException) {
         try {
             // Show the dialog by calling startResolutionForResult(),
             // and check the result in onActivityResult().
-            status.startResolutionForResult(
+            exception.startResolutionForResult(
                 this,
                 Constants.REQUEST_CHECK_SETTINGS
             )

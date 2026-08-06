@@ -9,13 +9,12 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 
-import com.android.volley.Response;
+import vedam.subkuch.network.Response;
 
 import java.util.ArrayList;
 
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseListFragment;
-import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.ui.jobs.models.JobCategory;
 import vedam.subkuch.ui.jobs.models.JobCategoryResponse;
@@ -60,11 +59,13 @@ public class JobCategoryFragment extends BaseListFragment {
     private Response.Listener<JobCategoryResponse> onJobCategorySuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (getActivity() != null)
-            if (response != null && response.getStatus().equals(Constants.TRUE)) {
-                loadValues(response.getJobCategoriesResult().getJobCategories());
-            } else
+        if (getActivity() != null) {
+            if (response != null && response.getReturnData() != null) {
+                loadValues(response.getReturnData());
+            } else {
                 UiUtil.showToast(context, getString(R.string.no_data));
+            }
+        }
     };
 
     private void loadValues(ArrayList<JobCategory> response) {

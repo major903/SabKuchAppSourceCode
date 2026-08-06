@@ -11,7 +11,7 @@ import com.adevinta.leku.LATITUDE
 import com.adevinta.leku.LOCATION_ADDRESS
 import com.adevinta.leku.LONGITUDE
 import com.adevinta.leku.LocationPickerActivity
-import com.android.volley.Response
+import vedam.subkuch.network.Response
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import vedam.subkuch.R

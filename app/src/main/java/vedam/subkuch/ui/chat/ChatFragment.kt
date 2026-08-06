@@ -10,8 +10,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.*
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import vedam.subkuch.R
 import vedam.subkuch.base.BaseFragment
 import vedam.subkuch.databinding.FragmentChatBinding
@@ -33,7 +31,7 @@ class ChatFragment : BaseFragment() {
     var chatAdapter: ChatAdapter? = null
     private var senderName: String? = null
     private var chatToId: String? = null
-    private val firestore: FirebaseFirestore by lazy { Firebase.firestore }
+    private val firestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     private var snapshotListener: ListenerRegistration? = null
     private val viewModel: ChatViewModel by activityViewModels()
 

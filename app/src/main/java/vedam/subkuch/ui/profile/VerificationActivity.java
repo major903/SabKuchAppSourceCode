@@ -9,7 +9,6 @@ import static vedam.subkuch.utils.AppPrefs.PREFS_USER_NAME;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -19,7 +18,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
-import com.android.volley.Response;
+import vedam.subkuch.network.Response;
 import com.google.gson.Gson;
 
 import vedam.subkuch.R;
@@ -30,10 +29,12 @@ import vedam.subkuch.network.WebServices;
 import vedam.subkuch.network.models.OtpResponse;
 import vedam.subkuch.network.models.Profile;
 import vedam.subkuch.network.models.ProfileResponse;
+import vedam.subkuch.network.models.RegistrationRequest;
 import vedam.subkuch.network.models.VerifyOtpResponse;
 import vedam.subkuch.ui.home.HomeActivity;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.AppUtil;
+import vedam.subkuch.utils.DeviceIdProvider;
 import vedam.subkuch.utils.UiUtil;
 
 
@@ -41,6 +42,7 @@ public class VerificationActivity extends BaseActivity {
 
     // UI references.
     private EditText etOtp;
+    private View submitButton;
     private Profile profile;
     private int noOfAttempts;
     private VerificationIdlingResource idlingResource;
@@ -50,6 +52,9 @@ public class VerificationActivity extends BaseActivity {
         setContentView(R.layout.activity_verification);
 
         setTitle(R.string.verification);
+        setToolbarBackButton();
+        findViewById(R.id.tv_toolbar_title).setVisibility(View.VISIBLE);
+        ((android.widget.TextView) findViewById(R.id.tv_toolbar_title)).setText(R.string.verification);
 
         initUI();
         bindCallbacks();
@@ -60,13 +65,14 @@ public class VerificationActivity extends BaseActivity {
     private void initUI() {
 
         etOtp = findViewById(R.id.etOtp);
+        submitButton = findViewById(R.id.btSubmit);
 
         profile = getIntent().getParcelableExtra(Constants.EXTRA_DATA);
     }
 
     private void bindCallbacks() {
 
-        findViewById(R.id.btSubmit).setOnClickListener(v -> {
+        submitButton.setOnClickListener(v -> {
                     if (noOfAttempts <= 5)
                         attemptVerification();
                     else
@@ -135,12 +141,36 @@ public class VerificationActivity extends BaseActivity {
 
     private void registerUser() {
 
+        if (!DataFetcher.isRegistrationApiConfigured()) {
+            UiUtil.showToast(this, getString(R.string.registration_api_not_configured));
+            return;
+        }
         setIdleState(false, null);
         UiUtil.showProgressDialog(this, getString(R.string.please_wait));
-        final String deviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(),
-                Settings.Secure.ANDROID_ID);
-        profile.setDeviceId(deviceId);
-        DataFetcher.registerUser(this, new Gson().toJson(profile), onRegisterUserSuccessListener, ProfileResponse.class, onErrorListener);
+        final String deviceId = DeviceIdProvider.getDeviceId(this);
+        RegistrationRequest request = new RegistrationRequest(
+                profile.getFirstName(),
+                profile.getLastName(),
+                profile.getGender(),
+                profile.getDOB(),
+                profile.getMobile(),
+                profile.getEMail(),
+                parseRequiredId(profile.getOccupationid()),
+                profile.getOccupationOther(),
+                deviceId,
+                profile.getLatitude(),
+                profile.getLongitude(),
+                parseRequiredId(profile.getCityId()),
+                parseRequiredId(profile.getCountryid()));
+        DataFetcher.registerUser(this, new Gson().toJson(request), onRegisterUserSuccessListener, ProfileResponse.class, onErrorListener);
+    }
+
+    private int parseRequiredId(String value) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException ignored) {
+            return 0;
+        }
     }
 
     private void setIdleState(boolean isIdleNow, OtpResponse response) {
@@ -192,6 +222,7 @@ public class VerificationActivity extends BaseActivity {
         String bearer = "Bearer " + receivedProfile.getAuthToken();
         editor.putString(PREFS_TOKEN, bearer);
         editor.putString(PREFS_USER_NAME, AppUtil.getFullName(receivedProfile.getFirstName(), receivedProfile.getLastName()));
+        editor.putInt(AppPrefs.PREFS_USER_GENDER, getGenderCode(receivedProfile.getGender()));
         WebServices.getInstance().setBearer(bearer);
         boolean isReferralDone = receivedProfile.getIsReferralDone();
         editor.putString(PREFS_IS_REFERRAL_DONE, String.valueOf(isReferralDone));
@@ -204,6 +235,13 @@ public class VerificationActivity extends BaseActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         UiUtil.showToast(VerificationActivity.this, getString(R.string.user_registered_successfully));
+    }
+
+    private int getGenderCode(String gender) {
+        if (gender == null) return 0;
+        if ("1".equals(gender) || "male".equalsIgnoreCase(gender)) return 1;
+        if ("2".equals(gender) || "female".equalsIgnoreCase(gender)) return 2;
+        return 0;
     }
 
 //    private Response.ErrorListener onErrorListener = error -> {

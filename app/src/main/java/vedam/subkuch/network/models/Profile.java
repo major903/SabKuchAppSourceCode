@@ -3,6 +3,8 @@ package vedam.subkuch.network.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Profile implements Parcelable {
 
     private String OwnCar;
@@ -23,10 +25,12 @@ public class Profile implements Parcelable {
 
     private String AccessPin;
 
+    @SerializedName(value = "CityId", alternate = {"DistrictId"})
     private String CityId;
 
     private String DOB;
 
+    @SerializedName(value = "Occupationid", alternate = {"OccupationId"})
     private String Occupationid;
 
     private String Matrimonial;
@@ -89,6 +93,7 @@ public class Profile implements Parcelable {
 
     private String age;
 
+    @SerializedName(value = "ProfileId", alternate = {"UserId"})
     private String ProfileId;
     
     private String AuthToken;
