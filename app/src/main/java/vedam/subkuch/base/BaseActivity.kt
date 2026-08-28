@@ -2,8 +2,7 @@ package vedam.subkuch.base
 
 import android.Manifest
 import android.content.Intent
-import android.content.IntentSender.SendIntentException
-import android.content.pm.PackageManager
+import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.graphics.Color
 import android.location.Address
@@ -18,10 +17,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.AnimRes
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat
 import androidx.core.graphics.Insets
+import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -49,12 +50,32 @@ import vedam.subkuch.utils.UiUtil
 
 /**
  * Created by msharm6 on 6/12/2016.
+ * updated by Nitesh Yadav 8/8/2026
  */
 abstract class BaseActivity : AppCompatActivity(), ScreenChangeListener,
     OnFragmentInteractionListener, LocationCallbacks {
     open var mToolbar: Toolbar? = null
     private var isAddressRequested = false
     private var shouldForce = false
+
+    private val locationPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
+            val granted = result[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
+                result[Manifest.permission.ACCESS_COARSE_LOCATION] == true
+            if (granted) {
+                requestLocationProvider()
+            } else {
+                if (shouldForce) {
+                    startAppSettings()
+                    finish()
+                }
+            }
+        }
+
+    private val locationSettingsLauncher =
+        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+            if (result.resultCode == RESULT_OK) requestLocationProvider() else finish()
+        }
 
     @JvmField
     protected var onErrorListener = Response.ErrorListener { error: ApiError ->
@@ -104,7 +125,7 @@ abstract class BaseActivity : AppCompatActivity(), ScreenChangeListener,
     }
 
     override fun logout() {
-        AppPrefs.getInstance(this).sharedPreferences.edit().clear().apply()
+        AppPrefs.getInstance(this).sharedPreferences.edit { clear() }
         val flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(Intent(this, RegisterUserActivity::class.java).addFlags(flags))
         UiUtil.showToast(this, getString(R.string.err_unauthorized))
@@ -141,6 +162,7 @@ abstract class BaseActivity : AppCompatActivity(), ScreenChangeListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         configureNavigationBarAppearance()
         //        AnalyticsManager.setupGoogleAnalyticsForActivity(this, this.getClass().getName());
     }
@@ -293,7 +315,7 @@ abstract class BaseActivity : AppCompatActivity(), ScreenChangeListener,
         flags: Int
     ) {
         val intent = Intent(applicationContext, targetScreen.targetScreenClass)
-        if (bundle != null) intent.putExtras(bundle)
+        intent.putExtras(bundle)
         if (flags != 0) intent.addFlags(flags)
         startActivity(intent)
         if (finishCurrentActivity) finish()
@@ -308,7 +330,8 @@ abstract class BaseActivity : AppCompatActivity(), ScreenChangeListener,
     }
 
     override fun handleActivityForResultIntent(intent: Intent, requestCode: Int) {
-        startActivityForResult(intent, requestCode)
+        // No in-project caller consumes a result for this legacy callback contract.
+        startActivity(intent)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -361,13 +384,11 @@ abstract class BaseActivity : AppCompatActivity(), ScreenChangeListener,
     }
 
     override fun onNoLocationPermission() {
-        ActivityCompat.requestPermissions(
-            this,
+        locationPermissionLauncher.launch(
             arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION
-            ),
-            Constants.PERMISSION_REQUEST_READ_LOCATION
+            )
         )
     }
 
@@ -377,48 +398,9 @@ abstract class BaseActivity : AppCompatActivity(), ScreenChangeListener,
 
     override fun onAddressChanged(address: Address) {}
     override fun onGpsOff(exception: ResolvableApiException) {
-        try {
-            // Show the dialog by calling startResolutionForResult(),
-            // and check the result in onActivityResult().
-            exception.startResolutionForResult(
-                this,
-                Constants.REQUEST_CHECK_SETTINGS
-            )
-        } catch (e: SendIntentException) {
-            FirebaseCrashlytics.getInstance().recordException(e)
-            // Ignore the error.
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            Constants.REQUEST_CHECK_SETTINGS -> if (resultCode == RESULT_OK) {
-                requestLocationProvider()
-            } else finish()
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>, grantResults: IntArray
-    ) {
-        if (requestCode == Constants.PERMISSION_REQUEST_READ_LOCATION) { // If request is cancelled, the result arrays are empty.
-            if (grantResults.size > 0
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED
-            ) {
-                requestLocationProvider()
-            } else {
-                if (shouldForce) {
-                    startAppSettings()
-                    finish()
-                }
-                // permission denied, boo! Disable the
-                // functionality that depends on this permission.
-            }
-        } else {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        }
+        locationSettingsLauncher.launch(
+            IntentSenderRequest.Builder(exception.resolution).build()
+        )
     }
 
     private fun startAppSettings() {

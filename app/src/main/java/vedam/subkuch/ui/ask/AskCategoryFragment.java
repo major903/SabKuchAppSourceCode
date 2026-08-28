@@ -39,13 +39,19 @@ public class AskCategoryFragment extends BaseListFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_directory, container, false);
     }
 
     public void onViewCreated(@NonNull View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+        installMenu(R.menu.add, item -> {
+            if (item.getItemId() == R.id.action_add) {
+                startActivity(new Intent(context, AddQuestionActivity.class));
+                return true;
+            }
+            return false;
+        });
         getCategories();
     }
 
@@ -87,20 +93,4 @@ public class AskCategoryFragment extends BaseListFragment {
         startActivity(intent);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
-        inflater.inflate(R.menu.add, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_add:
-                startActivity(new Intent(context, AddQuestionActivity.class));
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

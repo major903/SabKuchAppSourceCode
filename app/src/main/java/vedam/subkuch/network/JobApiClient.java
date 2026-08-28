@@ -25,6 +25,7 @@ public final class JobApiClient {
 
     private static final long TIMEOUT_SECONDS = 30L;
     private static final Gson GSON = new Gson();
+    private static Retrofit retrofit;
     private static JobApi api;
 
     private JobApiClient() {
@@ -53,14 +54,23 @@ public final class JobApiClient {
                     })
                     .addInterceptor(logging)
                     .build();
-            api = new Retrofit.Builder()
+            retrofit = new Retrofit.Builder()
                     .baseUrl(NetworkConstants.JOB_END_POINT + "/")
                     .client(client)
                     .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-                    .create(JobApi.class);
+                    .build();
+            api = retrofit.create(JobApi.class);
         }
         return api;
+    }
+
+    /**
+     * Exposes the shared authenticated client to coroutine-based Jobs screens while the
+     * remaining Jobs and Job Mela callers continue to use the callback bridge.
+     */
+    public static synchronized Retrofit getRetrofit() {
+        getApi();
+        return retrofit;
     }
 
     public static <T> void enqueue(

@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
+import androidx.activity.result.contract.ActivityResultContracts
 import com.adevinta.leku.LATITUDE
 import com.adevinta.leku.LOCATION_ADDRESS
 import com.adevinta.leku.LONGITUDE
@@ -34,6 +35,17 @@ import java.util.*
 
 class AddTransportActivity : BaseActivity() {
     private var activityAddTransportBinding: ActivityAddTransportBinding? = null
+
+    private val locationPickerLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                activityAddTransportBinding?.tvLocation?.text = result.data?.getStringExtra(LOCATION_ADDRESS)
+                latLng = LatLng(
+                    result.data?.getDoubleExtra(LATITUDE, 0.0) ?: 0.0,
+                    result.data?.getDoubleExtra(LONGITUDE, 0.0) ?: 0.0
+                )
+            }
+        }
     private val requestStack = Stack<Any>()
     private var labourRequirements = ArrayList<LabourRequirement>()
     private var vehicleTypes = ArrayList<VehicleType>()
@@ -86,7 +98,7 @@ class AddTransportActivity : BaseActivity() {
                 .withVoiceSearchHidden()
                 .build(this)
 
-            startActivityForResult(locationPickerIntent, Constants.REQUEST_PLACE_PICKER)
+            locationPickerLauncher.launch(locationPickerIntent)
         }
     }
 
@@ -218,12 +230,4 @@ class AddTransportActivity : BaseActivity() {
         return errorMessage
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == Constants.REQUEST_PLACE_PICKER) {
-            if (resultCode == Activity.RESULT_OK) {
-                activityAddTransportBinding?.tvLocation?.text = data?.getStringExtra(LOCATION_ADDRESS)
-                latLng = LatLng(data?.getDoubleExtra(LATITUDE, 0.0) ?: 0.0, data?.getDoubleExtra(LONGITUDE, 0.0) ?: 0.0)
-            }
-        } else super.onActivityResult(requestCode, resultCode, data)
-    }
 }

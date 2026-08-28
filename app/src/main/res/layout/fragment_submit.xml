@@ -50,6 +50,7 @@
                     android:layout_marginTop="@dimen/margin_4dp"
                     android:hint="@string/e_g_graduate"
                     android:inputType="textMultiLine"
+                    android:importantForAutofill="no"
                     android:padding="@dimen/margin_8dp" />
 
                 <!--                <FrameLayout-->
@@ -104,6 +105,7 @@
                     android:hint="@string/optional_freshers"
                     android:inputType="textMultiLine"
                     android:lines="3"
+                    android:importantForAutofill="no"
                     android:padding="@dimen/margin_8dp" />
 
                 <TextView
@@ -168,7 +170,7 @@
                     android:text="@string/upload_your_profile_picture" />
 
 
-                <com.makeramen.roundedimageview.RoundedImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/iv_picture"
                     android:layout_width="@dimen/margin_100dp"
                     android:layout_height="@dimen/margin_100dp"
@@ -176,10 +178,9 @@
                     android:background="@color/transparent"
                     android:scaleType="fitXY"
                     android:src="@drawable/placeholder_small"
-                    app:riv_border_color="@color/colorPrimary"
-                    app:riv_border_width="@dimen/margin_2dp"
-                    app:riv_corner_radius="@dimen/margin_8dp"
-                    app:riv_oval="false" />
+                    app:strokeColor="@color/colorPrimary"
+                    app:strokeWidth="@dimen/margin_2dp"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.RoundedImage" />
 
 
             </LinearLayout>

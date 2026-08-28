@@ -2,13 +2,11 @@ package vedam.subkuch.utils;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
-import android.media.ExifInterface;
+import androidx.exifinterface.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
-import android.provider.MediaStore;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -18,10 +16,12 @@ import java.io.IOException;
 import vedam.subkuch.helpers.Constants;
 
 public class FilesFunctions {
-    public static File createImageFile() {
+    public static File createImageFile(Context context) {
         String imageFileName = Constants.APP_NAME + "_" + System.currentTimeMillis();
-        File storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
+        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        if (storageDir == null) {
+            return null;
+        }
         File image = null;
         try {
             image = File.createTempFile(imageFileName, ".jpg", storageDir);
@@ -30,18 +30,17 @@ public class FilesFunctions {
         }
         return image;
     }
-    public static File createFileFromBitMap(Bitmap bitmap) {
+    public static File createFileFromBitMap(Context context, Bitmap bitmap) {
         String videoFileName = Constants.APP_NAME + "-" + System.currentTimeMillis() + ".jpg";
-        File myDirectory = new File(Environment.getExternalStorageDirectory(), "SubKuch");
-        if (!myDirectory.exists()) {
-            myDirectory.mkdir();
+        File picturesDirectory = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        if (picturesDirectory == null) {
+            return null;
+        }
+        File myDirectory = new File(picturesDirectory, "SubKuch");
+        if (!myDirectory.exists() && !myDirectory.mkdirs()) {
+            return null;
         }
         File file = new File(myDirectory, videoFileName);
-        try {
-            file.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         //Convert bitmap to byte array
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -49,12 +48,9 @@ public class FilesFunctions {
         byte[] bitmapData = bos.toByteArray();
 
         //write the bytes in file
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(file);
+        try (FileOutputStream fos = new FileOutputStream(file)) {
             fos.write(bitmapData);
             fos.flush();
-            fos.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,13 +58,9 @@ public class FilesFunctions {
     }
 
 
-    public static String getPathFromData(Context context, Intent data) {
-        Uri selectedImageUri = data.getData();
-        String[] filePath = new String[]{MediaStore.Images.Media.DATA};
-        Cursor c = context.getContentResolver().query(selectedImageUri, filePath, null, null, null);
-        c.moveToFirst();
-        int columnIndex = c.getColumnIndex(filePath[0]);
-        return c.getString(columnIndex);
+    public static String getUriStringFromData(Intent data) {
+        Uri selectedImageUri = data == null ? null : data.getData();
+        return selectedImageUri == null ? null : selectedImageUri.toString();
     }
 
     public static Bitmap changeImageOrientation(String photoPath, Bitmap bitmap) {
@@ -77,6 +69,9 @@ public class FilesFunctions {
             ei = new ExifInterface(photoPath);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        if (ei == null) {
+            return bitmap;
         }
         int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
                 ExifInterface.ORIENTATION_UNDEFINED);

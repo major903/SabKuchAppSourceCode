@@ -10,21 +10,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.databinding.DataBindingUtil
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.lifecycleScope
 import com.adevinta.leku.LATITUDE
 import com.adevinta.leku.LOCATION_ADDRESS
 import com.adevinta.leku.LONGITUDE
 import com.adevinta.leku.LocationPickerActivity
-import vedam.subkuch.network.Response
-import com.google.android.gms.location.places.Place
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
+import kotlinx.coroutines.launch
 import vedam.subkuch.R
 import vedam.subkuch.base.BaseActivity
 import vedam.subkuch.databinding.ActivityAddJobsBinding
 import vedam.subkuch.helpers.Constants
-import vedam.subkuch.network.DataFetcher.addJobs
-import vedam.subkuch.network.DataFetcher.getCities
-import vedam.subkuch.network.DataFetcher.getJobsCategory
 import vedam.subkuch.ui.jobs.models.*
 import vedam.subkuch.utils.AppUtil
 import vedam.subkuch.utils.UiUtil
@@ -32,8 +30,20 @@ import java.util.*
 
 class AddJobsActivity : BaseActivity() {
     private var activityAddJobsBinding: ActivityAddJobsBinding? = null
+
+    private val locationPickerLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                activityAddJobsBinding!!.tvLocation.text = result.data?.getStringExtra(LOCATION_ADDRESS)
+                latLng = LatLng(
+                    result.data?.getDoubleExtra(LATITUDE, 0.0) ?: 0.0,
+                    result.data?.getDoubleExtra(LONGITUDE, 0.0) ?: 0.0
+                )
+            }
+        }
     private var jobCategoryId: String? = null
     private val alJobs = ArrayList<View>()
+    private val repository = JobsRepository()
 
     private var latLng: LatLng? = null
     private var cityId: String? = null
@@ -51,19 +61,17 @@ class AddJobsActivity : BaseActivity() {
 
     private fun getJobCategory() {
         UiUtil.showProgressDialog(this, getString(R.string.please_wait))
-        getJobsCategory(
-            this,
-            onJobCategorySuccessListener,
-            JobCategoryResponse::class.java,
-            onErrorListener
-        )
-    }
-
-    private val onJobCategorySuccessListener = Response.Listener { response: JobCategoryResponse? ->
-        UiUtil.cancelProgressDialog()
-        if (response != null && response.returnData != null) {
-            setJobCategories(ArrayList(response.returnData))
-        } else UiUtil.showToast(this, getString(R.string.err_occurred))
+        lifecycleScope.launch {
+            val result = repository.getCategories()
+            UiUtil.cancelProgressDialog()
+            when (result) {
+                is JobsResult.Success -> setJobCategories(ArrayList(result.value))
+                is JobsResult.Error -> UiUtil.showToast(
+                    this@AddJobsActivity,
+                    getString(R.string.err_occurred)
+                )
+            }
+        }
     }
 
     private fun setJobCategories(jobCategories: ArrayList<JobCategory>) {
@@ -94,15 +102,24 @@ class AddJobsActivity : BaseActivity() {
 
     private fun getCities() {
         UiUtil.showProgressDialog(this, getString(R.string.loading))
-        getCities(this, onCitiesSuccessListener, CitiesResponse::class.java, onErrorListener)
-    }
+        lifecycleScope.launch {
+            val result = repository.getCities()
+            UiUtil.cancelProgressDialog()
+            when (result) {
+                is JobsResult.Success -> {
+                    val response = result.value
+                    if (response.returnMessage == Constants.SUCCESS) {
+                        setCities(response.returnData)
+                    } else {
+                        UiUtil.showToast(this@AddJobsActivity, getString(R.string.err_occurred))
+                    }
+                }
 
-    private val onCitiesSuccessListener = Response.Listener { response: CitiesResponse? ->
-        UiUtil.cancelProgressDialog()
-        if (response != null && response.returnMessage == Constants.SUCCESS) {
-            setCities(response.returnData)
-        } else {
-            UiUtil.showToast(this@AddJobsActivity, getString(R.string.err_occurred))
+                is JobsResult.Error -> UiUtil.showToast(
+                    this@AddJobsActivity,
+                    getString(R.string.err_occurred)
+                )
+            }
         }
     }
 
@@ -175,7 +192,7 @@ class AddJobsActivity : BaseActivity() {
                 .withVoiceSearchHidden()
                 .build(this)
 
-            startActivityForResult(locationPickerIntent, Constants.REQUEST_PLACE_PICKER)
+            locationPickerLauncher.launch(locationPickerIntent)
         }
     }
 
@@ -227,22 +244,25 @@ class AddJobsActivity : BaseActivity() {
             alPosts.add(post)
         }
         jobRequest.jobs = alPosts
-        addJobs(
-            this,
-            Gson().toJson(jobRequest),
-            onAddJobSuccessListener,
-            AddResponse::class.java,
-            onErrorListener
-        )
-    }
+        lifecycleScope.launch {
+            val result = repository.addJob(Gson().toJson(jobRequest))
+            UiUtil.cancelProgressDialog()
+            when (result) {
+                is JobsResult.Success -> {
+                    val response = result.value
+                    if (response.isStatus) {
+                        UiUtil.showToast(this@AddJobsActivity, AppUtil.deNull(response.message))
+                        refreshData()
+                        //            finish();
+                    } else UiUtil.showToast(this@AddJobsActivity, getString(R.string.err_occurred))
+                }
 
-    private val onAddJobSuccessListener = Response.Listener { response: AddResponse? ->
-        UiUtil.cancelProgressDialog()
-        if (response != null && response.isStatus) {
-            UiUtil.showToast(this, AppUtil.deNull(response.message))
-            refreshData()
-            //            finish();
-        } else UiUtil.showToast(this, getString(R.string.err_occurred))
+                is JobsResult.Error -> UiUtil.showToast(
+                    this@AddJobsActivity,
+                    getString(R.string.err_occurred)
+                )
+            }
+        }
     }
 
     private fun refreshData() {
@@ -303,16 +323,4 @@ class AddJobsActivity : BaseActivity() {
         return summary.joinToString(". ")
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == Constants.REQUEST_PLACE_PICKER) {
-            if (resultCode == Activity.RESULT_OK) {
-                activityAddJobsBinding!!.tvLocation?.text = data?.getStringExtra(LOCATION_ADDRESS)
-                latLng = LatLng(
-                    data?.getDoubleExtra(LATITUDE, 0.0) ?: 0.0, data?.getDoubleExtra(
-                        LONGITUDE, 0.0
-                    ) ?: 0.0
-                )
-            }
-        } else super.onActivityResult(requestCode, resultCode, data)
-    }
 }

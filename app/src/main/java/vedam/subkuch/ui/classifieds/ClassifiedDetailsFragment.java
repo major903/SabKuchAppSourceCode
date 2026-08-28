@@ -56,7 +56,6 @@ public class ClassifiedDetailsFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         if (getArguments() != null) {
             subCategoryId = getArguments().getString(Constants.EXTRA_SUB_CATEGORY_ID);
             setTitle(getArguments().getString(Constants.EXTRA_SUB_CATEGORY_NAME));
@@ -74,6 +73,17 @@ public class ClassifiedDetailsFragment extends BaseFragment {
 
     public void onViewCreated(@NonNull View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+        installMenu(R.menu.classifed_details, item -> {
+            if (item.getItemId() == R.id.action_add) {
+                startActivity(new Intent(mContext, AddClassifiedsActivity.class));
+                return true;
+            }
+            if (item.getItemId() == R.id.action_edit) {
+                addFragmentWithAnimation(R.id.content_frame, MyClassifiedFragment.newInstance(), null, true);
+                return true;
+            }
+            return false;
+        });
 
         initUI();
         getClassifieds();
@@ -117,30 +127,10 @@ public class ClassifiedDetailsFragment extends BaseFragment {
 
         if (response != null && !response.isEmpty()) {
             pageNo++;
+            int previousSize = classifieds.size();
             classifieds.addAll(response);
-            adapter.notifyDataSetChanged();
+            adapter.notifyItemRangeInserted(previousSize, response.size());
         }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
-        inflater.inflate(R.menu.classifed_details, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_add:
-                startActivity(new Intent(mContext, AddClassifiedsActivity.class));
-                break;
-            case R.id.action_edit:
-                addFragmentWithAnimation(R.id.content_frame, MyClassifiedFragment.newInstance(), null, true);
-                break;
-
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     public class OnScrollListener extends RecyclerView.OnScrollListener {

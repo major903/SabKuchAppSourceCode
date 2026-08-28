@@ -42,13 +42,19 @@ public class CategoryFragment extends BaseListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_directory, container, false);
     }
 
     public void onViewCreated(@NonNull View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+        installMenu(R.menu.add, item -> {
+            if (item.getItemId() == R.id.action_add) {
+                startActivity(new Intent(getActivity(), AddClassifiedsActivity.class));
+                return true;
+            }
+            return false;
+        });
         getCategories();
     }
 
@@ -75,23 +81,6 @@ public class CategoryFragment extends BaseListFragment {
         ArrayAdapter<ClassifiedCategory> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1,
                 android.R.id.text1, categories);
         setListAdapter(adapter);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.add, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == R.id.action_add) {
-            startActivity(new Intent(getActivity(), AddClassifiedsActivity.class));
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

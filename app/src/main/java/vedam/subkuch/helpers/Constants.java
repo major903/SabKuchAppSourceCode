@@ -2,6 +2,8 @@ package vedam.subkuch.helpers;
 
 import android.Manifest;
 
+import vedam.subkuch.BuildConfig;
+
 /**
  * Created by nansari on 10/4/17.
  */
@@ -13,12 +15,14 @@ public class Constants {
     Constants() {
     }
 
-    public static final String MAPS_API_KEY = "AIzaSyBbJyPcubEVE_QvTqRps5vLq7329EcU8b0";
+    public static final String MAPS_API_KEY = BuildConfig.MAPS_API_KEY;
     public static final String EXTRA_IMAGE_URL = "EXTRA_IMAGE_URL";
     public static final String EXTRA_URL = "EXTRA_URL";
     public static final String EXTRA_RECEIVER = "EXTRA_RECEIVER";
     public static final String EXTRA_DIRECTORY_DETAIL = "EXTRA_DIRECTORY_DETAIL";
     public static final String EXTRA_COUNTRY_CODE = "EXTRA_COUNTRY_CODE";
+    public static final String EXTRA_STATE_ID = "EXTRA_STATE_ID";
+    public static final String EXTRA_LANGUAGE_ID = "EXTRA_LANGUAGE_ID";
     public static final String EXTRA_CODE = "EXTRA_CODE";
     public static final String EXTRA_PIN = "EXTRA_PIN";
     public static final String EXTRA_ADDRESS = "EXTRA_ADDRESS";
@@ -29,6 +33,8 @@ public class Constants {
     public static final String EXTRA_CATEGORY_NAME = "EXTRA_CATEGORY_NAME";
     public static final String EXTRA_SUB_CATEGORY_NAME = "EXTRA_SUB_CATEGORY_NAME";
     public static final String EXTRA_SUB_CATEGORY_ID = "EXTRA_SUB_CATEGORY_ID";
+    public static final String EXTRA_ESTATE_TYPE_ID = "EXTRA_ESTATE_TYPE_ID";
+    public static final String EXTRA_ESTATE_TYPE_NAME = "EXTRA_ESTATE_TYPE_NAME";
     public static final String EXTRA_SHOPPING_ID = "EXTRA_SHOPPING_ID";
     public static final String EXTRA_ID = "EXTRA_ID";
     public static final String EXTRA_IMAGE_ITEMS = "EXTRA_IMAGE_ITEMS";
@@ -42,13 +48,10 @@ public class Constants {
     public static final String EXTRA_IS_IMAGE_URLS = "EXTRA_IS_IMAGE_URLS";
     public static final String EXTRA_CHAT_TO_ID = "EXTRA_CHAT_TO_ID";
     public static final String EXTRA_IS_MY_BOOKINGS = "EXTRA_IS_MY_BOOKINGS";
-    public static final int PERMISSIONS_REQUEST_STORAGE = 2;
     public static final int PERMISSIONS_REQUEST_CAMERA = 3;
 
     public static final String[] CAMERA_GALLERY_GROUP_PERMISSION = new String[]{
-            Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    public static final String[] READ_WRITE_EXTERNAL_GROUP_PERMISSION = new String[]{
-            Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            Manifest.permission.CAMERA};
 
     //onActivityResult Request constants
     public static final int REQUEST_CHECK_SETTINGS = 2;
@@ -107,19 +110,24 @@ public class Constants {
 
     public static final String Directory = "Directory";
     public static final String Jobs = "Jobs";
-    public static final String Movies = "Movies Timings";
+    public static final String Movies = "Movies";
+    public static final String Movies_Timings = "Movies Timings";
     public static final String Phone_book = "Phonebook";
     public static final String Dating = "Dating";
     public static final String Matrimonial = "Matrimonial";
     public static final String Goods_Transport = "Transport";
     public static final String Ask_Me = "Ask Me";
+    public static final String Ask = "Ask";
+    public static final String RealEstate = "RealEstate";
     public static final String Public_Transport_Timings = "Public Transport Timings";
     public static final String Offers = "Offers";
     public static final String Needs = "Needs";
     public static final String Public_Utility = "Public Utility";
     public static final String Classifieds = "Classifieds";
     public static final String Gift_A_Life = "Gift A Life";
+    public static final String Learn = "Learn";
     public static final String Events = "Events";
+    public static final String Window_Shopping = "Window Shopping";
 
     public static final String Title = "Title";
     public static final String Date = "Date";
@@ -140,6 +148,7 @@ public class Constants {
     public static final String discription = "discription";
 
     public static final String PRIVACY_POLICY_URL = "https://sabkuchworld.com/privacypolicy.html";
+    public static final String DELETE_ACCOUNT_URL = "https://sabkuchworld.com/delete-account.html";
 
     public static final int ENTER_PIN_CODE = 0;
     public static final int SET_PIN_CODE = 1;

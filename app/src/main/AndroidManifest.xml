@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="vedam.subkuch">
+    >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -9,11 +9,9 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- External storage for caching. -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Permission to vibrate -->
+    <!-- Images are selected through the system picker and camera output is stored in app cache. -->
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -27,20 +25,26 @@
     <application
         android:name=".SabkuchApplication"
         android:allowBackup="false"
+        android:fullBackupContent="@xml/backup_rules"
+        android:dataExtractionRules="@xml/data_extraction_rules"
         android:icon="@mipmap/icon"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true"
+        android:usesCleartextTraffic="false"
         tools:replace="android:allowBackup">
+
+        <meta-data
+            android:name="firebase_messaging_installation_id_enabled"
+            android:value="true" />
 
         <activity
             android:name="com.adevinta.leku.LocationPickerActivity"
             android:label="@string/leku_title_activity_location_picker"
             android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
             android:exported="false"
             android:windowSoftInputMode="adjustPan">
@@ -58,86 +62,72 @@
 
         <activity
             android:name=".ui.shopping.ShoppingActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".uicomponent.BaseWebActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.movies.DatingProfileActivity"
-            android:label="@string/title_activity_dating_profile"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.matrimonial.DatingProfileActivity"
-            android:label="@string/title_activity_dating_profile"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.matrimonial.DatingActivity"
-            android:label="@string/title_activity_dating"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.stafftrack.StaffTrackActivity"
-            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" />
+        <activity android:name=".ui.contribute.ContributeActivity" />
+        <activity android:name=".ui.contribute.NriDataEntryActivity" />
+        <activity android:name=".ui.contribute.RealEstateLeadActivity" />
+        <activity android:name=".ui.realestate.RealEstateActivity" />
         <activity
             android:name=".ui.wallet.WalletActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.profile.ReferralActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.transport.AddTransportActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.transport.TransportActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.needs.AddNeedActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.needs.NeedsActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.matrimonial.viewProfile.ViewProfileActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.public_utility.AddPublicUtilityActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.public_utility.PublicUtilityActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.chat.ChatActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.matrimonial.ShowProfilesActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.pin.PinActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.inbox.InboxActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.profile.EditProfileActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.jobs.jobmela.JobMelaActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:screenOrientation="portrait">
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter>
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -145,42 +135,53 @@
 
                 <data
                     android:host="sabkuch.sabkuchworld.com"
-                    android:scheme="http" />
+                    android:scheme="https" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ui.profile.RegisterUserActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.home.HomeActivity"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.profile.VerificationActivity"
-            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.directory.DirectoryActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.directory.SubDirectoryActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.directory.DirectoryDetailsActivity"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.events.EventActivity"
-            android:screenOrientation="portrait" />
+            />
+        <activity
+            android:name=".ui.events.BunnyVideoPlayerActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.events.LearnCourseDetailsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.events.LearnWebsiteActivity"
+            android:exported="false"
+            android:hardwareAccelerated="true"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.phonebook.PhoneBookActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.movies.MoviesActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.events.AddEventActivity"
-            android:screenOrientation="portrait" />
+            />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -192,18 +193,14 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <receiver
-            android:name=".update.AppUpdateDownloadReceiver"
-            android:exported="false" />
-
         <activity
             android:name=".ui.offers.OffersActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.jobs.JobCategoryActivity"
             android:launchMode="singleTop"
             android:exported="false"
-            android:screenOrientation="portrait">
+            >
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -214,21 +211,21 @@
         </activity>
         <activity
             android:name=".ui.ask.AddQuestionActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.directory.AddReviewActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.jobs.AddJobsActivity"
-            android:screenOrientation="portrait" />
+            />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBbJyPcubEVE_QvTqRps5vLq7329EcU8b0" />
+            android:value="${MAPS_API_KEY}" />
 
         <activity
             android:name=".ui.directory.AddDirectoryActivity"
-            android:screenOrientation="portrait" />
+            />
 
         <service
             android:name=".locationProvider.FetchAddressIntentService"
@@ -236,37 +233,42 @@
 
         <activity
             android:name=".ui.ask.AskCategoryActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.vehicle.VehicleActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.vehicle.DestinationCityActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.vehicle.VehicleTimingActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.ask.ConversationActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.cropImage.CropImageActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.wallet.WithdrawalActivity"
-            android:screenOrientation="portrait" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            />
+        <activity
+            android:name=".ui.wallet.TransferActivity"
+            android:exported="false"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
             android:name=".ui.classifieds.ClassifiedsActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.classifieds.ClassifiedDetailsActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.classifieds.AddClassifiedsActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".ui.classifieds.EditClassifiedActivity"
-            android:screenOrientation="portrait" /> <!-- [START gcm_listener] -->
+            /> <!-- [START gcm_listener] -->
         <service
             android:name=".MyFirebaseMessagingService"
             android:exported="false">
@@ -274,12 +276,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service
-            android:name=".RegistrationIntentService"
-            android:exported="false"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-
-
     </application>
 
 </manifest>

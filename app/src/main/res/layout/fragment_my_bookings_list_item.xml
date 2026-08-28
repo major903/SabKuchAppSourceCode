@@ -50,9 +50,9 @@
         android:layout_marginTop="@dimen/margin_8dp"
         android:minWidth="0dp"
         android:minHeight="0dp"
-        android:paddingLeft="@dimen/margin_16dp"
+        android:paddingStart="@dimen/margin_16dp"
         android:paddingTop="@dimen/margin_4dp"
-        android:paddingRight="@dimen/margin_16dp"
+        android:paddingEnd="@dimen/margin_16dp"
         android:paddingBottom="@dimen/margin_4dp"
         android:text="@string/mark_as_complete" />
 </LinearLayout>

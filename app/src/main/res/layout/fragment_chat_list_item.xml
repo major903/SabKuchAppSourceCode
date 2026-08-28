@@ -11,9 +11,9 @@
         android:id="@+id/ll_container"
         android:layout_width="280dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="4dp"
         android:orientation="vertical">
 
@@ -24,29 +24,30 @@
             android:background="@drawable/white_layer"
             android:gravity="start"
             android:orientation="vertical"
-            android:paddingLeft="8dp"
+            android:paddingStart="8dp"
             android:paddingTop="4dp"
-            android:paddingRight="8dp"
+            android:paddingEnd="8dp"
             android:paddingBottom="4dp">
 
             <TextView
                 android:id="@+id/message_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="4dp"
+                android:paddingStart="4dp"
                 android:paddingTop="4dp"
-                android:paddingRight="4dp"
+                android:paddingEnd="4dp"
                 tools:text="Nothing here"
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
 
             <LinearLayout
+                tools:ignore="UseCompoundDrawables"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:paddingLeft="4dp"
+                android:paddingStart="4dp"
                 android:paddingTop="4dp"
-                android:paddingRight="4dp">
+                android:paddingEnd="4dp">
 
                 <TextView
                     android:id="@+id/message_text_date"
@@ -63,12 +64,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginBottom="-2dp"
                     android:adjustViewBounds="true"
                     android:maxHeight="13dp"
                     android:src="@drawable/ic_done_black_18dp"
+                    android:contentDescription="@string/image_content_description"
                     android:visibility="visible" />
             </LinearLayout>
 

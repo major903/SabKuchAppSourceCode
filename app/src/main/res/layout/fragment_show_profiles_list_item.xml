@@ -12,12 +12,12 @@
     app:cardPreventCornerOverlap="false"
     app:cardUseCompatPadding="true">
 
-    <com.makeramen.roundedimageview.RoundedImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_profile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        app:riv_corner_radius="8dp"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.RoundedImage"
         tools:src="@drawable/giftalife" />
 
 </androidx.cardview.widget.CardView>

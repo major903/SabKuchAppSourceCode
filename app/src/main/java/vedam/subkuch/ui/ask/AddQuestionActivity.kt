@@ -185,7 +185,7 @@ class AddQuestionActivity : BaseActivity() {
         var errorMessage = 0
         if (TextUtils.isEmpty(categoryId)) errorMessage =
             R.string.select_a_category else if (TextUtils.isEmpty(
-                etQuestion!!.text.toString().trim { it <= ' ' })
+                etQuestion!!.text.toString().trim())
         ) errorMessage = R.string.enter_question
         return errorMessage
     }

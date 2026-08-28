@@ -5,7 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.*
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
 import com.adevinta.leku.LATITUDE
 import com.adevinta.leku.LOCATION_ADDRESS
 import com.adevinta.leku.LONGITUDE
@@ -35,9 +39,16 @@ class AddEventFragment : BaseAddImagesFragment(), DatePickerDialog.OnDateSetList
     private var fragmentAddEventBinding: FragmentAddEventBinding? = null
     private var latLng: LatLng? = null
     private var successMessage: String? = null
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+    private val locationPickerLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            fragmentAddEventBinding!!.tvLocation.text = result.data?.getStringExtra(LOCATION_ADDRESS)
+            latLng = LatLng(
+                result.data?.getDoubleExtra(LATITUDE, 0.0) ?: 0.0,
+                result.data?.getDoubleExtra(LONGITUDE, 0.0) ?: 0.0
+            )
+        }
     }
 
     override fun onCreateView(
@@ -52,6 +63,20 @@ class AddEventFragment : BaseAddImagesFragment(), DatePickerDialog.OnDateSetList
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menu.clear()
+                menuInflater.inflate(R.menu.done, menu)
+            }
+
+            override fun onMenuItemSelected(item: MenuItem): Boolean {
+                if (item.itemId != R.id.action_done) return false
+                val errorMessage = validateErrorMessage()
+                if (errorMessage == 0) createEvent()
+                else UiUtil.showDialog(mContext, getString(errorMessage), true)
+                return true
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
         setImagesLayout(view, 1)
         bind()
     }
@@ -70,7 +95,7 @@ class AddEventFragment : BaseAddImagesFragment(), DatePickerDialog.OnDateSetList
                 .withVoiceSearchHidden()
                 .build(requireContext())
 
-            startActivityForResult(locationPickerIntent, Constants.REQUEST_PLACE_PICKER)
+            locationPickerLauncher.launch(locationPickerIntent)
         }
         fragmentAddEventBinding!!.etDate.setOnClickListener { v: View? -> showDatePickerDialog() }
     }
@@ -90,22 +115,6 @@ class AddEventFragment : BaseAddImagesFragment(), DatePickerDialog.OnDateSetList
             .defaultDate(mYear, mMonth, mDay)
             .build()
             .show()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        menu.clear()
-        inflater.inflate(R.menu.done, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_done) {
-            val errorMessage = validateErrorMessage()
-            if (errorMessage == 0) {
-                createEvent()
-            } else UiUtil.showDialog(mContext, getString(errorMessage), true)
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun createEvent() {
@@ -174,7 +183,7 @@ class AddEventFragment : BaseAddImagesFragment(), DatePickerDialog.OnDateSetList
         UiUtil.cancelProgressDialog()
         if (activity != null) if (response != null && Constants.SUCCESS == response.returnMessage) {
             UiUtil.showToast(mContext, successMessage!!)
-            activity!!.finish()
+            requireActivity().finish()
         } else UiUtil.showToast(mContext, getString(R.string.err_occurred))
     }
 
@@ -196,18 +205,6 @@ class AddEventFragment : BaseAddImagesFragment(), DatePickerDialog.OnDateSetList
         ) errorMessage = R.string.enter_event_venue else if (latLng == null) errorMessage =
             R.string.add_a_location
         return errorMessage
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == Constants.REQUEST_PLACE_PICKER) {
-            if (resultCode == Activity.RESULT_OK) {
-                fragmentAddEventBinding!!.tvLocation.text = data?.getStringExtra(LOCATION_ADDRESS)
-                latLng = com.google.android.gms.maps.model.LatLng(
-                    data?.getDoubleExtra(LATITUDE, 0.0) ?: 0.0,
-                    data?.getDoubleExtra(LONGITUDE, 0.0) ?: 0.0
-                )
-            }
-        } else super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onDateSet(view: DatePicker, year: Int, monthOfYear: Int, dayOfMonth: Int) {

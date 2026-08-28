@@ -14,6 +14,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
+import androidx.activity.result.contract.ActivityResultContracts
 import com.adevinta.leku.LATITUDE
 import com.adevinta.leku.LOCATION_ADDRESS
 import com.adevinta.leku.LONGITUDE
@@ -43,6 +44,17 @@ class AddNeedActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
     private var binding: ActivityAddNeedBinding? = null
     private var latLng: LatLng? = null
     private var walletResponse: WalletResponse? = null
+
+    private val locationPickerLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                binding?.tvLocation?.text = result.data?.getStringExtra(LOCATION_ADDRESS)
+                latLng = LatLng(
+                    result.data?.getDoubleExtra(LATITUDE, 0.0) ?: 0.0,
+                    result.data?.getDoubleExtra(LONGITUDE, 0.0) ?: 0.0
+                )
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,7 +143,7 @@ class AddNeedActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
                 .withVoiceSearchHidden()
                 .build(this)
 
-            startActivityForResult(locationPickerIntent, Constants.REQUEST_PLACE_PICKER)
+            locationPickerLauncher.launch(locationPickerIntent)
         }
     }
 
@@ -204,18 +216,6 @@ class AddNeedActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
             )
         ) errorMessage = R.string.enter_work_details
         return errorMessage
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == Constants.REQUEST_PLACE_PICKER) {
-            if (resultCode == Activity.RESULT_OK) {
-                binding?.tvLocation?.text = data?.getStringExtra(LOCATION_ADDRESS)
-                latLng = LatLng(
-                    data?.getDoubleExtra(LATITUDE, 0.0) ?: 0.0,
-                    data?.getDoubleExtra(LONGITUDE, 0.0) ?: 0.0
-                )
-            }
-        } else super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {

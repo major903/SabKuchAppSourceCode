@@ -43,16 +43,16 @@
                     style="@style/TextViewBlackHeading2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:text="@string/category" />
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_4dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:background="@drawable/edit_text_border">
 
                     <Spinner
@@ -67,9 +67,9 @@
                     style="@style/TextViewBlackHeading2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_16dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:text="@string/work_location" />
 
                 <EditText
@@ -77,21 +77,22 @@
                     style="@style/EditTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_4dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:hint="@string/work_location_hint"
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
+                    android:importantForAutofill="no"
                     android:padding="@dimen/margin_8dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_16dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:orientation="horizontal">
 
                     <Button
@@ -99,15 +100,15 @@
                         style="@style/ButtonBlue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="@dimen/margin_16dp"
-                        android:paddingRight="@dimen/margin_16dp"
+                        android:paddingStart="@dimen/margin_16dp"
+                        android:paddingEnd="@dimen/margin_16dp"
                         android:text="@string/show_location" />
 
                     <TextView
                         android:id="@+id/tv_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_16dp"
+                        android:layout_marginStart="@dimen/margin_16dp"
                         android:ellipsize="end"
                         android:maxLines="1"
                         tools:text="@string/err" />
@@ -117,9 +118,9 @@
                     style="@style/TextViewBlackHeading2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_16dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:text="@string/work_details" />
 
                 <EditText
@@ -127,13 +128,14 @@
                     style="@style/EditTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_4dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:hint="@string/work_details"
                     android:imeOptions="actionDone"
                     android:inputType="text"
                     android:maxLines="1"
+                    android:importantForAutofill="no"
                     android:padding="@dimen/margin_8dp" />
 
                 <Button

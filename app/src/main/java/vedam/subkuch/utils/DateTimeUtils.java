@@ -137,7 +137,7 @@ public class DateTimeUtils {
     }
 
     public static int getDaysBetweenDates(String endDateStr, String startDateStr) {
-        SimpleDateFormat formatter = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
+        SimpleDateFormat formatter = new SimpleDateFormat(DEFAULT_DATE_FORMAT, Locale.US);
         try {
             Date startDate = formatter.parse(startDateStr);
             Date endDate = formatter.parse(endDateStr);

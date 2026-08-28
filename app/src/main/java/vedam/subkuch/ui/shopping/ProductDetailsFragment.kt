@@ -1,6 +1,5 @@
 package vedam.subkuch.ui.shopping
 
-import android.Manifest
 import android.graphics.Color
 import android.os.Bundle
 import android.text.style.ForegroundColorSpan
@@ -12,12 +11,6 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import vedam.subkuch.network.Response
 import com.google.gson.reflect.TypeToken
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionDeniedResponse
-import com.karumi.dexter.listener.PermissionGrantedResponse
-import com.karumi.dexter.listener.PermissionRequest
-import com.karumi.dexter.listener.single.PermissionListener
 import vedam.subkuch.R
 import vedam.subkuch.base.BaseFragment
 import vedam.subkuch.databinding.FragmentProductDetailsBinding
@@ -66,14 +59,11 @@ class ProductDetailsFragment : BaseFragment() {
 
     private fun initUI() {
         binding?.ivShare?.setOnClickListener {
-            requestPermissions()
+            shareProduct()
         }
     }
 
-    private fun requestPermissions() {
-        Dexter.withContext(mContext).withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .withListener(object : PermissionListener {
-                    override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
+    private fun shareProduct() {
                         val text = "${mTitle}\n\nSharing this item with you. If you wish to do window shopping in your city install Sabkuch App from the link given below. \n" +
                                 "\n" +
                                 "https://play.google.com/store/apps/details?id=vedam.subkuch&referrer=KK47"
@@ -103,26 +93,6 @@ class ProductDetailsFragment : BaseFragment() {
                             }
 
                         })
-                    }
-
-                    override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
-                        p0?.let {
-                            if (it.isPermanentlyDenied) {
-                                activity?.let { act ->
-                                    ShareUtils.showSettingsDialog(act)
-                                }
-                            }
-                        }
-                    }
-
-                    override fun onPermissionRationaleShouldBeShown(
-                            p0: PermissionRequest?,
-                            p1: PermissionToken?
-                    ) {
-                        p1?.continuePermissionRequest()
-                    }
-
-                }).check()
     }
 
     private val onSubcategoriesSuccessListener: Response.Listener<BaseShoppingResponse<Product>> = Response.Listener { response ->

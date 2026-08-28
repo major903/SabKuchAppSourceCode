@@ -1,28 +1,21 @@
 package vedam.subkuch.network;
 
-import vedam.subkuch.network.Response;
-import vedam.subkuch.network.ApiError;
-import com.google.gson.Gson;
+import android.content.Context;
 
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import vedam.subkuch.BuildConfig;
+import vedam.subkuch.utils.AppPrefs;
 
 /** Provides the Retrofit client for APIs hosted at REGISTRATION_API_BASE_URL. */
 public final class RegistrationApiClient {
 
     private static final long TIMEOUT_SECONDS = 30L;
-    private static final Gson GSON = new Gson();
+    private static Retrofit retrofit;
     private static RegistrationApi api;
     private static String configuredBaseUrl;
 
@@ -33,9 +26,17 @@ public final class RegistrationApiClient {
         return !BuildConfig.REGISTRATION_API_BASE_URL.trim().isEmpty();
     }
 
-    public static synchronized RegistrationApi getApi() {
+    /**
+     * Builds a registration API client that authenticates every request using the current
+     * signed-in user's bearer token. The token is read for each request so a newly signed-in
+     * user does not require the Retrofit client to be rebuilt.
+     */
+    public static synchronized RegistrationApi getApi(Context context) {
         if (!isConfigured()) {
             throw new IllegalStateException("Registration API base URL is not configured");
+        }
+        if (context == null) {
+            throw new IllegalArgumentException("A context is required for registration API requests");
         }
 
         String baseUrl = BuildConfig.REGISTRATION_API_BASE_URL.trim();
@@ -47,65 +48,39 @@ public final class RegistrationApiClient {
             logging.setLevel(BuildConfig.DEBUG
                     ? HttpLoggingInterceptor.Level.BASIC
                     : HttpLoggingInterceptor.Level.NONE);
+            Context appContext = context.getApplicationContext();
             OkHttpClient client = new OkHttpClient.Builder()
                     .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
                     .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
                     .writeTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                    .addInterceptor(chain -> {
+                        String token = AppPrefs.getPrefsToken(appContext);
+                        if (token == null || token.trim().isEmpty()) {
+                            return chain.proceed(chain.request());
+                        }
+                        return chain.proceed(chain.request().newBuilder()
+                                .header("Authorization", token)
+                                .build());
+                    })
                     .addInterceptor(logging)
                     .build();
-            api = new Retrofit.Builder()
+            retrofit = new Retrofit.Builder()
                     .baseUrl(baseUrl)
                     .client(client)
                     .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-                    .create(RegistrationApi.class);
+                    .build();
+            api = retrofit.create(RegistrationApi.class);
             configuredBaseUrl = baseUrl;
         }
         return api;
     }
 
-    /** Compatibility bridge for older callers while their UI callbacks are migrated. */
-    public static <T> void enqueue(
-            Call<ResponseBody> call,
-            Type responseType,
-            Response.Listener<T> listener,
-            Response.ErrorListener errorListener
-    ) {
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-                if (!response.isSuccessful() || response.body() == null) {
-                    String errorBody = "";
-                    try {
-                        errorBody = response.errorBody() == null ? "" : response.errorBody().string();
-                    } catch (IOException ignored) {
-                    }
-                    notifyError(errorListener, new ApiError(new NetworkResponse(
-                            response.code(), errorBody.getBytes())));
-                    return;
-                }
-                try {
-                    T value = GSON.fromJson(response.body().string(), responseType);
-                    if (listener != null) listener.onResponse(value);
-                } catch (Exception exception) {
-                    notifyError(errorListener, new ApiError(exception));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable throwable) {
-                if (throwable instanceof SocketTimeoutException) {
-                    notifyError(errorListener, new TimeoutError(throwable));
-                } else if (throwable instanceof IOException) {
-                    notifyError(errorListener, new NetworkError(throwable));
-                } else {
-                    notifyError(errorListener, new ApiError(throwable));
-                }
-            }
-        });
-    }
-
-    private static void notifyError(Response.ErrorListener listener, ApiError error) {
-        if (listener != null) listener.onErrorResponse(error);
+    /**
+     * Exposes the configured Retrofit instance for new coroutine-based feature APIs while
+     * existing callback callers continue to use {@link #getApi(Context)} unchanged.
+     */
+    public static synchronized Retrofit getRetrofit(Context context) {
+        getApi(context);
+        return retrofit;
     }
 }

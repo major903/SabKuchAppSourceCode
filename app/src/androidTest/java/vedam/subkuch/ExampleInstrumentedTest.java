@@ -61,7 +61,7 @@ public class ExampleInstrumentedTest {
     private Activity currentActivity;
 
     /**
-     * Use {@link ActivityScenario to launch and get access to the activity.
+     * Use {@link ActivityScenario} to launch and get access to the activity.
      * {@link ActivityScenario#onActivity(ActivityScenario.ActivityAction)} provides a thread-safe
      * mechanism to access the activity.
      */

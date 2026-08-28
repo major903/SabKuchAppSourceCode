@@ -1,6 +1,5 @@
 package vedam.subkuch.ui.classifieds;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,6 +45,11 @@ public class MyClassifiedFragment extends BaseFragment implements OnListViewItem
     private int pageNo = 1;
     private int pageSize = 20;
     private boolean hasMoreProjects = true;
+    private final ActivityResultLauncher<Intent> editClassifiedLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == android.app.Activity.RESULT_OK) refreshData();
+            });
 
     public MyClassifiedFragment() {
         // Required empty public constructor
@@ -58,7 +64,6 @@ public class MyClassifiedFragment extends BaseFragment implements OnListViewItem
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_classified_details, container, false);
         return binding.getRoot();
@@ -66,6 +71,13 @@ public class MyClassifiedFragment extends BaseFragment implements OnListViewItem
 
     public void onViewCreated(@NonNull View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+        installMenu(R.menu.add, item -> {
+            if (item.getItemId() == R.id.action_add) {
+                startActivity(new Intent(mContext, AddClassifiedsActivity.class));
+                return true;
+            }
+            return false;
+        });
         setTitle(getString(R.string.my_classifieds));
         initUI();
         getClassifieds();
@@ -95,11 +107,13 @@ public class MyClassifiedFragment extends BaseFragment implements OnListViewItem
         if (getActivity() != null)
             if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)) {
                 if (response.getReturnData().size() > 0) {
+                    binding.tvEmptyMyAds.setVisibility(View.GONE);
                     hasMoreProjects = response.getReturnData().size() >= pageSize;
                     loading = true;
                     loadValues(response.getReturnData());
-                } else
-                    UiUtil.showToast(mContext, getString(R.string.no_ads_found));
+                } else if (classifieds.isEmpty()) {
+                    binding.tvEmptyMyAds.setVisibility(View.VISIBLE);
+                }
             } else
                 UiUtil.showToast(mContext, getString(R.string.err_occurred));
     };
@@ -109,24 +123,10 @@ public class MyClassifiedFragment extends BaseFragment implements OnListViewItem
 
         if (response != null && !response.isEmpty()) {
             pageNo++;
+            int previousSize = classifieds.size();
             classifieds.addAll(response);
-            adapter.notifyDataSetChanged();
+            adapter.notifyItemRangeInserted(previousSize, response.size());
         }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
-        inflater.inflate(R.menu.add, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_add) {
-            startActivity(new Intent(mContext, AddClassifiedsActivity.class));
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -135,7 +135,7 @@ public class MyClassifiedFragment extends BaseFragment implements OnListViewItem
             case EDIT:
                 Intent intent = new Intent(mContext, EditClassifiedActivity.class);
                 intent.putExtra(Constants.EXTRA_DATA, (Classified) item);
-                startActivityForResult(intent, Constants.REQUEST_EDIT_AD);
+                editClassifiedLauncher.launch(intent);
                 break;
             case DELETE:
                 deleteAd((Classified) item);
@@ -168,8 +168,10 @@ public class MyClassifiedFragment extends BaseFragment implements OnListViewItem
     private void setDefaults() {
         pageNo = 1;
         hasMoreProjects = true;
+        binding.tvEmptyMyAds.setVisibility(View.GONE);
+        int previousSize = classifieds.size();
         classifieds.clear();
-        adapter.notifyDataSetChanged();
+        if (previousSize > 0) adapter.notifyItemRangeRemoved(0, previousSize);
 
     }
 
@@ -206,12 +208,4 @@ public class MyClassifiedFragment extends BaseFragment implements OnListViewItem
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == Constants.REQUEST_EDIT_AD && resultCode == Activity.RESULT_OK)
-            refreshData();
-        else
-            super.onActivityResult(requestCode, resultCode, data);
-    }
 }

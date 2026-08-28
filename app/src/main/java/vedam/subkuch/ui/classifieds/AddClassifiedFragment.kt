@@ -14,6 +14,10 @@ import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import com.adevinta.leku.LATITUDE
 import com.adevinta.leku.LOCATION_ADDRESS
 import com.adevinta.leku.LONGITUDE
@@ -54,12 +58,22 @@ class AddClassifiedFragment : BaseAddImagesFragment(), AdapterView.OnItemSelecte
     private var isProperty = false
     private var walletResponse: WalletResponse? = null
     private var menuItem: MenuItem? = null
+    private val locationPickerLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            binding!!.tvLocation.text = result.data?.getStringExtra(LOCATION_ADDRESS)
+            latLng = LatLng(
+                result.data?.getDoubleExtra(LATITUDE, 0.0) ?: 0.0,
+                result.data?.getDoubleExtra(LONGITUDE, 0.0) ?: 0.0
+            )
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        setHasOptionsMenu(true)
         // Inflate the layout for context fragment
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_add_classified, container, false)
@@ -68,6 +82,21 @@ class AddClassifiedFragment : BaseAddImagesFragment(), AdapterView.OnItemSelecte
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menu.clear()
+                menuInflater.inflate(R.menu.done, menu)
+                menuItem = menu.findItem(R.id.action_done)
+            }
+
+            override fun onMenuItemSelected(item: MenuItem): Boolean {
+                if (item.itemId != R.id.action_done) return false
+                val errorMessage = validateErrorMessage()
+                if (errorMessage == 0) withdraw()
+                else UiUtil.showDialog(mContext, getString(errorMessage), true)
+                return true
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
         setImagesLayout(view, 1)
         getCategories()
         getCities()
@@ -225,26 +254,8 @@ class AddClassifiedFragment : BaseAddImagesFragment(), AdapterView.OnItemSelecte
                 .withVoiceSearchHidden()
                 .build(requireContext())
 
-            startActivityForResult(locationPickerIntent, Constants.REQUEST_PLACE_PICKER)
+            locationPickerLauncher.launch(locationPickerIntent)
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        menu.clear()
-        inflater.inflate(R.menu.done, menu)
-        menuItem = menu.findItem(R.id.action_done)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_done) {
-            val errorMessage = validateErrorMessage()
-            if (errorMessage == 0) {
-                withdraw()
-            } else UiUtil.showDialog(mContext, getString(errorMessage), true)
-            return true
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun moneyWithdrawn() {
@@ -316,7 +327,7 @@ class AddClassifiedFragment : BaseAddImagesFragment(), AdapterView.OnItemSelecte
         UiUtil.cancelProgressDialog()
         if (activity != null) if (response != null && response.returnCode == Constants.SUCCESS_RETURN_CODE) {
             UiUtil.showToast(mContext, successMessage!!)
-            activity!!.finish()
+            requireActivity().finish()
         } else UiUtil.showToast(mContext, getString(R.string.err_occurred))
     }
 
@@ -348,18 +359,6 @@ class AddClassifiedFragment : BaseAddImagesFragment(), AdapterView.OnItemSelecte
         return errorMessage
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == Constants.REQUEST_PLACE_PICKER) {
-            if (resultCode == Activity.RESULT_OK) {
-                binding!!.tvLocation.text = data?.getStringExtra(LOCATION_ADDRESS)
-                latLng = LatLng(
-                    data?.getDoubleExtra(LATITUDE, 0.0) ?: 0.0, data?.getDoubleExtra(
-                        LONGITUDE, 0.0
-                    ) ?: 0.0
-                )
-            }
-        } else super.onActivityResult(requestCode, resultCode, data)
-    }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
         when (parent.id) {

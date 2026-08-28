@@ -30,25 +30,25 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center">
 
-                <com.makeramen.roundedimageview.RoundedImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/iv_picture"
                     android:layout_width="@dimen/margin_136dp"
                     android:layout_height="@dimen/margin_136dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/placeholder_small"
-                    app:riv_border_color="@color/colorPrimary"
-                    app:riv_border_width="@dimen/margin_2dp"
-                    app:riv_oval="true" />
+                    app:strokeColor="@color/colorPrimary"
+                    app:strokeWidth="@dimen/margin_2dp"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Circle" />
 
                 <LinearLayout
                     android:id="@+id/ll_edit_picture"
                     android:layout_width="@dimen/margin_48dp"
                     android:layout_height="@dimen/margin_48dp"
-                    android:layout_gravity="bottom|right"
+                    android:layout_gravity="bottom|end"
                     android:background="@drawable/circular_fill_black"
                     android:gravity="center"
                     app:layout_anchor="@+id/iv_picture"
-                    app:layout_anchorGravity="bottom|right">
+                    app:layout_anchorGravity="bottom|end">
 
                     <ImageView
                         android:id="@+id/iv_edit_picture"
@@ -57,6 +57,7 @@
                         android:background="@color/black"
                         android:padding="@dimen/margin_4dp"
                         android:scaleType="fitXY"
+                        android:contentDescription="@string/image_content_description"
                         app:srcCompat="@drawable/camera" />
                 </LinearLayout>
             </FrameLayout>
@@ -81,7 +82,7 @@
                      android:id="@+id/switchMatrimonial"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
-                     android:layout_alignParentRight="true"
+                     android:layout_alignParentEnd="true"
                      android:layout_centerVertical="true"
                      app:theme="@style/MyCheckBoxTheme" />
              </RelativeLayout>-->
@@ -122,6 +123,7 @@
                 style="@style/EditTextStyle2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:importantForAutofill="no"
                 android:inputType="textPersonName" />
 
             <TextView
@@ -137,12 +139,14 @@
                 style="@style/EditTextStyle2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:importantForAutofill="no"
                 android:inputType="textPersonName" />-->
 
             <vedam.subkuch.uicomponent.OptionalTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16dp"
+                android:labelFor="@id/et_about_me"
                 android:text="@string/about_me"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_eighteen" />
@@ -152,6 +156,7 @@
                 style="@style/EditTextStyle2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:importantForAutofill="no"
                 android:inputType="textMultiLine" />
 
             <vedam.subkuch.uicomponent.RequiredTextView
@@ -180,10 +185,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -214,10 +220,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -248,10 +255,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -282,10 +290,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -316,10 +325,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -352,10 +362,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -387,10 +398,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -423,10 +435,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -459,10 +472,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -492,10 +506,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -528,10 +543,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -563,10 +579,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -599,10 +616,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -635,10 +653,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -671,10 +690,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -705,10 +725,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -739,10 +760,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -773,10 +795,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -806,10 +829,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -839,10 +863,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -873,10 +898,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 

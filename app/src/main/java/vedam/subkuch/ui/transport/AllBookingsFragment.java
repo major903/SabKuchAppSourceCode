@@ -96,8 +96,9 @@ public class AllBookingsFragment extends BaseFragment {
 
         if (response != null && !response.isEmpty()) {
             pageNo++;
+            int previousSize = transportBookings.size();
             transportBookings.addAll(response);
-            adapter.notifyDataSetChanged();
+            adapter.notifyItemRangeInserted(previousSize, response.size());
         }
     }
 

@@ -1,13 +1,19 @@
 package vedam.subkuch.db.chat;
 
 import android.content.Context;
-import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 
 import vedam.subkuch.interfaces.OnInsertUpdateDoneListener;
 import vedam.subkuch.interfaces.RowIdListener;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class ChatRepository implements RowIdListener {
 
+    private static final ExecutorService DATABASE_EXECUTOR = Executors.newSingleThreadExecutor();
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
     private ChatDao chatDao;
     private OnInsertUpdateDoneListener onInsertUpdateDoneListener;
 
@@ -51,11 +57,18 @@ public class ChatRepository implements RowIdListener {
 //    }
 
     public void insert(Chat chat, boolean isOwnMessage) {
-        new InsertAsyncTask(chatDao, this, isOwnMessage).execute(chat);
+        DATABASE_EXECUTOR.execute(() -> {
+            long id = chatDao.insert(chat);
+            chat.setId(id);
+            mainHandler.post(() -> onGetChat(chat, isOwnMessage));
+        });
     }
 
     public void update(Chat chat, boolean isOwnMessage) {
-        new UpdateAsyncTask(chatDao, this, isOwnMessage).execute(chat);
+        DATABASE_EXECUTOR.execute(() -> {
+            int updatedRowsCount = chatDao.update(chat);
+            mainHandler.post(() -> onGetUpdatedRowsCount(updatedRowsCount, isOwnMessage));
+        });
     }
 
     @Override
@@ -70,57 +83,4 @@ public class ChatRepository implements RowIdListener {
             onInsertUpdateDoneListener.onUpdateDone(updatedRowsCount, isOwnMessage);
     }
 
-    private static class InsertAsyncTask extends AsyncTask<Chat, Void, Chat> {
-
-        private ChatDao mAsyncTaskDao;
-        private RowIdListener rowIdListener;
-        private boolean isOwnMessage;
-
-        InsertAsyncTask(ChatDao dao, RowIdListener rowIdListener, boolean isOwnMessage) {
-            mAsyncTaskDao = dao;
-            this.rowIdListener = rowIdListener;
-            this.isOwnMessage = isOwnMessage;
-        }
-
-        @Override
-        protected Chat doInBackground(final Chat... params) {
-            Chat chat = params[0];
-            long id = mAsyncTaskDao.insert(chat);
-            chat.setId(id);
-            return chat;
-        }
-
-        @Override
-        protected void onPostExecute(Chat chat) {
-            super.onPostExecute(chat);
-            if (rowIdListener != null) {
-                rowIdListener.onGetChat(chat, isOwnMessage);
-            }
-        }
-    }
-
-    private static class UpdateAsyncTask extends AsyncTask<Chat, Void, Integer> {
-
-        private ChatDao mAsyncTaskDao;
-        private RowIdListener rowIdListener;
-        private boolean isOwnMessage;
-
-        UpdateAsyncTask(ChatDao dao, RowIdListener rowIdListener, boolean isOwnMessage) {
-            mAsyncTaskDao = dao;
-            this.rowIdListener = rowIdListener;
-            this.isOwnMessage = isOwnMessage;
-        }
-
-        @Override
-        protected Integer doInBackground(final Chat... params) {
-            return mAsyncTaskDao.update(params[0]);
-        }
-
-        @Override
-        protected void onPostExecute(Integer updatedRowsCount) {
-            super.onPostExecute(updatedRowsCount);
-            if (rowIdListener != null)
-                rowIdListener.onGetUpdatedRowsCount(updatedRowsCount, isOwnMessage);
-        }
-    }
 }

@@ -21,7 +21,6 @@
 #-renamesourcefileattribute SourceFile
 -dontwarn com.google.android.gms.**
 -dontwarn com.google.errorprone.annotations.*
-
 #-dontwarn **
 
 # If your project uses WebView with JS, uncomment the following

@@ -1,24 +1,22 @@
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
 apply plugin: 'maven-publish'
 apply plugin: "org.jlleitschuh.gradle.ktlint"
-apply plugin: "io.gitlab.arturbosch.detekt"
 
 ext["PUBLISH_ARTIFACT_ID"] = "leku"
 
 //apply from: "${rootProject.projectDir}/scripts/publish-module.gradle"
 
 android {
-  namespace 'com.adevinta.leku'
-  compileSdk 36
-  resourcePrefix 'leku_'
+  namespace = 'com.adevinta.leku'
+  compileSdk = 37
+  resourcePrefix = 'leku_'
 
   defaultConfig {
-    minSdk 26
-    targetSdk 36
-    versionCode 1
-    versionName "1.0.0"
-    multiDexEnabled true
+    minSdk = 26
+    targetSdk = 36
+    versionCode = 1
+    versionName = "1.0.0"
+    multiDexEnabled = true
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles 'lib-proguard-rules.txt'
     vectorDrawables.useSupportLibrary = true
@@ -28,16 +26,18 @@ android {
 
   buildTypes {
     release {
-      minifyEnabled false
+      minifyEnabled = false
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
   }
   compileOptions {
-    sourceCompatibility JavaVersion.VERSION_17
-    targetCompatibility JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
   }
-  kotlinOptions {
-    jvmTarget = "17"
+  kotlin {
+    compilerOptions {
+      jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+    }
   }
   packaging {
     resources {
@@ -45,21 +45,12 @@ android {
     }
   }
   lint {
-    disable += 'ObsoleteLintCustomCheck'
+    disable += ['ObsoleteLintCustomCheck', 'ObsoleteSdkInt']
   }
 }
 
-detekt {
-  buildUponDefaultConfig = true
-  allRules = false
-  config = files("$rootDir/config/detekt/detekt-config.yml")
-
-  reports {
-    html.enabled = true
-    xml.enabled = true
-    txt.enabled = true
-    sarif.enabled = true
-  }
+tasks.withType(JavaCompile).configureEach {
+  options.compilerArgs += ['-Xlint:deprecation', '-Xlint:unchecked']
 }
 
 ktlint {
@@ -69,40 +60,73 @@ ktlint {
   }
 }
 
+configurations {
+  detektCli
+}
+
 dependencies {
+  detektCli 'io.gitlab.arturbosch.detekt:detekt-cli:1.23.8'
   implementation fileTree(dir: 'libs', include: ['*.jar'])
 
   implementation "com.google.android.material:material:1.14.0"
-  implementation 'androidx.fragment:fragment-ktx:1.8.9'
+  implementation 'androidx.fragment:fragment-ktx:1.9.0'
 
-  def playServicesVersion = '18.0.2'
+  def playServicesVersion = '20.0.0'
   implementation ("com.google.android.gms:play-services-maps:$playServicesVersion") {
 	  exclude group: "com.android.support"
   }
-  implementation ("com.google.android.gms:play-services-location:21.3.0") {
+  implementation ("com.google.android.gms:play-services-location:21.4.0") {
 	  exclude group: "com.android.support"
   }
 
-  implementation ("com.google.android.libraries.places:places:2.6.0") {
+  // 5.2.0 and 5.3.0 ship invalid Kotlin metadata for their internal
+  // PlacesLightboxActivity, producing an R8 warning. 5.1.1 is the newest
+  // release with matching Companion metadata and bytecode.
+  implementation ("com.google.android.libraries.places:places:5.1.1") {
     exclude group: "com.android.support"
   }
 
-  implementation "com.google.maps:google-maps-services:0.2.9"
+  implementation "com.google.maps:google-maps-services:2.2.0"
 
-  implementation 'io.reactivex.rxjava3:rxjava:3.1.2'
-  implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
-  implementation 'nl.littlerobots.rxlint:rxlint:1.7.7'
-  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+  implementation 'io.reactivex.rxjava3:rxjava:3.1.12'
+  implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
 
-  def espressoVersion = '3.4.0'
+  def espressoVersion = '3.7.0'
   androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
   androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
 
-  def supportTestVersion = '1.4.0'
+  def supportTestVersion = '1.7.0'
   androidTestImplementation "androidx.test:runner:$supportTestVersion"
   androidTestImplementation "androidx.test:rules:$supportTestVersion"
-  androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
-  androidTestImplementation 'org.mockito:mockito-core:4.0.0'
+  androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.4.0'
+  androidTestImplementation 'org.mockito:mockito-core:5.23.0'
 
+}
+
+def configureDetekt = { JavaExec task ->
+  task.group = 'verification'
+  task.classpath = configurations.detektCli
+  task.mainClass = 'io.gitlab.arturbosch.detekt.cli.Main'
+  task.args(
+      '--input', file('src/main/java').absolutePath,
+      '--baseline', file('detekt-baseline-debug.xml').absolutePath,
+      '--build-upon-default-config',
+      '--jvm-target', '17',
+      '--parallel',
+      '--report', "html:${file('build/reports/detekt/detekt.html').absolutePath}",
+      '--report', "xml:${file('build/reports/detekt/detekt.xml').absolutePath}",
+      '--report', "sarif:${file('build/reports/detekt/detekt.sarif').absolutePath}",
+      '--report', "txt:${file('build/reports/detekt/detekt.txt').absolutePath}"
+  )
+}
+
+tasks.register('detekt', JavaExec) {
+  configureDetekt(delegate)
+}
+
+tasks.register('detektBaseline', JavaExec) {
+  configureDetekt(delegate)
+  args '--create-baseline'
 }

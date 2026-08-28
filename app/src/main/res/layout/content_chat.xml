@@ -32,6 +32,7 @@
                 android:layout_height="40dp"
                 android:layout_weight="0.25"
                 android:adjustViewBounds="true"
+                android:contentDescription="@string/image_content_description"
                 android:src="@drawable/jigsaw" />
 
             <ImageView
@@ -40,6 +41,7 @@
                 android:layout_height="40dp"
                 android:layout_weight="0.25"
                 android:adjustViewBounds="true"
+                android:contentDescription="@string/image_content_description"
                 android:src="@drawable/search" />
 
             <ImageView
@@ -48,6 +50,7 @@
                 android:layout_height="40dp"
                 android:layout_weight="0.25"
                 android:adjustViewBounds="true"
+                android:contentDescription="@string/image_content_description"
                 android:src="@drawable/settings" />
 
             <ImageView
@@ -56,6 +59,7 @@
                 android:layout_height="40dp"
                 android:layout_weight="0.25"
                 android:adjustViewBounds="true"
+                android:contentDescription="@string/image_content_description"
                 android:src="@drawable/chat" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -25,17 +25,17 @@
                     style="@style/TextViewBlackHeading2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_16dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:text="@string/job_category" />
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_4dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:background="@drawable/edit_text_border">
 
                     <Spinner
@@ -50,9 +50,9 @@
                     style="@style/TextViewBlackHeading2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_16dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:text="@string/company_name" />
 
                 <EditText
@@ -60,21 +60,22 @@
                     style="@style/EditTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_4dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:hint="@string/company_name"
                     android:imeOptions="actionNext"
                     android:inputType="text"
+                    android:importantForAutofill="no"
                     android:padding="@dimen/margin_8dp" />
 
                 <TextView
                     style="@style/TextViewBlackHeading2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_16dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:text="@string/dealing_in" />
 
                 <EditText
@@ -82,29 +83,30 @@
                     style="@style/EditTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_4dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:hint="@string/dealing_in"
                     android:imeOptions="actionNext"
                     android:inputType="text"
+                    android:importantForAutofill="no"
                     android:padding="@dimen/margin_8dp" />
 
                 <TextView
                     style="@style/TextViewBlackHeading2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_16dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:text="@string/city" />
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_4dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:background="@drawable/edit_text_border">
 
                     <Spinner
@@ -119,9 +121,9 @@
                     style="@style/TextViewBlackHeading2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_16dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:text="@string/job_location" />
 
                 <EditText
@@ -129,19 +131,20 @@
                     style="@style/EditTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_4dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:hint="@string/job_location_hint"
                     android:inputType="textMultiLine"
+                    android:importantForAutofill="no"
                     android:padding="@dimen/margin_8dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_16dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:orientation="horizontal">
 
                     <Button
@@ -149,15 +152,15 @@
                         style="@style/ButtonBlue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="@dimen/margin_16dp"
-                        android:paddingRight="@dimen/margin_16dp"
+                        android:paddingStart="@dimen/margin_16dp"
+                        android:paddingEnd="@dimen/margin_16dp"
                         android:text="@string/show_location" />
 
                     <TextView
                         android:id="@+id/tv_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_16dp"
+                        android:layout_marginStart="@dimen/margin_16dp"
                         android:ellipsize="end"
                         android:maxLines="1"
                         tools:text="@string/err" />
@@ -167,9 +170,9 @@
                     style="@style/TextViewBlackHeading2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_16dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:text="@string/contact_numbers" />
 
                 <EditText
@@ -177,11 +180,12 @@
                     style="@style/EditTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_4dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:hint="@string/primary_contact_number"
                     android:inputType="phone"
+                    android:importantForAutofill="no"
                     android:padding="@dimen/margin_8dp" />
 
                 <EditText
@@ -189,27 +193,28 @@
                     style="@style/EditTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_4dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:hint="@string/secondary_contact_number"
                     android:inputType="phone"
+                    android:importantForAutofill="no"
                     android:padding="@dimen/margin_8dp" />
 
                 <TextView
                     style="@style/TextViewBlackHeading2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_16dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:text="@string/contact_methods" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:orientation="horizontal">
 
                     <CheckBox
@@ -223,7 +228,7 @@
                         android:id="@+id/cb_whatsapp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_16dp"
+                        android:layout_marginStart="@dimen/margin_16dp"
                         android:text="@string/whatsapp" />
                 </LinearLayout>
 
@@ -232,11 +237,12 @@
                     style="@style/EditTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_4dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:hint="@string/send_cv_to"
                     android:inputType="textEmailAddress"
+                    android:importantForAutofill="no"
                     android:padding="@dimen/margin_8dp" />
 
                 <LinearLayout

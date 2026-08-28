@@ -7,26 +7,28 @@ import android.location.Location;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableEmitter;
 
-public class LastKnownLocationObservableOnSubscribe extends BaseLocationObservableOnSubscribe<Location> {
+public class LastKnownLocationObservableOnSubscribe implements io.reactivex.rxjava3.core.ObservableOnSubscribe<Location> {
+    private final Context context;
 
     public static Observable<Location> createObservable(Context ctx) {
         return Observable.create(new LastKnownLocationObservableOnSubscribe(ctx));
     }
 
     private LastKnownLocationObservableOnSubscribe(Context ctx) {
-        super(ctx);
+        this.context = ctx;
     }
 
     @SuppressLint("MissingPermission")
     @Override
-    protected void onLocationProviderClientReady(FusedLocationProviderClient locationProviderClient,
-                                                 final ObservableEmitter<? super Location> emitter) {
+    public void subscribe(final ObservableEmitter<Location> emitter) {
+        FusedLocationProviderClient locationProviderClient = LocationServices.getFusedLocationProviderClient(context);
         locationProviderClient.getLastLocation()
                 .addOnSuccessListener(new OnSuccessListener<Location>() {
                     @Override

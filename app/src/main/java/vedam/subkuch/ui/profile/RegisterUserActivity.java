@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 
 import androidx.databinding.DataBindingUtil;
 
+import com.hbb20.CountryCodePicker;
 import vedam.subkuch.network.Response;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointBackward;
@@ -51,9 +52,13 @@ public class RegisterUserActivity extends BaseActivity {
     private String countryId;
     private String stateId;
     private String cityId;
+    private String languageId;
     private String countryCode;
+    private boolean syncingCountryPicker;
+    private final ArrayList<RegistrationMasterOption> countryOptions = new ArrayList<>();
     private final ArrayList<RegistrationMasterOption> states = new ArrayList<>();
     private final ArrayList<RegistrationMasterOption> districts = new ArrayList<>();
+    private boolean districtAutoRefetchDone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,7 @@ public class RegisterUserActivity extends BaseActivity {
 
         activityRegisterUserBinding = DataBindingUtil.setContentView(
                 this, R.layout.activity_register_user);
+        configurePhoneCountryCodePicker();
         bindData();
         bindSelectionKeyboardDismissal();
         initializeMasterSpinners();
@@ -157,10 +163,12 @@ public class RegisterUserActivity extends BaseActivity {
         activityRegisterUserBinding.spLanguage.setOnItemSelectedListener(new SimpleItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                languageId = position == 0 ? null : String.valueOf(
+                        ((RegistrationMasterOption) parent.getItemAtPosition(position)).getId());
                 if (position == 0) return;
                 RegistrationMasterOption language = (RegistrationMasterOption) parent.getItemAtPosition(position);
                 AppPrefs.getInstance(RegisterUserActivity.this).getSharedPreferences().edit()
-                        .putString(AppPrefs.PREFS_APP_LANGUAGE_ID, String.valueOf(language.getId()))
+                        .putString(AppPrefs.PREFS_APP_LANGUAGE_ID, languageId)
                         .putString(AppPrefs.PREFS_APP_LANGUAGE_NAME, language.getName())
                 .apply();
             }
@@ -170,6 +178,8 @@ public class RegisterUserActivity extends BaseActivity {
 
     private void bindCountrySpinner(List<RegistrationMasterOption> countries) {
         ArrayList<RegistrationMasterOption> options = withPlaceholder(countries, getString(R.string.select_a_country));
+        countryOptions.clear();
+        countryOptions.addAll(options);
         activityRegisterUserBinding.spCountry.setAdapter(new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, options));
         activityRegisterUserBinding.spCountry.setOnItemSelectedListener(new SimpleItemSelectedListener() {
@@ -179,14 +189,42 @@ public class RegisterUserActivity extends BaseActivity {
                         (RegistrationMasterOption) parent.getItemAtPosition(position);
                 countryId = country == null ? null : String.valueOf(country.getId());
                 countryCode = country == null ? null : country.getCountryCode();
-                activityRegisterUserBinding.tilMobileNumber.setPrefixText(
-                        TextUtils.isEmpty(countryCode) ? null : countryCode + " ");
+                syncPhoneCountryCodePicker(countryCode);
                 stateId = null;
                 cityId = null;
                 updateStatesForCountry();
             }
         });
         activityRegisterUserBinding.spCountry.setSelection(findOptionPosition(options, "India"));
+    }
+
+    private void configurePhoneCountryCodePicker() {
+        CountryCodePicker picker = activityRegisterUserBinding.ccpCountryCode;
+        picker.setDefaultCountryUsingNameCode("IN");
+        picker.resetToDefaultCountry();
+        picker.setOnCountryChangeListener(() -> {
+            if (syncingCountryPicker) return;
+            String selectedCode = picker.getSelectedCountryCode();
+            for (int index = 1; index < countryOptions.size(); index++) {
+                RegistrationMasterOption country = countryOptions.get(index);
+                if (selectedCode.equals(normalizeCountryCode(country.getCountryCode()))) {
+                    activityRegisterUserBinding.spCountry.setSelection(index);
+                    return;
+                }
+            }
+        });
+    }
+
+    private void syncPhoneCountryCodePicker(String value) {
+        String code = normalizeCountryCode(value);
+        try {
+            syncingCountryPicker = true;
+            activityRegisterUserBinding.ccpCountryCode.setCountryForPhoneCode(Integer.parseInt(code));
+        } catch (NumberFormatException ignored) {
+            // Keep the currently selected dial code if the registration API sends an invalid one.
+        } finally {
+            syncingCountryPicker = false;
+        }
     }
 
     private void updateStatesForCountry() {
@@ -206,7 +244,15 @@ public class RegisterUserActivity extends BaseActivity {
     }
 
     private void updateDistrictsForState() {
-        ArrayList<RegistrationMasterOption> options = withPlaceholder(filterDistricts(),
+        ArrayList<RegistrationMasterOption> filtered = filterDistricts();
+        if (filtered.isEmpty() && stateId != null && !districts.isEmpty() && !districtAutoRefetchDone) {
+            // A valid state produced no districts: the cached master list is likely
+            // outdated (e.g. districts added server-side after the cache was written).
+            // Re-fetch once per screen instead of leaving an empty dropdown.
+            districtAutoRefetchDone = true;
+            forceReloadDistricts();
+        }
+        ArrayList<RegistrationMasterOption> options = withPlaceholder(filtered,
                 getString(R.string.select_a_district));
         activityRegisterUserBinding.spCity.setAdapter(new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, options));
@@ -217,6 +263,11 @@ public class RegisterUserActivity extends BaseActivity {
                         ((RegistrationMasterOption) parent.getItemAtPosition(position)).getId());
             }
         });
+    }
+
+    private void forceReloadDistricts() {
+        DataFetcher.getRegistrationDistricts(this, this::setDistricts,
+                RegistrationMasterResponse.class, error -> { /* keep showing cached data */ });
     }
 
     private ArrayList<RegistrationMasterOption> filterByCountry(List<RegistrationMasterOption> options) {
@@ -333,8 +384,11 @@ public class RegisterUserActivity extends BaseActivity {
                 profile.setLatitude(latitude);
                 profile.setLongitude(longitude);
                 AppPrefs.getInstance(this).getSharedPreferences().edit()
-                        .putString(Constants.EXTRA_COUNTRY_CODE, normalizeCountryCode(countryCode)).apply();
+                        .putString(Constants.EXTRA_COUNTRY_CODE,
+                                activityRegisterUserBinding.ccpCountryCode.getSelectedCountryCode()).apply();
                 intent.putExtra(Constants.EXTRA_DATA, profile);
+                intent.putExtra(Constants.EXTRA_STATE_ID, stateId);
+                intent.putExtra(Constants.EXTRA_LANGUAGE_ID, languageId);
                 startActivity(intent);
             } else {
                 UiUtil.showDialog(RegisterUserActivity.this, getString(errorMessage), true);
@@ -372,6 +426,8 @@ public class RegisterUserActivity extends BaseActivity {
         View.OnTouchListener listener = (view, event) -> {
             if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
                 dismissKeyboard();
+            } else if (event.getActionMasked() == MotionEvent.ACTION_UP) {
+                view.performClick();
             }
             return false;
         };
@@ -489,6 +545,8 @@ public class RegisterUserActivity extends BaseActivity {
             errorMessage = R.string.select_a_state;
         else if (TextUtils.isEmpty(cityId))
             errorMessage = R.string.select_a_district;
+        else if (TextUtils.isEmpty(languageId))
+            errorMessage = R.string.select_app_language;
         else if (TextUtils.isEmpty(latitude) || TextUtils.isEmpty(longitude))
             errorMessage = R.string.submit_after_location;
         return errorMessage;

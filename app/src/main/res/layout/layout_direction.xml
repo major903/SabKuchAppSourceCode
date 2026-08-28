@@ -12,8 +12,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/margin_8dp"
-            android:layout_toLeftOf="@+id/ib_direction"
+            android:layout_marginEnd="@dimen/margin_8dp"
+            android:layout_toStartOf="@+id/ib_direction"
             android:textColor="@color/black"
             android:textSize="14sp"
             tools:text="@string/err" />
@@ -24,9 +24,10 @@
             android:layout_height="24dp"
             android:layout_alignTop="@+id/tv_address"
             android:layout_alignBottom="@+id/tv_address"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:background="@color/transparent"
-            android:tint="@color/black"
+            app:tint="@color/black"
+            android:contentDescription="@string/image_action_description"
             app:srcCompat="@drawable/ic_baseline_directions_24" />
 
     </RelativeLayout>

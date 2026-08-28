@@ -12,17 +12,18 @@ import android.view.LayoutInflater
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.net.Uri
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import com.marsad.stylishdialogs.StylishAlertDialog
 import vedam.subkuch.R
 import vedam.subkuch.interfaces.OnListViewItemClickListener
+import java.util.Locale
 import vedam.subkuch.ui.jobs.models.Job
 import vedam.subkuch.ui.jobs.models.Post
 import vedam.subkuch.uicomponent.CustomTypefaceSpan
@@ -45,7 +46,12 @@ class JobsAdapter constructor(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val job = jobs[position]
         holder.tvOrganisation.text = job.organisationName
-        UiUtil.setTextView(job.distance, "away", holder.tvDistance)
+        val distance = job.distance
+            ?.trim()
+            ?.takeIf { it.isNotEmpty() }
+            ?.let(::formatApiDistance)
+        holder.tvDistance.visibility = if (distance == null) View.GONE else View.VISIBLE
+        holder.tvDistance.text = distance.orEmpty()
         UiUtil.setTextView("Dealing in : ", job.dealingIn, holder.tvDealsIn)
         UiUtil.setTextView(
             "Job Location : ",
@@ -85,11 +91,11 @@ class JobsAdapter constructor(
         contact.numbers.forEach { number ->
             if (contact.isCall) addActionButton(holder.llContactActions, "Call") {
                 val dialNumber = number.filter { it.isDigit() || it == '+' }
-                context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:$dialNumber")))
+                context.startActivity(Intent(Intent.ACTION_DIAL, "tel:$dialNumber".toUri()))
             }
             if (contact.isWhatsApp) addActionButton(holder.llContactActions, "WhatsApp") {
                 val whatsappNumber = number.filter { it.isDigit() }
-                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://wa.me/$whatsappNumber")))
+                context.startActivity(Intent(Intent.ACTION_VIEW, "https://wa.me/$whatsappNumber".toUri()))
             }
         }
         contact.email?.let { email ->
@@ -98,6 +104,19 @@ class JobsAdapter constructor(
             }
         }
     }
+
+    private fun formatDistance(distanceKm: Double): String = when {
+        distanceKm < 1 -> "${(distanceKm * METERS_PER_KILOMETRE).toInt()} m away"
+        else -> String.format(Locale.US, "%.1f km away", distanceKm)
+    }
+
+    /**
+     * The Jobs query supplies this value for the signed-in user. Retain its text when
+     * the backend returns a formatted value, while giving numeric values the app's
+     * usual unit label.
+     */
+    private fun formatApiDistance(distance: String): String =
+        distance.toDoubleOrNull()?.let(::formatDistance) ?: distance
 
     /**
      * New API responses expose contact details as separate fields. Older versions of
@@ -156,7 +175,7 @@ class JobsAdapter constructor(
                 if (isAvailable) {
                     onClick()
                 } else {
-                    Toast.makeText(context, unavailableMessage, Toast.LENGTH_LONG).show()
+                    showCallUnavailableDialog(unavailableMessage)
                 }
             }
         }
@@ -185,6 +204,27 @@ class JobsAdapter constructor(
         else -> 0
     }
 
+    private fun showCallUnavailableDialog(message: String?) {
+        val dialog = StylishAlertDialog(context, StylishAlertDialog.WARNING)
+            .setTitleText("Sorry, boss is busy")
+            .setContentText(message ?: "Please try again later.")
+            .setContentTextSize(14)
+            .setConfirmText("OK")
+            .setConfirmButtonBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
+            .setConfirmButtonTextColor(ContextCompat.getColor(context, R.color.white))
+            .setConfirmClickListener { dialog -> dialog.dismissWithAnimation() }
+        dialog.setOnShowListener {
+            val buttonRow = dialog.getButton(StylishAlertDialog.BUTTON_CONFIRM).parent as? View
+            buttonRow?.setPadding(
+                buttonRow.paddingLeft,
+                AppUtil.dpToPx(context, 16),
+                buttonRow.paddingRight,
+                buttonRow.paddingBottom
+            )
+        }
+        dialog.show()
+    }
+
     private fun setPosition(llPosition: LinearLayout, posts: ArrayList<Post>) {
         llPosition.visibility = View.VISIBLE
         llPosition.removeAllViews()
@@ -200,22 +240,22 @@ class JobsAdapter constructor(
             }
             tv.layoutParams = layoutParams
             tv.typeface = Typeface.DEFAULT_BOLD
-            tv.text = "${i + 1}. ${AppUtil.deNull(post.jobTitle)}"
+            tv.text = AppUtil.deNull(post.jobTitle)
             llPosition.addView(tv)
 
-            layoutParams = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            val tvPosition = TextView(llPosition.context)
-            tvPosition.layoutParams = layoutParams
-            val gender = when (post.gender) {
-                1 -> "Male"
-                2 -> "Female"
-                else -> null
+            val requirements = listOf(post.req1, post.req2, post.req3)
+                .mapNotNull { it?.trim()?.takeIf(String::isNotEmpty) }
+                .ifEmpty { listOfNotNull(post.requirement?.trim()?.takeIf(String::isNotEmpty)) }
+            requirements.forEach { requirement ->
+                layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                val tvRequirement = TextView(llPosition.context)
+                tvRequirement.layoutParams = layoutParams
+                tvRequirement.text = "• $requirement"
+                llPosition.addView(tvRequirement)
             }
-            tvPosition.text = listOfNotNull(post.requirement?.takeIf { it.isNotBlank() }, gender).joinToString(" • ")
-            llPosition.addView(tvPosition)
 
             if (post.apply == true) {
                 layoutParams = LinearLayout.LayoutParams(
@@ -234,11 +274,11 @@ class JobsAdapter constructor(
                 )
                 button.setTextColor(ContextCompat.getColor(llPosition.context, R.color.white))
                 button.isAllCaps = false
-                button.setOnClickListener {
+                button.setOnClickListener { clickedButton ->
                     listener?.onItemClick(
                         post,
                         0,
-                        null,
+                        clickedButton,
                         ListItemClickAction.SELECT_POST
                     )
                 }
@@ -279,7 +319,7 @@ class JobsAdapter constructor(
                     unavailableMessage = unavailableMessage
                 ) {
                     val dialNumber = number.filter { it.isDigit() || it == '+' }
-                    context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:$dialNumber")))
+                    context.startActivity(Intent(Intent.ACTION_DIAL, "tel:$dialNumber".toUri()))
                 })
             }
 
@@ -287,7 +327,7 @@ class JobsAdapter constructor(
             actions.add(ContactAction(label = context.getString(R.string.whatsapp)) {
                 val whatsappNumber = number.filter(Char::isDigit)
                 context.startActivity(
-                    Intent(Intent.ACTION_VIEW, Uri.parse("https://wa.me/$whatsappNumber"))
+                    Intent(Intent.ACTION_VIEW, "https://wa.me/$whatsappNumber".toUri())
                 )
             })
         }
@@ -306,7 +346,7 @@ class JobsAdapter constructor(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 ).also {
-                    it.setMargins(0, AppUtil.dpToPx(container.context, 8), 0, 0)
+                    it.setMargins(0, AppUtil.dpToPx(container.context, 16), 0, 0)
                 }
             }
             actions.forEach { action ->
@@ -426,7 +466,8 @@ class JobsAdapter constructor(
 
     companion object {
         private const val MIN_PHONE_DIGITS = 7
-        private const val ACTION_BUTTON_SIZE_DP = 52
+        private const val METERS_PER_KILOMETRE = 1_000.0
+        private const val ACTION_BUTTON_SIZE_DP = 48
         private const val ACTION_BUTTON_SPACING_DP = 10
         private const val ACTION_BUTTON_CORNER_DP = 14
         private const val ACTION_ICON_PADDING_DP = 12

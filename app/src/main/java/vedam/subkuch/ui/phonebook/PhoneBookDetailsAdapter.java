@@ -45,7 +45,7 @@ public class PhoneBookDetailsAdapter extends BaseAdapter {
         PhoneBookDetailsAdapter.ViewHolder holder;
 
         if (v == null) {
-            v = inflater.inflate(R.layout.fragment_phone_book_details_list_item, null);
+            v = inflater.inflate(R.layout.fragment_phone_book_details_list_item, parent, false);
             holder = new PhoneBookDetailsAdapter.ViewHolder();
             holder.tvName = v.findViewById(R.id.tv_name);
             holder.tvPhone = v.findViewById(R.id.tv_phone);

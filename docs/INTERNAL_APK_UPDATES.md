@@ -2,7 +2,7 @@
 
 The app checks this file from GitHub:
 
-`https://raw.githubusercontent.com/forexveda/SabkuchApp/upgrade_android_14/update.json`
+`https://raw.githubusercontent.com/major903/SabKuchApp-Updates/main/update.json`
 
 For every team release:
 

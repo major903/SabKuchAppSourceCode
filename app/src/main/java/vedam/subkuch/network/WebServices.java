@@ -91,7 +91,7 @@ public class WebServices {
 
     public WebServices(Context context) {
         mInstance = this;
-        this.context = context;
+        this.context = context.getApplicationContext();
         bearer = AppPrefs.getPrefsToken(context);
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(BuildConfig.DEBUG

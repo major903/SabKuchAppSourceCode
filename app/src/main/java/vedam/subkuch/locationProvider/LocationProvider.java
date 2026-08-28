@@ -31,6 +31,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.ref.WeakReference;
 
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseActivity;
@@ -51,7 +52,7 @@ public enum LocationProvider {
     locationProvider;
 
     private boolean isAddressRequested = false;
-    private Activity activity;
+    private WeakReference<Activity> activityReference;
     private LocationCallbacks locationCallbacks;
     private ScreenChangeListener screenChangeListener;
     private LocationRequest locationRequest;
@@ -89,6 +90,7 @@ public enum LocationProvider {
      * Initializes the current fused location and settings clients.
      */
     private void init() {
+        Activity activity = getActivity();
         Context applicationContext = activity.getApplicationContext();
         if (fusedLocationClient == null) {
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(applicationContext);
@@ -136,7 +138,7 @@ public enum LocationProvider {
 
     private void request(LocationCallbacks locationCallbacks) {
 
-        this.activity = (Activity) locationCallbacks;
+        this.activityReference = new WeakReference<>((Activity) locationCallbacks);
         resetLocationRequestState();
 
         if (locationCallbacks instanceof ScreenChangeListener) {
@@ -152,6 +154,7 @@ public enum LocationProvider {
 
     private void attemptLocationFetch() {
         LogUtils.LOGD(BaseActivity.TAG, "Connected");
+        Activity activity = getActivity();
 
         List<String> permissions = new ArrayList<>();
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -168,6 +171,7 @@ public enum LocationProvider {
     }
 
     private void createLocationRequest() {
+        Activity activity = getActivity();
         locationRequest = new LocationRequest.Builder(2_000L)
                 .setMinUpdateIntervalMillis(1_000L)
                 .setMaxUpdates(1)
@@ -195,6 +199,7 @@ public enum LocationProvider {
      */
     private boolean checkGPSManually() {
 
+        Activity activity = getActivity();
         LocationManager lm = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
         boolean gps_enabled = false;
 
@@ -230,6 +235,7 @@ public enum LocationProvider {
 
     private void startLocationUpdates() {
 
+        Activity activity = getActivity();
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity,
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -254,6 +260,7 @@ public enum LocationProvider {
         if (fusedLocationClient == null || locationDelivered) {
             return;
         }
+        Activity activity = getActivity();
 
         cancelCurrentLocationRequest();
         final CancellationTokenSource cancellationToken = new CancellationTokenSource();
@@ -264,6 +271,12 @@ public enum LocationProvider {
                 .setMaxUpdateAgeMillis(MAX_CACHED_LOCATION_AGE_MS)
                 .setDurationMillis(CURRENT_LOCATION_TIMEOUT_MS)
                 .build();
+
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
 
         fusedLocationClient.getCurrentLocation(request, cancellationToken.getToken())
                 .addOnSuccessListener(activity, location -> {
@@ -311,6 +324,7 @@ public enum LocationProvider {
         }
 
         locationDelivered = true;
+        Activity activity = getActivity();
         cancelCurrentLocationRequest();
         stopLocationUpdates();
 
@@ -330,6 +344,7 @@ public enum LocationProvider {
     }
 
     private void fetchAddress(Location location) {
+        Activity activity = getActivity();
 
         //Pass main looper so that the result is called on main thread
         AddressResultReceiver mResultReceiver = new AddressResultReceiver(new Handler(Looper.getMainLooper()), locationCallbacks);
@@ -341,6 +356,14 @@ public enum LocationProvider {
 
         if (screenChangeListener != null)
             screenChangeListener.handleServiceIntent(intent);
+    }
+
+    private Activity getActivity() {
+        Activity activity = activityReference == null ? null : activityReference.get();
+        if (activity == null) {
+            throw new IllegalStateException("Location request activity is no longer available");
+        }
+        return activity;
     }
 
 }

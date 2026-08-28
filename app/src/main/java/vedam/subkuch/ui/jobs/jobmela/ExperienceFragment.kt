@@ -9,13 +9,15 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
-import vedam.subkuch.network.Response
+import androidx.core.os.BundleCompat
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import vedam.subkuch.R
 import vedam.subkuch.base.BaseFragment
 import vedam.subkuch.databinding.FragmentExperienceBinding
 import vedam.subkuch.helpers.Constants
-import vedam.subkuch.network.DataFetcher.getJobExperiences
-import vedam.subkuch.network.DataFetcher.getJobQualifications
+import vedam.subkuch.ui.jobs.JobsRepository
+import vedam.subkuch.ui.jobs.JobsResult
 import vedam.subkuch.ui.jobs.models.*
 import vedam.subkuch.utils.UiUtil
 import java.util.*
@@ -28,10 +30,11 @@ class ExperienceFragment : BaseFragment(), OnItemSelectedListener {
     private var jobMelaRequest: JobMelaRequest? = null
     private var jobQualificationId: String? = null
     private var jobExperienceId: String? = null
+    private val repository = JobsRepository()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        jobMelaRequest = arguments?.getParcelable(Constants.EXTRA_DATA)
+        jobMelaRequest = arguments?.let { BundleCompat.getParcelable(it, Constants.EXTRA_DATA, JobMelaRequest::class.java) }
 
     }
 
@@ -54,20 +57,24 @@ class ExperienceFragment : BaseFragment(), OnItemSelectedListener {
 
     private fun getJobExperiences() {
         UiUtil.showProgressDialog(mContext, R.string.please_wait)
-        getJobExperiences(
-            mContext,
-            onExperienceSuccessListener,
-            JobExperienceResponse::class.java,
-            onErrorListener
-        )
-    }
-    private val onExperienceSuccessListener =
-        Response.Listener { response: JobExperienceResponse? ->
+        lifecycleScope.launch {
+            val result = repository.getJobExperiences()
             UiUtil.cancelProgressDialog()
-            if (activity != null) if (response != null && response.returnMessage == Constants.SUCCESS) {
-                setJobExperiences(response.returnData)
-            } else UiUtil.showToast(mContext, getString(R.string.no_data))
+            when (result) {
+                is JobsResult.Success -> if (activity != null) {
+                    val response = result.value
+                    if (response.returnMessage == Constants.SUCCESS) {
+                        setJobExperiences(response.returnData)
+                    } else UiUtil.showToast(mContext, getString(R.string.no_data))
+                }
+
+                is JobsResult.Error -> if (activity != null) UiUtil.showToast(
+                    mContext,
+                    getString(R.string.err_occurred)
+                )
+            }
         }
+    }
 
     private fun setJobExperiences(jobExperiences: ArrayList<JobExperience>) {
         val jobExperience = JobExperience()
@@ -84,20 +91,24 @@ class ExperienceFragment : BaseFragment(), OnItemSelectedListener {
 
     private fun getJobQualifications() {
         UiUtil.showProgressDialog(mContext, R.string.please_wait)
-        getJobQualifications(
-            mContext,
-            onQualifySuccessListener,
-            JobQualificationResponse::class.java,
-            onErrorListener
-        )
-    }
-    private val onQualifySuccessListener =
-        Response.Listener { response: JobQualificationResponse? ->
+        lifecycleScope.launch {
+            val result = repository.getJobQualifications()
             UiUtil.cancelProgressDialog()
-            if (activity != null) if (response != null && response.returnMessage == Constants.SUCCESS) {
-                setJobQualifications(response.returnData)
-            } else UiUtil.showToast(mContext, getString(R.string.no_data))
+            when (result) {
+                is JobsResult.Success -> if (activity != null) {
+                    val response = result.value
+                    if (response.returnMessage == Constants.SUCCESS) {
+                        setJobQualifications(response.returnData)
+                    } else UiUtil.showToast(mContext, getString(R.string.no_data))
+                }
+
+                is JobsResult.Error -> if (activity != null) UiUtil.showToast(
+                    mContext,
+                    getString(R.string.err_occurred)
+                )
+            }
         }
+    }
 
     private fun setJobQualifications(jobQualifications: ArrayList<JobQualification>) {
         val jobQualification = JobQualification()

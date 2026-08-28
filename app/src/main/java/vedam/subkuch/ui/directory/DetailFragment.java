@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.os.BundleCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -51,9 +52,8 @@ public class DetailFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            directoryDetail = getArguments().getParcelable(Constants.EXTRA_DIRECTORY_DETAIL);
+            directoryDetail = BundleCompat.getParcelable(getArguments(), Constants.EXTRA_DIRECTORY_DETAIL, Business.class);
         }
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -68,6 +68,14 @@ public class DetailFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        installMenu(R.menu.add_review, item -> {
+            if (item.getItemId() == R.id.action_add_review) {
+                startActivity(new Intent(getActivity(), AddReviewActivity.class)
+                        .putExtra(Constants.EXTRA_BUSINESS_ID, directoryDetail.getBusinessID()));
+                return true;
+            }
+            return false;
+        });
         initUI();
         bindData();
     }
@@ -244,21 +252,4 @@ public class DetailFragment extends BaseFragment {
         }
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.add_review, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == R.id.action_add_review) {
-            startActivity(new Intent(getActivity(), AddReviewActivity.class)
-                    .putExtra(Constants.EXTRA_BUSINESS_ID, directoryDetail.getBusinessID()));
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

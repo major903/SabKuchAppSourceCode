@@ -14,23 +14,51 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <androidx.cardview.widget.CardView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            app:cardBackgroundColor="@color/learn_image_background"
-            app:cardCornerRadius="15dp"
-            app:cardElevation="0dp">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tv_learn_course_thumbnail"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/learn_course_thumbnail"
-                android:textColor="@color/colorPrimary"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:cardBackgroundColor="@color/learn_image_background"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="0dp"
+                app:layout_constraintDimensionRatio="16:9"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/iv_learn_course_thumbnail"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/learn_course_thumbnail"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone" />
+
+                    <vedam.subkuch.ui.events.ThumbnailShimmerView
+                        android:id="@+id/shimmer_learn_course_thumbnail"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/tv_learn_course_thumbnail"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="@string/learn_course_thumbnail"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </FrameLayout>
+            </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -110,11 +138,11 @@
 
                 <Button
                     android:id="@+id/btn_buy_course"
-                    android:layout_width="76dp"
+                    android:layout_width="104dp"
                     android:layout_height="38dp"
                     android:background="@drawable/bg_learn_buy_button"
                     android:minHeight="0dp"
-                    android:text="@string/learn_buy"
+                    android:text="@string/learn_details"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="14sp"

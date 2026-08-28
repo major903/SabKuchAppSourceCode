@@ -94,12 +94,12 @@ class ChatFragment : BaseFragment() {
     private fun bindCallbacks() {
         fragmentChatBinding!!.sendMessageButton.setOnClickListener { _: View? ->
             if (fragmentChatBinding!!.etMessage.text.toString()
-                    .trim { it <= ' ' } == ""
+                    .trim() == ""
             ) Toast.makeText(
                 mContext, "Empty message!",
                 Toast.LENGTH_SHORT
             ).show() else {
-                val message = fragmentChatBinding!!.etMessage.text.toString().trim { it <= ' ' }
+                val message = fragmentChatBinding!!.etMessage.text.toString().trim()
                 storeMessage(message)
                 fragmentChatBinding!!.etMessage.setText("")
             }

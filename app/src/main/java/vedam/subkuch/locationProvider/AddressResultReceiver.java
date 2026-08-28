@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.location.Address;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.os.ResultReceiver;
+import android.os.ResultReceiver;
+
+import androidx.core.os.BundleCompat;
 
 import vedam.subkuch.helpers.Constants;
 
@@ -36,7 +38,7 @@ public class AddressResultReceiver extends ResultReceiver {
         Address address = null;
         if (resultCode == Constants.SUCCESS_RESULT) {
 
-            address = resultData.getParcelable(Constants.EXTRA_ADDRESS);
+            address = BundleCompat.getParcelable(resultData, Constants.EXTRA_ADDRESS, Address.class);
 
         }
         if (addressCallback != null)

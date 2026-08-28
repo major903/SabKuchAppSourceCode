@@ -54,22 +54,17 @@ public class PickImageDialog extends Dialog implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-
-            case R.id.ib_cancel:
-                this.dismiss();
-                if (closeButtonClickListener != null) {
-                    closeButtonClickListener.onCloseClicked(v);
-                }
-                break;
-            case R.id.cv_take_picture:
-                selected_key = KEY_CAMERA;
-                this.dismiss();
-                break;
-            case R.id.cv_gallery:
-                selected_key = KEY_GALLERY;
-                this.dismiss();
-                break;
+        if (v.getId() == R.id.ib_cancel) {
+            this.dismiss();
+            if (closeButtonClickListener != null) {
+                closeButtonClickListener.onCloseClicked(v);
+            }
+        } else if (v.getId() == R.id.cv_take_picture) {
+            selected_key = KEY_CAMERA;
+            this.dismiss();
+        } else if (v.getId() == R.id.cv_gallery) {
+            selected_key = KEY_GALLERY;
+            this.dismiss();
         }
     }
 
@@ -77,4 +72,3 @@ public class PickImageDialog extends Dialog implements View.OnClickListener {
         return selected_key;
     }
 }
-

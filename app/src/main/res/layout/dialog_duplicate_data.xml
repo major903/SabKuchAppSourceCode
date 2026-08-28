@@ -5,9 +5,9 @@
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:paddingLeft="24dp"
+    android:paddingStart="24dp"
     android:paddingTop="28dp"
-    android:paddingRight="24dp"
+    android:paddingEnd="24dp"
     android:paddingBottom="24dp">
 
     <ImageView

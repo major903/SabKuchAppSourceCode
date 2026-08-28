@@ -29,7 +29,7 @@
             app:itemHorizontalPadding="@dimen/margin_24dp"
             app:itemTextColor="@color/drawer_item_text_tint"
             app:itemVerticalPadding="@dimen/margin_12dp"
-            app:menu="@menu/activity_show_profiles_drawer" />
+            />
 
     </androidx.drawerlayout.widget.DrawerLayout>
 </layout>

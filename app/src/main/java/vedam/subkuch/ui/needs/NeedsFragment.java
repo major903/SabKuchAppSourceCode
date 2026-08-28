@@ -55,7 +55,13 @@ public class NeedsFragment extends BaseListFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setHasOptionsMenu(true);
+        installMenu(R.menu.add, item -> {
+            if (item.getItemId() == R.id.action_add) {
+                startActivity(new Intent(context, AddNeedActivity.class));
+                return true;
+            }
+            return false;
+        });
         getProviders();
         getUserTypeId();
     }
@@ -120,18 +126,4 @@ public class NeedsFragment extends BaseListFragment {
             addFragmentWithAnimation(R.id.content_frame, MyBookingsFragment.newInstance(provider), null, true);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
-        inflater.inflate(R.menu.add, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_add) {
-            startActivity(new Intent(context, AddNeedActivity.class));
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

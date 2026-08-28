@@ -2,12 +2,13 @@ package com.adevinta.leku.locale
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.core.os.ParcelCompat
 import com.google.android.gms.maps.model.LatLng
 
 data class SearchZoneRect(val lowerLeft: LatLng, val upperRight: LatLng) : Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readParcelable(LatLng::class.java.classLoader)!!,
-        parcel.readParcelable(LatLng::class.java.classLoader)!!
+        ParcelCompat.readParcelable(parcel, LatLng::class.java.classLoader, LatLng::class.java)!!,
+        ParcelCompat.readParcelable(parcel, LatLng::class.java.classLoader, LatLng::class.java)!!
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

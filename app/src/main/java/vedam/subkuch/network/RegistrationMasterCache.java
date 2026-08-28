@@ -26,7 +26,8 @@ public final class RegistrationMasterCache {
     private static final String STATES = "states";
     private static final String DISTRICTS = "districts";
     private static final String LANGUAGES = "languages";
-    private static final long MAX_AGE_MILLIS = TimeUnit.HOURS.toMillis(24);
+    private static final String COUNTRIES = "countries";
+    private static final long MAX_AGE_MILLIS = TimeUnit.HOURS.toMillis(6);
     private static final Type OPTION_LIST_TYPE =
             new TypeToken<ArrayList<RegistrationMasterOption>>() { }.getType();
 
@@ -45,6 +46,10 @@ public final class RegistrationMasterCache {
         return read(context, LANGUAGES);
     }
 
+    public static ArrayList<RegistrationMasterOption> getCountries(Context context) {
+        return read(context, COUNTRIES);
+    }
+
     public static void putDistricts(Context context, List<RegistrationMasterOption> districts) {
         write(context, DISTRICTS, districts);
     }
@@ -57,6 +62,10 @@ public final class RegistrationMasterCache {
         write(context, LANGUAGES, languages);
     }
 
+    public static void putCountries(Context context, List<RegistrationMasterOption> countries) {
+        write(context, COUNTRIES, countries);
+    }
+
     public static boolean areDistrictsFresh(Context context) {
         return isFresh(context, DISTRICTS);
     }
@@ -67,6 +76,10 @@ public final class RegistrationMasterCache {
 
     public static boolean areLanguagesFresh(Context context) {
         return isFresh(context, LANGUAGES);
+    }
+
+    public static boolean areCountriesFresh(Context context) {
+        return isFresh(context, COUNTRIES);
     }
 
     private static ArrayList<RegistrationMasterOption> read(Context context, String key) {

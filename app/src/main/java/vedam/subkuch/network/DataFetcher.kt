@@ -1,11 +1,9 @@
 package vedam.subkuch.network
 
 import android.content.Context
-import vedam.subkuch.network.Response
-import okhttp3.MultipartBody
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.RequestBody.Companion.toRequestBody
+import com.google.gson.Gson
 import vedam.subkuch.BuildConfig
+import vedam.subkuch.network.Response
 import vedam.subkuch.network.models.DataPart
 import vedam.subkuch.utils.AppPrefs
 import vedam.subkuch.utils.AppUtil
@@ -25,7 +23,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ): Boolean {
         if (!isRegistrationApiConfigured()) return false
-        val url = registrationUrl("UserProfile/AddProfile")
+        val url = registrationUrl("users/Register")
         NetworkGateway.callApiWithBody(
             context,
             url,
@@ -67,12 +65,7 @@ object DataFetcher {
         countryCode: String?,
         phoneNumber: String?
     ) {
-        val url = String.format(
-            "%s/api/login/otps/get/%s/%s",
-            NetworkConstants.END_POINT2,
-            countryCode,
-            phoneNumber
-        )
+        val url = registrationUrl("login/otps/get/$countryCode/$phoneNumber")
         NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
@@ -86,13 +79,7 @@ object DataFetcher {
         phoneNumber: String?,
         otp: String?
     ) {
-        val url = String.format(
-            "%s/api/login/otps/verify/%s/%s/%s",
-            NetworkConstants.END_POINT2,
-            countryCode,
-            phoneNumber,
-            otp
-        )
+        val url = registrationUrl("login/otps/verify/$countryCode/$phoneNumber/$otp")
         NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
@@ -116,7 +103,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val userId = AppPrefs.getPrefsUserId(context)
-        val url = String.format(
+        val url = String.format(Locale.US,
             "%s/api/Feature/GetFeature2?UserId=%s",
             NetworkConstants.END_POINT2,
             userId
@@ -138,28 +125,6 @@ object DataFetcher {
             userId
         )
         NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
-    }
-
-    @JvmStatic
-    fun <T> addContacts(
-        context: Context?,
-        json: String?,
-        updateSuccessListener: Response.Listener<T>?,
-        repClass: Type?,
-        errorListener: Response.ErrorListener?
-    ) {
-        val url = registrationUrl("UserContacts/AddUserContacts")
-        // The endpoint creates a bulk contact import. Do not retry writes automatically,
-        // otherwise a timeout could result in duplicate contact records.
-        NetworkGateway.callApiWithBodyNoRetry(
-            context,
-            url,
-            null,
-            updateSuccessListener,
-            json,
-            repClass,
-            errorListener
-        )
     }
 
     @JvmStatic
@@ -226,38 +191,13 @@ object DataFetcher {
         "${BuildConfig.REGISTRATION_API_BASE_URL.trimEnd('/')}/api/$path"
 
     @JvmStatic
-    fun <T> getLearnHome(
-        context: Context?,
-        updateSuccessListener: Response.Listener<T>?,
-        repClass: Class<T>?,
-        errorListener: Response.ErrorListener?
-    ) {
-        RegistrationApiClient.enqueue(
-            RegistrationApiClient.getApi().getLearnHomeRaw(), repClass, updateSuccessListener, errorListener
-        )
-    }
-
-    @JvmStatic
-    fun <T> getMyCourses(
-        context: Context?,
-        updateSuccessListener: Response.Listener<T>?,
-        repClass: Class<T>?,
-        errorListener: Response.ErrorListener?
-    ) {
-        RegistrationApiClient.enqueue(
-            RegistrationApiClient.getApi().getMyCoursesRaw(), repClass, updateSuccessListener, errorListener
-        )
-    }
-
-    @JvmStatic
     fun <T> getMenus(
         context: Context?,
         updateSuccessListener: Response.Listener<T>?,
         repClass: Type?,
         errorListener: Response.ErrorListener?
     ) {
-        val userId = AppPrefs.getPrefsUserId(context)
-        val url = String.format("%s/api/AllAPI/GetMenus?UserId=%s", NetworkConstants.END_POINT2, userId)
+        val url = String.format("%s/api/Menu/GetMenus", NetworkConstants.END_POINT2)
         NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
@@ -328,7 +268,7 @@ object DataFetcher {
         pageIndex: Int,
         pageSize: Int
     ) {
-        val url = String.format(
+        val url = String.format(Locale.US,
             "%s/api/Shopping/GetProducts?subcategoryId=%s&PageIndex=%d&PageSize=%d",
             NetworkConstants.END_POINT2,
             subCategoryId,
@@ -347,7 +287,7 @@ object DataFetcher {
         pageIndex: Int,
         pageSize: Int
     ) {
-        val url = String.format(
+        val url = String.format(Locale.US,
             "%s/api/Shopping/GetHomeProducts?PageIndex=%d&PageSize=%d",
             NetworkConstants.END_POINT2,
             pageIndex,
@@ -397,7 +337,7 @@ object DataFetcher {
         pageIndex: Int,
         pageSize: Int
     ) {
-        val url = String.format(
+        val url = String.format(Locale.US,
             "%s/api/JobsOld/Directory/GetBusiness?SubCategoryCityId=%s&CategoryId=%s&PageIndex=%d&PageSize=%d",
             NetworkConstants.END_POINT2,
             subCategoryId,
@@ -464,40 +404,6 @@ object DataFetcher {
             categoryId
         )
         NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
-    }
-
-    @JvmStatic
-    fun <T> getJobsCategory(
-        context: Context?,
-        updateSuccessListener: Response.Listener<T>?,
-        repClass: Type?,
-        errorListener: Response.ErrorListener?
-    ) {
-        JobApiClient.enqueue(
-            JobApiClient.getApi().getCategories(), repClass, updateSuccessListener, errorListener
-        )
-    }
-
-    @JvmStatic
-    fun <T> getJobs(
-        context: Context?,
-        updateSuccessListener: Response.Listener<T>?,
-        repClass: Class<T>?,
-        errorListener: Response.ErrorListener?,
-        categoryId: String?,
-        search: String?,
-        pageIndex: Int,
-        pageSize: Int,
-        gender: Int
-    ) {
-        // Matches: GET /api/Jobs/GetJobs?CategoryId=&JobTitle=&PageIndex=&PageSize=
-        // Build the query instead of interpolating values so job titles containing spaces,
-        // ampersands, or other reserved characters are sent correctly.
-        JobApiClient.enqueue(
-            JobApiClient.getApi().getJobs(
-                categoryId.orEmpty(), search.orEmpty(), pageIndex, pageSize, gender
-            ), repClass, updateSuccessListener, errorListener
-        )
     }
 
     @JvmStatic
@@ -568,20 +474,6 @@ object DataFetcher {
             json,
             repClass,
             errorListener
-        )
-    }
-
-    @JvmStatic
-    fun <T> addJobs(
-        context: Context?,
-        json: String?,
-        updateSuccessListener: Response.Listener<T>?,
-        repClass: Type?,
-        errorListener: Response.ErrorListener?
-    ) {
-        val requestBody = json.orEmpty().toRequestBody("application/json; charset=utf-8".toMediaType())
-        JobApiClient.enqueue(
-            JobApiClient.getApi().addJob(requestBody), repClass, updateSuccessListener, errorListener
         )
     }
 
@@ -694,10 +586,19 @@ object DataFetcher {
     ) {
         val userId = AppPrefs.getPrefsUserId(context)
         val url = String.format(
-            "%s/api/UserProfile/UserCurrentLocation?UserId=%s&Latitude=%s&Longitude=%s",
-            NetworkConstants.END_POINT2, userId, latitude, longitude
+            "%s/api/UserProfile/SaveCurrentLocation",
+            NetworkConstants.JOB_END_POINT
         )
-        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+        val body = Gson().toJson(
+            mapOf(
+                "UserId" to userId,
+                "Latitude" to latitude,
+                "Longitude" to longitude
+            )
+        )
+        NetworkGateway.callApiWithBody(
+            context, url, null, updateSuccessListener, body, repClass, errorListener
+        )
     }
 
     @JvmStatic
@@ -752,92 +653,6 @@ object DataFetcher {
     ) {
         JobApiClient.enqueue(
             JobApiClient.getApi().getJobTypes(), repClass, updateSuccessListener, errorListener
-        )
-    }
-
-    @JvmStatic
-    fun <T> getJobQualifications(
-        context: Context?,
-        updateSuccessListener: Response.Listener<T>?,
-        repClass: Type?,
-        errorListener: Response.ErrorListener?
-    ) {
-        JobApiClient.enqueue(
-            JobApiClient.getApi().getJobQualifications(), repClass, updateSuccessListener, errorListener
-        )
-    }
-
-    @JvmStatic
-    fun <T> getJobExperiences(
-        context: Context?,
-        updateSuccessListener: Response.Listener<T>?,
-        repClass: Type?,
-        errorListener: Response.ErrorListener?
-    ) {
-        JobApiClient.enqueue(
-            JobApiClient.getApi().getJobExperiences(), repClass, updateSuccessListener, errorListener
-        )
-    }
-
-    @JvmStatic
-    fun <T> getJobSalaries(
-        context: Context?,
-        updateSuccessListener: Response.Listener<T>?,
-        repClass: Type?,
-        errorListener: Response.ErrorListener?
-    ) {
-        JobApiClient.enqueue(
-            JobApiClient.getApi().getJobSalaries(), repClass, updateSuccessListener, errorListener
-        )
-    }
-
-    fun <T> getJobProfile(
-        context: Context?,
-        updateSuccessListener: Response.Listener<T>?,
-        repClass: Type?,
-        errorListener: Response.ErrorListener?
-    ) {
-        val userId = AppPrefs.getPrefsUserId(context)
-        JobApiClient.enqueue(
-            JobApiClient.getApi().getJobProfile(userId), repClass, updateSuccessListener, errorListener
-        )
-    }
-
-    @JvmStatic
-    fun <T> addJobProfile(
-        context: Context?,
-        json: String?,
-        updateSuccessListener: Response.Listener<T>?,
-        repClass: Type?,
-        errorListener: Response.ErrorListener?
-    ) {
-        val requestBody = json.orEmpty().toRequestBody("application/json; charset=utf-8".toMediaType())
-        JobApiClient.enqueue(
-            JobApiClient.getApi().addJobProfile(requestBody), repClass, updateSuccessListener, errorListener
-        )
-    }
-
-    @JvmStatic
-    fun <T> uploadJobProfileImage(
-        context: Context?,
-        dataPartMap: Map<String?, DataPart?>?,
-        updateSuccessListener: Response.Listener<T>?,
-        repClass: Type?,
-        errorListener: Response.ErrorListener?
-    ) {
-        val profileId = AppPrefs.getPrefsUserId(context).toRequestBody("text/plain".toMediaType())
-        val files = ArrayList<MultipartBody.Part>()
-        dataPartMap?.forEach { (name, dataPart) ->
-            if (!name.isNullOrEmpty() && dataPart != null && dataPart.content != null) {
-                val contentType = dataPart.type?.takeIf { it.isNotBlank() }
-                    ?: "application/octet-stream"
-                val body = dataPart.content.toRequestBody(contentType.toMediaType())
-                files.add(MultipartBody.Part.createFormData(name, dataPart.fileName, body))
-            }
-        }
-        JobApiClient.enqueue(
-            JobApiClient.getApi().uploadJobProfileImage(profileId, files),
-            repClass, updateSuccessListener, errorListener
         )
     }
 
@@ -1272,7 +1087,7 @@ object DataFetcher {
         repClass: Type?,
         errorListener: Response.ErrorListener?
     ) {
-        val url = String.format("%s/api/Referral/ShareContent", NetworkConstants.END_POINT2)
+        val url = String.format("%s/api/Referral/ShareContent", NetworkConstants.JOB_END_POINT)
         NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
@@ -1283,7 +1098,18 @@ object DataFetcher {
         repClass: Type?,
         errorListener: Response.ErrorListener?
     ) {
-        val url = String.format("%s/api/Referral/GetMyWallet", NetworkConstants.END_POINT2)
+        val url = String.format(Locale.US, "%s/api/Withdrawal/GetBalance", NetworkConstants.JOB_END_POINT)
+        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
+    }
+
+    @JvmStatic
+    fun <T> getWalletTerms(
+        context: Context?,
+        updateSuccessListener: Response.Listener<T>?,
+        repClass: Type?,
+        errorListener: Response.ErrorListener?
+    ) {
+        val url = String.format(Locale.US, "%s/api/Referral/GetMyWallet", NetworkConstants.JOB_END_POINT)
         NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
@@ -1294,7 +1120,7 @@ object DataFetcher {
         repClass: Type?,
         errorListener: Response.ErrorListener?
     ) {
-        val url = String.format("%s/api/Referral/GetMyReferral", NetworkConstants.END_POINT2)
+        val url = String.format("%s/api/Referral/GetMyReferral", NetworkConstants.JOB_END_POINT)
         NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
@@ -1328,6 +1154,45 @@ object DataFetcher {
     ) {
         val url = String.format("%s/api/Referral/Withdrawal", NetworkConstants.END_POINT2)
         NetworkGateway.callApiWithBody(
+            context,
+            url,
+            null,
+            updateSuccessListener,
+            json,
+            repClass,
+            errorListener
+        )
+    }
+
+    @JvmStatic
+    fun <T> addWithdrawal(
+        context: Context?,
+        json: String?,
+        updateSuccessListener: Response.Listener<T>?,
+        repClass: Type?,
+        errorListener: Response.ErrorListener?
+    ) {
+        val url = String.format(
+            Locale.US,
+            "%s/api/Withdrawal/AddWithdrawal",
+            NetworkConstants.JOB_END_POINT
+        )
+        NetworkGateway.callApiWithBodyNoRetry(
+            context, url, null, updateSuccessListener, json, repClass, errorListener
+        )
+    }
+
+    @JvmStatic
+    fun <T> transferFunds(
+        context: Context?,
+        json: String?,
+        updateSuccessListener: Response.Listener<T>?,
+        repClass: Type?,
+        errorListener: Response.ErrorListener?
+    ) {
+        val url = registrationUrl("Transfer/AddTransfer")
+        // A transfer must never be retried automatically because that could move funds twice.
+        NetworkGateway.callApiWithBodyNoRetry(
             context,
             url,
             null,
@@ -1481,7 +1346,7 @@ object DataFetcher {
         repClass: Type?,
         errorListener: Response.ErrorListener?
     ) {
-        val url = String.format("%s/api/Classified/Categories", NetworkConstants.END_POINT2)
+        val url = String.format(Locale.US, "%s/api/Classified/Categories", NetworkConstants.JOB_END_POINT)
         NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
@@ -1494,8 +1359,9 @@ object DataFetcher {
         categoryId: String?
     ) {
         val url = String.format(
+            Locale.US,
             "%s/api/Classified/SubCategories?CategoryId=%s",
-            NetworkConstants.END_POINT2,
+            NetworkConstants.JOB_END_POINT,
             categoryId
         )
         NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
@@ -1509,7 +1375,7 @@ object DataFetcher {
         repClass: Type?,
         errorListener: Response.ErrorListener?
     ) {
-        val url = String.format("%s/api/Classified/AddClassifiedAds", NetworkConstants.END_POINT2)
+        val url = String.format(Locale.US, "%s/api/Classified/AddClassifiedAds", NetworkConstants.JOB_END_POINT)
         NetworkGateway.callApiWithBody(
             context,
             url,
@@ -1530,7 +1396,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url =
-            String.format("%s/api/Classified/UpdateClassifiedAds", NetworkConstants.END_POINT2)
+            String.format(Locale.US, "%s/api/Classified/UpdateClassifiedAds", NetworkConstants.JOB_END_POINT)
         NetworkGateway.callApiWithBody(
             context,
             url,
@@ -1552,8 +1418,9 @@ object DataFetcher {
     ) {
         val userId = AppPrefs.getPrefsUserId(context)
         val url = String.format(
+            Locale.US,
             "%s/api/Classified/DeleteAd?ClassifiedAdId=%s&UserId=%s",
-            NetworkConstants.END_POINT2,
+            NetworkConstants.JOB_END_POINT,
             adId,
             userId
         )
@@ -1579,7 +1446,7 @@ object DataFetcher {
     ) {
         val map: MutableMap<String, String> = HashMap()
         map[NetworkConstants.ClassifiedAdId] = classifiedId
-        val url = String.format("%s/api/Classified/UploadImage", NetworkConstants.END_POINT2)
+        val url = String.format(Locale.US, "%s/api/Classified/UploadImage", NetworkConstants.JOB_END_POINT)
         NetworkGateway.callApiWithMultipartBody(
             context,
             url,
@@ -1606,7 +1473,7 @@ object DataFetcher {
         val url = String.format(
             Locale.US,
             "%s/api/Classified/GetClassifiedAds?SubCategoryId=%s&ProfileId=%s&PageIndex=%d&PageSize=%d",
-            NetworkConstants.END_POINT2,
+            NetworkConstants.JOB_END_POINT,
             subCategoryId,
             userId,
             pageIndex,
@@ -1628,7 +1495,7 @@ object DataFetcher {
         val url = String.format(
             Locale.US,
             "%s/api/Classified/MyClassifiedAds?ProfileId=%s&PageIndex=%d&PageSize=%d",
-            NetworkConstants.END_POINT2,
+            NetworkConstants.JOB_END_POINT,
             userId,
             pageIndex,
             pageSize

@@ -363,10 +363,10 @@ public class EditProfileFragment extends BaseAddImageFragment implements EditPro
 
     private void checkAndFinish() {
 
-        if (object.isEmpty() && getFragmentManager() != null) {
+        if (object.isEmpty() && isAdded()) {
             UiUtil.cancelProgressDialog();
             UiUtil.showToast(getActivity(), getString(R.string.profile_updated));
-            getFragmentManager().popBackStack();
+            getParentFragmentManager().popBackStack();
         }
     }
 

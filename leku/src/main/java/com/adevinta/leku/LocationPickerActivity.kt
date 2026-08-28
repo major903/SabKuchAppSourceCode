@@ -5,11 +5,9 @@ import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.content.IntentSender
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
-import android.os.Build
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.text.Editable
@@ -34,15 +32,16 @@ import android.widget.TextView
 import android.widget.Toast
 import android.widget.LinearLayout
 import androidx.annotation.RawRes
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.BundleCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.location.LocationListener
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.MAP_TYPE_NORMAL
@@ -114,7 +113,6 @@ private const val OPTIONS_HIDE_CITY = "city"
 private const val OPTIONS_HIDE_ZIPCODE = "zipcode"
 private const val UNNAMED_ROAD_WITH_COMMA = "Unnamed Road, "
 private const val UNNAMED_ROAD_WITH_HYPHEN = "Unnamed Road - "
-private const val REQUEST_PLACE_PICKER = 6655
 private const val CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000
 private const val DEFAULT_ZOOM = 16
 private const val WIDER_ZOOM = 6
@@ -125,15 +123,11 @@ private const val PADDING_GOOGLE_LOGO_TOP_RIGHT = 24.0f
 class LocationPickerActivity :
     AppCompatActivity(),
     OnMapReadyCallback,
-    GoogleApiClient.ConnectionCallbacks,
-    GoogleApiClient.OnConnectionFailedListener,
-    LocationListener,
     GoogleMap.OnMapLongClickListener,
     GeocoderViewInterface,
     GoogleMap.OnMapClickListener {
 
     private var map: GoogleMap? = null
-    private var googleApiClient: GoogleApiClient? = null
     private var currentLocation: Location? = null
     private var currentLekuPoi: LekuPoi? = null
     private var geocoderPresenter: GeocoderPresenter? = null
@@ -179,6 +173,22 @@ class LocationPickerActivity :
     private var lekuPoisMarkersMap: MutableMap<String, LekuPoi>? = null
     private var currentMarker: Marker? = null
     private var textWatcher: TextWatcher? = null
+    private val voiceRecognitionLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.firstOrNull()?.let {
+                retrieveLocationFrom(it)
+            }
+        }
+    }
+    private val locationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) {
+            geocoderPresenter?.getLastKnownLocation()
+        }
+    }
     private var googleGeocoderDataSource: GoogleGeocoderDataSource? = null
     private var isVoiceSearchEnabled = true
     private var isUnnamedRoadVisible = true
@@ -223,6 +233,11 @@ class LocationPickerActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                handleBackPressed()
+            }
+        })
         updateValuesFromBundle(savedInstanceState)
         setUpContentView()
         setUpMainVariables()
@@ -232,7 +247,6 @@ class LocationPickerActivity :
         setUpSearchView()
         setUpMapIfNeeded()
         setUpFloatingButtons()
-        buildGoogleApiClient()
         track(TrackEvents.ON_LOAD_LOCATION_PICKER)
     }
 
@@ -244,11 +258,7 @@ class LocationPickerActivity :
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
             )
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                var flags: Int = window.decorView.systemUiVisibility
-                flags = flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
-                window.decorView.systemUiVisibility = flags
-            }
+            WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
 
             setContentView(R.layout.leku_activity_location_picker)
             moveGoogleLogoToTopRight()
@@ -281,7 +291,7 @@ class LocationPickerActivity :
         if (enableLocationPermissionRequest &&
             PermissionUtils.shouldRequestLocationStoragePermission(applicationContext)
         ) {
-            PermissionUtils.requestLocationPermission(this)
+            locationPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
         }
     }
 
@@ -293,7 +303,7 @@ class LocationPickerActivity :
         var placesDataSource: GooglePlacesDataSource? = null
         if (!Places.isInitialized() && !googlePlacesApiKey.isNullOrEmpty()) {
             googlePlacesApiKey?.let {
-                Places.initialize(applicationContext, it)
+                Places.initializeWithNewPlacesApiEnabled(applicationContext, it)
             }
             placesDataSource = GooglePlacesDataSource(Places.createClient(this))
         }
@@ -435,12 +445,10 @@ class LocationPickerActivity :
     private fun onSearchTextChanged(term: String) {
         if (term.isEmpty()) {
             if (isLegacyLayoutEnabled) {
-                adapter?.let {
-                    it.clear()
-                    it.notifyDataSetChanged()
-                }
+                adapter?.clear()
+                notifyLocationAdapters()
             } else {
-                searchAdapter?.notifyDataSetChanged()
+                notifyLocationAdapters()
             }
             showLocationInfoLayout()
             clearSearchButton?.visibility = View.INVISIBLE
@@ -548,7 +556,7 @@ class LocationPickerActivity :
                 if (!isLegacyLayoutEnabled && isSearchLayoutShown) {
                     hideSearchLayout()
                 } else {
-                    onBackPressed()
+                    handleBackPressed()
                 }
                 true
             }
@@ -569,41 +577,12 @@ class LocationPickerActivity :
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        if (PermissionUtils.isLocationPermissionGranted(applicationContext)) {
-            geocoderPresenter?.getLastKnownLocation()
-        }
-    }
-
-    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when (requestCode) {
-            REQUEST_PLACE_PICKER -> if (resultCode == Activity.RESULT_OK && data != null) {
-                val matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
-                searchView = findViewById(R.id.leku_search)
-                matches?.let {
-                    retrieveLocationFrom(it[0])
-                }
-            }
-            else -> {
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
     override fun onStart() {
         super.onStart()
-        googleApiClient?.connect()
         geocoderPresenter?.setUI(this)
     }
 
     override fun onStop() {
-        googleApiClient?.let {
-            if (it.isConnected) {
-                it.disconnect()
-            }
-        }
         geocoderPresenter?.stop()
         super.onStop()
     }
@@ -618,12 +597,11 @@ class LocationPickerActivity :
         textWatcher?.let {
             searchView?.removeTextChangedListener(it)
         }
-        googleApiClient?.unregisterConnectionCallbacks(this)
         compositeDisposable.dispose()
         super.onDestroy()
     }
 
-    override fun onBackPressed() {
+    private fun handleBackPressed() {
         if (!shouldReturnOkOnBackPressed || isLocationInformedFromBundle) {
             setResult(Activity.RESULT_CANCELED)
             track(TrackEvents.CANCEL)
@@ -641,30 +619,6 @@ class LocationPickerActivity :
             setCurrentPositionLocation()
             setPois()
         }
-    }
-
-    override fun onConnected(savedBundle: Bundle?) {
-        if (currentLocation == null) {
-            geocoderPresenter?.getLastKnownLocation()
-        }
-    }
-
-    override fun onConnectionSuspended(i: Int) {
-        googleApiClient?.connect()
-    }
-
-    override fun onConnectionFailed(connectionResult: ConnectionResult) {
-        if (connectionResult.hasResolution()) {
-            try {
-                connectionResult.startResolutionForResult(this, CONNECTION_FAILURE_RESOLUTION_REQUEST)
-            } catch (e: IntentSender.SendIntentException) {
-                track(TrackEvents.GOOGLE_API_CONNECTION_FAILED)
-            }
-        }
-    }
-
-    override fun onLocationChanged(location: Location) {
-        currentLocation = location
     }
 
     public override fun onSaveInstanceState(savedInstanceState: Bundle) {
@@ -691,7 +645,7 @@ class LocationPickerActivity :
         if ("" != lastQuery) {
             retrieveLocationFrom(lastQuery)
         }
-        currentLocation = savedInstanceState.getParcelable(LOCATION_KEY)
+        currentLocation = BundleCompat.getParcelable(savedInstanceState, LOCATION_KEY, Location::class.java)
         if (currentLocation != null) {
             setCurrentPositionLocation()
         }
@@ -699,7 +653,7 @@ class LocationPickerActivity :
             bundle.putBundle(TRANSITION_BUNDLE, savedInstanceState.getBundle(TRANSITION_BUNDLE))
         }
         if (savedInstanceState.containsKey(POIS_LIST)) {
-            poisList = savedInstanceState.getParcelableArrayList(POIS_LIST)
+            poisList = BundleCompat.getParcelableArrayList(savedInstanceState, POIS_LIST, LekuPoi::class.java)
         }
         if (savedInstanceState.containsKey(ENABLE_SATELLITE_VIEW)) {
             enableSatelliteView = savedInstanceState.getBoolean(ENABLE_SATELLITE_VIEW)
@@ -749,9 +703,9 @@ class LocationPickerActivity :
                 setNewLocation(addresses[0])
             }
             if (isLegacyLayoutEnabled) {
-                adapter?.notifyDataSetChanged()
+                notifyLocationAdapters()
             } else {
-                searchAdapter?.notifyDataSetChanged()
+                notifyLocationAdapters()
             }
         }
     }
@@ -765,10 +719,16 @@ class LocationPickerActivity :
         }
 
         if (isLegacyLayoutEnabled) {
-            adapter?.notifyDataSetChanged()
+            notifyLocationAdapters()
         } else {
-            searchAdapter?.notifyDataSetChanged()
+            notifyLocationAdapters()
         }
+    }
+
+    @Suppress("NotifyDataSetChanged")
+    private fun notifyLocationAdapters() {
+        adapter?.notifyDataSetChanged()
+        searchAdapter?.notifyDataSetChanged()
     }
 
     private fun setNoSearchResultsOnList() {
@@ -906,7 +866,7 @@ class LocationPickerActivity :
             bundle.putBundle(TRANSITION_BUNDLE, savedInstanceState)
         }
         if (savedInstanceState.keySet().contains(LOCATION_KEY)) {
-            currentLocation = savedInstanceState.getParcelable(LOCATION_KEY)
+            currentLocation = BundleCompat.getParcelable(savedInstanceState, LOCATION_KEY, Location::class.java)
         }
         setUpDefaultMapLocation()
         if (savedInstanceState.keySet().contains(LAYOUTS_TO_HIDE)) {
@@ -926,7 +886,7 @@ class LocationPickerActivity :
             searchZone = savedInstanceState.getString(SEARCH_ZONE)
         }
         if (savedInstanceState.keySet().contains(SEARCH_ZONE_RECT)) {
-            searchZoneRect = savedInstanceState.getParcelable(SEARCH_ZONE_RECT)
+            searchZoneRect = BundleCompat.getParcelable(savedInstanceState, SEARCH_ZONE_RECT, SearchZoneRect::class.java)
         }
         if (savedInstanceState.keySet().contains(SEARCH_ZONE_DEFAULT_LOCALE)) {
             isSearchZoneWithDefaultLocale = savedInstanceState.getBoolean(SEARCH_ZONE_DEFAULT_LOCALE, false)
@@ -935,7 +895,7 @@ class LocationPickerActivity :
             enableSatelliteView = savedInstanceState.getBoolean(ENABLE_SATELLITE_VIEW)
         }
         if (savedInstanceState.keySet().contains(POIS_LIST)) {
-            poisList = savedInstanceState.getParcelableArrayList(POIS_LIST)
+            poisList = BundleCompat.getParcelableArrayList(savedInstanceState, POIS_LIST, LekuPoi::class.java)
         }
         if (savedInstanceState.keySet().contains(ENABLE_LOCATION_PERMISSION_REQUEST)) {
             enableLocationPermissionRequest = savedInstanceState.getBoolean(ENABLE_LOCATION_PERMISSION_REQUEST)
@@ -966,7 +926,7 @@ class LocationPickerActivity :
             searchZone = transitionBundle.getString(SEARCH_ZONE)
         }
         if (transitionBundle.keySet().contains(SEARCH_ZONE_RECT)) {
-            searchZoneRect = transitionBundle.getParcelable(SEARCH_ZONE_RECT)
+            searchZoneRect = BundleCompat.getParcelable(transitionBundle, SEARCH_ZONE_RECT, SearchZoneRect::class.java)
         }
         if (transitionBundle.keySet().contains(SEARCH_ZONE_DEFAULT_LOCALE)) {
             isSearchZoneWithDefaultLocale = transitionBundle.getBoolean(SEARCH_ZONE_DEFAULT_LOCALE, false)
@@ -981,7 +941,7 @@ class LocationPickerActivity :
             enableLocationPermissionRequest = transitionBundle.getBoolean(ENABLE_LOCATION_PERMISSION_REQUEST)
         }
         if (transitionBundle.keySet().contains(POIS_LIST)) {
-            poisList = transitionBundle.getParcelableArrayList(POIS_LIST)
+            poisList = BundleCompat.getParcelableArrayList(transitionBundle, POIS_LIST, LekuPoi::class.java)
         }
         if (transitionBundle.keySet().contains(GEOLOC_API_KEY)) {
 
@@ -1044,7 +1004,7 @@ class LocationPickerActivity :
 
         if (isPlayServicesAvailable()) {
             try {
-                startActivityForResult(intent, REQUEST_PLACE_PICKER)
+                voiceRecognitionLauncher.launch(intent)
             } catch (e: ActivityNotFoundException) {
                 track(TrackEvents.START_VOICE_RECOGNITION_ACTIVITY_FAILED)
             }
@@ -1182,7 +1142,7 @@ class LocationPickerActivity :
 
     private fun retrieveLocationFromZone(query: String, zoneKey: String) {
         geocoderPresenter?.let {
-            val locale = Locale(zoneKey)
+            val locale = Locale.forLanguageTag(zoneKey.replace('_', '-'))
             if (DefaultCountryLocaleRect.getLowerLeftFromZone(locale) != null) {
                 it.getFromLocationName(
                     query, DefaultCountryLocaleRect.getLowerLeftFromZone(locale)!!,
@@ -1217,7 +1177,7 @@ class LocationPickerActivity :
 
     private fun retrieveDebouncedLocationFromZone(query: String, zoneKey: String, debounceTime: Int) {
         geocoderPresenter?.let {
-            val locale = Locale(zoneKey)
+            val locale = Locale.forLanguageTag(zoneKey.replace('_', '-'))
             if (DefaultCountryLocaleRect.getLowerLeftFromZone(locale) != null) {
                 it.getDebouncedFromLocationName(
                     query, DefaultCountryLocaleRect.getLowerLeftFromZone(locale)!!,
@@ -1401,16 +1361,6 @@ class LocationPickerActivity :
             hasWiderZoom = false
             it.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
         }
-    }
-
-    @Synchronized
-    private fun buildGoogleApiClient() {
-        val googleApiClientBuilder = GoogleApiClient.Builder(this).addConnectionCallbacks(this)
-            .addOnConnectionFailedListener(this)
-            .addApi(LocationServices.API)
-
-        googleApiClient = googleApiClientBuilder.build()
-        googleApiClient?.connect()
     }
 
     private fun addMarker(latLng: LatLng): Marker? {

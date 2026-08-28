@@ -43,17 +43,15 @@ public class AddReviewActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_done:
+        if (item.getItemId() == R.id.action_done) {
                 int errorMessage = validateErrorMessage();
                 if (errorMessage == 0) {
                     submit();
                 } else
                     UiUtil.showDialog(this, getString(errorMessage), true);
                 return true;
-            default:
-                return super.onOptionsItemSelected(item);
         }
+        return super.onOptionsItemSelected(item);
     }
 
     private void submit() {

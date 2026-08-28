@@ -68,7 +68,6 @@ public class PublicUtilityFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_public_utilities, container, false);
         return binding.getRoot();
@@ -76,6 +75,13 @@ public class PublicUtilityFragment extends BaseFragment {
 
     public void onViewCreated(@NonNull View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+        installMenu(R.menu.add, item -> {
+            if (item.getItemId() == R.id.action_add) {
+                startActivity(new Intent(getActivity(), AddPublicUtilityActivity.class));
+                return true;
+            }
+            return false;
+        });
         initUI();
         getPublicUtilities();
     }
@@ -115,26 +121,10 @@ public class PublicUtilityFragment extends BaseFragment {
 
         if (response != null && !response.isEmpty()) {
             pageNo++;
+            int previousSize = publicUtilities.size();
             publicUtilities.addAll(response);
-            adapter.notifyDataSetChanged();
+            adapter.notifyItemRangeInserted(previousSize, response.size());
         }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.add, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == R.id.action_add) {
-            startActivity(new Intent(getActivity(), AddPublicUtilityActivity.class));
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     public class OnScrollListener extends RecyclerView.OnScrollListener {

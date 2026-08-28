@@ -6,7 +6,7 @@
              android:orientation="vertical"
     >
 
-  <fragment android:layout_width="match_parent"
+  <androidx.fragment.app.FragmentContainerView android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/map"
             tools:context="com.adevinta.leku.LocationPickerActivity"
@@ -22,7 +22,6 @@
       android:gravity="top|start"
       android:layout_marginTop="80dp"
       android:layout_marginStart="8dp"
-      android:layout_marginLeft="8dp"
       android:visibility="gone"
       />
 
@@ -32,9 +31,7 @@
       android:layout_height="wrap_content"
       android:layout_marginTop="72dp"
       android:layout_marginStart="8dp"
-      android:layout_marginLeft="8dp"
       android:layout_marginEnd="8dp"
-      android:layout_marginRight="8dp"
       android:fadingEdgeLength="16dp"
       android:footerDividersEnabled="true"
       android:headerDividersEnabled="true"
@@ -60,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:contentDescription="@string/leku_accessibility_satellite_button_description"
         app:srcCompat="@drawable/leku_ic_satellite_on_legacy"
         app:fabSize="normal"
         android:tint="?colorPrimary"
@@ -76,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:contentDescription="@string/leku_accessibility_my_location_button_description"
         android:src="@drawable/leku_ic_gps_lime_legacy"
         app:fabSize="normal"
         app:tint="?colorPrimary"
@@ -115,7 +112,6 @@
             android:paddingTop="16dp"
             android:layout_marginBottom="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
             >
 
           <include layout="@layout/leku_layout_coordinates" />
@@ -128,6 +124,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|end"
+            android:contentDescription="@string/leku_use_this_location"
             android:src="@drawable/leku_ic_check_light"
             app:fabSize="normal"
             app:backgroundTint="?colorPrimary"

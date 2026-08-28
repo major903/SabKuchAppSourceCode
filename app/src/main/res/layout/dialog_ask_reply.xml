@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/type_your_reply"
         android:inputType="textMultiLine"
+        android:importantForAutofill="no"
         android:lines="2" />
 
     <Button

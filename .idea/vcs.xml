@@ -2,5 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/tmp/bunny-source-7b3f2d97-fb45-4ffb-9893-1755a9131a11" vcs="Git" />
   </component>
 </project>

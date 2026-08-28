@@ -4,7 +4,6 @@ import android.Manifest.permission
 import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
@@ -15,7 +14,7 @@ import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.makeramen.roundedimageview.RoundedImageView
+import com.google.android.material.imageview.ShapeableImageView
 import vedam.subkuch.R
 import vedam.subkuch.helpers.Constants
 import vedam.subkuch.ui.cropImage.CropImageActivity
@@ -28,7 +27,7 @@ import java.util.*
 
 abstract class BaseAddImageFragment : BaseFragment() {
     @JvmField
-    protected var ivPicture: RoundedImageView? = null
+    protected var ivPicture: ShapeableImageView? = null
     private var llEditPicture: LinearLayout? = null
 
     //      The path of image taken by the camera.
@@ -62,6 +61,32 @@ abstract class BaseAddImageFragment : BaseFragment() {
                 }
             }
 
+    private val cameraPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+                if (granted) launchCamera()
+                else showSettingsDialog("Your device does not give permission to use the camera. Please enable permission and try again.")
+            }
+
+    private val takePictureLauncher =
+            registerForActivityResult(ActivityResultContracts.TakePicture()) { saved ->
+                if (saved) handleCameraResult() else noImageAdded()
+            }
+
+    private val cropImageLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val fileName = result.data?.getStringExtra(Constants.EXTRA_FILE_NAME)
+                    if (fileName != null) {
+                        val bitmap = ImageUtil.getBitmapFromInternalStorage(mContext, fileName)
+                        setImageView(bitmap, getImageUriFromFileName(fileName))
+                    } else {
+                        noImageAdded()
+                    }
+                } else {
+                    noImageAdded()
+                }
+            }
+
     protected fun setImagesLayout(view: View) {
         ivPicture = view.findViewById(R.id.iv_picture)
         llEditPicture = view.findViewById(R.id.ll_edit_picture)
@@ -90,19 +115,12 @@ abstract class BaseAddImageFragment : BaseFragment() {
                 PickImageDialog.KEY_CAMERA -> {
                     val permissions: MutableList<String> = ArrayList()
                     permissions.add(permission.CAMERA)
-                    permissions.add(permission.WRITE_EXTERNAL_STORAGE)
                     if (AppUtil.checkPermissions(mContext, permissions)) launchCamera() else {
-                        requestPermissions(arrayOf(permission.CAMERA, permission.WRITE_EXTERNAL_STORAGE),
-                                Constants.PERMISSIONS_REQUEST_CAMERA)
+                        cameraPermissionLauncher.launch(permission.CAMERA)
                     }
                 }
                 PickImageDialog.KEY_GALLERY -> {
-                    val permissions2: MutableList<String> = ArrayList()
-                    permissions2.add(permission.WRITE_EXTERNAL_STORAGE)
-                    if (AppUtil.checkPermissions(mContext, permissions2)) getImageFromGallery() else {
-                        requestPermissions(arrayOf(permission.WRITE_EXTERNAL_STORAGE),
-                                Constants.PERMISSIONS_REQUEST_STORAGE)
-                    }
+                    getImageFromGallery()
                 }
             }
         }
@@ -117,8 +135,7 @@ abstract class BaseAddImageFragment : BaseFragment() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(requireActivity().packageManager) != null) {
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, setImageUri())
-            startActivityForResult(takePictureIntent, Constants.REQUEST_PICK_IMAGE_FROM_CAMERA)
+            setImageUri()?.let { takePictureLauncher.launch(it) }
         }
     }
 
@@ -137,28 +154,18 @@ abstract class BaseAddImageFragment : BaseFragment() {
         return null
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == Constants.REQUEST_PICK_IMAGE_FROM_CAMERA) {
-            try {
-                val rotatedImage = UiUtil.rotateImageIfRequired(imagePath)
-                val decodedBitmap = UiUtil.getThumbnail(mContext, rotatedImage)
-                if (decodedBitmap != null) {
-                    startCrop(imagePath)
-                } else {
-                    noImageAdded()
-                }
-            } catch (e: Exception) {
-                FirebaseCrashlytics.getInstance().recordException(e)
-                e.printStackTrace()
+    private fun handleCameraResult() {
+        try {
+            val rotatedImage = UiUtil.rotateImageIfRequired(imagePath)
+            val decodedBitmap = UiUtil.getThumbnail(mContext, rotatedImage)
+            if (decodedBitmap != null) {
+                startCrop(imagePath)
+            } else {
                 noImageAdded()
             }
-        } else if (requestCode == Constants.REQUEST_CROP_IMAGE) {
-            if (resultCode == Activity.RESULT_OK) {
-                val fileName = data!!.getStringExtra(Constants.EXTRA_FILE_NAME)
-                val bitmap = ImageUtil.getBitmapFromInternalStorage(mContext, fileName)
-                setImageView(bitmap, getImageUriFromFileName(fileName))
-            }
-        } else {
+        } catch (e: Exception) {
+            FirebaseCrashlytics.getInstance().recordException(e)
+            e.printStackTrace()
             noImageAdded()
         }
     }
@@ -178,7 +185,7 @@ abstract class BaseAddImageFragment : BaseFragment() {
         if (imageUri == null) return
         val intent = Intent(mContext, CropImageActivity::class.java)
         intent.putExtra(Constants.EXTRA_IMAGE_URI, imageUri)
-        startActivityForResult(intent, Constants.REQUEST_CROP_IMAGE)
+        cropImageLauncher.launch(intent)
     }
 
     private fun copyInputStreamToFile(`in`: InputStream?, file: File) {
@@ -197,20 +204,4 @@ abstract class BaseAddImageFragment : BaseFragment() {
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            Constants.PERMISSIONS_REQUEST_CAMERA ->                 // If request is cancelled, the result arrays are empty.
-                if (grantResults.isNotEmpty()
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    launchCamera()
-                } else showSettingsDialog("Your device does not give permission to use device media. Please enable permission and try again.")
-            Constants.PERMISSIONS_REQUEST_STORAGE -> if (grantResults.size > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getImageFromGallery()
-            } else {
-                showSettingsDialog("Your device does not give permission to use device media. Please enable permission and try again.")
-            }
-            else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        }
-    }
 }

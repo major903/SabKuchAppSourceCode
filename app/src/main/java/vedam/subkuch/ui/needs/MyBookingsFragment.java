@@ -1,6 +1,5 @@
 package vedam.subkuch.ui.needs;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.os.BundleCompat;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,6 +44,14 @@ public class MyBookingsFragment extends BaseFragment implements MyBookingsAdapte
     private int pageSize = 20;
     private boolean hasMoreProjects = true;
     private Provider provider;
+    private final ActivityResultLauncher<Intent> addNeedLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == android.app.Activity.RESULT_OK) {
+                    setDefaults();
+                    getMyBookings();
+                }
+            });
 
     public MyBookingsFragment() {
         // Required empty public constructor
@@ -59,13 +69,12 @@ public class MyBookingsFragment extends BaseFragment implements MyBookingsAdapte
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null)
-            provider = getArguments().getParcelable(Constants.EXTRA_PROVIDER);
+            provider = BundleCompat.getParcelable(getArguments(), Constants.EXTRA_PROVIDER, Provider.class);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
         fragmentMyBookingsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_bookings, container, false);
         return fragmentMyBookingsBinding.getRoot();
@@ -73,6 +82,14 @@ public class MyBookingsFragment extends BaseFragment implements MyBookingsAdapte
 
     public void onViewCreated(@NonNull View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+        installMenu(R.menu.add, item -> {
+            if (item.getItemId() == R.id.action_add) {
+                addNeedLauncher.launch(new Intent(mContext, AddNeedActivity.class)
+                        .putExtra(Constants.EXTRA_ID, provider.getProviderId()));
+                return true;
+            }
+            return false;
+        });
         initUI();
         getMyBookings();
         setTitle(getString(R.string.my_needs));
@@ -113,46 +130,19 @@ public class MyBookingsFragment extends BaseFragment implements MyBookingsAdapte
 
         if (response != null && !response.isEmpty()) {
             pageNo++;
+            int previousSize = needBookings.size();
             needBookings.addAll(response);
-            adapter.notifyDataSetChanged();
+            adapter.notifyItemRangeInserted(previousSize, response.size());
         }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
-        inflater.inflate(R.menu.add, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_add) {
-            startActivityForResult(new Intent(mContext, AddNeedActivity.class)
-                    .putExtra(Constants.EXTRA_ID, provider.getProviderId()), Constants.REQUEST_ADD_TRANSPORT);
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void setDefaults() {
         pageNo = 1;
         hasMoreProjects = true;
+        int previousSize = needBookings.size();
         needBookings.clear();
-        adapter.notifyDataSetChanged();
+        if (previousSize > 0) adapter.notifyItemRangeRemoved(0, previousSize);
 
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == Constants.REQUEST_ADD_TRANSPORT) {
-            if (resultCode == Activity.RESULT_OK) {
-                setDefaults();
-                getMyBookings();
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
     }
 
     @Override

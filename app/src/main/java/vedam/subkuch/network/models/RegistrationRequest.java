@@ -1,7 +1,7 @@
 package vedam.subkuch.network.models;
 
 /**
- * Payload required by UserProfile/AddProfile in the current registration API.
+ * Payload required by users/Register in the current registration API.
  * Keep this separate from {@link Profile}; Profile also contains legacy fields
  * that should not be sent while a new account is being created.
  */
@@ -20,12 +20,15 @@ public class RegistrationRequest {
     private final String Latitude;
     private final String Longitude;
     private final int DistrictId;
+    private final int StateId;
+    private final int LanguageId;
     private final int countryid;
 
     public RegistrationRequest(String firstName, String lastName, String gender, String dob,
                                String mobile, String email, int occupationId,
                                String occupationOther, String deviceId, String latitude,
-                               String longitude, int districtId, int countryId) {
+                               String longitude, int districtId, int stateId,
+                               int languageId, int countryId) {
         FirstName = firstName;
         LastName = lastName;
         Gender = gender;
@@ -38,6 +41,8 @@ public class RegistrationRequest {
         Latitude = latitude;
         Longitude = longitude;
         DistrictId = districtId;
+        StateId = stateId;
+        LanguageId = languageId;
         countryid = countryId;
     }
 }

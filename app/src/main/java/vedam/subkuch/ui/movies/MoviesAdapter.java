@@ -55,7 +55,7 @@ public class MoviesAdapter extends BaseAdapter {
         MoviesAdapter.ViewHolder holder;
 
         if (v == null) {
-            v = inflater.inflate(R.layout.fragment_movies_list_item, null);
+            v = inflater.inflate(R.layout.fragment_movies_list_item, parent, false);
             holder = new MoviesAdapter.ViewHolder();
             holder.flMovie = v.findViewById(R.id.fl_movie);
             holder.rlSubContainer = v.findViewById(R.id.rl_sub_container);

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.core.os.BundleCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -58,7 +59,7 @@ public class AllBookingsFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null)
-            provider = getArguments().getParcelable(Constants.EXTRA_PROVIDER);
+            provider = BundleCompat.getParcelable(getArguments(), Constants.EXTRA_PROVIDER, Provider.class);
     }
 
     @Override
@@ -111,8 +112,9 @@ public class AllBookingsFragment extends BaseFragment {
 
         if (response != null && !response.isEmpty()) {
             pageNo++;
+            int previousSize = needBookings.size();
             needBookings.addAll(response);
-            adapter.notifyDataSetChanged();
+            adapter.notifyItemRangeInserted(previousSize, response.size());
         }
     }
 

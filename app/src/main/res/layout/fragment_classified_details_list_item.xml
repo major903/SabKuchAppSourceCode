@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/margin_4dp"
     android:layout_marginBottom="@dimen/margin_4dp"
-    android:background="@drawable/myshape"
-    android:orientation="vertical"
-    android:padding="@dimen/margin_16dp">
+    app:cardCornerRadius="@dimen/margin_4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_12dp">
 
     <ImageView
         android:id="@+id/iv_ad"
@@ -16,6 +21,7 @@
         android:layout_gravity="center"
         android:layout_margin="@dimen/margin_16dp"
         android:scaleType="fitXY"
+        android:contentDescription="@string/image_content_description"
         tools:src="@color/light_phone_book" />
 
     <TextView
@@ -86,4 +92,5 @@
         android:textSize="14sp"
         tools:text="@string/err" />
 
-</LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

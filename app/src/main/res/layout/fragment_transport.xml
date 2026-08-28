@@ -5,8 +5,8 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/margin_16dp"
-        android:paddingRight="@dimen/margin_16dp"
+        android:paddingStart="@dimen/margin_16dp"
+        android:paddingEnd="@dimen/margin_16dp"
         android:paddingBottom="@dimen/margin_16dp">
 
         <LinearLayout
@@ -20,6 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16dp"
+                android:contentDescription="@string/image_action_description"
                 android:background="@drawable/book_hotels" />
 
             <ImageButton
@@ -28,6 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16dp"
+                android:contentDescription="@string/image_action_description"
                 android:background="@drawable/book_flights" />
 
 
@@ -37,6 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16dp"
+                android:contentDescription="@string/image_action_description"
                 android:background="@drawable/book_transport" />
         </LinearLayout>
 

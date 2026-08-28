@@ -1,0 +1,365 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ComplexCondition:BaseActivity.kt$BaseActivity$enterAnim != 0 || exitAnim != 0 || enterAnimPop != 0 || exitAnimPop != 0</ID>
+    <ID>ComplexCondition:WalletActivity.kt$WalletActivity$TextUtils.isEmpty(profileFirstName) &amp;&amp; TextUtils.isEmpty(profileLastName) &amp;&amp; TextUtils.isEmpty(profileData.refferalCode) &amp;&amp; !isReferralDataAvailable</ID>
+    <ID>ConstructorParameterNaming:Business.kt$Business$val Addresses: ArrayList&lt;BusinessAddress&gt;? = ArrayList()</ID>
+    <ID>ConstructorParameterNaming:Business.kt$Business$val AvegrageOfRating: String? = null</ID>
+    <ID>ConstructorParameterNaming:Business.kt$Business$val BusinessID: String? = null</ID>
+    <ID>ConstructorParameterNaming:Business.kt$Business$val BusinessName: String? = null</ID>
+    <ID>ConstructorParameterNaming:Business.kt$Business$val City: String? = null</ID>
+    <ID>ConstructorParameterNaming:Business.kt$Business$val Country: String? = null</ID>
+    <ID>ConstructorParameterNaming:Business.kt$Business$val Image: String? = null</ID>
+    <ID>ConstructorParameterNaming:Business.kt$Business$val Reviews: ArrayList&lt;Review&gt;? = ArrayList()</ID>
+    <ID>ConstructorParameterNaming:Business.kt$Business$val Website: String? = null</ID>
+    <ID>ConstructorParameterNaming:BusinessAddress.kt$BusinessAddress$var Address: String? = null</ID>
+    <ID>ConstructorParameterNaming:BusinessAddress.kt$BusinessAddress$var City: String? = null</ID>
+    <ID>ConstructorParameterNaming:BusinessAddress.kt$BusinessAddress$var ContactPerson: String? = null</ID>
+    <ID>ConstructorParameterNaming:BusinessAddress.kt$BusinessAddress$var DealingIn: String? = null</ID>
+    <ID>ConstructorParameterNaming:BusinessAddress.kt$BusinessAddress$var Distance: String? = null</ID>
+    <ID>ConstructorParameterNaming:BusinessAddress.kt$BusinessAddress$var Email: String? = null</ID>
+    <ID>ConstructorParameterNaming:BusinessAddress.kt$BusinessAddress$var InfoLine1: String? = null</ID>
+    <ID>ConstructorParameterNaming:BusinessAddress.kt$BusinessAddress$var InfoLine2: String? = null</ID>
+    <ID>ConstructorParameterNaming:BusinessAddress.kt$BusinessAddress$var Mobile1: String? = null</ID>
+    <ID>ConstructorParameterNaming:BusinessAddress.kt$BusinessAddress$var Mobile2: String? = null</ID>
+    <ID>ConstructorParameterNaming:BusinessAddress.kt$BusinessAddress$var PhoneNo: String? = null</ID>
+    <ID>ConstructorParameterNaming:BusinessAddress.kt$BusinessAddress$var Zipcode: String? = null</ID>
+    <ID>ConstructorParameterNaming:ContactObject.kt$ContactObject$val CityId: Int = 0</ID>
+    <ID>ConstructorParameterNaming:ContactObject.kt$ContactObject$val Name: String? = null</ID>
+    <ID>ConstructorParameterNaming:ContactObject.kt$ContactObject$val Status: Boolean = true</ID>
+    <ID>ConstructorParameterNaming:ContactObject.kt$ContactObject$val UserId: Int</ID>
+    <ID>ConstructorParameterNaming:ContactObject.kt$ContactObject$var Mobile1: String? = null</ID>
+    <ID>ConstructorParameterNaming:ContactObject.kt$ContactObject$var Mobile2: String? = null</ID>
+    <ID>ConstructorParameterNaming:ContactObject.kt$ContactObject$var Mobile3: String? = null</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$val Distance: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$val Height: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$val ImagesList: ArrayList&lt;ImageObject&gt;?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$val OwnCarType: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$val OwnHouseType: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$val SmokingType: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$val Weight: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var AboutMe: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var AccessPin: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var AnualIncomeid: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var BodyTypeName: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var BodyTypeid: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var CasteId: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var CityId: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var CityName: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var ComplexionName: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var Complexionid: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var CountryName: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var CreatedDate: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var DOB: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var Dating: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var DeviceId: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var DoshamName: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var Doshamid: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var DrinkingStatusName: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var DrinkingStatusid: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var EMail: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var FirstName: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var FoodHabitsName: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var FoodHabitsid: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var Gender: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var GotraName: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var Gotraid: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var Income: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var LastName: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var Latitude: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var LivingWithId: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var LivingWithName: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var Longitude: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var MaritalStatusName: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var MasterCastName: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var MatrialStatusid: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var Matrimonial: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var Mobile: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var MothertongueName: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var Nakshakraid: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var NakshatraName: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var OccupationName: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var OccupationOther: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var Occupationid: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var PhysicalStatusName: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var PhysicalStatusid: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var ProfileId: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var QualificationName: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var Qualificationid: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var ReligionId: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var ReligionName: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var TokenId: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var UpdatedDate: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var UserTypeId: String?</ID>
+    <ID>ConstructorParameterNaming:DatingProfile.kt$DatingProfile$var UserTypeName: String?</ID>
+    <ID>ConstructorParameterNaming:OMenu.kt$OMenu$val CityId: String? = null</ID>
+    <ID>ConstructorParameterNaming:OMenu.kt$OMenu$val MenuId: Int = 0</ID>
+    <ID>ConstructorParameterNaming:OMenu.kt$OMenu$var SortOrder: String? = null</ID>
+    <ID>ConstructorParameterNaming:Product.kt$Product$@SerializedName("BrandName") var BrandName: String? = null</ID>
+    <ID>ConstructorParameterNaming:Product.kt$Product$@SerializedName("CityId") var CityId: Int? = null</ID>
+    <ID>ConstructorParameterNaming:Product.kt$Product$@SerializedName("CreatedBy") var CreatedBy: String? = null</ID>
+    <ID>ConstructorParameterNaming:Product.kt$Product$@SerializedName("CreatedOn") var CreatedOn: String? = null</ID>
+    <ID>ConstructorParameterNaming:Product.kt$Product$@SerializedName("Distance") var Distance: String? = null</ID>
+    <ID>ConstructorParameterNaming:Product.kt$Product$@SerializedName("Image1") var Image1: String? = null</ID>
+    <ID>ConstructorParameterNaming:Product.kt$Product$@SerializedName("Image2") var Image2: String? = null</ID>
+    <ID>ConstructorParameterNaming:Product.kt$Product$@SerializedName("Image3") var Image3: String? = null</ID>
+    <ID>ConstructorParameterNaming:Product.kt$Product$@SerializedName("Image4") var Image4: String? = null</ID>
+    <ID>ConstructorParameterNaming:Product.kt$Product$@SerializedName("Image5") var Image5: String? = null</ID>
+    <ID>ConstructorParameterNaming:Product.kt$Product$@SerializedName("Isactive") var Isactive: Boolean? = null</ID>
+    <ID>ConstructorParameterNaming:Product.kt$Product$@SerializedName("ItemCode") var ItemCode: String? = null</ID>
+    <ID>ConstructorParameterNaming:Product.kt$Product$@SerializedName("ItemDescriptionShort") var ItemDescriptionShort: String? = null</ID>
+    <ID>ConstructorParameterNaming:Product.kt$Product$@SerializedName("ItemName") var ItemName: String? = null</ID>
+    <ID>ConstructorParameterNaming:Product.kt$Product$@SerializedName("Price") var Price: String? = null</ID>
+    <ID>ConstructorParameterNaming:Product.kt$Product$@SerializedName("ShoppingId") var ShoppingId: String? = null</ID>
+    <ID>ConstructorParameterNaming:Product.kt$Product$@SerializedName("ShoppingSubcatid") var ShoppingSubcatid: Int? = null</ID>
+    <ID>ConstructorParameterNaming:Product.kt$Product$@SerializedName("VendorName") var VendorName: String? = null</ID>
+    <ID>ConstructorParameterNaming:Product.kt$Product$@SerializedName("itemdescriptionlong") var ItemDescriptionLong: String? = null</ID>
+    <ID>ConstructorParameterNaming:Review.kt$Review$val Rating: String?</ID>
+    <ID>ConstructorParameterNaming:Review.kt$Review$val UserName: String?</ID>
+    <ID>ConstructorParameterNaming:Review.kt$Review$var BusinessReview: String?</ID>
+    <ID>ConstructorParameterNaming:ShoppingSubCategory.kt$ShoppingSubCategory$@SerializedName("Image") var Image: String? = null</ID>
+    <ID>ConstructorParameterNaming:ShoppingSubCategory.kt$ShoppingSubCategory$@SerializedName("Name") var Name: String? = null</ID>
+    <ID>ConstructorParameterNaming:ShoppingSubCategory.kt$ShoppingSubCategory$@SerializedName("ShoppingSubcatid") var ShoppingSubcatid: String? = null</ID>
+    <ID>CyclomaticComplexMethod:AddJobsActivity.kt$AddJobsActivity$private fun validateErrorMessage(): Int</ID>
+    <ID>DestructuringDeclarationWithTooManyEntries:ChatAdapter.kt$ChatAdapter$val (_, _, fromId, _, message, timeStamp, _, status, isRead) = getItem(position)</ID>
+    <ID>EmptyClassBlock:ProductDetailsActivity.kt$ProductDetailsActivity${ }</ID>
+    <ID>EmptyFunctionBlock:AddClassifiedFragment.kt$AddClassifiedFragment${}</ID>
+    <ID>EmptyFunctionBlock:AddDirectoryFragment.kt$AddDirectoryFragment${}</ID>
+    <ID>EmptyFunctionBlock:AddJobsActivity.kt$AddJobsActivity.&lt;no name provided&gt;${}</ID>
+    <ID>EmptyFunctionBlock:AddNeedActivity.kt$AddNeedActivity${}</ID>
+    <ID>EmptyFunctionBlock:AddQuestionActivity.kt$AddQuestionActivity.&lt;no name provided&gt;${}</ID>
+    <ID>EmptyFunctionBlock:AddTransportActivity.kt$AddTransportActivity.&lt;no name provided&gt;${}</ID>
+    <ID>EmptyFunctionBlock:ApplyJobFragment.kt$ApplyJobFragment${}</ID>
+    <ID>EmptyFunctionBlock:BaseActivity.kt$BaseActivity${ }</ID>
+    <ID>EmptyFunctionBlock:BaseActivity.kt$BaseActivity${}</ID>
+    <ID>EmptyFunctionBlock:BaseAddImageFragment.kt$BaseAddImageFragment${}</ID>
+    <ID>EmptyFunctionBlock:ExperienceFragment.kt$ExperienceFragment${}</ID>
+    <ID>EmptyFunctionBlock:ProductsFragment.kt$ProductsFragment${ }</ID>
+    <ID>EmptyFunctionBlock:SubmitFragment.kt$SubmitFragment${}</ID>
+    <ID>FunctionParameterNaming:BaseAddImageFragment.kt$BaseAddImageFragment$`in`: InputStream?</ID>
+    <ID>ImplicitDefaultLocale:BaseAddImageFragment.kt$BaseAddImageFragment$String.format("image%s", Date().time)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format( "%s/AllAPI/GetAskmecategory?userid=%s", NetworkConstants.END_POINT, userId )</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format( "%s/AllAPI/GetDesinationCity?userid=%s&amp;vehicletype=%s", NetworkConstants.END_POINT, userId, vehicletype )</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format( "%s/AllAPI/GetVehicleBycity?userid=%s", NetworkConstants.END_POINT, userId )</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format( "%s/AllAPI/GetVehicleTimingDetails?userid=%s&amp;vehicletype=%s&amp;Cityname=%s", NetworkConstants.END_POINT, userId, vehicletype, cityName )</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format( "%s/AllAPI/Phonebook?userid=%s&amp;categoryId=%s", NetworkConstants.END_POINT, userId, categoryId )</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format( "%s/AllAPI/Phoonebookcategory?userid=%s", NetworkConstants.END_POINT, userId )</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format( "%s/api/Classified/DeleteAd?ClassifiedAdId=%s&amp;UserId=%s", NetworkConstants.END_POINT2, adId, userId )</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format( "%s/api/Classified/SubCategories?CategoryId=%s", NetworkConstants.END_POINT2, categoryId )</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format( "%s/api/Inbox/GetInbox?UserProfileId=%s", NetworkConstants.END_POINT2, userId )</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format( "%s/api/JobsOld/Directory/GetSubCategories?CategoryId=%s", NetworkConstants.END_POINT2, categoryId )</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format( "%s/api/JobsOld/Directory/SearchBusinesses?SearchText=%s", NetworkConstants.END_POINT2, searchTerm ?: "" )</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format( "%s/api/Message/GetBroadCastMessage?id=%s", NetworkConstants.END_POINT2, userId )</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format( "%s/api/Needs/MarkComplete?NeedId=%s&amp;UserId=%s", NetworkConstants.END_POINT2, needId, AppPrefs.getPrefsUserId(context) )</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format( "%s/api/Shopping/GetProductDetails?shoppingId=%s", NetworkConstants.END_POINT2, shoppingId )</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format( "%s/api/Shopping/GetShoppingSubcategories", NetworkConstants.END_POINT2 )</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format( "%s/api/Transport/MarkComplete?TransportId=%s&amp;UserId=%s", NetworkConstants.END_POINT2, transportId, AppPrefs.getPrefsUserId(context) )</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format( "%s/api/UserProfile/UserCurrentLocation?UserId=%s&amp;Latitude=%s&amp;Longitude=%s", NetworkConstants.END_POINT2, userId, latitude, longitude )</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format( "%s/api/UserProfile/ViewProfile?ProfileId=%s", NetworkConstants.END_POINT2, userId )</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/AllAPI/AskmePost", NetworkConstants.END_POINT)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/AllAPI/AskmeReplay", NetworkConstants.END_POINT)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/AllAPI/GetAllcountry", NetworkConstants.END_POINT)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/Directory/ReviewRating", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/AllAPI/GetMenus?UserId=%s", NetworkConstants.END_POINT2, userId)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/Classified/AddClassifiedAds", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/Classified/Categories", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/Classified/UpdateClassifiedAds", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/Classified/UploadImage", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/Dating/SetLikeDislike", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/Dating/UploadProfileImage", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/Events/AddEvent", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/Events/UploadEventImage", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/Feature/GetByCity?UserId=%s", NetworkConstants.END_POINT2, userId)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/JobsOld/Directory/AddBusiness", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/JobsOld/Directory/GetCategories", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/Master/GetTransportCoolie", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/Master/GetTransportTypes", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/Matrimony/SetLikeDislike", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/Matrimony/UploadProfileImage", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/Movies/GetMovies", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/Needs/GetProviders", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/Needs/PostNeed", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/Offers/GetOffers", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/PublicUtility/GetSubCategories", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/PushNotification/RegisterDevice", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/Referral/GetMyReferral", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/Referral/GetMyWallet", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/Referral/ShareContent", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/Referral/Withdrawal", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/Transport/AddTransport", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/UserProfile/LinkReferral", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/UserProfile/SetAccessPin", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DataFetcher.kt$DataFetcher$String.format("%s/api/UserProfile/VerifyAccessPin", NetworkConstants.END_POINT2)</ID>
+    <ID>ImplicitDefaultLocale:DirectoryDetailsAdapter.kt$DirectoryDetailsAdapter.ViewHolder$String.format("%s %s", prefix, text)</ID>
+    <ID>ImplicitDefaultLocale:JobsAdapter.kt$JobsAdapter$String.format("%s", job.jobLocation)</ID>
+    <ID>LargeClass:DataFetcher.kt$DataFetcher</ID>
+    <ID>LargeClass:HomeActivity.kt$HomeActivity : BaseActivityOnNavigationItemSelectedListenerInstallReferrerStateListener</ID>
+    <ID>LongMethod:JobsAdapter.kt$JobsAdapter$private fun addPostContactActions(container: LinearLayout, post: Post)</ID>
+    <ID>LongMethod:JobsAdapter.kt$JobsAdapter$private fun setPosition(llPosition: LinearLayout, posts: ArrayList&lt;Post&gt;)</ID>
+    <ID>LongParameterList:BaseActivity.kt$BaseActivity$( containerId: Int, fragment: Fragment?, tag: String? = null, addToBackStack: Boolean = false, @AnimRes enterAnim: Int = 0, @AnimRes exitAnim: Int = 0, @AnimRes enterAnimPop: Int = 0, @AnimRes exitAnimPop: Int = 0 )</ID>
+    <ID>LongParameterList:BaseFragment.kt$BaseFragment$( containerId: Int, fragment: Fragment?, tag: String?, addToBackStack: Boolean, @AnimRes enterAnim: Int, @AnimRes exitAnim: Int, @AnimRes enterAnimPop: Int, @AnimRes exitAnimPop: Int )</ID>
+    <ID>LongParameterList:DataFetcher.kt$DataFetcher$( context: Context?, dataPartMap: Map&lt;String?, DataPart?&gt;?, updateSuccessListener: Response.Listener&lt;T&gt;?, repClass: Type?, errorListener: Response.ErrorListener?, classifiedId: String )</ID>
+    <ID>LongParameterList:DataFetcher.kt$DataFetcher$( context: Context?, dataPartMap: Map&lt;String?, DataPart?&gt;?, updateSuccessListener: Response.Listener&lt;T&gt;?, repClass: Type?, errorListener: Response.ErrorListener?, eventId: String )</ID>
+    <ID>LongParameterList:DataFetcher.kt$DataFetcher$( context: Context?, updateSuccessListener: Response.Listener&lt;T&gt;?, repClass: Class&lt;T&gt;?, errorListener: Response.ErrorListener?, categoryId: String?, pageIndex: Int, pageSize: Int )</ID>
+    <ID>LongParameterList:DataFetcher.kt$DataFetcher$( context: Context?, updateSuccessListener: Response.Listener&lt;T&gt;?, repClass: Class&lt;T&gt;?, errorListener: Response.ErrorListener?, categoryId: String?, search: String?, pageIndex: Int, pageSize: Int, gender: Int )</ID>
+    <ID>LongParameterList:DataFetcher.kt$DataFetcher$( context: Context?, updateSuccessListener: Response.Listener&lt;T&gt;?, repClass: Class&lt;T&gt;?, errorListener: Response.ErrorListener?, countryCode: String?, phoneNumber: String? )</ID>
+    <ID>LongParameterList:DataFetcher.kt$DataFetcher$( context: Context?, updateSuccessListener: Response.Listener&lt;T&gt;?, repClass: Class&lt;T&gt;?, errorListener: Response.ErrorListener?, countryCode: String?, phoneNumber: String?, otp: String? )</ID>
+    <ID>LongParameterList:DataFetcher.kt$DataFetcher$( context: Context?, updateSuccessListener: Response.Listener&lt;T&gt;?, repClass: Class&lt;T&gt;?, errorListener: Response.ErrorListener?, latitude: String?, longitude: String? )</ID>
+    <ID>LongParameterList:DataFetcher.kt$DataFetcher$( context: Context?, updateSuccessListener: Response.Listener&lt;T&gt;?, repClass: Class&lt;T&gt;?, errorListener: Response.ErrorListener?, pageIndex: Int, pageSize: Int )</ID>
+    <ID>LongParameterList:DataFetcher.kt$DataFetcher$( context: Context?, updateSuccessListener: Response.Listener&lt;T&gt;?, repClass: Class&lt;T&gt;?, errorListener: Response.ErrorListener?, providerId: String?, pageIndex: Int, pageSize: Int )</ID>
+    <ID>LongParameterList:DataFetcher.kt$DataFetcher$( context: Context?, updateSuccessListener: Response.Listener&lt;T&gt;?, repClass: Class&lt;T&gt;?, errorListener: Response.ErrorListener?, vehicletype: String?, cityName: String? )</ID>
+    <ID>LongParameterList:DataFetcher.kt$DataFetcher$( context: Context?, updateSuccessListener: Response.Listener&lt;T&gt;?, repClass: Type?, errorListener: Response.ErrorListener?, categoryId: String?, subCategoryId: String?, search: String?, pageIndex: Int, pageSize: Int )</ID>
+    <ID>LongParameterList:DataFetcher.kt$DataFetcher$( context: Context?, updateSuccessListener: Response.Listener&lt;T&gt;?, repClass: Type?, errorListener: Response.ErrorListener?, pageIndex: Int, pageSize: Int )</ID>
+    <ID>LongParameterList:DataFetcher.kt$DataFetcher$( context: Context?, updateSuccessListener: Response.Listener&lt;T&gt;?, repClass: Type?, errorListener: Response.ErrorListener?, pageIndex: Int, pageSize: Int, subCategoryId: String? )</ID>
+    <ID>LongParameterList:DataFetcher.kt$DataFetcher$( context: Context?, updateSuccessListener: Response.Listener&lt;T&gt;?, repClass: Type?, errorListener: Response.ErrorListener?, subCategoryId: String?, pageIndex: Int, pageSize: Int )</ID>
+    <ID>MagicNumber:AddClassifiedFragment.kt$AddClassifiedFragment$10</ID>
+    <ID>MagicNumber:AddDirectoryFragment.kt$AddDirectoryFragment$20</ID>
+    <ID>MagicNumber:AddJobsActivity.kt$AddJobsActivity$10</ID>
+    <ID>MagicNumber:AddNeedActivity.kt$AddNeedActivity$10</ID>
+    <ID>MagicNumber:AddQuestionActivity.kt$AddQuestionActivity$10</ID>
+    <ID>MagicNumber:ApplyJobFragment.kt$ApplyJobFragment$10</ID>
+    <ID>MagicNumber:BaseAddImageFragment.kt$BaseAddImageFragment$1024</ID>
+    <ID>MagicNumber:BaseFragment.kt$BaseFragment$10</ID>
+    <ID>MagicNumber:ChatListFragment.kt$ChatListFragment$200</ID>
+    <ID>MagicNumber:DirectoryFragment.kt$DirectoryFragment$300</ID>
+    <ID>MagicNumber:HomeActivity.kt$HomeActivity$4</ID>
+    <ID>MagicNumber:HomeActivity.kt$HomeActivity$5</ID>
+    <ID>MagicNumber:JobsAdapter.kt$JobsAdapter$12</ID>
+    <ID>MagicNumber:JobsAdapter.kt$JobsAdapter$16</ID>
+    <ID>MagicNumber:JobsAdapter.kt$JobsAdapter$23</ID>
+    <ID>MagicNumber:JobsAdapter.kt$JobsAdapter$3</ID>
+    <ID>MagicNumber:JobsAdapter.kt$JobsAdapter$59</ID>
+    <ID>MagicNumber:JobsAdapter.kt$JobsAdapter$8</ID>
+    <ID>MagicNumber:ProductsFragment.kt$ProductsFragment$20</ID>
+    <ID>MagicNumber:ShareUtils.kt$ShareUtils.&lt;no name provided&gt;$90</ID>
+    <ID>MagicNumber:ShoppingFragment.kt$ShoppingFragment$20</ID>
+    <ID>MagicNumber:ShowProfilesActivity.kt$ShowProfilesActivity$100</ID>
+    <ID>MagicNumber:ShowProfilesActivity.kt$ShowProfilesActivity$4</ID>
+    <ID>MagicNumber:ShowProfilesActivity.kt$ShowProfilesActivity$5</ID>
+    <ID>MaxLineLength:AddEventFragment.kt$vedam.subkuch.ui.events.AddEventFragment.kt</ID>
+    <ID>MaxLineLength:AddJobsActivity.kt$AddJobsActivity$!AppUtil.validateEmail(activityAddJobsBinding!!.etContactEmail.text.toString())</ID>
+    <ID>MaxLineLength:AddJobsActivity.kt$AddJobsActivity$!activityAddJobsBinding!!.cbCall.isChecked</ID>
+    <ID>MaxLineLength:AddJobsActivity.kt$AddJobsActivity$b</ID>
+    <ID>MaxLineLength:BaseAddImageFragment.kt$BaseAddImageFragment$UiUtil.showDialog(mContext, message, { _: DialogInterface?, i: Int -&gt; AppUtil.openAppSettings(mContext) }, false)</ID>
+    <ID>MaxLineLength:BaseAddImageFragment.kt$BaseAddImageFragment$else</ID>
+    <ID>MaxLineLength:BaseAddImageFragment.kt$BaseAddImageFragment$val file = File.createTempFile(String.format("image%s", Date().time), ".jpg", mContext?.externalCacheDir)</ID>
+    <ID>MaxLineLength:BaseAddImageFragment.kt$BaseAddImageFragment$val imgUri = FileProvider.getUriForFile(requireContext(), mContext?.applicationContext?.packageName + ".provider", file)</ID>
+    <ID>MaxLineLength:ChatFragment.kt$ChatFragment$*</ID>
+    <ID>MaxLineLength:DataFetcher.kt$DataFetcher$NetworkGateway.callGetApiWithHeaders(context, url, null, updateSuccessListener, repClass, errorListener, headers)</ID>
+    <ID>MaxLineLength:DataFetcher.kt$DataFetcher$context: Context?</ID>
+    <ID>MaxLineLength:DirectoryDetailsAdapter.kt$DirectoryDetailsAdapter.ViewHolder$"https://www.google.com/maps/dir/?api=1&amp;" + "destination=" + businessAddress.latitude + "%2C" + businessAddress.longitude</ID>
+    <ID>MaxLineLength:ExperienceFragment.kt$ExperienceFragment$fragmentExperienceBinding!!.btPrevious.setOnClickListener { v: View? -&gt; if (activity != null &amp;&amp; activity?.supportFragmentManager != null) activity?.supportFragmentManager?.popBackStack() }</ID>
+    <ID>MaxLineLength:ExperienceFragment.kt$ExperienceFragment$jobMelaRequest = arguments?.let { BundleCompat.getParcelable(it, Constants.EXTRA_DATA, JobMelaRequest::class.java) }</ID>
+    <ID>MaxLineLength:ProductAdapter.kt$ProductAdapter$class</ID>
+    <ID>MaxLineLength:ProductDetailsFragment.kt$ProductDetailsFragment$DataFetcher</ID>
+    <ID>MaxLineLength:ProductDetailsFragment.kt$ProductDetailsFragment$ShareUtils</ID>
+    <ID>MaxLineLength:ProductDetailsFragment.kt$ProductDetailsFragment$private</ID>
+    <ID>MaxLineLength:ProductDetailsFragment.kt$ProductDetailsFragment$str += SimpleSpanBuilder.Companion.Span("Rs. ${it.Price}", ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.reddish_brown)))</ID>
+    <ID>MaxLineLength:ProductDetailsFragment.kt$ProductDetailsFragment$val</ID>
+    <ID>MaxLineLength:ProductsFragment.kt$ProductsFragment$DataFetcher.getProducts(mContext, onProductsSuccessListener, type, onErrorListener, subcategoryId, pageNo, pageSize)</ID>
+    <ID>MaxLineLength:ProductsFragment.kt$ProductsFragment$private</ID>
+    <ID>MaxLineLength:ShareUtils.kt$ShareUtils.&lt;no name provided&gt;$// shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION) // temp permission for receiving app to read this file</ID>
+    <ID>MaxLineLength:ShoppingActivity.kt$ShoppingActivity$updateLocation(this, null, AddEventResponse::class.java, null, location!!.latitude.toString(), location.longitude.toString())</ID>
+    <ID>MaxLineLength:ShoppingFragment.kt$ShoppingFragment$// addFragmentWithAnimation(R.id.content_frame, ProductsFragment.newInstance(item.ShoppingSubcatid, item.Name), null, true)</ID>
+    <ID>MaxLineLength:ShoppingFragment.kt$ShoppingFragment$DataFetcher.getHomeProducts(mContext, onProductsSuccessListener, type, onErrorListener, pageNo, pageSize)</ID>
+    <ID>MaxLineLength:ShoppingFragment.kt$ShoppingFragment$DataFetcher.getProducts(mContext, onProductsSuccessListener, type, onErrorListener, selectedSubCategoryId, pageNo, pageSize)</ID>
+    <ID>MaxLineLength:ShoppingFragment.kt$ShoppingFragment$DataFetcher.getProducts(mContext, onProductsSuccessListener, type, onErrorListener, subCatId, pageNo, pageSize)</ID>
+    <ID>MaxLineLength:ShoppingFragment.kt$ShoppingFragment$addFragmentWithAnimation(R.id.content_frame, ProductDetailsFragment.newInstance(item.ShoppingId, item.ItemName), null, true)</ID>
+    <ID>MaxLineLength:ShoppingFragment.kt$ShoppingFragment$private</ID>
+    <ID>MaxLineLength:SubCatAdapter.kt$SubCatAdapter$class</ID>
+    <ID>MaxLineLength:SubmitFragment.kt$SubmitFragment$// fragmentSubmitBinding!!.btPrevious.setOnClickListener { v: View? -&gt; if (activity != null &amp;&amp; activity?.supportFragmentManager != null) activity?.supportFragmentManager?.popBackStack() }</ID>
+    <ID>MaxLineLength:SubmitFragment.kt$SubmitFragment$jobMelaRequest = arguments?.let { BundleCompat.getParcelable(it, Constants.EXTRA_DATA, JobMelaRequest::class.java) }</ID>
+    <ID>MaxLineLength:WalletActivity.kt$WalletActivity$if</ID>
+    <ID>MaxLineLength:WalletActivity.kt$WalletActivity$private get() = myReferralResponse != null &amp;&amp; myReferralResponse!!.returnData != null &amp;&amp; myReferralResponse!!.returnData.referralDetails != null &amp;&amp; !myReferralResponse!!.returnData.referralDetails.isEmpty()</ID>
+    <ID>NestedBlockDepth:HomeActivity.kt$HomeActivity$private fun addContact(result: BroadQuery.Result)</ID>
+    <ID>NestedBlockDepth:ShoppingFragment.kt$ShoppingFragment.ShoppingOnScrollListener$override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int)</ID>
+    <ID>NewLineAtEndOfFile:BaseShoppingResponse.kt$vedam.subkuch.network.models.shopping.BaseShoppingResponse.kt</ID>
+    <ID>NewLineAtEndOfFile:BaseWebActivity.kt$vedam.subkuch.uicomponent.BaseWebActivity.kt</ID>
+    <ID>NewLineAtEndOfFile:Business.kt$vedam.subkuch.ui.directory.models.Business.kt</ID>
+    <ID>NewLineAtEndOfFile:BusinessAddress.kt$vedam.subkuch.ui.directory.models.BusinessAddress.kt</ID>
+    <ID>NewLineAtEndOfFile:Chat.kt$vedam.subkuch.db.chat.Chat.kt</ID>
+    <ID>NewLineAtEndOfFile:ChatAdapter.kt$vedam.subkuch.ui.chat.ChatAdapter.kt</ID>
+    <ID>NewLineAtEndOfFile:ChatListAdapter.kt$vedam.subkuch.ui.chat.ChatListAdapter.kt</ID>
+    <ID>NewLineAtEndOfFile:ChatViewModel.kt$vedam.subkuch.ui.chat.ChatViewModel.kt</ID>
+    <ID>NewLineAtEndOfFile:DatingProfile.kt$vedam.subkuch.ui.matrimonial.models.DatingProfile.kt</ID>
+    <ID>NewLineAtEndOfFile:DirectoryDetailsAdapter.kt$vedam.subkuch.ui.directory.DirectoryDetailsAdapter.kt</ID>
+    <ID>NewLineAtEndOfFile:MatchedProfileAdapter.kt$vedam.subkuch.ui.matrimonial.MatchedProfileAdapter.kt</ID>
+    <ID>NewLineAtEndOfFile:OMenu.kt$vedam.subkuch.network.models.OMenu.kt</ID>
+    <ID>NewLineAtEndOfFile:Product.kt$vedam.subkuch.network.models.shopping.Product.kt</ID>
+    <ID>NewLineAtEndOfFile:ProductDetailsActivity.kt$vedam.subkuch.ui.shopping.ProductDetailsActivity.kt</ID>
+    <ID>NewLineAtEndOfFile:Review.kt$vedam.subkuch.ui.directory.models.Review.kt</ID>
+    <ID>NewLineAtEndOfFile:ShoppingActivity.kt$vedam.subkuch.ui.shopping.ShoppingActivity.kt</ID>
+    <ID>NewLineAtEndOfFile:ShoppingSubCategory.kt$vedam.subkuch.network.models.shopping.ShoppingSubCategory.kt</ID>
+    <ID>NewLineAtEndOfFile:SimpleSpanBuilder.kt$vedam.subkuch.utils.SimpleSpanBuilder.kt</ID>
+    <ID>NewLineAtEndOfFile:SubCatAdapter.kt$vedam.subkuch.ui.shopping.SubCatAdapter.kt</ID>
+    <ID>PrintStackTrace:BaseActivity.kt$BaseActivity$exception</ID>
+    <ID>PrintStackTrace:BaseAddImageFragment.kt$BaseAddImageFragment$e</ID>
+    <ID>PrintStackTrace:BaseFragment.kt$BaseFragment$exception</ID>
+    <ID>PrintStackTrace:HomeActivity.kt$HomeActivity$e</ID>
+    <ID>ReturnCount:JobsAdapter.kt$JobsAdapter$private fun isCallAvailable(startValue: String?, endValue: String?): Boolean</ID>
+    <ID>ReturnCount:JobsAdapter.kt$JobsAdapter$private fun parseMinutes(value: String?): Int?</ID>
+    <ID>SpreadOperator:SimpleSpanBuilder.kt$SimpleSpanBuilder$(text, *styles)</ID>
+    <ID>SpreadOperator:SimpleSpanBuilder.kt$SimpleSpanBuilder.Companion.Span$(0, text, *styles)</ID>
+    <ID>SpreadOperator:SimpleSpanBuilder.kt$SimpleSpanBuilder.Companion.Span$(index, this.text, *this.styles)</ID>
+    <ID>SwallowedException:ShareUtils.kt$ShareUtils$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:BaseActivity.kt$BaseActivity$exception: Exception</ID>
+    <ID>TooGenericExceptionCaught:BaseAddImageFragment.kt$BaseAddImageFragment$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:BaseFragment.kt$BaseFragment$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:BaseFragment.kt$BaseFragment$exception: Exception</ID>
+    <ID>TooGenericExceptionCaught:DirectoryFragment.kt$DirectoryFragment$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:HomeActivity.kt$HomeActivity$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:HomeActivity.kt$HomeActivity$exception: Exception</ID>
+    <ID>TooGenericExceptionCaught:ShareUtils.kt$ShareUtils$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:ShareUtils.kt$ShareUtils.&lt;no name provided&gt;$e: Exception</ID>
+    <ID>TooGenericExceptionThrown:BaseFragment.kt$BaseFragment$throw RuntimeException( context.toString() + " must implement OnFragmentInteractionListener" )</ID>
+    <ID>TooGenericExceptionThrown:BaseFragment.kt$BaseFragment$throw RuntimeException( context.toString() + " must implement ScreenChangeListener" )</ID>
+    <ID>TooManyFunctions:AddClassifiedFragment.kt$AddClassifiedFragment : BaseAddImagesFragmentOnItemSelectedListener</ID>
+    <ID>TooManyFunctions:AddDirectoryFragment.kt$AddDirectoryFragment : BaseAddImagesFragmentOnItemSelectedListener</ID>
+    <ID>TooManyFunctions:AddJobsActivity.kt$AddJobsActivity : BaseActivity</ID>
+    <ID>TooManyFunctions:AddNeedActivity.kt$AddNeedActivity : BaseActivityOnItemSelectedListener</ID>
+    <ID>TooManyFunctions:ApplyJobFragment.kt$ApplyJobFragment : BaseAddImageFragmentOnItemSelectedListener</ID>
+    <ID>TooManyFunctions:BaseActivity.kt$BaseActivity : AppCompatActivityScreenChangeListenerOnFragmentInteractionListenerLocationCallbacks</ID>
+    <ID>TooManyFunctions:BaseAddImageFragment.kt$BaseAddImageFragment : BaseFragment</ID>
+    <ID>TooManyFunctions:BaseFragment.kt$BaseFragment : FragmentOnRefreshListener</ID>
+    <ID>TooManyFunctions:ChatFragment.kt$ChatFragment : BaseFragment</ID>
+    <ID>TooManyFunctions:ChatListFragment.kt$ChatListFragment : BaseFragmentOnListViewItemClickListener</ID>
+    <ID>TooManyFunctions:DataFetcher.kt$DataFetcher</ID>
+    <ID>TooManyFunctions:ExperienceFragment.kt$ExperienceFragment : BaseFragmentOnItemSelectedListener</ID>
+    <ID>TooManyFunctions:HomeActivity.kt$HomeActivity : BaseActivityOnNavigationItemSelectedListenerInstallReferrerStateListener</ID>
+    <ID>TooManyFunctions:JobsAdapter.kt$JobsAdapter : Adapter</ID>
+    <ID>TooManyFunctions:ShowProfilesActivity.kt$ShowProfilesActivity : BaseActivityOnNavigationItemSelectedListenerOnBackStackChangedListener</ID>
+    <ID>TooManyFunctions:SubmitFragment.kt$SubmitFragment : BaseAddImagesFragmentOnItemSelectedListener</ID>
+    <ID>TooManyFunctions:WalletActivity.kt$WalletActivity : BaseActivity</ID>
+    <ID>UnusedParameter:BaseFragment.kt$BaseFragment$view: View</ID>
+    <ID>UnusedParameter:DataFetcher.kt$DataFetcher$context: Context?</ID>
+    <ID>UnusedParameter:HomeActivity.kt$HomeActivity$v: View?</ID>
+    <ID>UnusedPrivateMember:ApplyJobFragment.kt$ApplyJobFragment$private fun getJobQualifications()</ID>
+    <ID>UnusedPrivateMember:JobsAdapter.kt$JobsAdapter$private fun getJobPost(posts: ArrayList&lt;Post&gt;): CharSequence</ID>
+    <ID>UnusedPrivateMember:ShowProfilesActivity.kt$ShowProfilesActivity$private fun startHomeActivity()</ID>
+    <ID>UnusedPrivateProperty:ChatListFragment.kt$ChatListFragment$private var hasMoreProjects = true</ID>
+    <ID>UnusedPrivateProperty:ChatListFragment.kt$ChatListFragment$private var loading = true</ID>
+    <ID>UtilityClassWithPublicConstructor:Extensions.kt$Extensions</ID>
+    <ID>VariableNaming:BaseAddImageFragment.kt$BaseAddImageFragment$val selected_key = (dialog as PickImageDialog).selected_key</ID>
+    <ID>WildcardImport:AddClassifiedFragment.kt$import android.view.*</ID>
+    <ID>WildcardImport:AddClassifiedFragment.kt$import vedam.subkuch.network.models.classifieds.*</ID>
+    <ID>WildcardImport:AddDirectoryFragment.kt$import android.view.*</ID>
+    <ID>WildcardImport:AddDirectoryFragment.kt$import android.widget.*</ID>
+    <ID>WildcardImport:AddDirectoryFragment.kt$import vedam.subkuch.ui.directory.models.*</ID>
+    <ID>WildcardImport:AddEventFragment.kt$import android.view.*</ID>
+    <ID>WildcardImport:AddJobsActivity.kt$import android.widget.*</ID>
+    <ID>WildcardImport:AddJobsActivity.kt$import vedam.subkuch.ui.jobs.models.*</ID>
+    <ID>WildcardImport:ApplyJobFragment.kt$import vedam.subkuch.network.models.*</ID>
+    <ID>WildcardImport:ApplyJobFragment.kt$import vedam.subkuch.ui.jobs.models.*</ID>
+    <ID>WildcardImport:BaseActivity.kt$import vedam.subkuch.network.*</ID>
+    <ID>WildcardImport:BaseAddImageFragment.kt$import java.io.*</ID>
+    <ID>WildcardImport:BaseFragment.kt$import vedam.subkuch.network.*</ID>
+    <ID>WildcardImport:ChatFragment.kt$import com.google.firebase.firestore.*</ID>
+    <ID>WildcardImport:DirectoryDetailsAdapter.kt$import vedam.subkuch.utils.*</ID>
+    <ID>WildcardImport:DirectoryFragment.kt$import android.view.*</ID>
+    <ID>WildcardImport:DirectoryFragment.kt$import kotlinx.coroutines.flow.*</ID>
+    <ID>WildcardImport:ExperienceFragment.kt$import vedam.subkuch.ui.jobs.models.*</ID>
+    <ID>WildcardImport:HomeActivity.kt$import vedam.subkuch.network.models.*</ID>
+    <ID>WildcardImport:HomeActivity.kt$import vedam.subkuch.utils.*</ID>
+  </CurrentIssues>
+</SmellBaseline>

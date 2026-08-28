@@ -3,6 +3,7 @@ package com.adevinta.leku
 import android.location.Location
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.core.os.ParcelCompat
 
 class LekuPoi : Parcelable {
     var id: String
@@ -29,7 +30,7 @@ class LekuPoi : Parcelable {
 
     private constructor(`in`: Parcel) {
         this.id = `in`.readString()!!
-        this.location = `in`.readParcelable(Location::class.java.classLoader)!!
+        this.location = ParcelCompat.readParcelable(`in`, Location::class.java.classLoader, Location::class.java)!!
         this.title = `in`.readString()!!
         this.address = `in`.readString()!!
     }

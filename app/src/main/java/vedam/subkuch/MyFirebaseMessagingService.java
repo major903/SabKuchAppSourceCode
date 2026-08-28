@@ -42,16 +42,22 @@ import vedam.subkuch.utils.LogUtils;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    private static final String TAG = "MyInstanceIDLS";
+    private static final String TAG = "MyFirebaseMessagingService";
 
-    /**
-     * Called if InstanceID token is updated. This may occur if the security of
-     * the previous token had been compromised. Note that this is called when the InstanceID token
-     * is initially generated so this is where you would retrieve the token.
-     */
+    /** Called when the Firebase installation ID changes. */
+    @Override
+    public void onRegistered(@NonNull String installationId) {
+        scheduleTokenSync();
+    }
+
+    /** Called when the FCM registration token is refreshed. */
+    @SuppressWarnings("deprecation")
     @Override
     public void onNewToken(@NonNull String token) {
+        scheduleTokenSync();
+    }
 
+    private void scheduleTokenSync() {
         boolean registeredInApp = AppPrefs.getPrefsIsTokenSent(this);
 
         if (registeredInApp) {
@@ -78,9 +84,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         int pendingIntentFlags = PendingIntent.FLAG_UPDATE_CURRENT;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            pendingIntentFlags |= PendingIntent.FLAG_IMMUTABLE;
-        }
+        pendingIntentFlags |= PendingIntent.FLAG_IMMUTABLE;
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 pendingIntentFlags);
 
@@ -89,12 +93,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel mChannel = new NotificationChannel(
-                    channelId, Constants.NOTIFICATION_CHANNEL_NAME, importance);
-            notificationManager.createNotificationChannel(mChannel);
-        }
+        int importance = NotificationManager.IMPORTANCE_HIGH;
+        NotificationChannel mChannel = new NotificationChannel(
+                channelId, Constants.NOTIFICATION_CHANNEL_NAME, importance);
+        notificationManager.createNotificationChannel(mChannel);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId)

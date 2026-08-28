@@ -91,7 +91,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="14dp"
-                            android:text="@string/wallet_coin_label"
+                            android:text="@string/wallet_available_coin_label"
                             android:textColor="@color/wallet_hero_secondary"
                             android:textSize="14sp" />
 
@@ -119,25 +119,51 @@
                             android:textColor="@color/wallet_hero_secondary"
                             android:textSize="13sp" />
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btn_withdraw"
-                            style="@style/Widget.MaterialComponents.Button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="48dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
-                            android:fontFamily="sans-serif-medium"
-                            android:minWidth="132dp"
-                            android:text="@string/withdraw_funds"
-                            android:textAllCaps="false"
-                            android:textColor="@color/wallet_hero_start"
-                            android:textSize="14sp"
-                            app:backgroundTint="@color/white"
-                            app:cornerRadius="14dp"
-                            app:icon="@drawable/ic_arrow_forward_wallet"
-                            app:iconGravity="textEnd"
-                            app:iconPadding="8dp"
-                            app:iconTint="@color/wallet_hero_start"
-                            app:rippleColor="@color/brand_blue_soft" />
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_withdraw"
+                                style="@style/Widget.MaterialComponents.Button"
+                                android:layout_width="0dp"
+                                android:layout_height="48dp"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif-medium"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                android:maxLines="1"
+                                android:minWidth="0dp"
+                                android:text="@string/withdraw"
+                                android:textAllCaps="false"
+                                android:textColor="@color/wallet_hero_start"
+                                android:textSize="13sp"
+                                app:backgroundTint="@color/white"
+                                app:cornerRadius="14dp"
+                                app:rippleColor="@color/brand_blue_soft" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_transfer"
+                                style="@style/Widget.MaterialComponents.Button"
+                                android:layout_width="0dp"
+                                android:layout_height="48dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif-medium"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                android:maxLines="1"
+                                android:minWidth="0dp"
+                                android:text="@string/transfer_funds"
+                                android:textAllCaps="false"
+                                android:textColor="@color/wallet_hero_start"
+                                android:textSize="13sp"
+                                app:backgroundTint="@color/white"
+                                app:cornerRadius="14dp"
+                                app:rippleColor="@color/brand_blue_soft" />
+                        </LinearLayout>
                     </LinearLayout>
                 </FrameLayout>
 
@@ -179,6 +205,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:orientation="vertical"
+                                android:paddingStart="16dp"
                                 android:paddingEnd="16dp">
 
                                 <TextView
@@ -218,7 +245,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:orientation="vertical"
-                                android:paddingStart="20dp">
+                                android:paddingStart="20dp"
+                                android:paddingEnd="20dp">
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -270,10 +298,11 @@
                         android:padding="20dp">
 
                         <TextView
+                            android:id="@+id/tv_referrals_title"
                             style="@style/WalletSectionTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/account_details" />
+                            android:text="@string/my_referrals" />
 
                         <TextView
                             android:id="@+id/tv_member_name_label"
@@ -336,7 +365,7 @@
                             android:textColor="@color/wallet_text_primary"
                             android:textSize="15sp" />
 
-                        <RelativeLayout
+                        <LinearLayout
                             android:id="@+id/rl_sub_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -346,32 +375,55 @@
                             android:paddingStart="14dp"
                             android:paddingTop="12dp"
                             android:paddingEnd="10dp"
-                            android:paddingBottom="12dp">
+                            android:paddingBottom="8dp"
+                            android:orientation="vertical">
 
-                            <TextView
-                                android:id="@+id/tv_referee"
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rv_referrals"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginEnd="8dp"
-                                android:layout_toStartOf="@id/iv_triangle"
-                                android:ellipsize="end"
-                                android:lineSpacingExtra="4dp"
+                                android:nestedScrollingEnabled="false"
+                                android:overScrollMode="never"
+                                android:visibility="gone"
+                                tools:listitem="@layout/item_wallet_referral"
+                                tools:visibility="visible" />
+
+                            <TextView
+                                android:id="@+id/tv_no_referrals"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/no_referrals_yet"
                                 android:textColor="@color/wallet_text_primary"
                                 android:textSize="14sp"
-                                tools:text="Maya Gupta" />
+                                android:visibility="gone"
+                                tools:visibility="visible" />
 
-                            <ImageView
-                                android:id="@+id/iv_triangle"
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:layout_alignParentEnd="true"
-                                android:layout_centerVertical="true"
-                                android:contentDescription="@string/expand_referrals"
-                                android:padding="2dp"
-                                android:src="@drawable/baseline_expand_more_black_24dp"
-                                app:tint="@color/wallet_text_secondary" />
-                        </RelativeLayout>
+                            <LinearLayout
+                                android:id="@+id/ll_referral_toggle"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_referral_toggle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/wallet_hero_start"
+                                    android:textSize="13sp"
+                                    tools:text="Show all 40 referrals" />
+
+                                <ImageView
+                                    android:id="@+id/iv_triangle"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_marginStart="4dp"
+                                    android:contentDescription="@string/expand_referrals"
+                                    android:padding="2dp"
+                                    android:src="@drawable/baseline_expand_more_black_24dp"
+                                    app:tint="@color/wallet_hero_start" />
+                            </LinearLayout>
+                        </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 

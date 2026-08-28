@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:DefaultCountryLocaleRect.kt$DefaultCountryLocaleRect$fun getLowerLeftFromZone(locale: Locale): LatLng?</ID>
+    <ID>CyclomaticComplexMethod:DefaultCountryLocaleRect.kt$DefaultCountryLocaleRect$fun getUpperRightFromZone(locale: Locale): LatLng?</ID>
+    <ID>CyclomaticComplexMethod:LocationPickerActivity.kt$LocationPickerActivity$private fun getSavedInstanceParams(savedInstanceState: Bundle)</ID>
+    <ID>CyclomaticComplexMethod:LocationPickerActivity.kt$LocationPickerActivity$private fun getTransitionBundleParams(transitionBundle: Bundle)</ID>
+    <ID>EmptyCatchBlock:GoogleGeocoderDataSource.kt$GoogleGeocoderDataSource${ }</ID>
+    <ID>EmptyFunctionBlock:GeocoderViewInterface.kt$GeocoderViewInterface.NullView${}</ID>
+    <ID>EmptyFunctionBlock:LocationPicker.kt$LocationPicker.EmptyLocationPickerTracker${ }</ID>
+    <ID>EmptyFunctionBlock:LocationPickerActivity.kt$LocationPickerActivity.&lt;no name provided&gt;${ }</ID>
+    <ID>EmptyFunctionBlock:LocationPickerActivity.kt$LocationPickerActivity.&lt;no name provided&gt;${}</ID>
+    <ID>ImplicitDefaultLocale:LocationPickerActivity.kt$LocationPickerActivity$String.format("%s: %s", getString(R.string.leku_latitude), latLng.latitude)</ID>
+    <ID>ImplicitDefaultLocale:LocationPickerActivity.kt$LocationPickerActivity$String.format("%s: %s", getString(R.string.leku_longitude), latLng.longitude)</ID>
+    <ID>ImplicitDefaultLocale:LocationPickerActivity.kt$LocationPickerActivity.Builder$String.format("%s|%s", layoutsToHide, OPTIONS_HIDE_CITY)</ID>
+    <ID>ImplicitDefaultLocale:LocationPickerActivity.kt$LocationPickerActivity.Builder$String.format("%s|%s", layoutsToHide, OPTIONS_HIDE_STREET)</ID>
+    <ID>ImplicitDefaultLocale:LocationPickerActivity.kt$LocationPickerActivity.Builder$String.format("%s|%s", layoutsToHide, OPTIONS_HIDE_ZIPCODE)</ID>
+    <ID>LargeClass:LocationPickerActivity.kt$LocationPickerActivity : AppCompatActivityOnMapReadyCallbackOnMapLongClickListenerGeocoderViewInterfaceOnMapClickListener</ID>
+    <ID>MaxLineLength:GoogleTimeZoneDataSource.kt$GoogleTimeZoneDataSource.Companion$val appInfo = context.packageManager.getApplicationInfo(context.packageName, PackageManager.GET_META_DATA)</ID>
+    <ID>MaxLineLength:LocationPickerActivity.kt$LocationPickerActivity$private</ID>
+    <ID>MaxLineLength:LocationPickerActivity.kt$LocationPickerActivity$searchZoneRect = BundleCompat.getParcelable(savedInstanceState, SEARCH_ZONE_RECT, SearchZoneRect::class.java)</ID>
+    <ID>MaxLineLength:LocationSearchAdapter.kt$LocationSearchAdapter$val textView = LayoutInflater.from(parent.context).inflate(R.layout.leku_search_list_item, parent, false) as TextView</ID>
+    <ID>NestedBlockDepth:LocationPickerActivity.kt$LocationPickerActivity$private fun setPois()</ID>
+    <ID>SwallowedException:AndroidGeocoderDataSource.kt$AndroidGeocoderDataSource$exception: IOException</ID>
+    <ID>SwallowedException:GoogleGeocoderDataSource.kt$GoogleGeocoderDataSource$e: JSONException</ID>
+    <ID>SwallowedException:GoogleGeocoderDataSource.kt$GoogleGeocoderDataSource$e: NetworkException</ID>
+    <ID>SwallowedException:GooglePlacesDataSource.kt$GooglePlacesDataSource$e: RuntimeExecutionException</ID>
+    <ID>SwallowedException:LocationPickerActivity.kt$LocationPickerActivity$e: ActivityNotFoundException</ID>
+    <ID>ThrowingExceptionFromFinally:NetworkClient.kt$NetworkClient$throw NetworkException(ioException)</ID>
+    <ID>ThrowsCount:NetworkClient.kt$NetworkClient$fun requestFromLocationName(request: String): String?</ID>
+    <ID>TooManyFunctions:GeocoderPresenter.kt$GeocoderPresenter</ID>
+    <ID>TooManyFunctions:GeocoderViewInterface.kt$GeocoderViewInterface</ID>
+    <ID>TooManyFunctions:GeocoderViewInterface.kt$GeocoderViewInterface$NullView : GeocoderViewInterface</ID>
+    <ID>TooManyFunctions:LocationPickerActivity.kt$LocationPickerActivity : AppCompatActivityOnMapReadyCallbackOnMapLongClickListenerGeocoderViewInterfaceOnMapClickListener</ID>
+    <ID>TooManyFunctions:LocationPickerActivity.kt$LocationPickerActivity$Builder</ID>
+    <ID>UnusedParameter:GeocoderPresenter.kt$GeocoderPresenter$debounceTime: Int</ID>
+    <ID>UseRequire:LocationPicker.kt$LocationPicker$throw IllegalArgumentException("The LocationPickerTracker instance can't be null.")</ID>
+  </CurrentIssues>
+</SmellBaseline>

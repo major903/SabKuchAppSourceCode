@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import vedam.subkuch.R;
@@ -146,7 +147,7 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         super.onViewCreated(view, savedInstanceState);
 
         if (isDating) {
-            binding.seekBarDistance.setMaxStartValue(500);
+            binding.seekBarDistance.setValues(Arrays.asList(0f, 500f));
             hideFields();
         }
         init();
@@ -190,33 +191,38 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
 
     private void init() {
 
-        binding.seekBarAge.setOnRangeSeekbarChangeListener((minValue, maxValue) -> {
-            minAge = minValue.toString();
-            maxAge = maxValue.toString();
-            binding.textViewAge.setText(String.format("%s-%s", minValue.toString(), maxValue));
+        binding.seekBarAge.addOnChangeListener((slider, value, fromUser) -> {
+            List<Float> values = slider.getValues();
+            minAge = String.valueOf(Math.round(values.get(0)));
+            maxAge = String.valueOf(Math.round(values.get(1)));
+            binding.textViewAge.setText(String.format("%s-%s", minAge, maxAge));
         });
-        binding.seekBarDistance.setOnRangeSeekbarChangeListener((minValue, maxValue) -> {
-            minDistance = minValue.toString();
-            maxDistance = maxValue.toString();
-            binding.textViewDistance.setText(String.format("%s-%s", minValue.toString(), maxValue));
-        });
-
-        binding.seekBarIncome.setOnRangeSeekbarChangeListener((minValue, maxValue) -> {
-            minIncome = minValue.toString();
-            maxMaxIncome = maxValue.toString();
-            binding.textViewIncome.setText(String.format("%s-%s", minValue.toString(), maxValue));
+        binding.seekBarDistance.addOnChangeListener((slider, value, fromUser) -> {
+            List<Float> values = slider.getValues();
+            minDistance = String.valueOf(Math.round(values.get(0)));
+            maxDistance = String.valueOf(Math.round(values.get(1)));
+            binding.textViewDistance.setText(String.format("%s-%s", minDistance, maxDistance));
         });
 
-        binding.seekBarWeight.setOnRangeSeekbarChangeListener((minValue, maxValue) -> {
-            minWeight = minValue.toString();
-            maxWeight = maxValue.toString();
-            binding.textViewWeight.setText(String.format("%s-%s", minValue.toString(), maxValue));
+        binding.seekBarIncome.addOnChangeListener((slider, value, fromUser) -> {
+            List<Float> values = slider.getValues();
+            minIncome = String.valueOf(Math.round(values.get(0)));
+            maxMaxIncome = String.valueOf(Math.round(values.get(1)));
+            binding.textViewIncome.setText(String.format("%s-%s", minIncome, maxMaxIncome));
         });
 
-        binding.seekBarHeight.setOnRangeSeekbarChangeListener((minValue, maxValue) -> {
-            minHeight = minValue.toString();
-            maxHeight = maxValue.toString();
-            binding.textViewHeight.setText(String.format("%s-%s", minValue.toString(), maxValue));
+        binding.seekBarWeight.addOnChangeListener((slider, value, fromUser) -> {
+            List<Float> values = slider.getValues();
+            minWeight = String.valueOf(Math.round(values.get(0)));
+            maxWeight = String.valueOf(Math.round(values.get(1)));
+            binding.textViewWeight.setText(String.format("%s-%s", minWeight, maxWeight));
+        });
+
+        binding.seekBarHeight.addOnChangeListener((slider, value, fromUser) -> {
+            List<Float> values = slider.getValues();
+            minHeight = String.valueOf(Math.round(values.get(0)));
+            maxHeight = String.valueOf(Math.round(values.get(1)));
+            binding.textViewHeight.setText(String.format("%s-%s", minHeight, maxHeight));
         });
 
         mPresenter = new PerferenceFragmentPresenter(this);
@@ -302,8 +308,8 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
     public void onSuccessfullyUpdatePreferences(UpdateMatrimonialResponse response) {
 
         UiUtil.showToast(getActivity(), getString(R.string.preference_updated));
-        if (getFragmentManager() != null) {
-            getFragmentManager().popBackStack();
+        if (isAdded()) {
+            getParentFragmentManager().popBackStack();
         }
     }
 
@@ -515,14 +521,11 @@ public class PreferenceFragment extends BaseFragment implements PerferenceFragme
         setText(binding.textViewSmoking, response.getReturnData().getSmokingType());
 
 
-       /* if (!response.getReturnData().getFromLocation().isEmpty()&&!response.getReturnData().getToLocation().isEmpty()){
-            seekBarDistance.setMinStartValue(Float.parseFloat(response.getReturnData().getFromLocation())).setMaxStartValue(Float.parseFloat(response.getReturnData().getToLocation())).apply();
-        }*/
-        binding.seekBarAge.setMinStartValue(Float.parseFloat(response.getReturnData().getMinAge())).setMaxStartValue(Float.parseFloat(response.getReturnData().getMaxAge())).apply();
-        binding.seekBarDistance.setMinStartValue(Float.parseFloat(response.getReturnData().getMinDistance())).setMaxStartValue(Float.parseFloat(response.getReturnData().getMaxDistance())).apply();
-        binding.seekBarWeight.setMinStartValue(Float.parseFloat(response.getReturnData().getMinWeight())).setMaxStartValue(Float.parseFloat(response.getReturnData().getMaxWeight())).apply();
-        binding.seekBarHeight.setMinStartValue(Float.parseFloat(response.getReturnData().getMinHeight())).setMaxStartValue(Float.parseFloat(response.getReturnData().getMaxHeight())).apply();
-        binding.seekBarIncome.setMinStartValue(Float.parseFloat(response.getReturnData().getMinIncome())).setMaxStartValue(Float.parseFloat(response.getReturnData().getMaxIncome())).apply();
+        binding.seekBarAge.setValues(Arrays.asList(Float.parseFloat(response.getReturnData().getMinAge()), Float.parseFloat(response.getReturnData().getMaxAge())));
+        binding.seekBarDistance.setValues(Arrays.asList(Float.parseFloat(response.getReturnData().getMinDistance()), Float.parseFloat(response.getReturnData().getMaxDistance())));
+        binding.seekBarWeight.setValues(Arrays.asList(Float.parseFloat(response.getReturnData().getMinWeight()), Float.parseFloat(response.getReturnData().getMaxWeight())));
+        binding.seekBarHeight.setValues(Arrays.asList(Float.parseFloat(response.getReturnData().getMinHeight()), Float.parseFloat(response.getReturnData().getMaxHeight())));
+        binding.seekBarIncome.setValues(Arrays.asList(Float.parseFloat(response.getReturnData().getMinIncome()), Float.parseFloat(response.getReturnData().getMaxIncome())));
     }
 
     private void setText(TextView tv, String value) {

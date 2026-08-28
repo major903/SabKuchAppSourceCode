@@ -52,7 +52,6 @@ public class SubDirectoryFragment extends BaseListFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         if (getArguments() != null)
             categoryId = getArguments().getString(Constants.EXTRA_CATEGORY_ID);
     }
@@ -66,6 +65,13 @@ public class SubDirectoryFragment extends BaseListFragment {
 
     public void onViewCreated(@NonNull View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+        installMenu(R.menu.add, item -> {
+            if (item.getItemId() == R.id.action_add) {
+                startActivity(new Intent(getActivity(), AddDirectoryActivity.class));
+                return true;
+            }
+            return false;
+        });
         getSubCategories();
     }
 
@@ -106,20 +112,4 @@ public class SubDirectoryFragment extends BaseListFragment {
         startActivity(intent);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.add, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == R.id.action_add) {
-            startActivity(new Intent(getActivity(), AddDirectoryActivity.class));
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

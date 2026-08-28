@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:DefaultCountryLocaleRect.kt:DefaultCountryLocaleRect$fun getLowerLeftFromZone: LatLng?</ID>
+    <ID>CyclomaticComplexMethod:DefaultCountryLocaleRect.kt:DefaultCountryLocaleRect$fun getUpperRightFromZone: LatLng?</ID>
+    <ID>CyclomaticComplexMethod:LocationPickerActivity.kt:LocationPickerActivity$private fun getSavedInstanceParams</ID>
+    <ID>CyclomaticComplexMethod:LocationPickerActivity.kt:LocationPickerActivity$private fun getTransitionBundleParams</ID>
+    <ID>DoubleMutabilityForCollection:AddressBuilder.kt:AddressBuilder.AddressComponent$internal var types: MutableList&lt;String&gt;? = null</ID>
+    <ID>DoubleMutabilityForCollection:LocationPickerActivity.kt:LocationPickerActivity$private var lekuPoisMarkersMap: MutableMap&lt;String, LekuPoi&gt;? = null</ID>
+    <ID>DoubleMutabilityForCollection:LocationPickerActivity.kt:LocationPickerActivity$private var locationNameList: MutableList&lt;String&gt; = ArrayList()</ID>
+    <ID>EmptyCatchBlock:GoogleGeocoderDataSource.kt:GoogleGeocoderDataSource${ }</ID>
+    <ID>EmptyFunctionBlock:GeocoderViewInterface.kt:GeocoderViewInterface.NullView${}</ID>
+    <ID>EmptyFunctionBlock:LocationPicker.kt:LocationPicker.EmptyLocationPickerTracker${ }</ID>
+    <ID>EmptyFunctionBlock:LocationPickerActivity.kt:LocationPickerActivity.&lt;no name provided&gt;${ }</ID>
+    <ID>EmptyFunctionBlock:LocationPickerActivity.kt:LocationPickerActivity.&lt;no name provided&gt;${}</ID>
+    <ID>ImplicitDefaultLocale:LocationPickerActivity.kt:LocationPickerActivity$String.format("%s: %s", getString(R.string.leku_latitude), latLng.latitude)</ID>
+    <ID>ImplicitDefaultLocale:LocationPickerActivity.kt:LocationPickerActivity$String.format("%s: %s", getString(R.string.leku_longitude), latLng.longitude)</ID>
+    <ID>ImplicitDefaultLocale:LocationPickerActivity.kt:LocationPickerActivity.Builder$String.format("%s|%s", layoutsToHide, OPTIONS_HIDE_CITY)</ID>
+    <ID>ImplicitDefaultLocale:LocationPickerActivity.kt:LocationPickerActivity.Builder$String.format("%s|%s", layoutsToHide, OPTIONS_HIDE_STREET)</ID>
+    <ID>ImplicitDefaultLocale:LocationPickerActivity.kt:LocationPickerActivity.Builder$String.format("%s|%s", layoutsToHide, OPTIONS_HIDE_ZIPCODE)</ID>
+    <ID>InjectDispatcher:GeocoderPresenter.kt:GeocoderPresenter$IO</ID>
+    <ID>LargeClass:LocationPickerActivity.kt:LocationPickerActivity : AppCompatActivityOnMapReadyCallbackOnMapLongClickListenerGeocoderViewInterfaceOnMapClickListener</ID>
+    <ID>MaxLineLength:GoogleTimeZoneDataSource.kt:GoogleTimeZoneDataSource.Companion$val appInfo = context.packageManager.getApplicationInfo(context.packageName, PackageManager.GET_META_DATA)</ID>
+    <ID>MaxLineLength:LocationPickerActivity.kt:LocationPickerActivity$private</ID>
+    <ID>MaxLineLength:LocationPickerActivity.kt:LocationPickerActivity$searchZoneRect = BundleCompat.getParcelable(savedInstanceState, SEARCH_ZONE_RECT, SearchZoneRect::class.java)</ID>
+    <ID>MaxLineLength:LocationSearchAdapter.kt:LocationSearchAdapter$val textView = LayoutInflater.from(parent.context).inflate(R.layout.leku_search_list_item, parent, false) as TextView</ID>
+    <ID>NestedBlockDepth:LocationPickerActivity.kt:LocationPickerActivity$private fun setPois</ID>
+    <ID>NoNameShadowing:LocationPickerActivity.kt:LocationPickerActivity${ it.mapType = if (it.mapType == MAP_TYPE_SATELLITE) MAP_TYPE_NORMAL else MAP_TYPE_SATELLITE if (isLegacyLayoutEnabled) { btnSatellite.setImageResource( if (it.mapType == MAP_TYPE_SATELLITE) R.drawable.leku_ic_satellite_off_legacy else R.drawable.leku_ic_satellite_on_legacy ) } else { btnSatellite.setImageResource( if (it.mapType == MAP_TYPE_SATELLITE) R.drawable.leku_ic_maps else R.drawable.leku_ic_satellite ) } }</ID>
+    <ID>SwallowedException:AndroidGeocoderDataSource.kt:AndroidGeocoderDataSource$exception: IOException</ID>
+    <ID>SwallowedException:GoogleGeocoderDataSource.kt:GoogleGeocoderDataSource$e: JSONException</ID>
+    <ID>SwallowedException:GoogleGeocoderDataSource.kt:GoogleGeocoderDataSource$e: NetworkException</ID>
+    <ID>SwallowedException:GooglePlacesDataSource.kt:GooglePlacesDataSource$e: RuntimeExecutionException</ID>
+    <ID>SwallowedException:LocationPickerActivity.kt:LocationPickerActivity$e: ActivityNotFoundException</ID>
+    <ID>ThrowingExceptionFromFinally:NetworkClient.kt:NetworkClient$throw NetworkException(ioException)</ID>
+    <ID>ThrowsCount:NetworkClient.kt:NetworkClient$fun requestFromLocationName: String?</ID>
+    <ID>TooManyFunctions:GeocoderPresenter.kt:GeocoderPresenter</ID>
+    <ID>TooManyFunctions:LocationPickerActivity.kt:LocationPickerActivity : AppCompatActivityOnMapReadyCallbackOnMapLongClickListenerGeocoderViewInterfaceOnMapClickListener</ID>
+    <ID>TooManyFunctions:LocationPickerActivity.kt:LocationPickerActivity$Builder</ID>
+    <ID>UnsafeCallOnNullableType:AddressBuilder.kt:AddressBuilder$component.types!!</ID>
+    <ID>UnsafeCallOnNullableType:AndroidGeocoderDataSource.kt:AndroidGeocoderDataSource$geocoder.getFromLocation(latitude, longitude, MAX_RESULTS)!!</ID>
+    <ID>UnsafeCallOnNullableType:AndroidGeocoderDataSource.kt:AndroidGeocoderDataSource$geocoder.getFromLocationName( query, MAX_RESULTS, lowerLeft.latitude, lowerLeft.longitude, upperRight.latitude, upperRight.longitude )!!</ID>
+    <ID>UnsafeCallOnNullableType:AndroidGeocoderDataSource.kt:AndroidGeocoderDataSource$geocoder.getFromLocationName(query, MAX_RESULTS)!!</ID>
+    <ID>UnsafeCallOnNullableType:LekuPoi.kt:LekuPoi$ParcelCompat.readParcelable(`in`, Location::class.java.classLoader, Location::class.java)!!</ID>
+    <ID>UnsafeCallOnNullableType:LekuPoi.kt:LekuPoi$`in`.readString()!!</ID>
+    <ID>UnsafeCallOnNullableType:LocationPickerActivity.kt:LocationPickerActivity$DefaultCountryLocaleRect.defaultLowerLeft!!</ID>
+    <ID>UnsafeCallOnNullableType:LocationPickerActivity.kt:LocationPickerActivity$DefaultCountryLocaleRect.defaultUpperRight!!</ID>
+    <ID>UnsafeCallOnNullableType:LocationPickerActivity.kt:LocationPickerActivity$DefaultCountryLocaleRect.getLowerLeftFromZone(locale)!!</ID>
+    <ID>UnsafeCallOnNullableType:LocationPickerActivity.kt:LocationPickerActivity$DefaultCountryLocaleRect.getUpperRightFromZone(locale)!!</ID>
+    <ID>UnsafeCallOnNullableType:LocationPickerActivity.kt:LocationPickerActivity$googleGeocoderDataSource!!</ID>
+    <ID>UnsafeCallOnNullableType:LocationPickerActivity.kt:LocationPickerActivity$searchZone!!</ID>
+    <ID>UnsafeCallOnNullableType:LocationPickerActivity.kt:LocationPickerActivity$searchZoneRect!!</ID>
+    <ID>UnsafeCallOnNullableType:SearchZoneRect.kt:SearchZoneRect$ParcelCompat.readParcelable(parcel, LatLng::class.java.classLoader, LatLng::class.java)!!</ID>
+    <ID>UnusedParameter:GeocoderPresenter.kt:GeocoderPresenter$debounceTime: Int</ID>
+    <ID>UseRequire:LocationPicker.kt:LocationPicker$throw IllegalArgumentException("The LocationPickerTracker instance can't be null.")</ID>
+    <ID>UselessCallOnNotNull:GeocoderRepository.kt:GeocoderRepository$addressList.isNullOrEmpty()</ID>
+    <ID>VarCouldBeVal:LocationPickerActivity.kt:LocationPickerActivity$private var textWatcher: TextWatcher? = null</ID>
+  </CurrentIssues>
+</SmellBaseline>

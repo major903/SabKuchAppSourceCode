@@ -152,7 +152,7 @@ public final class NetworkGateway {
                 if (mediaType == null || mediaType.trim().isEmpty()) {
                     mediaType = "application/octet-stream";
                 }
-                RequestBody file = RequestBody.create(MediaType.parse(mediaType), dataPart.getContent());
+                RequestBody file = RequestBody.create(dataPart.getContent(), MediaType.parse(mediaType));
                 parts.add(MultipartBody.Part.createFormData(entry.getKey(), dataPart.getFileName(), file));
             }
         }
@@ -160,7 +160,7 @@ public final class NetworkGateway {
     }
 
     private static RequestBody requestBody(String value, String mediaType) {
-        return RequestBody.create(MediaType.parse(mediaType), value == null ? "" : value);
+        return RequestBody.create(value == null ? "" : value, MediaType.parse(mediaType));
     }
 
     private static Map<String, String> authHeaders(Context context) {

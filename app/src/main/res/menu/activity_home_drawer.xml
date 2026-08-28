@@ -13,17 +13,13 @@
             android:icon="@drawable/ic_menu_wallet"
             android:title="@string/my_wallet" />
         <item
-            android:id="@+id/nav_inbox"
-            android:icon="@drawable/ic_menu_inbox"
-            android:title="@string/inbox" />
-        <item
             android:id="@+id/nav_contribute"
             android:icon="@drawable/ic_drawer_contribute"
             android:title="@string/contribute" />
         <item
-            android:id="@+id/nav_app_update"
-            android:icon="@drawable/ic_drawer_update"
-            android:title="@string/check_for_app_update" />
+            android:id="@+id/nav_inbox"
+            android:icon="@drawable/ic_menu_inbox"
+            android:title="@string/inbox" />
     </group>
 
 </menu>

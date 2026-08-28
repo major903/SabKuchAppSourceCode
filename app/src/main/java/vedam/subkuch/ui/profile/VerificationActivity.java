@@ -17,10 +17,12 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
+import androidx.core.content.IntentCompat;
 
 import vedam.subkuch.network.Response;
 import com.google.gson.Gson;
 
+import vedam.subkuch.MainActivity;
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseActivity;
 import vedam.subkuch.helpers.Constants;
@@ -31,7 +33,6 @@ import vedam.subkuch.network.models.Profile;
 import vedam.subkuch.network.models.ProfileResponse;
 import vedam.subkuch.network.models.RegistrationRequest;
 import vedam.subkuch.network.models.VerifyOtpResponse;
-import vedam.subkuch.ui.home.HomeActivity;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.DeviceIdProvider;
@@ -39,6 +40,8 @@ import vedam.subkuch.utils.UiUtil;
 
 
 public class VerificationActivity extends BaseActivity {
+
+    private static final int MAX_OTP_ATTEMPTS = 5;
 
     // UI references.
     private EditText etOtp;
@@ -67,13 +70,13 @@ public class VerificationActivity extends BaseActivity {
         etOtp = findViewById(R.id.etOtp);
         submitButton = findViewById(R.id.btSubmit);
 
-        profile = getIntent().getParcelableExtra(Constants.EXTRA_DATA);
+        profile = IntentCompat.getParcelableExtra(getIntent(), Constants.EXTRA_DATA, Profile.class);
     }
 
     private void bindCallbacks() {
 
         submitButton.setOnClickListener(v -> {
-                    if (noOfAttempts <= 5)
+                    if (noOfAttempts < MAX_OTP_ATTEMPTS)
                         attemptVerification();
                     else
                         UiUtil.showToast(this, getString(R.string.too_many_otp_attempts));
@@ -161,6 +164,8 @@ public class VerificationActivity extends BaseActivity {
                 profile.getLatitude(),
                 profile.getLongitude(),
                 parseRequiredId(profile.getCityId()),
+                parseRequiredId(getIntent().getStringExtra(Constants.EXTRA_STATE_ID)),
+                parseRequiredId(getIntent().getStringExtra(Constants.EXTRA_LANGUAGE_ID)),
                 parseRequiredId(profile.getCountryid()));
         DataFetcher.registerUser(this, new Gson().toJson(request), onRegisterUserSuccessListener, ProfileResponse.class, onErrorListener);
     }
@@ -196,19 +201,53 @@ public class VerificationActivity extends BaseActivity {
     private Response.Listener<VerifyOtpResponse> onVerifyOtpSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (response != null && Constants.TRUE.equals(response.getIsVerified())) {
+        if (response != null && response.isVerified()) {
             UiUtil.showToast(VerificationActivity.this, getString(R.string.otp_verified));
-            registerUser();
+            if (response.isExistingUser()) {
+                loginExistingUser(response);
+            } else {
+                registerUser();
+            }
         } else {
+            noOfAttempts++;
             UiUtil.showToast(VerificationActivity.this, getString(R.string.err_occurred));
         }
     };
 
+    private void loginExistingUser(VerifyOtpResponse response) {
+        String bearer = normalizeBearer(response.getAuthenticationResult());
+        if (TextUtils.isEmpty(bearer) || TextUtils.isEmpty(response.getUserId())) {
+            UiUtil.showToast(this, getString(R.string.err_occurred));
+            return;
+        }
+
+        SharedPreferences.Editor editor = AppPrefs.getInstance(this).getSharedPreferences().edit();
+        editor.putBoolean(PREFS_IF_USER_LOGGED_IN, true);
+        editor.putString(PREFS_USER_ID, response.getUserId());
+        editor.putString(PREFS_TOKEN, bearer);
+        editor.putString(PREFS_USER_NAME,
+                AppUtil.getFullName(response.getFirstName(), response.getLastName()));
+        editor.putString(PREFS_IS_REFERRAL_DONE, String.valueOf(true));
+        editor.apply();
+
+        WebServices.getInstance().setBearer(bearer);
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        UiUtil.showToast(this, getString(R.string.user_logged_in_successfully));
+    }
+
+    private String normalizeBearer(String authenticationResult) {
+        if (TextUtils.isEmpty(authenticationResult)) return null;
+        String token = authenticationResult.trim();
+        return token.regionMatches(true, 0, "Bearer ", 0, 7) ? token : "Bearer " + token;
+    }
+
     private Response.Listener<ProfileResponse> onRegisterUserSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (response != null && response.getReturnMessage().equals(Constants.SUCCESS)
-                && response.getReturnData() != null) {
+        if (response != null && Constants.SUCCESS.equals(response.getReturnMessage())
+                && response.getReturnData() != null && !response.getReturnData().isEmpty()) {
             handleResponse(response.getReturnData().get(0));
         } else
             UiUtil.showToast(VerificationActivity.this, getString(R.string.err_occurred));
@@ -231,7 +270,7 @@ public class VerificationActivity extends BaseActivity {
         /*if (!isReferralDone)
             intent = new Intent(VerificationActivity.this, ReferralActivity.class);
         else*/
-            intent = new Intent(VerificationActivity.this, HomeActivity.class);
+            intent = new Intent(VerificationActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         UiUtil.showToast(VerificationActivity.this, getString(R.string.user_registered_successfully));

@@ -1,0 +1,171 @@
+{
+  "info": {
+    "_postman_id": "fcfc1f0b-e8de-4bb0-9124-53fbf8d1820f",
+    "name": "SabKuch",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "3430135"
+  },
+  "item": [
+    {
+      "name": "Master",
+      "item": [
+        {
+          "name": "GetCountries",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "CompanyId",
+                "value": "{{company_id}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/Master/GetCountries",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "Master",
+                "GetCountries"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetStates",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/Master/GetStates",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "Master",
+                "GetStates"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetDistricts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/Master/GetDistricts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "Master",
+                "GetDistricts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetLanguages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/Master/GetLanguages",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "Master",
+                "GetLanguages"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Registration",
+          "item": [
+            {
+              "name": "UserProfile - Registration",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"UserId\": 0,\r\n    \"FirstName\": \"\",\r\n    \"LastName\": \"\",\r\n    \"Gender\": \"\",\r\n    \"DOB\": \"20-10-2022\",\r\n    \"Mobile\": \"\",\r\n    \"EMail\": \"\",\r\n    \"OccupationId\": 0,\r\n    \"OccupationOther\": \"\",\r\n    \"DeviceId\": 0,\r\n    \"Latitude\": \"\",\r\n    \"Longitude\": \"\",\r\n    \"DistrictId\": 0,\r\n    \"countryid\": 0\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/UserProfile/AddProfile",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "UserProfile",
+                    "AddProfile"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": ""
+    }
+  ]
+}

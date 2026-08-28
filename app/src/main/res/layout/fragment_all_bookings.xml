@@ -12,9 +12,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
-            android:paddingLeft="@dimen/margin_8dp"
+            android:paddingStart="@dimen/margin_8dp"
             android:paddingTop="@dimen/margin_4dp"
-            android:paddingRight="@dimen/margin_8dp"
+            android:paddingEnd="@dimen/margin_8dp"
             android:paddingBottom="@dimen/margin_4dp"
             tools:listitem="@layout/fragment_all_bookings_list_item" />
 

@@ -15,7 +15,8 @@
         android:background="@drawable/circular_fill_white"
         android:padding="@dimen/margin_8dp"
         android:src="@drawable/ic_close_black_24dp"
-        android:tint="@color/colorPrimary" />
+        android:contentDescription="@string/image_action_description"
+        app:tint="@color/colorPrimary" />
 
     <TextView
         style="@style/TextViewBlackHeading"
@@ -46,13 +47,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
+                android:contentDescription="@string/image_content_description"
                 android:src="@drawable/ico_take_picture" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginStart="@dimen/margin_16dp"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
@@ -95,13 +97,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
+                android:contentDescription="@string/image_content_description"
                 android:src="@drawable/ico_gallery" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginStart="@dimen/margin_16dp"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 

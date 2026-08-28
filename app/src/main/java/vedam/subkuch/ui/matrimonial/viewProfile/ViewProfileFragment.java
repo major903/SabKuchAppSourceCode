@@ -15,6 +15,7 @@ import android.view.ViewTreeObserver;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.os.BundleCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
@@ -60,7 +61,7 @@ public class ViewProfileFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            datingProfile = getArguments().getParcelable(Constants.EXTRA_DATA);
+            datingProfile = BundleCompat.getParcelable(getArguments(), Constants.EXTRA_DATA, DatingProfile.class);
             isDating = getArguments().getBoolean(Constants.EXTRA_IS_DATING);
         }
     }
@@ -68,7 +69,6 @@ public class ViewProfileFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_view_profile, container, false);
         return binding.getRoot();
@@ -77,6 +77,15 @@ public class ViewProfileFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        installMenu(R.menu.chat2, item -> {
+            if (item.getItemId() != R.id.action_chats) return false;
+            Intent intent = new Intent(mContext, ChatActivity.class);
+            intent.putExtra(Constants.EXTRA_NAME, AppUtil.deNull(datingProfile.getFirstName()));
+            intent.putExtra(Constants.EXTRA_CHAT_TO_ID, datingProfile.getProfileId());
+            intent.putExtra(Constants.EXTRA_IS_DATING, isDating);
+            startActivity(intent);
+            return true;
+        });
         initUI();
         bindCallback();
     }
@@ -180,23 +189,4 @@ public class ViewProfileFragment extends BaseFragment {
                 UiUtil.showToast(mContext, getString(R.string.err_occurred));
     };
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
-        inflater.inflate(R.menu.chat2, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_chats) {
-            Intent intent = new Intent(mContext, ChatActivity.class);
-            intent.putExtra(Constants.EXTRA_NAME, AppUtil.deNull(datingProfile.getFirstName()));
-            intent.putExtra(Constants.EXTRA_CHAT_TO_ID, datingProfile.getProfileId());
-            intent.putExtra(Constants.EXTRA_IS_DATING, isDating);
-            startActivity(intent);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

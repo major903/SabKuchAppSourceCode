@@ -37,6 +37,7 @@
                 android:hint="@string/you_may_leave_it_blank"
                 android:imeOptions="actionDone"
                 android:inputType="text"
+                android:importantForAutofill="no"
                 android:maxLength="10" />
 
             <Button

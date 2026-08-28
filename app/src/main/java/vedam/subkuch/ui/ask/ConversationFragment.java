@@ -15,6 +15,8 @@ import android.view.Window;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -47,6 +49,14 @@ public class ConversationFragment extends BaseFragment implements AskReplyListen
     private int pageSize = 20;
     private boolean hasMoreProjects = true;
     private String categoryId;
+    private final ActivityResultLauncher<Intent> addQuestionLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    setDefaults();
+                    getConversation();
+                }
+            });
 
     public ConversationFragment() {
         // Required empty public constructor
@@ -81,7 +91,13 @@ public class ConversationFragment extends BaseFragment implements AskReplyListen
 
         initUI();
         getConversation();
-        setHasOptionsMenu(true);
+        installMenu(R.menu.add, item -> {
+            if (item.getItemId() == R.id.action_add) {
+                addQuestionLauncher.launch(new Intent(mContext, AddQuestionActivity.class));
+                return true;
+            }
+            return false;
+        });
     }
 
     private void initUI() {
@@ -130,49 +146,19 @@ public class ConversationFragment extends BaseFragment implements AskReplyListen
 
         if (response != null && !response.isEmpty()) {
             pageNo++;
+            int previousSize = conversations.size();
             conversations.addAll(response);
-            adapter.notifyDataSetChanged();
+            adapter.notifyItemRangeInserted(previousSize, response.size());
         }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
-        inflater.inflate(R.menu.add, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_add:
-                startActivityForResult(new Intent(mContext, AddQuestionActivity.class), Constants.REQUEST_ADD_QUESTION);
-                break;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void setDefaults() {
         pageNo = 1;
         hasMoreProjects = true;
+        int previousSize = conversations.size();
         conversations.clear();
-        adapter.notifyDataSetChanged();
+        if (previousSize > 0) adapter.notifyItemRangeRemoved(0, previousSize);
 
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        switch (requestCode) {
-            case Constants.REQUEST_ADD_QUESTION:
-                if (resultCode == Activity.RESULT_OK) {
-                    setDefaults();
-                    getConversation();
-                }
-                break;
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
-        }
     }
 
     @Override

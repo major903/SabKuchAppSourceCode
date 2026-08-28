@@ -6,7 +6,11 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.*
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
 import com.adevinta.leku.LATITUDE
 import com.adevinta.leku.LOCATION_ADDRESS
 import com.adevinta.leku.LONGITUDE
@@ -45,13 +49,26 @@ class AddDirectoryFragment : BaseAddImagesFragment(), AdapterView.OnItemSelected
     private var cityId: String? = null
     private var countryId: String? = null
     private var viewTappedForLocation: View? = null
+    private val locationPickerLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val data = result.data
+            val latLng = LatLng(
+                data?.getDoubleExtra(LATITUDE, 0.0) ?: 0.0,
+                data?.getDoubleExtra(LONGITUDE, 0.0) ?: 0.0
+            )
+            val tv = viewTappedForLocation?.findViewById<TextView>(R.id.tv_location)
+            UiUtil.setTextView(tv, data?.getStringExtra(LOCATION_ADDRESS))
+            viewTappedForLocation?.tag = latLng
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //        if (getArguments() != null) {
 //            categoryId = getArguments().getString(Constants.EXTRA_CATEGORY_ID);
 //            subcategoryId = getArguments().getString(Constants.EXTRA_SUB_CATEGORY_ID);
 //        }
-        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -66,6 +83,20 @@ class AddDirectoryFragment : BaseAddImagesFragment(), AdapterView.OnItemSelected
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menu.clear()
+                menuInflater.inflate(R.menu.done, menu)
+            }
+
+            override fun onMenuItemSelected(item: MenuItem): Boolean {
+                if (item.itemId != R.id.action_done) return false
+                val errorMessage = validateErrorMessage()
+                if (errorMessage == 0) submit()
+                else UiUtil.showDialog(mContext, getString(errorMessage), true)
+                return true
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
         setImagesLayout(view, 1)
         bindCallbacks()
         categories
@@ -198,22 +229,6 @@ class AddDirectoryFragment : BaseAddImagesFragment(), AdapterView.OnItemSelected
         return 0
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        menu.clear()
-        inflater.inflate(R.menu.done, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_done) {
-            val errorMessage = validateErrorMessage()
-            if (errorMessage == 0) {
-                submit()
-            } else UiUtil.showDialog(mContext, getString(errorMessage), true)
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun bindCallbacks() {
         fragmentAddDirectoryBinding!!.btAddBranch.setOnClickListener { view: View? ->
             if (alBranches.size != 20) {
@@ -254,7 +269,7 @@ class AddDirectoryFragment : BaseAddImagesFragment(), AdapterView.OnItemSelected
                 .withVoiceSearchHidden()
                 .build(requireContext())
 
-            startActivityForResult(locationPickerIntent, Constants.REQUEST_PLACE_PICKER)
+            locationPickerLauncher.launch(locationPickerIntent)
         }
         alBranches.add(v)
         fragmentAddDirectoryBinding!!.llContainer.addView(v, params)
@@ -317,8 +332,8 @@ class AddDirectoryFragment : BaseAddImagesFragment(), AdapterView.OnItemSelected
         UiUtil.cancelProgressDialog()
         if (activity != null) if (response != null && response.isStatus) {
             UiUtil.showToast(mContext, response.message)
-            activity!!.setResult(RESULT_OK)
-            activity!!.finish()
+            requireActivity().setResult(RESULT_OK)
+            requireActivity().finish()
         } else UiUtil.showToast(mContext, getString(R.string.err_occurred))
     }
 
@@ -349,31 +364,6 @@ class AddDirectoryFragment : BaseAddImagesFragment(), AdapterView.OnItemSelected
             }
         }
         return errorMessage
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == Constants.REQUEST_PLACE_PICKER) {
-            if (resultCode == RESULT_OK) {
-
-                val latLng = com.google.android.gms.maps.model.LatLng(
-                    data?.getDoubleExtra(LATITUDE, 0.0) ?: 0.0, data?.getDoubleExtra(
-                        LONGITUDE, 0.0
-                    ) ?: 0.0
-                )
-
-                val tv = viewTappedForLocation?.findViewById<TextView>(R.id.tv_location)
-//                val etCity = viewTappedForLocation.findViewById(R.id.et_city);
-//                val etState = viewTappedForLocation.findViewById(R.id.et_state);
-//                val etCountry = viewTappedForLocation.findViewById(R.id.et_country);
-//                val etZipCode = viewTappedForLocation.findViewById(R.id.et_zip_code);
-
-                UiUtil.setTextView(tv, data?.getStringExtra(LOCATION_ADDRESS))
-
-                viewTappedForLocation?.tag = latLng
-            }
-        } else
-            super.onActivityResult(requestCode, resultCode, data)
-
     }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {

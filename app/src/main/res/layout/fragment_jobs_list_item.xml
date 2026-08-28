@@ -26,8 +26,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/margin_8dp"
-                android:layout_toLeftOf="@+id/ib_share"
+                android:layout_marginEnd="@dimen/margin_8dp"
+                android:layout_toStartOf="@+id/ib_share"
                 tools:text="@string/err" />
 
             <ImageButton
@@ -36,9 +36,10 @@
                 android:layout_height="24dp"
                 android:layout_alignTop="@+id/tv_organisation"
                 android:layout_alignBottom="@+id/tv_organisation"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:background="@color/transparent"
-                android:tint="@color/black"
+                app:tint="@color/black"
+                android:contentDescription="@string/image_action_description"
                 app:srcCompat="@drawable/ic_baseline_share_16" />
         </RelativeLayout>
 

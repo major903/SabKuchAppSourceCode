@@ -20,12 +20,16 @@ import android.content.Context;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.JobIntentService;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 
 import vedam.subkuch.network.Response;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
+import com.google.android.gms.tasks.Tasks;
 
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
@@ -34,54 +38,50 @@ import vedam.subkuch.network.models.classifieds.AddClassifiedResponse;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.DeviceIdProvider;
 import vedam.subkuch.utils.LogUtils;
-import vedam.subkuch.utils.UiUtil;
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
-public class RegistrationIntentService extends JobIntentService {
+public class RegistrationIntentService extends Worker {
 
     //GCM constants
     private static final String TAG = "RegIntentService";
 
-    /**
-     * Unique job ID for this service.
-     */
-    static final int JOB_ID = 1000;
-
-    /**
-     * Convenience method for enqueuing work in to this service.
-     */
     public static void enqueueWork(Context context, Intent work) {
-        enqueueWork(context, RegistrationIntentService.class, JOB_ID, work);
+        WorkManager.getInstance(context.getApplicationContext())
+                .enqueue(new OneTimeWorkRequest.Builder(RegistrationIntentService.class).build());
     }
 
+    public RegistrationIntentService(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+        super(context, workerParams);
+    }
+
+    @NonNull
     @Override
-    protected void onHandleWork(@NonNull Intent intent) {
-
+    public Result doWork() {
         try {
+            String token = Tasks.await(getMessagingToken());
+            LogUtils.LOGI(TAG, "FCM Registration Token received");
 
-            FirebaseMessaging.getInstance().getToken()
-                    .addOnCompleteListener(task -> {
-                        if (!task.isSuccessful()) {
-                            LogUtils.LOGD(TAG, "getInstanceId failed", task.getException());
-                            return;
-                        }
-
-                        // Get new Instance ID token
-                        if (task.getResult() != null) {
-                            String token = task.getResult();
-                            LogUtils.LOGI(TAG, "FCM Registration Token: " + token);
-
-                            boolean isUserLoggedIn = AppPrefs.getIsLoggedIn(getApplicationContext());
-
-                            if (isUserLoggedIn)
-                                sendRegistrationToServer(token);
-                        }
-                    });
+            if (!AppPrefs.getIsLoggedIn(getApplicationContext())) {
+                return Result.success();
+            }
+            return sendRegistrationToServer(token) ? Result.success() : Result.retry();
 
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             LogUtils.LOGD(TAG, "Failed to complete token refresh", e);
+            return Result.retry();
         }
+    }
+
+    @SuppressWarnings("deprecation")
+    private com.google.android.gms.tasks.Task<String> getMessagingToken() {
+        // The app server still accepts the FCM registration token. Firebase's replacement
+        // registration callback provides a Firebase Installation ID, not this token.
+        return FirebaseMessaging.getInstance().getToken();
     }
 
     /**
@@ -92,21 +92,23 @@ public class RegistrationIntentService extends JobIntentService {
      *
      * @param token The new token.
      */
-    private void sendRegistrationToServer(final String token) {
+    private boolean sendRegistrationToServer(final String token) throws InterruptedException {
+        CountDownLatch requestFinished = new CountDownLatch(1);
+        AtomicBoolean requestSucceeded = new AtomicBoolean(false);
         PushNotificationRequest request = new PushNotificationRequest();
-        request.setUserId(AppPrefs.getPrefsUserId(this));
+        request.setUserId(AppPrefs.getPrefsUserId(getApplicationContext()));
         request.setToken(token);
-        final String deviceId = DeviceIdProvider.getDeviceId(this);
+        final String deviceId = DeviceIdProvider.getDeviceId(getApplicationContext());
         request.setDeviceId(deviceId);
-        DataFetcher.registerForPush(this, new Gson().toJson(request), onRegisterPushSuccessListener, AddClassifiedResponse.class, null);
+        DataFetcher.registerForPush(getApplicationContext(), new Gson().toJson(request), response -> {
+            if (response != null && response.getReturnCode() == Constants.SUCCESS_RETURN_CODE) {
+                requestSucceeded.set(true);
+                AppPrefs.setPrefsIsTokenSent(getApplicationContext(), true);
+            }
+            requestFinished.countDown();
+        }, AddClassifiedResponse.class, error -> requestFinished.countDown());
+        return requestFinished.await(10, TimeUnit.MINUTES) && requestSucceeded.get();
     }
-
-    private Response.Listener<AddClassifiedResponse> onRegisterPushSuccessListener = response -> {
-
-        UiUtil.cancelProgressDialog();
-        if (response != null && response.getReturnCode() == Constants.SUCCESS_RETURN_CODE)
-            AppPrefs.setPrefsIsTokenSent(this, true);
-    };
 
 
 }

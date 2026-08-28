@@ -66,7 +66,6 @@ public class DirectoryDetailsFragment extends BaseFragment implements OnListView
             categoryId = getArguments().getString(Constants.EXTRA_CATEGORY_ID);
             subCategoryId = getArguments().getString(Constants.EXTRA_SUB_CATEGORY_ID);
         }
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -79,6 +78,13 @@ public class DirectoryDetailsFragment extends BaseFragment implements OnListView
 
     public void onViewCreated(@NonNull View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+        installMenu(R.menu.add, item -> {
+            if (item.getItemId() == R.id.action_add) {
+                startActivity(new Intent(getActivity(), AddDirectoryActivity.class));
+                return true;
+            }
+            return false;
+        });
         linearLayoutManager = new LinearLayoutManager(mContext);
         binding.rvDirectory.setLayoutManager(linearLayoutManager);
         adapter = new DirectoryDetailsAdapter(this);
@@ -114,25 +120,8 @@ public class DirectoryDetailsFragment extends BaseFragment implements OnListView
         if (response != null && !response.isEmpty()) {
             pageNo++;
             businessList.addAll(response);
-            adapter.submitList(businessList, () -> adapter.notifyDataSetChanged());
+            adapter.submitList(new ArrayList<>(businessList));
         }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.add, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == R.id.action_add) {
-            startActivity(new Intent(getActivity(), AddDirectoryActivity.class));
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     /*@Override

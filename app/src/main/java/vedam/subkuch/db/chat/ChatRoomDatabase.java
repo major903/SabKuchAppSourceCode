@@ -19,7 +19,8 @@ public abstract class ChatRoomDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             ChatRoomDatabase.class, "chat_database")
-                            .fallbackToDestructiveMigration()
+                            .fallbackToDestructiveMigrationFrom(true, 1, 2, 3, 4, 5)
+                            .fallbackToDestructiveMigrationOnDowngrade(true)
                             .build();
                 }
             }

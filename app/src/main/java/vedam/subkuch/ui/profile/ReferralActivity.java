@@ -8,13 +8,13 @@ import android.text.TextUtils;
 import vedam.subkuch.network.Response;
 import com.google.gson.Gson;
 
+import vedam.subkuch.MainActivity;
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseActivity;
 import vedam.subkuch.databinding.ActivityReferralBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.network.models.ReferralRequest;
-import vedam.subkuch.ui.home.HomeActivity;
 import vedam.subkuch.ui.jobs.models.AddResponse;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.AppUtil;
@@ -67,7 +67,7 @@ public class ReferralActivity extends BaseActivity {
 
     private void startHomeScreen() {
 
-        Intent intent = new Intent(ReferralActivity.this, HomeActivity.class);
+        Intent intent = new Intent(ReferralActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }

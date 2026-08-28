@@ -46,13 +46,19 @@ public class SubDirectoryFragment extends BaseListFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_directory, container, false);
     }
 
     public void onViewCreated(@NonNull View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+        installMenu(R.menu.add, item -> {
+            if (item.getItemId() == R.id.action_add) {
+                startActivity(new Intent(getActivity(), AddPublicUtilityActivity.class));
+                return true;
+            }
+            return false;
+        });
         getSubCategories();
     }
 
@@ -91,20 +97,4 @@ public class SubDirectoryFragment extends BaseListFragment {
         addFragmentWithAnimation(R.id.content_frame, PublicUtilityFragment.newInstance(bundle), null, true);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.add, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == R.id.action_add) {
-            startActivity(new Intent(getActivity(), AddPublicUtilityActivity.class));
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

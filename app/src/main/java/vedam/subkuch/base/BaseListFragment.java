@@ -5,12 +5,18 @@ import android.location.Address;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import androidx.annotation.AnimRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.ListFragment;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
+import androidx.lifecycle.Lifecycle;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import vedam.subkuch.network.AuthFailureError;
@@ -34,6 +40,26 @@ import vedam.subkuch.utils.UiUtil;
 import static vedam.subkuch.base.BaseActivity.TAG;
 
 public class BaseListFragment extends ListFragment implements SwipeRefreshLayout.OnRefreshListener {
+    @FunctionalInterface
+    protected interface MenuItemHandler {
+        boolean onMenuItemSelected(MenuItem item);
+    }
+
+    protected final void installMenu(int menuRes, MenuItemHandler handler) {
+        ((MenuHost) requireActivity()).addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(Menu menu, MenuInflater menuInflater) {
+                menu.clear();
+                menuInflater.inflate(menuRes, menu);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(MenuItem item) {
+                return handler.onMenuItemSelected(item);
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+    }
+
     public Context context;
     private OnFragmentInteractionListener mListener;
     private ScreenChangeListener screenChangeListener;

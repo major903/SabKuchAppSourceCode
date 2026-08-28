@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import vedam.subkuch.network.Response
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -34,7 +37,6 @@ class DirectoryFragment : BaseListFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        setHasOptionsMenu(true)
         binding = FragmentDirectoryBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
         return binding?.root
@@ -42,6 +44,18 @@ class DirectoryFragment : BaseListFragment() {
 
     override fun onViewCreated(v: View, savedInstanceState: Bundle?) {
         super.onViewCreated(v, savedInstanceState)
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menu.clear()
+                menuInflater.inflate(R.menu.directory, menu)
+            }
+
+            override fun onMenuItemSelected(item: MenuItem): Boolean {
+                if (item.itemId != R.id.action_add) return false
+                startActivity(Intent(activity, AddDirectoryActivity::class.java))
+                return true
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
         getCategories()
         initUI()
     }
@@ -150,20 +164,6 @@ class DirectoryFragment : BaseListFragment() {
         )
         intent.putExtra(Constants.EXTRA_CATEGORY_NAME, category.name)
         startActivity(intent)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.clear()
-        inflater.inflate(R.menu.directory, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_add) {
-            startActivity(Intent(activity, AddDirectoryActivity::class.java))
-            return true
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     companion object {

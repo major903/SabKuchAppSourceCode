@@ -3,6 +3,7 @@ package vedam.subkuch.uicomponent;
 import android.content.Context;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
+import androidx.core.os.BundleCompat;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
@@ -34,12 +35,14 @@ public class SlideShowDialogFragment extends DialogFragment {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_dialog_slide_show, container, false);
         viewPager = (ViewPager) v.findViewById(R.id.viewpager);
 
-        alImages = (ArrayList<Image>) getArguments().getSerializable(Constants.EXTRA_IMAGE_ITEMS);
+        alImages = (ArrayList<Image>) BundleCompat.getSerializable(
+                getArguments(), Constants.EXTRA_IMAGE_ITEMS, ArrayList.class);
         int selectedPosition = getArguments().getInt(Constants.EXTRA_POSITION);
         isImageUrls = getArguments().getBoolean(Constants.EXTRA_IS_IMAGE_URLS);
 

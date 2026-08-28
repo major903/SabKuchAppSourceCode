@@ -15,14 +15,15 @@ import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import com.adevinta.leku.LocationPickerActivity;
+import com.adevinta.leku.LocationPickerActivityKt;
 import vedam.subkuch.network.Response;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
@@ -53,6 +54,8 @@ public class AddPublicUtilityFragment extends BaseFragment implements AdapterVie
     private String cityId;
     private String countryId;
     private LatLng latLng;
+    private final ActivityResultLauncher<Intent> locationPickerLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), this::handleLocationResult);
 
     public AddPublicUtilityFragment() {
         // Required empty public constructor
@@ -67,7 +70,6 @@ public class AddPublicUtilityFragment extends BaseFragment implements AdapterVie
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -81,6 +83,13 @@ public class AddPublicUtilityFragment extends BaseFragment implements AdapterVie
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        installMenu(R.menu.done, item -> {
+            if (item.getItemId() != R.id.action_done) return false;
+            int errorMessage = validateErrorMessage();
+            if (errorMessage == 0) submit();
+            else UiUtil.showDialog(mContext, getString(errorMessage), true);
+            return true;
+        });
         getCountries();
         getCities();
         bindCallbacks();
@@ -155,38 +164,22 @@ public class AddPublicUtilityFragment extends BaseFragment implements AdapterVie
         return 0;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
-        inflater.inflate(R.menu.done, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_done) {
-            int errorMessage = validateErrorMessage();
-            if (errorMessage == 0) {
-                submit();
-            } else
-                UiUtil.showDialog(mContext, getString(errorMessage), true);
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     private void bindCallbacks() {
 
         binding.btAddLocation.setOnClickListener(view1 -> {
-            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-
-            try {
-                if (getActivity() != null)
-                    startActivityForResult(builder.build(getActivity()), Constants.REQUEST_PLACE_PICKER);
-            } catch (GooglePlayServicesRepairableException e) {
-                e.printStackTrace();
-            } catch (GooglePlayServicesNotAvailableException e) {
-                e.printStackTrace();
-            }
+            if (getActivity() == null) return;
+            Intent locationPickerIntent = new LocationPickerActivity.Builder()
+                    .withGeolocApiKey(Constants.MAPS_API_KEY)
+                    .withGooglePlacesApiKey(Constants.MAPS_API_KEY)
+                    .withDefaultLocaleSearchZone()
+                    .shouldReturnOkOnBackPressed()
+                    .withStreetHidden()
+                    .withCityHidden()
+                    .withZipCodeHidden()
+                    .withGoogleTimeZoneEnabled()
+                    .withVoiceSearchHidden()
+                    .build(getActivity());
+            locationPickerLauncher.launch(locationPickerIntent);
         });
     }
 
@@ -248,28 +241,23 @@ public class AddPublicUtilityFragment extends BaseFragment implements AdapterVie
         return errorMessage;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.REQUEST_PLACE_PICKER) {
-            if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(mContext, data);
-                latLng = place.getLatLng();
-                UiUtil.setTextView(binding.tvLocation, place.getName().toString());
-            }
-        } else
-            super.onActivityResult(requestCode, resultCode, data);
+    private void handleLocationResult(ActivityResult result) {
+        Intent data = result.getData();
+        if (result.getResultCode() == RESULT_OK && data != null) {
+            latLng = new LatLng(
+                    data.getDoubleExtra(LocationPickerActivityKt.LATITUDE, 0.0),
+                    data.getDoubleExtra(LocationPickerActivityKt.LONGITUDE, 0.0));
+            UiUtil.setTextView(binding.tvLocation, data.getStringExtra(LocationPickerActivityKt.LOCATION_ADDRESS));
+        }
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        switch (parent.getId()) {
-            case R.id.sp_city:
-                cityId = ((City) parent.getItemAtPosition(position)).getCityid();
-                break;
-            case R.id.sp_country:
-                countryId = ((Country) parent.getItemAtPosition(position)).getCountryid();
-                break;
+        if (parent.getId() == R.id.sp_city) {
+            cityId = ((City) parent.getItemAtPosition(position)).getCityid();
+        } else if (parent.getId() == R.id.sp_country) {
+            countryId = ((Country) parent.getItemAtPosition(position)).getCountryid();
         }
     }
 

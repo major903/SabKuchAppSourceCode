@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.os.BundleCompat;
 import androidx.databinding.DataBindingUtil;
 
 import vedam.subkuch.network.Response;
@@ -61,7 +62,7 @@ public class EditClassifiedFragment extends BaseAddImagesFragment implements Ada
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            classified = getArguments().getParcelable(Constants.EXTRA_DATA);
+            classified = BundleCompat.getParcelable(getArguments(), Constants.EXTRA_DATA, Classified.class);
             if (classified != null) {
                 categoryId = classified.getCategoryId();
                 subcategoryId = classified.getSubCategoryId();
@@ -72,7 +73,6 @@ public class EditClassifiedFragment extends BaseAddImagesFragment implements Ada
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         // Inflate the layout for context fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_classified, container, false);
         return binding.getRoot();
@@ -81,6 +81,13 @@ public class EditClassifiedFragment extends BaseAddImagesFragment implements Ada
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        installMenu(R.menu.done, item -> {
+            if (item.getItemId() != R.id.action_done) return false;
+            int errorMessage = validateErrorMessage();
+            if (errorMessage == 0) submit();
+            else UiUtil.showDialog(mContext, getString(errorMessage), true);
+            return true;
+        });
         setImagesLayout(view, 1);
         bindData();
         disableUI();
@@ -225,26 +232,6 @@ public class EditClassifiedFragment extends BaseAddImagesFragment implements Ada
     }
 
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
-        inflater.inflate(R.menu.done, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_done) {
-            int errorMessage = validateErrorMessage();
-            if (errorMessage == 0) {
-                submit();
-            } else
-                UiUtil.showDialog(mContext, getString(errorMessage), true);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     private void submit() {
 
         UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
@@ -331,17 +318,14 @@ public class EditClassifiedFragment extends BaseAddImagesFragment implements Ada
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        switch (parent.getId()) {
-            case R.id.sp_category:
-                categoryId = ((ClassifiedCategory) parent.getItemAtPosition(position)).getCategoryId();
-                if (!TextUtils.isEmpty(categoryId)) {
-                    subcategoryId = null;
-                    getSubCategories();
-                }
-                break;
-            case R.id.sp_sub_category:
-                subcategoryId = ((ClassifiedSubCategory) parent.getItemAtPosition(position)).getSubCategoryId();
-                break;
+        if (parent.getId() == R.id.sp_category) {
+            categoryId = ((ClassifiedCategory) parent.getItemAtPosition(position)).getCategoryId();
+            if (!TextUtils.isEmpty(categoryId)) {
+                subcategoryId = null;
+                getSubCategories();
+            }
+        } else if (parent.getId() == R.id.sp_sub_category) {
+            subcategoryId = ((ClassifiedSubCategory) parent.getItemAtPosition(position)).getSubCategoryId();
         }
     }
 

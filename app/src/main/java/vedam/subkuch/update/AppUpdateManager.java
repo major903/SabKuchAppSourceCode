@@ -1,34 +1,43 @@
 package vedam.subkuch.update;
 
 import android.app.Activity;
-import android.app.DownloadManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
+import androidx.core.content.pm.PackageInfoCompat;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.FileProvider;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 import vedam.subkuch.BuildConfig;
 import vedam.subkuch.R;
 import vedam.subkuch.utils.UiUtil;
 
-/** Coordinates update checks and hands downloaded APKs to Android's installer. */
+/** Coordinates update checks, in-app APK downloads, and Android's installer. */
 public final class AppUpdateManager {
-    static final String PREFS_NAME = "app_update";
-    static final String PREF_DOWNLOAD_ID = "download_id";
-    static final String PREF_DOWNLOAD_PATH = "download_path";
     private static final String APK_MIME_TYPE = "application/vnd.android.package-archive";
+    private static final ExecutorService DOWNLOAD_EXECUTOR = Executors.newSingleThreadExecutor();
 
     private AppUpdateManager() {
     }
@@ -89,8 +98,7 @@ public final class AppUpdateManager {
     }
 
     private static void startDownload(Activity activity, AppUpdateManifest manifest) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-                && !activity.getPackageManager().canRequestPackageInstalls()) {
+        if (!activity.getPackageManager().canRequestPackageInstalls()) {
             new AlertDialog.Builder(activity)
                     .setTitle(R.string.update_install_permission_title)
                     .setMessage(R.string.update_install_permission_message)
@@ -105,59 +113,197 @@ public final class AppUpdateManager {
             return;
         }
 
-        String fileName = buildFileName(manifest);
         File downloadDirectory = activity.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
         if (downloadDirectory == null) {
-            Toast.makeText(activity, R.string.update_download_failed, Toast.LENGTH_LONG).show();
+            showDownloadFailed(activity, null);
             return;
         }
         if (!downloadDirectory.exists() && !downloadDirectory.mkdirs()) {
-            Toast.makeText(activity, R.string.update_download_failed, Toast.LENGTH_LONG).show();
-            return;
-        }
-        File destination = new File(downloadDirectory, fileName);
-        if (destination.exists() && !destination.delete()) {
-            Toast.makeText(activity, R.string.update_download_failed, Toast.LENGTH_LONG).show();
+            showDownloadFailed(activity, null);
             return;
         }
 
-        DownloadManager downloadManager = (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
-        if (downloadManager == null) {
-            Toast.makeText(activity, R.string.update_download_failed, Toast.LENGTH_LONG).show();
+        File destination = new File(downloadDirectory, buildFileName(manifest));
+        if (destination.exists() && !destination.delete()) {
+            showDownloadFailed(activity, null);
             return;
         }
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(manifest.getApkUrl()))
-                .setTitle(activity.getString(R.string.app_name) + " " + manifest.getVersionName())
-                .setDescription(activity.getString(R.string.update_download_started))
-                .setMimeType(APK_MIME_TYPE)
-                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                .setAllowedOverMetered(true)
-                .setAllowedOverRoaming(false);
-        request.setDestinationInExternalFilesDir(
-                activity, Environment.DIRECTORY_DOWNLOADS, fileName);
-        long downloadId;
-        try {
-            downloadId = downloadManager.enqueue(request);
-        } catch (RuntimeException exception) {
-            Toast.makeText(activity, R.string.update_download_failed, Toast.LENGTH_LONG).show();
-            return;
-        }
-        activity.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-                .edit()
-                .putLong(PREF_DOWNLOAD_ID, downloadId)
-                .putString(PREF_DOWNLOAD_PATH, destination.getAbsolutePath())
-                .apply();
-        Toast.makeText(activity, R.string.update_download_started, Toast.LENGTH_LONG).show();
+
+        View progressView = LayoutInflater.from(activity)
+                .inflate(R.layout.dialog_update_download, null);
+        ProgressBar progressBar = progressView.findViewById(R.id.progress_update_download);
+        TextView details = progressView.findViewById(R.id.tv_update_download_details);
+        AtomicBoolean cancelled = new AtomicBoolean(false);
+        AlertDialog progressDialog = new AlertDialog.Builder(activity)
+                .setTitle(R.string.update_downloading_title)
+                .setView(progressView)
+                .setNegativeButton(R.string.cancel, null)
+                .create();
+        progressDialog.setOnShowListener(ignored -> progressDialog
+                .getButton(AlertDialog.BUTTON_NEGATIVE)
+                .setOnClickListener(view -> {
+                    cancelled.set(true);
+                    progressDialog.dismiss();
+                }));
+        progressDialog.setOnCancelListener(dialog -> cancelled.set(true));
+        progressDialog.show();
+
+        Call<ResponseBody> downloadCall = AppUpdateClient.getApi().downloadApk(manifest.getApkUrl());
+        progressDialog.setOnDismissListener(dialog -> {
+            if (cancelled.get()) {
+                downloadCall.cancel();
+                if (destination.exists()) {
+                    //noinspection ResultOfMethodCallIgnored
+                    destination.delete();
+                }
+            }
+        });
+        downloadCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (!response.isSuccessful() || response.body() == null) {
+                    activity.runOnUiThread(() -> showDownloadFailed(activity, progressDialog));
+                    return;
+                }
+                ResponseBody body = response.body();
+                DOWNLOAD_EXECUTOR.execute(() -> copyApk(
+                        activity,
+                        progressDialog,
+                        progressBar,
+                        details,
+                        body,
+                        destination,
+                        cancelled));
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable throwable) {
+                if (!cancelled.get()) {
+                    activity.runOnUiThread(() -> showDownloadFailed(activity, progressDialog));
+                }
+            }
+        });
     }
 
-    private static long currentVersionCode(Context context) {
+    private static void copyApk(Activity activity,
+                                AlertDialog progressDialog,
+                                ProgressBar progressBar,
+                                TextView details,
+                                ResponseBody body,
+                                File destination,
+                                AtomicBoolean cancelled) {
+        long totalBytes = body.contentLength();
+        long downloadedBytes = 0L;
+        byte[] buffer = new byte[16 * 1024];
+        try (InputStream input = body.byteStream(); OutputStream output =
+                new java.io.FileOutputStream(destination)) {
+            int read;
+            while (!cancelled.get() && (read = input.read(buffer)) != -1) {
+                output.write(buffer, 0, read);
+                downloadedBytes += read;
+                long currentBytes = downloadedBytes;
+                activity.runOnUiThread(() -> updateDownloadProgress(
+                        progressBar, details, currentBytes, totalBytes));
+            }
+            output.flush();
+            if (cancelled.get()) {
+                return;
+            }
+            activity.runOnUiThread(() -> {
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+                showInstallDialog(activity, destination);
+            });
+        } catch (IOException exception) {
+            if (destination.exists()) {
+                //noinspection ResultOfMethodCallIgnored
+                destination.delete();
+            }
+            if (!cancelled.get()) {
+                activity.runOnUiThread(() -> showDownloadFailed(activity, progressDialog));
+            }
+        }
+    }
+
+    private static void updateDownloadProgress(ProgressBar progressBar,
+                                               TextView details,
+                                               long downloadedBytes,
+                                               long totalBytes) {
+        if (totalBytes > 0) {
+            int percent = (int) Math.min(100L, downloadedBytes * 100L / totalBytes);
+            progressBar.setIndeterminate(false);
+            progressBar.setProgress(percent);
+            details.setText(String.format(
+                    Locale.US,
+                    "%d%% — %s / %s",
+                    percent,
+                    formatMegabytes(downloadedBytes),
+                    formatMegabytes(totalBytes)));
+        } else {
+            progressBar.setIndeterminate(true);
+            details.setText(String.format(
+                    Locale.US,
+                    "%s downloaded",
+                    formatMegabytes(downloadedBytes)));
+        }
+    }
+
+    private static String formatMegabytes(long bytes) {
+        return String.format(Locale.US, "%.1f MB", bytes / (1024d * 1024d));
+    }
+
+    private static void showInstallDialog(Activity activity, File apkFile) {
+        new AlertDialog.Builder(activity)
+                .setTitle(R.string.update_ready_title)
+                .setMessage(R.string.update_ready_message)
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.install_update,
+                        (dialog, which) -> installApk(activity, apkFile))
+                .show();
+    }
+
+    private static void installApk(Activity activity, File apkFile) {
+        if (!activity.getPackageManager().canRequestPackageInstalls()) {
+            new AlertDialog.Builder(activity)
+                    .setTitle(R.string.update_install_permission_title)
+                    .setMessage(R.string.update_install_permission_message)
+                    .setNegativeButton(R.string.no, null)
+                    .setPositiveButton(R.string.open_settings, (dialog, which) -> {
+                        Intent intent = new Intent(
+                                Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                                Uri.parse("package:" + activity.getPackageName()));
+                        activity.startActivity(intent);
+                    })
+                    .show();
+            return;
+        }
+        try {
+            Uri apkUri = FileProvider.getUriForFile(
+                    activity,
+                    activity.getPackageName() + ".provider",
+                    apkFile);
+            Intent installIntent = new Intent(Intent.ACTION_VIEW)
+                    .setDataAndType(apkUri, APK_MIME_TYPE)
+                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            activity.startActivity(installIntent);
+        } catch (Exception exception) {
+            Toast.makeText(activity, R.string.update_download_failed, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private static void showDownloadFailed(Activity activity, AlertDialog progressDialog) {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        Toast.makeText(activity, R.string.update_download_failed, Toast.LENGTH_LONG).show();
+    }
+
+    private static long currentVersionCode(android.content.Context context) {
         try {
             PackageInfo packageInfo = context.getPackageManager()
                     .getPackageInfo(context.getPackageName(), 0);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                return packageInfo.getLongVersionCode();
-            }
-            return packageInfo.versionCode;
+            return PackageInfoCompat.getLongVersionCode(packageInfo);
         } catch (Exception exception) {
             return Long.MAX_VALUE;
         }

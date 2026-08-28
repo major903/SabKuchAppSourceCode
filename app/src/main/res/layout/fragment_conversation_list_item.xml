@@ -16,8 +16,8 @@
             android:textSize="@dimen/text_size_14"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/margin_8dp"
-            android:layout_toLeftOf="@+id/bt_reply"
+            android:layout_marginEnd="@dimen/margin_8dp"
+            android:layout_toStartOf="@+id/bt_reply"
             tools:text="@string/err" />
 
         <Button
@@ -25,12 +25,12 @@
             style="@style/ButtonBlue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:minWidth="0dp"
             android:minHeight="0dp"
-            android:paddingLeft="@dimen/margin_16dp"
+            android:paddingStart="@dimen/margin_16dp"
             android:paddingTop="@dimen/margin_4dp"
-            android:paddingRight="@dimen/margin_16dp"
+            android:paddingEnd="@dimen/margin_16dp"
             android:paddingBottom="@dimen/margin_4dp"
             android:text="@string/reply" />
     </RelativeLayout>
@@ -47,8 +47,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/margin_8dp"
-            android:layout_toLeftOf="@+id/iv_triangle"
+            android:layout_marginEnd="@dimen/margin_8dp"
+            android:layout_toStartOf="@+id/iv_triangle"
             android:ellipsize="end"
             android:textColor="@color/black"
             android:textSize="14sp"
@@ -58,7 +58,8 @@
             android:id="@+id/iv_triangle"
             android:layout_width="@dimen/margin_24dp"
             android:layout_height="@dimen/margin_24dp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="@string/image_content_description"
             android:src="@drawable/baseline_expand_more_black_24dp" />
 
 

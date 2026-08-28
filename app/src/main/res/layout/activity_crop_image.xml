@@ -37,18 +37,18 @@
             android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>
 
-    <com.naver.android.helloyako.imagecrop.view.ImageCropView xmlns:imagecrop="http://schemas.android.com/apk/res-auto"
+    <com.canhub.cropper.CropImageView
         android:id="@+id/imageViewCrop"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottomLayout"
         android:layout_below="@+id/toolbar"
-        imagecrop:gridInnerColor="#66ffffff"
-        imagecrop:gridInnerStroke="1dp"
-        imagecrop:gridOuterColor="#ffffff"
-        imagecrop:gridOuterStroke="1dp"
-        imagecrop:setInnerGridMode="on"
-        imagecrop:setOuterGridMode="on" />
+        app:cropGuidelines="on"
+        app:cropGuidelinesColor="#66ffffff"
+        app:cropGuidelinesThickness="1dp"
+        app:cropBorderLineColor="#ffffff"
+        app:cropBorderLineThickness="1dp"
+        app:cropFixAspectRatio="true" />
 
     <LinearLayout
         android:id="@+id/bottomLayout"
@@ -58,15 +58,17 @@
         android:orientation="horizontal"
         android:padding="@dimen/dp_eight"
         android:background="@color/white"
+        style="?android:attr/buttonBarStyle"
         android:weightSum="2">
 
         <Button
             android:id="@+id/buttonCrop"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_eight"
             android:onClick="@{cropImageActivity::buttonCropClick}"
-            android:layout_marginRight="@dimen/dp_four"
+            android:layout_marginEnd="@dimen/dp_four"
             android:layout_weight="1"
             android:padding="@dimen/dp_eight"
             android:text="@string/Crop"
@@ -75,9 +77,10 @@
 
         <Button
             android:id="@+id/buttonDiscard"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_four"
+            android:layout_marginStart="@dimen/dp_four"
             android:layout_marginTop="@dimen/dp_eight"
             android:onClick="@{cropImageActivity::buttonDiscardClick}"
             android:layout_weight="1"

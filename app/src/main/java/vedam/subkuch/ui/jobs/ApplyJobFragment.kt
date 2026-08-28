@@ -1,13 +1,7 @@
 package vedam.subkuch.ui.jobs
 
-import android.graphics.Color
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.TextPaint
 import android.text.TextUtils
-import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,20 +10,20 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.CompoundButton
 import androidx.databinding.DataBindingUtil
+import androidx.core.os.BundleCompat
+import androidx.lifecycle.lifecycleScope
 import vedam.subkuch.network.Response
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.launch
 import vedam.subkuch.R
 import vedam.subkuch.base.BaseAddImageFragment
 import vedam.subkuch.databinding.FragmentSubmitBinding
 import vedam.subkuch.helpers.Constants
 import vedam.subkuch.network.DataFetcher
-import vedam.subkuch.network.DataFetcher.getJobSalaries
-import vedam.subkuch.network.DataFetcher.uploadJobProfileImage
 import vedam.subkuch.network.DataFetcher.withdraw
 import vedam.subkuch.network.NetworkConstants
 import vedam.subkuch.network.models.*
-import vedam.subkuch.network.models.wallet.WalletResponse
+import vedam.subkuch.network.models.wallet.BalanceResponse
 import vedam.subkuch.ui.jobs.models.*
 import vedam.subkuch.ui.shopping.show
 import vedam.subkuch.utils.AppPrefs
@@ -47,15 +41,16 @@ class ApplyJobFragment : BaseAddImageFragment(), OnItemSelectedListener {
     private var post: Post? = null
     private var salaryId: String? = null
     private var jobExperienceId: String? = null
-    private var walletResponse: WalletResponse? = null
+    private var walletResponse: BalanceResponse? = null
     private var jobExperiences: ArrayList<JobExperience>? = null
     private var jobSalaries: ArrayList<JobSalary>? = null
     private var stack = Stack<Any>()
+    private val repository = JobsRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        post = arguments?.getParcelable(Constants.EXTRA_DATA)
+        post = arguments?.let { BundleCompat.getParcelable(it, Constants.EXTRA_DATA, Post::class.java) }
 
     }
 
@@ -76,15 +71,10 @@ class ApplyJobFragment : BaseAddImageFragment(), OnItemSelectedListener {
         getWalletDetails()
     }
 
-    private val onWalletSuccessListener = Response.Listener { response: WalletResponse? ->
+    private val onWalletSuccessListener = Response.Listener { response: BalanceResponse? ->
         walletResponse = response
         loadUI()
     }
-
-    private val onViewJobSuccessListener =
-        Response.Listener { response: BaseGetMasterModel<JobMelaRequest>? ->
-            fillJobDetails(response?.returnData?.get(0))
-        }
 
     private fun fillJobDetails(response: JobMelaRequest?) {
         binding?.etMoreExperience?.setText(response?.jobExperienceDetails ?: "")
@@ -109,8 +99,8 @@ class ApplyJobFragment : BaseAddImageFragment(), OnItemSelectedListener {
     private fun loadUI() {
         UiUtil.cancelProgressDialog()
         val balance =
-            (walletResponse?.returnData?.wallet?.availableBalance?.split(".")?.get(1))?.trim()
-                ?.toIntOrNull() ?: 0
+            walletResponse?.returnData?.remainingWithdrawableAmount?.toString()
+                ?.toDoubleOrNull()?.toInt() ?: 0
         if (balance >= 10) {
             binding?.tvMessage?.show()
             binding?.tvMessage?.text = getString(R.string.yes_money, balance)
@@ -119,36 +109,23 @@ class ApplyJobFragment : BaseAddImageFragment(), OnItemSelectedListener {
             stack.add(Any())
             stack.add(Any())
             getSalaries()
-//            getJobQualifications()
             getJobExperiences()
         } else {
             binding?.tvMessage?.show()
-            val ss = SpannableString(getString(R.string.no_money, balance))
-            val clickableSpan: ClickableSpan = object : ClickableSpan() {
-                override fun onClick(textView: View) {
-                    AppUtil.openUrl(mContext, "https://vedam-it.com/sabkuch.html")
-                }
-
-                override fun updateDrawState(ds: TextPaint) {
-                    super.updateDrawState(ds)
-                    ds.isUnderlineText = true
-                }
-            }
-            ss.setSpan(clickableSpan, ss.indexOf("Click"), ss.indexOf("Click") + 10, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            binding?.tvMessage?.movementMethod = LinkMovementMethod.getInstance()
-            binding?.tvMessage?.text = ss
-            binding?.tvMessage?.highlightColor = Color.TRANSPARENT
+            binding?.tvMessage?.text = getString(R.string.no_job_coins, balance)
         }
     }
 
     private fun getViewProfile() {
-        val type = object : TypeToken<BaseGetMasterModel<JobMelaRequest>>() {}.type
-        DataFetcher.getJobProfile(
-            mContext,
-            onViewJobSuccessListener,
-            type,
-            onErrorListener
-        )
+        lifecycleScope.launch {
+            when (val result = repository.getJobProfile(AppPrefs.getPrefsUserId(mContext))) {
+                is JobsResult.Success -> fillJobDetails(result.value.returnData?.get(0))
+                is JobsResult.Error -> if (activity != null) UiUtil.showToast(
+                    mContext,
+                    getString(R.string.err_occurred)
+                )
+            }
+        }
     }
 
     private fun getWalletDetails() {
@@ -156,30 +133,35 @@ class ApplyJobFragment : BaseAddImageFragment(), OnItemSelectedListener {
         DataFetcher.getWalletDetails(
             mContext,
             onWalletSuccessListener,
-            WalletResponse::class.java,
+            BalanceResponse::class.java,
             onErrorListener
         )
     }
 
     private fun getJobExperiences() {
         UiUtil.showProgressDialog(mContext, R.string.please_wait)
-        DataFetcher.getJobExperiences(
-            mContext,
-            onExperienceSuccessListener,
-            JobExperienceResponse::class.java,
-            onErrorListener
-        )
-    }
-
-    private val onExperienceSuccessListener =
-        Response.Listener { response: JobExperienceResponse? ->
+        lifecycleScope.launch {
+            val result = repository.getJobExperiences()
             UiUtil.cancelProgressDialog()
-            stack.pop()
-            if (activity != null) if (response != null && response.returnMessage == Constants.SUCCESS) {
-                setJobExperiences(response.returnData)
-                checkAndViewProfile()
-            } else UiUtil.showToast(mContext, getString(R.string.no_data))
+            when (result) {
+                is JobsResult.Success -> {
+                    stack.pop()
+                    if (activity != null) {
+                        val response = result.value
+                        if (response.returnMessage == Constants.SUCCESS) {
+                            setJobExperiences(response.returnData)
+                            checkAndViewProfile()
+                        } else UiUtil.showToast(mContext, getString(R.string.no_data))
+                    }
+                }
+
+                is JobsResult.Error -> if (activity != null) UiUtil.showToast(
+                    mContext,
+                    getString(R.string.err_occurred)
+                )
+            }
         }
+    }
 
     private fun setJobExperiences(jobExperiences: ArrayList<JobExperience>) {
         this.jobExperiences = jobExperiences
@@ -195,54 +177,27 @@ class ApplyJobFragment : BaseAddImageFragment(), OnItemSelectedListener {
         binding?.spExperience?.setSelection(0)
     }
 
-    private fun getJobQualifications() {
-//        UiUtil.showProgressDialog(context, R.string.please_wait)
-//        DataFetcher.getJobQualifications(
-//            context,
-//            onQualifySuccessListener,
-//            JobQualificationResponse::class.java,
-//            onErrorListener
-//        )
-    }
-
-//    private val onQualifySuccessListener =
-//        Response.Listener { response: JobQualificationResponse? ->
-//            UiUtil.cancelProgressDialog()
-//            if (activity != null) if (response != null && response.returnMessage == Constants.SUCCESS) {
-//                setJobQualifications(response.returnData)
-//            } else UiUtil.showToast(context, getString(R.string.no_data))
-//        }
-
-//    private fun setJobQualifications(jobQualifications: ArrayList<JobQualification>) {
-//        val jobQualification = JobQualification()
-//        jobQualification.qualificationName = getString(R.string.select_a_job_qualification)
-//        jobQualifications.add(0, jobQualification)
-//        val adapter = ArrayAdapter(
-//            context,
-//            android.R.layout.simple_spinner_dropdown_item, jobQualifications
-//        )
-//        binding?.spQualification?.adapter = adapter
-//        binding?.spQualification?.onItemSelectedListener = this
-//        binding?.spQualification?.setSelection(0)
-//    }
-
     private fun getSalaries() {
         UiUtil.showProgressDialog(mContext, R.string.please_wait)
-        getJobSalaries(
-            mContext,
-            onSalarySuccessListener,
-            JobSalaryResponse::class.java,
-            onErrorListener
-        )
-    }
+        lifecycleScope.launch {
+            val result = repository.getJobSalaries()
+            UiUtil.cancelProgressDialog()
+            when (result) {
+                is JobsResult.Success -> {
+                    stack.pop()
+                    val response = result.value
+                    if (response.returnMessage == Constants.SUCCESS) {
+                        setJobSalaries(response.returnData)
+                        checkAndViewProfile()
+                    } else UiUtil.showToast(mContext, getString(R.string.no_data))
+                }
 
-    private val onSalarySuccessListener = Response.Listener { response: JobSalaryResponse? ->
-        UiUtil.cancelProgressDialog()
-        stack.pop()
-        if (response != null && response.returnMessage == Constants.SUCCESS) {
-            setJobSalaries(response.returnData)
-            checkAndViewProfile()
-        } else UiUtil.showToast(mContext, getString(R.string.no_data))
+                is JobsResult.Error -> if (activity != null) UiUtil.showToast(
+                    mContext,
+                    getString(R.string.err_occurred)
+                )
+            }
+        }
     }
 
     private fun setJobSalaries(jobSalaries: ArrayList<JobSalary>) {
@@ -288,21 +243,23 @@ class ApplyJobFragment : BaseAddImageFragment(), OnItemSelectedListener {
             AppUtil.getBytesFromBitmap(AppUtil.getBitmap(mContext, imageUri)),
             NetworkConstants.JPEG_MIME_TYPE
         )
-        uploadJobProfileImage(
-            mContext,
-            params,
-            onImageUploadSuccessListener,
-            GeneralResponse::class.java,
-            onErrorListener
-        )
-    }
+        lifecycleScope.launch {
+            val result = repository.uploadJobProfileImage(AppPrefs.getPrefsUserId(mContext), params)
+            UiUtil.cancelProgressDialog()
+            when (result) {
+                is JobsResult.Success -> if (activity != null) {
+                    if (result.value.returnMessage == Constants.SUCCESS) {
+                        UiUtil.showToast(mContext, getString(R.string.job_profile_added))
+                        activity?.finish()
+                    } else UiUtil.showToast(mContext, getString(R.string.err_occurred))
+                }
 
-    private val onImageUploadSuccessListener = Response.Listener { response: GeneralResponse? ->
-        UiUtil.cancelProgressDialog()
-        if (activity != null) if (response != null && response.returnMessage == Constants.SUCCESS) {
-            UiUtil.showToast(mContext, getString(R.string.job_profile_added))
-            activity?.finish()
-        } else UiUtil.showToast(mContext, getString(R.string.err_occurred))
+                is JobsResult.Error -> if (activity != null) UiUtil.showToast(
+                    mContext,
+                    getString(R.string.err_occurred)
+                )
+            }
+        }
     }
 
     private fun submit() {
@@ -344,23 +301,25 @@ class ApplyJobFragment : BaseAddImageFragment(), OnItemSelectedListener {
         jobMelaRequest!!.jobExperienceDetails =
             binding!!.etMoreExperience.text.toString()
 
-        DataFetcher.addJobProfile(
-            mContext,
-            Gson().toJson(jobMelaRequest),
-            onAddJobProfileSuccessListener,
-            GeneralResponse::class.java,
-            onErrorListener
-        )
-    }
+        lifecycleScope.launch {
+            val result = repository.addJobProfile(Gson().toJson(jobMelaRequest))
+            UiUtil.cancelProgressDialog()
+            when (result) {
+                is JobsResult.Success -> if (activity != null) {
+                    if (result.value.returnMessage == Constants.SUCCESS) {
+                        if (imageUri != null) uploadImage() else {
+                            UiUtil.showToast(mContext, getString(R.string.job_profile_added))
+                            activity?.finish()
+                        }
+                    } else UiUtil.showToast(mContext, getString(R.string.err_occurred))
+                }
 
-    private val onAddJobProfileSuccessListener = Response.Listener { response: GeneralResponse? ->
-        UiUtil.cancelProgressDialog()
-        if (activity != null) if (response != null && response.returnMessage == Constants.SUCCESS) {
-            if (imageUri != null) uploadImage() else {
-                UiUtil.showToast(mContext, getString(R.string.job_profile_added))
-                activity?.finish()
+                is JobsResult.Error -> if (activity != null) UiUtil.showToast(
+                    mContext,
+                    getString(R.string.err_occurred)
+                )
             }
-        } else UiUtil.showToast(mContext, getString(R.string.err_occurred))
+        }
     }
 
     private fun validateErrorMessage(): Int {

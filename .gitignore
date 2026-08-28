@@ -9,3 +9,14 @@
 /build
 /captures
 .externalNativeBuild
+/tmp
+/.android-user-home
+/.gradle-user-home
+/.kotlin
+/.playwright-cli
+/.tmp-crystal-aar
+/.tmp-crystal-unpack
+/buildSrc/build
+hs_err_pid*.log
+/device-layout*.json
+/device-wallet-layout.json

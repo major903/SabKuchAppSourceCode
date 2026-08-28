@@ -8,8 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Typeface;
-import android.media.ExifInterface;
-import android.os.Build;
+import androidx.exifinterface.media.ExifInterface;
 import android.text.InputFilter;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -43,6 +42,7 @@ import com.squareup.picasso.RequestCreator;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 import vedam.subkuch.R;
 import vedam.subkuch.uicomponent.CustomSpannable;
@@ -259,7 +259,7 @@ public class UiUtil {
 
     public static void showKeyBoard(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+        imm.showSoftInput(view, 0);
     }
 
     public static void setImageView(ImageSetter imageSetter) {
@@ -644,7 +644,7 @@ public class UiUtil {
     }
 
     public static void setRatingText(TextView textView, float ratingText) {
-        textView.setText(String.format("%.1f", ratingText));
+        textView.setText(String.format(Locale.US, "%.1f", ratingText));
     }
 
     public static InputFilter getCharInputFilter() {
@@ -688,13 +688,8 @@ public class UiUtil {
         String footer = AppUtil.getTextFromAsset(context, SERVICE_DESCRIPTION_FOOTER);
         String fullDescription = String.format("%s<style type=\"text/css\">@font-face {font-family: MyFont;src: url(\"file:///android_asset/avenirregular.ttf\")}body {font-family: MyFont; padding: 0; margin:0}</style><div style=\"color:%s\"; class=\"more\">%s</div>%s", header, textColor, description, footer);
 
-        if (Build.VERSION.SDK_INT >= 19) {
-            webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        } else {
-            webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        }
+        webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
-        webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDefaultFontSize(17);
 
         if (backgroundColor != 0)

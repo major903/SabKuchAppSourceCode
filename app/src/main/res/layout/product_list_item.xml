@@ -18,14 +18,13 @@
             android:background="@color/white"
             android:orientation="vertical">
 
-            <com.makeramen.roundedimageview.RoundedImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/iv_product"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="@dimen/margin_8dp"
                 android:scaleType="centerCrop"
-                app:riv_oval="false"
                 tools:src="@drawable/grey" />
 
             <TextView

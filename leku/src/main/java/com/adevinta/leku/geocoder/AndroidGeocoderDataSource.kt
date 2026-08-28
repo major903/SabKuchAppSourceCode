@@ -7,6 +7,7 @@ import java.io.IOException
 
 private const val MAX_RESULTS = 5
 
+@Suppress("DEPRECATION")
 class AndroidGeocoderDataSource(private val geocoder: Geocoder) : GeocoderDataSourceInterface {
 
     override fun getFromLocationName(query: String): List<Address> {

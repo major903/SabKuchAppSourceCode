@@ -39,12 +39,14 @@ class BaseWebFragment : BaseFragment() {
         setTitle(arguments?.getString(Constants.EXTRA_NAME))
     }
 
+    @Suppress("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val webView = view.findViewById<WebView>(R.id.webview)
         webView.loadUrl(url!!)
         webView.clearCache(true)
         val webSettings = webView.settings
+        // These server-rendered pages require JavaScript for their interactive content.
         webSettings.javaScriptEnabled = true
         webSettings.cacheMode = WebSettings.LOAD_NO_CACHE
         webView.webViewClient = MyWebViewClient()

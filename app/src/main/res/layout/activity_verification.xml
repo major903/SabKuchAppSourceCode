@@ -135,7 +135,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
                 android:drawablePadding="8dp"
-                android:drawableStart="@drawable/ic_verification_shield"
+                app:drawableStartCompat="@drawable/ic_verification_shield"
                 android:gravity="center"
                 android:text="@string/verification_security_note"
                 android:textColor="@color/form_text_secondary"

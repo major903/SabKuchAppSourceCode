@@ -46,7 +46,7 @@ public class JobCategoryAdapter extends BaseAdapter {
         JobCategoryAdapter.ViewHolder holder;
 
         if (v == null) {
-            v = inflater.inflate(R.layout.fragment_phone_book_list_item, null);
+            v = inflater.inflate(R.layout.fragment_phone_book_list_item, parent, false);
             holder = new JobCategoryAdapter.ViewHolder();
             holder.rlContainer = v.findViewById(R.id.rl_container);
             holder.tvCategory = v.findViewById(R.id.tv_category);

@@ -51,6 +51,7 @@ public class Profile implements Parcelable {
 
     private String AnualIncomeid;
 
+    @SerializedName(value = "FirstName", alternate = {"firstName"})
     private String FirstName;
 
     private String LivingWithId;
@@ -87,6 +88,7 @@ public class Profile implements Parcelable {
 
     private String PhysicalStatusid;
 
+    @SerializedName(value = "LastName", alternate = {"lastName"})
     private String LastName;
 
     private String ReligionId;

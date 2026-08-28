@@ -2,6 +2,7 @@ package vedam.subkuch.network.models.learn;
 
 public class LearnCourse {
     private int CourseId;
+    private String EncryptedCourseId;
     private int CourseCategoryId;
     private String CategoryName;
     private String Name;
@@ -14,8 +15,11 @@ public class LearnCourse {
     private String ImageUrl;
     private String TrainerPic;
     private String PurchaseUrl;
+    private boolean IsSubscribed;
+    private int SubscriberCount;
 
     public int getCourseId() { return CourseId; }
+    public String getEncryptedCourseId() { return EncryptedCourseId; }
     public int getCourseCategoryId() { return CourseCategoryId; }
     public String getCategoryName() { return CategoryName; }
     public String getName() { return Name; }
@@ -28,4 +32,6 @@ public class LearnCourse {
     public String getImageUrl() { return ImageUrl; }
     public String getTrainerPic() { return TrainerPic; }
     public String getPurchaseUrl() { return PurchaseUrl; }
+    public boolean isSubscribed() { return IsSubscribed; }
+    public int getSubscriberCount() { return SubscriberCount; }
 }

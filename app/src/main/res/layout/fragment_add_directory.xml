@@ -25,17 +25,17 @@
                 style="@style/TextViewBlackHeading2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginStart="@dimen/margin_16dp"
                 android:layout_marginTop="@dimen/margin_16dp"
-                android:layout_marginRight="@dimen/margin_16dp"
+                android:layout_marginEnd="@dimen/margin_16dp"
                 android:text="@string/category" />
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginStart="@dimen/margin_16dp"
                 android:layout_marginTop="@dimen/margin_4dp"
-                android:layout_marginRight="@dimen/margin_16dp"
+                android:layout_marginEnd="@dimen/margin_16dp"
                 android:background="@drawable/edit_text_border">
 
                 <Spinner
@@ -50,17 +50,17 @@
                 style="@style/TextViewBlackHeading2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginStart="@dimen/margin_16dp"
                 android:layout_marginTop="@dimen/margin_16dp"
-                android:layout_marginRight="@dimen/margin_16dp"
+                android:layout_marginEnd="@dimen/margin_16dp"
                 android:text="@string/sub_category" />
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginStart="@dimen/margin_16dp"
                 android:layout_marginTop="@dimen/margin_4dp"
-                android:layout_marginRight="@dimen/margin_16dp"
+                android:layout_marginEnd="@dimen/margin_16dp"
                 android:background="@drawable/edit_text_border">
 
                 <Spinner
@@ -75,18 +75,18 @@
                 style="@style/TextViewBlackHeading2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginStart="@dimen/margin_16dp"
                 android:layout_marginTop="@dimen/margin_16dp"
-                android:layout_marginRight="@dimen/margin_16dp"
+                android:layout_marginEnd="@dimen/margin_16dp"
                 android:visibility="gone"
                 android:text="@string/country" />
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginStart="@dimen/margin_16dp"
                 android:layout_marginTop="@dimen/margin_4dp"
-                android:layout_marginRight="@dimen/margin_16dp"
+                android:layout_marginEnd="@dimen/margin_16dp"
                 android:visibility="gone"
                 android:background="@drawable/edit_text_border">
 
@@ -102,18 +102,18 @@
                 style="@style/TextViewBlackHeading2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginStart="@dimen/margin_16dp"
                 android:layout_marginTop="@dimen/margin_16dp"
                 android:visibility="gone"
-                android:layout_marginRight="@dimen/margin_16dp"
+                android:layout_marginEnd="@dimen/margin_16dp"
                 android:text="@string/city" />
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginStart="@dimen/margin_16dp"
                 android:layout_marginTop="@dimen/margin_4dp"
-                android:layout_marginRight="@dimen/margin_16dp"
+                android:layout_marginEnd="@dimen/margin_16dp"
                 android:visibility="gone"
                 android:background="@drawable/edit_text_border">
 
@@ -129,9 +129,9 @@
                 style="@style/TextViewBlackHeading2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginStart="@dimen/margin_16dp"
                 android:layout_marginTop="@dimen/margin_16dp"
-                android:layout_marginRight="@dimen/margin_16dp"
+                android:layout_marginEnd="@dimen/margin_16dp"
                 android:text="@string/business_name" />
 
             <EditText
@@ -139,22 +139,23 @@
                 style="@style/EditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginStart="@dimen/margin_16dp"
                 android:layout_marginTop="@dimen/margin_4dp"
-                android:layout_marginRight="@dimen/margin_16dp"
+                android:layout_marginEnd="@dimen/margin_16dp"
                 android:hint="@string/business_name"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:maxLines="1"
+                android:importantForAutofill="no"
                 android:padding="@dimen/margin_8dp" />
 
             <TextView
                 style="@style/TextViewBlackHeading2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginStart="@dimen/margin_16dp"
                 android:layout_marginTop="@dimen/margin_16dp"
-                android:layout_marginRight="@dimen/margin_16dp"
+                android:layout_marginEnd="@dimen/margin_16dp"
                 android:text="@string/website" />
 
             <EditText
@@ -162,12 +163,13 @@
                 style="@style/EditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginStart="@dimen/margin_16dp"
                 android:layout_marginTop="@dimen/margin_4dp"
-                android:layout_marginRight="@dimen/margin_16dp"
+                android:layout_marginEnd="@dimen/margin_16dp"
                 android:hint="@string/website"
                 android:imeOptions="actionNext"
                 android:inputType="textWebEditText"
+                android:importantForAutofill="no"
                 android:padding="@dimen/margin_8dp" />
 
             <TextView
@@ -175,17 +177,17 @@
                 style="@style/TextViewBlackHeading2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginStart="@dimen/margin_16dp"
                 android:layout_marginTop="@dimen/margin_16dp"
-                android:layout_marginRight="@dimen/margin_16dp"
+                android:layout_marginEnd="@dimen/margin_16dp"
                 android:paddingBottom="@dimen/margin_4dp"
                 android:text="@string/add_photo" />
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_16dp"
-                android:layout_marginRight="@dimen/margin_16dp"
+                android:layout_marginStart="@dimen/margin_16dp"
+                android:layout_marginEnd="@dimen/margin_16dp"
                 android:scrollbars="none">
 
                 <LinearLayout
@@ -213,6 +215,7 @@
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:contentDescription="@string/image_content_description"
                                 android:src="@drawable/ico_add_photo" />
 
                         </LinearLayout>
@@ -234,8 +237,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_16dp"
-                android:paddingLeft="@dimen/margin_16dp"
-                android:paddingRight="@dimen/margin_16dp"
+                android:paddingStart="@dimen/margin_16dp"
+                android:paddingEnd="@dimen/margin_16dp"
                 android:text="@string/add_branches" />
         </LinearLayout>
     </ScrollView>

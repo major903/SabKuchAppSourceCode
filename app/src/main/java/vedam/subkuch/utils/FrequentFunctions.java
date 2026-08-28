@@ -11,6 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class FrequentFunctions {
     public static void hideKeyBoard(Context activity, View view) {
@@ -29,7 +30,7 @@ public class FrequentFunctions {
     }
 
     public static String getCurrentDateTime(){
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
         String date = df.format(Calendar.getInstance().getTime());
         return date;
     }

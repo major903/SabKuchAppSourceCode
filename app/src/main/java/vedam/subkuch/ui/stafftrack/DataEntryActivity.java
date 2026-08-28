@@ -61,6 +61,7 @@ public class DataEntryActivity extends BaseActivity {
     private int imeBottomInset;
     private int navigationBottomInset;
     private final ArrayList<RegistrationMasterOption> districts = new ArrayList<>();
+    private boolean districtAutoRefetchDone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +90,10 @@ public class DataEntryActivity extends BaseActivity {
         ViewCompat.setOnApplyWindowInsetsListener(binding.svDataEntry, (view, insets) -> {
             imeBottomInset = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom;
             navigationBottomInset = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom;
+            // Edge-to-edge (targetSdk 35+) plus adjustNothing means the window never resizes
+            // for the keyboard; pad the form so the submit button can scroll above it.
+            view.setPadding(view.getPaddingLeft(), view.getPaddingTop(), view.getPaddingRight(),
+                    Math.max(0, imeBottomInset - navigationBottomInset));
             if (imeBottomInset > 0 && (binding.etCompanyName.hasFocus()
                     || binding.etMobile1.hasFocus() || binding.etMobile2.hasFocus())) {
                 showSubmitAboveKeyboard();
@@ -128,7 +133,7 @@ public class DataEntryActivity extends BaseActivity {
         boolean hasCachedStates = !cachedStates.isEmpty();
         if (hasCachedStates) bindStateSpinner(cachedStates);
         if (!hasCachedStates || !RegistrationMasterCache.areStatesFresh(this)) {
-            RegistrationApiClient.getApi().getStates().enqueue(
+            RegistrationApiClient.getApi(this).getStates().enqueue(
                     new Callback<RegistrationMasterResponse>() {
                         @Override
                         public void onResponse(Call<RegistrationMasterResponse> call,
@@ -155,7 +160,7 @@ public class DataEntryActivity extends BaseActivity {
         boolean hasCachedDistricts = !cachedDistricts.isEmpty();
         if (hasCachedDistricts) showDistricts(cachedDistricts);
         if (!hasCachedDistricts || !RegistrationMasterCache.areDistrictsFresh(this)) {
-            RegistrationApiClient.getApi().getDistricts().enqueue(
+            RegistrationApiClient.getApi(this).getDistricts().enqueue(
                     new Callback<RegistrationMasterResponse>() {
                         @Override
                         public void onResponse(Call<RegistrationMasterResponse> call,
@@ -188,7 +193,7 @@ public class DataEntryActivity extends BaseActivity {
             if (!hasCachedDataEntries) displayDataEntries(new ArrayList<>());
             return;
         }
-        RegistrationApiClient.getApi().getUniqueDataEntries(userId, 1, 10).enqueue(
+        RegistrationApiClient.getApi(this).getUniqueDataEntries(userId, 1, 10).enqueue(
                 new Callback<DataEntryListResponse>() {
                     @Override
                     public void onResponse(Call<DataEntryListResponse> call,
@@ -352,7 +357,15 @@ public class DataEntryActivity extends BaseActivity {
     }
 
     private void updateDistrictSpinner() {
-        ArrayList<RegistrationMasterOption> options = withPlaceholder(filterDistricts(),
+        ArrayList<RegistrationMasterOption> filtered = filterDistricts();
+        if (filtered.isEmpty() && stateId != null && !districts.isEmpty() && !districtAutoRefetchDone) {
+            // A valid state produced no districts: the cached master list is likely
+            // outdated (e.g. districts added server-side after the cache was written).
+            // Re-fetch once per screen instead of leaving an empty dropdown.
+            districtAutoRefetchDone = true;
+            forceReloadDistricts();
+        }
+        ArrayList<RegistrationMasterOption> options = withPlaceholder(filtered,
                 getString(R.string.select_a_district));
         binding.spDistrict.setAdapter(new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, options));
@@ -363,6 +376,25 @@ public class DataEntryActivity extends BaseActivity {
                         ((RegistrationMasterOption) parent.getItemAtPosition(position)).getId());
             }
         });
+    }
+
+    private void forceReloadDistricts() {
+        RegistrationApiClient.getApi(this).getDistricts().enqueue(
+                new Callback<RegistrationMasterResponse>() {
+                    @Override
+                    public void onResponse(Call<RegistrationMasterResponse> call,
+                                           Response<RegistrationMasterResponse> response) {
+                        if (isFinishing() || isDestroyed()) return;
+                        if (response.isSuccessful() && response.body() != null) {
+                            setDistricts(response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<RegistrationMasterResponse> call, Throwable throwable) {
+                        // Keep showing cached data.
+                    }
+                });
     }
 
     private ArrayList<RegistrationMasterOption> filterDistricts() {
@@ -397,7 +429,7 @@ public class DataEntryActivity extends BaseActivity {
             UiUtil.showToast(this, getString(R.string.registration_api_not_configured));
             return;
         }
-        RegistrationApiClient.getApi().addDataEntry(request).enqueue(new Callback<AddResponse>() {
+        RegistrationApiClient.getApi(this).addDataEntry(request).enqueue(new Callback<AddResponse>() {
             @Override
             public void onResponse(Call<AddResponse> call, Response<AddResponse> response) {
                 if (isFinishing() || isDestroyed()) return;
@@ -463,6 +495,7 @@ public class DataEntryActivity extends BaseActivity {
             inputMethodManager.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
             focusedView.clearFocus();
         }
+        clearSubmittedFields();
 
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_duplicate_data, null);
         AlertDialog dialog = new MaterialAlertDialogBuilder(this)
@@ -496,7 +529,7 @@ public class DataEntryActivity extends BaseActivity {
 
     private boolean isPositiveSaveMessage(String message) {
         if (message == null) return false;
-        String normalized = message.trim().toLowerCase();
+        String normalized = message.trim().toLowerCase(Locale.ROOT);
         return Constants.SUCCESS.equalsIgnoreCase(normalized)
                 || normalized.contains("successfully")
                 || normalized.contains("data saved")

@@ -22,7 +22,7 @@
         android:id="@+id/tv_notification_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/iv_chat"
+        android:layout_alignEnd="@+id/iv_chat"
         android:layout_alignBottom="@+id/iv_chat"
         android:layout_marginBottom="16dp"
         android:background="@drawable/circular_fill_red"

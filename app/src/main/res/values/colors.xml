@@ -19,6 +19,9 @@
     <color name="transparent">#00000000</color>
     <color name="reddish_brown">#A52A2A</color>
     <color name="brand_blue">#2563EB</color>
+    <color name="transfer_card_start">#1D4ED8</color>
+    <color name="transfer_card_end">#2563EB</color>
+    <color name="transfer_card_border">#5B86EE</color>
     <color name="brand_blue_soft">#E8F0FF</color>
     <color name="form_background">#F5F7FB</color>
     <color name="form_text_primary">#152238</color>
@@ -40,5 +43,15 @@
     <color name="wallet_blue_soft">#EEF4FF</color>
     <color name="learn_purple">#28146F</color>
     <color name="learn_image_background">#DDD9F2</color>
+    <color name="learn_shimmer_base">#DDD9F2</color>
+    <color name="learn_shimmer_highlight">#F5F3FC</color>
     <color name="learn_rating_star">#F59E0B</color>
+    <color name="learn_playing">#16A34A</color>
+    <color name="contribute_screen_bg">#F5F7FB</color>
+    <color name="contribute_icon_company_bg">#E8F0FB</color>
+    <color name="contribute_icon_company">#173B78</color>
+    <color name="contribute_icon_nri_bg">#E6F7EF</color>
+    <color name="contribute_icon_nri">#0F9347</color>
+    <color name="contribute_icon_estate_bg">#FFF3E4</color>
+    <color name="contribute_icon_estate">#F2992C</color>
 </resources>

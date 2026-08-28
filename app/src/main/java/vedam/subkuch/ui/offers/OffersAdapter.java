@@ -53,7 +53,7 @@ public class OffersAdapter extends BaseAdapter {
         OffersAdapter.ViewHolder holder;
 
         if (v == null) {
-            v = inflater.inflate(R.layout.fragment_offers_list_item, null);
+            v = inflater.inflate(R.layout.fragment_offers_list_item, parent, false);
             holder = new OffersAdapter.ViewHolder();
             holder.image = v.findViewById(R.id.imgImageView);
             v.setTag(holder);

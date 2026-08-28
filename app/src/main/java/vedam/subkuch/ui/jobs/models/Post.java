@@ -23,6 +23,10 @@ public class Post implements Parcelable {
         Time4 = in.readString();
         WhatsApp = in.readString();
         Email1 = in.readString();
+        Distance = in.readString();
+        Req1 = in.readString();
+        Req2 = in.readString();
+        Req3 = in.readString();
     }
 
     @Override
@@ -41,6 +45,10 @@ public class Post implements Parcelable {
         dest.writeString(Time4);
         dest.writeString(WhatsApp);
         dest.writeString(Email1);
+        dest.writeString(Distance);
+        dest.writeString(Req1);
+        dest.writeString(Req2);
+        dest.writeString(Req3);
     }
 
     @Override
@@ -83,6 +91,10 @@ public class Post implements Parcelable {
     private String Time4;
     private String WhatsApp;
     private String Email1;
+    private String Distance;
+    private String Req1;
+    private String Req2;
+    private String Req3;
 
     public Post() {
 
@@ -191,6 +203,23 @@ public class Post implements Parcelable {
     public void setEmail1(String email1) {
         Email1 = email1;
     }
+
+    public String getDistance() {
+        return Distance;
+    }
+
+    public void setDistance(String distance) {
+        Distance = distance;
+    }
+
+    public String getReq1() { return Req1; }
+    public void setReq1(String req1) { Req1 = req1; }
+
+    public String getReq2() { return Req2; }
+    public void setReq2(String req2) { Req2 = req2; }
+
+    public String getReq3() { return Req3; }
+    public void setReq3(String req3) { Req3 = req3; }
 
     @Override
     public String toString() {

@@ -2,18 +2,25 @@ package vedam.subkuch.base
 
 import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.drawable.BitmapDrawable
-import android.os.Build
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.annotation.AnimRes
 import androidx.core.content.ContextCompat
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -41,6 +48,26 @@ import vedam.subkuch.utils.UiUtil
  * Created by nansari on 6/17/2016.
  */
 abstract class BaseFragment : Fragment(), OnRefreshListener {
+    protected fun installMenu(menuRes: Int, onMenuItemSelected: (MenuItem) -> Boolean) {
+        installMenu(menuRes, {}, onMenuItemSelected)
+    }
+
+    protected fun installMenu(
+        menuRes: Int,
+        onMenuCreated: (Menu) -> Unit,
+        onMenuItemSelected: (MenuItem) -> Boolean
+    ) {
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menu.clear()
+                menuInflater.inflate(menuRes, menu)
+                onMenuCreated(menu)
+            }
+
+            override fun onMenuItemSelected(item: MenuItem): Boolean = onMenuItemSelected(item)
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
     @JvmField
     var mContext: Context? = null
     var globalFragmentInteractionListener: OnFragmentInteractionListener? = null
@@ -224,7 +251,7 @@ abstract class BaseFragment : Fragment(), OnRefreshListener {
         bundle.putSerializable(Constants.EXTRA_IMAGE_ITEMS, alImage)
         bundle.putInt(Constants.EXTRA_POSITION, selectedPosition)
         bundle.putBoolean(Constants.EXTRA_IS_IMAGE_URLS, isUrls)
-        val ft = fragmentManager!!.beginTransaction()
+        val ft = parentFragmentManager.beginTransaction()
         val newFragment = SlideShowDialogFragment.newInstance(bundle)
         newFragment.show(ft, "slideshow")
     }
@@ -232,13 +259,13 @@ abstract class BaseFragment : Fragment(), OnRefreshListener {
     fun baseshowFeedbackMessage(view: View?, message: String?) {
         try {
             val snakbar = Snackbar.make(
-                view!!, message!!, Snackbar.LENGTH_LONG
+                requireView(), message!!, Snackbar.LENGTH_LONG
             )
             val tv = snakbar.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
-            tv.setTextColor(ContextCompat.getColor(activity!!, R.color.colorPrimary))
+            tv.setTextColor(ContextCompat.getColor(requireActivity(), R.color.colorPrimary))
             snakbar.view.setBackgroundColor(
                 ContextCompat.getColor(
-                    activity!!,
+                    requireActivity(),
                     android.R.color.white
                 )
             )
@@ -254,24 +281,26 @@ abstract class BaseFragment : Fragment(), OnRefreshListener {
     fun showPopWindow(view: View, adapter: ItemAdapter?) {
         val location = IntArray(2)
         view.getLocationOnScreen(location)
-        val customView = LayoutInflater.from(activity).inflate(R.layout.view_pop_window, null)
+        val customView = LayoutInflater.from(activity).inflate(
+            R.layout.view_pop_window,
+            view.rootView as? ViewGroup,
+            false
+        )
         val recylcerView = customView.findViewById<RecyclerView>(R.id.recyclerView)
         recylcerView.layoutManager = LinearLayoutManager(activity)
         recylcerView.adapter = adapter
         mPopupWindow = PopupWindow(customView, view.width, WindowManager.LayoutParams.WRAP_CONTENT)
         mPopupWindow!!.isOutsideTouchable = true
-        mPopupWindow!!.setBackgroundDrawable(BitmapDrawable())
+        mPopupWindow!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         mPopupWindow!!.showAsDropDown(view, 0, 10)
     }
 
     fun checkPermission(permission: Array<String?>): Int {
         var permissionNeeded = 0
-        if (Build.VERSION.SDK_INT >= 23) {
-            for (i in permission.indices) {
-                val result = ContextCompat.checkSelfPermission(activity!!, permission[i]!!)
-                if (result != PackageManager.PERMISSION_GRANTED) {
-                    permissionNeeded++
-                }
+        for (i in permission.indices) {
+            val result = ContextCompat.checkSelfPermission(requireActivity(), permission[i]!!)
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                permissionNeeded++
             }
         }
         return permissionNeeded

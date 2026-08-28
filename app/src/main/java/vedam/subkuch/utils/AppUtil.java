@@ -11,7 +11,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -37,7 +36,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import vedam.subkuch.R;
 import vedam.subkuch.helpers.Constants;
@@ -46,7 +44,6 @@ import vedam.subkuch.ui.directory.models.BusinessAddress;
 
 public class AppUtil {
 
-    private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static String appVersion;
 
@@ -112,23 +109,8 @@ public class AppUtil {
 
     }
 
-    @SuppressLint("NewApi")
     public static int generateViewId() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            for (; ; ) {
-                final int result = sNextGeneratedId.get();
-                // aapt-generated IDs have the high byte nonzero; clamp to the
-                // range under that.
-                int newValue = result + 1;
-                if (newValue > 0x00FFFFFF)
-                    newValue = 1; // Roll over to 1, not 0.
-                if (sNextGeneratedId.compareAndSet(result, newValue)) {
-                    return result;
-                }
-            }
-        } else {
-            return View.generateViewId();
-        }
+        return View.generateViewId();
     }
 
     public static boolean validateURL(String url) {
@@ -306,13 +288,13 @@ public class AppUtil {
     public static String getFormattedPrice(String price) {
         if (TextUtils.isEmpty(price))
             return null;
-        return String.format("$%.2f", Float.valueOf(price));
+        return String.format(Locale.US, "$%.2f", Float.valueOf(price));
     }
 
     public static String getFormattedPrice(double price) {
         if (price <= 0)
             return null;
-        return String.format("$%.2f", price);
+        return String.format(Locale.US, "$%.2f", price);
     }
 
     public static int dpToPx(Context context, int dps) {
@@ -370,8 +352,8 @@ public class AppUtil {
         if (TextUtils.isEmpty(data))
             return null;
 
-        String firstLetter = data.substring(0, 1).toUpperCase();
-        String restLetters = data.substring(1).toLowerCase();
+        String firstLetter = data.substring(0, 1).toUpperCase(Locale.ROOT);
+        String restLetters = data.substring(1).toLowerCase(Locale.ROOT);
         return firstLetter + restLetters;
     }
 

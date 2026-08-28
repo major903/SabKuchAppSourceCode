@@ -24,6 +24,7 @@ public class JobCategoryActivity extends BaseActivity {
 
     @Override
     public void onLocationChanged(Location location) {
+        if (location == null) return;
         DataFetcher.updateLocation(this, null, AddEventResponse.class, null, String.valueOf(location.getLatitude())
                 , String.valueOf(location.getLongitude()));
     }

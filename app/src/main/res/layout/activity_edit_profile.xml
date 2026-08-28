@@ -182,8 +182,11 @@
                                 android:id="@+id/et_email"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:imeOptions="actionDone"
-                                android:inputType="textEmailAddress"
+                                android:focusable="false"
+                                android:clickable="false"
+                                android:enabled="false"
+                                android:drawableEnd="@drawable/ic_lock_profile"
+                                android:drawablePadding="10dp"
                                 android:maxLines="1"
                                 android:minHeight="52dp"
                                 android:textColor="@color/form_text_primary" />

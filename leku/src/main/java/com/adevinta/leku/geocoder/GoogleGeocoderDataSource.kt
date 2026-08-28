@@ -31,16 +31,13 @@ class GoogleGeocoderDataSource(
         }
         try {
             val result = networkClient.requestFromLocationName(
-                String.format(Locale.ENGLISH, QUERY_REQUEST, query.trim { it <= ' ' }, apiKey)
+                String.format(Locale.ENGLISH, QUERY_REQUEST, query.trim(), apiKey)
             )
             if (result != null) {
                 addresses.addAll(addressBuilder.parseResult(result))
             }
-            addresses
         } catch (e: JSONException) {
-            addresses
         } catch (e: NetworkException) {
-            addresses
         }
 
         return addresses
@@ -56,7 +53,7 @@ class GoogleGeocoderDataSource(
                 String.format(
                     Locale.ENGLISH,
                     QUERY_REQUEST_WITH_RECTANGLE,
-                    query.trim { it <= ' ' },
+                    query.trim(),
                     apiKey,
                     lowerLeft.latitude,
                     lowerLeft.longitude,
@@ -67,11 +64,8 @@ class GoogleGeocoderDataSource(
             if (result != null) {
                 addresses.addAll(addressBuilder.parseResult(result))
             }
-            addresses
         } catch (e: JSONException) {
-            addresses
         } catch (e: NetworkException) {
-            addresses
         }
 
         return addresses
@@ -89,11 +83,8 @@ class GoogleGeocoderDataSource(
             if (result != null) {
                 addresses.addAll(addressBuilder.parseResult(result))
             }
-            addresses
         } catch (e: JSONException) {
-            addresses
         } catch (e: NetworkException) {
-            addresses
         }
 
         return addresses

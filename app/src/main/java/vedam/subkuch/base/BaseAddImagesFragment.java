@@ -7,7 +7,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -20,10 +19,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 
 import vedam.subkuch.network.AuthFailureError;
 import vedam.subkuch.network.NetworkError;
@@ -34,7 +33,9 @@ import vedam.subkuch.network.TimeoutError;
 import vedam.subkuch.network.ApiError;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
-import com.makeramen.roundedimageview.RoundedImageView;
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.shape.CornerFamily;
+import com.google.android.material.shape.ShapeAppearanceModel;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -60,6 +61,19 @@ import vedam.subkuch.utils.UiUtil;
 
 
 public abstract class BaseAddImagesFragment extends BaseFragment {
+
+    private final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> handleImageResult(result.getResultCode(), result.getData()));
+
+    private final ActivityResultLauncher<String> cameraPermissionLauncher = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    launchCamera();
+                } else {
+                    showSettingsDialog(getString(R.string.camera_denied));
+                }
+            });
 
     private int maxImagesAllowed = 5;
     private TextView tvAddPicture;
@@ -198,7 +212,7 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, getString(R.string.select_picture)), REQUEST_PICK_IMAGE_FROM_GALLERY);
+        imagePickerLauncher.launch(Intent.createChooser(intent, getString(R.string.select_picture)));
     }
 
     protected void dialogBuilderPickImage() {
@@ -216,19 +230,13 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
                     case PickImageDialog.KEY_CAMERA:
                         List<String> permissions = new ArrayList<>();
                         permissions.add(Manifest.permission.CAMERA);
-                        permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                         if (AppUtil.checkPermissions(mContext, permissions))
                             launchCamera();
                         else
-                            getPermissionToAccessUserCamera();
+                            requestCameraPermission();
                         break;
                     case PickImageDialog.KEY_GALLERY:
-                        List<String> permissions2 = new ArrayList<>();
-                        permissions2.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                        if (AppUtil.checkPermissions(mContext, permissions2))
-                            getImageFromGallery();
-                        else
-                            getPermissionToAccessExternalStorage();
+                        getImageFromGallery();
                         break;
                 }
             }
@@ -236,46 +244,12 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
         pickImageDialog.show();
     }
 
-    //region Helper methods for camera permission
-    private void getPermissionToAccessUserCamera() {
-        // 1) Use the support library version ContextCompat.checkSelfPermission(...) to avoid
-        // checking the build version since Context.checkSelfPermission(...) is only available
-        // in Marshmallow
-        // 2) Always check for permission (even if permission has already been granted)
-        // since the user can revoke permissions at any time through Settings
-        int hasCameraAccessPermission = ContextCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA);
-        int hasExternalStorageAccessPermission = ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (hasCameraAccessPermission != PackageManager.PERMISSION_GRANTED || hasExternalStorageAccessPermission != PackageManager.PERMISSION_GRANTED) {
-            if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) || shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                //Show Tutorial Screen which image and text and button.
-                UiUtil.showDialog(mContext, mContext.getString(R.string.camera_rationale), (dialog, which) -> requestPermissions(Constants.CAMERA_GALLERY_GROUP_PERMISSION,
-                        Constants.PERMISSIONS_REQUEST_CAMERA), true);
-                return;
-            }
-            requestPermissions(Constants.CAMERA_GALLERY_GROUP_PERMISSION,
-                    Constants.PERMISSIONS_REQUEST_CAMERA);
+    private void requestCameraPermission() {
+        if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+            UiUtil.showDialog(mContext, mContext.getString(R.string.camera_rationale),
+                    (dialog, which) -> cameraPermissionLauncher.launch(Manifest.permission.CAMERA), true);
         } else {
-            //Permission is granted
-            launchCamera();
-        }
-
-    }
-
-    //region Helper methods for Gallery Permission
-    private void getPermissionToAccessExternalStorage() {
-        int hasExternalStorageAccessPermission = ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (hasExternalStorageAccessPermission != PackageManager.PERMISSION_GRANTED) {
-            if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                //Show Tutorial Screen which image and text and button.
-                UiUtil.showDialog(mContext, mContext.getString(R.string.external_storage_rationale), (dialog, which) -> requestPermissions(Constants.READ_WRITE_EXTERNAL_GROUP_PERMISSION,
-                        Constants.PERMISSIONS_REQUEST_STORAGE), true);
-                return;
-            }
-            requestPermissions(Constants.READ_WRITE_EXTERNAL_GROUP_PERMISSION,
-                    Constants.PERMISSIONS_REQUEST_STORAGE);
-        } else {
-            //Permission is granted
-            getImageFromGallery();
+            cameraPermissionLauncher.launch(Manifest.permission.CAMERA);
         }
     }
 
@@ -289,36 +263,10 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, setImageUri());
-            startActivityForResult(takePictureIntent, Constants.REQUEST_PICK_IMAGE_FROM_CAMERA);
+            imagePickerLauncher.launch(takePictureIntent);
         }
     }
 
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case Constants.PERMISSIONS_REQUEST_CAMERA:
-                //Camera and external storage permission check
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted :)
-                    launchCamera();
-                } else
-                    showSettingsDialog(getString(R.string.camera_denied));
-                break;
-            case Constants.PERMISSIONS_REQUEST_STORAGE:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted :)
-                    getImageFromGallery();
-                } else
-                    showSettingsDialog(getString(R.string.external_storage_denied));
-                break;
-
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-    }
 
     private Uri setImageUri() {
         // Store image in dcim
@@ -335,10 +283,9 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
         return null;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    private void handleImageResult(int resultCode, Intent data) {
 
-        if (requestCode == REQUEST_PICK_IMAGE_FROM_GALLERY && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+        if (resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
 
             try {
@@ -364,7 +311,7 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
                 e.printStackTrace();
                 noImageAdded();
             }
-        } else if (requestCode == Constants.REQUEST_PICK_IMAGE_FROM_CAMERA) {
+        } else if (resultCode == Activity.RESULT_OK) {
             try {
                 Bitmap rotatedImage = UiUtil.rotateImageIfRequired(imagePath);
                 Bitmap decodedBitmap = UiUtil.getThumbnail(mContext, rotatedImage);
@@ -415,12 +362,14 @@ public abstract class BaseAddImagesFragment extends BaseFragment {
 
 
         if (llAddPicture != null) {
-            RoundedImageView imageView = new RoundedImageView(mContext);
+            ShapeableImageView imageView = new ShapeableImageView(mContext);
             LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(cvAddPicture.getWidth(), cvAddPicture.getHeight());
             param.setMargins(AppUtil.dpToPx(mContext, 8), 0, 0, 0);
             param.gravity = Gravity.CENTER_VERTICAL;
             imageView.setLayoutParams(param);
-            imageView.setCornerRadius(AppUtil.dpToPx(mContext, 8));
+            imageView.setShapeAppearanceModel(ShapeAppearanceModel.builder()
+                    .setAllCorners(CornerFamily.ROUNDED, AppUtil.dpToPx(mContext, 8))
+                    .build());
             imageView.setImageBitmap(bitmap);
             imageView.setTag(imageCount);
             imageView.setOnClickListener(imageOnClickListener);

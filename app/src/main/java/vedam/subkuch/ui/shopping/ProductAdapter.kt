@@ -33,29 +33,30 @@ class ProductAdapter constructor(private val listener: OnListViewItemClickListen
     class ViewHolder(val binding: ProductListItemBinding) :
             RecyclerView.ViewHolder(binding.root) {
         fun bind(product: Product?, listener: OnListViewItemClickListener?) {
+            val item = product ?: return
 
             UiUtil.setImageView(ImageSetter.ImageBuilder(binding.root.context)
-                    .setImageLink(product?.Image2)
+                    .setImageLink(item.Image2)
                     .setDefaults()
                     .setTarget(binding.ivProduct)
                     .build())
-            UiUtil.setTextView(binding.tvName, "${product?.ItemName ?: ""}")
+            UiUtil.setTextView(binding.tvName, item.ItemName ?: "")
 //            UiUtil.setTextView(binding.tvDescription, product?.ItemDescriptionShort)
 //            binding.tvDescription.hide()
-            UiUtil.setTextView(binding.tvBrand, product?.BrandName)
-            UiUtil.setTextView(binding.tvVendorName, product?.VendorName)
+            UiUtil.setTextView(binding.tvBrand, item.BrandName)
+            UiUtil.setTextView(binding.tvVendorName, item.VendorName)
             var price = ""
-            if (!product?.Price.isNullOrBlank())
-                price = "Rs. ${product?.Price ?: ""}"
+            if (!item.Price.isNullOrBlank())
+                price = "Rs. ${item.Price}"
             UiUtil.setTextView(binding.tvPrice, price.trim())
             var kmsAway = ""
-            if (!product?.Distance.isNullOrBlank())
-                kmsAway= " ${product?.Distance ?: ""} Kms away"
+            if (!item.Distance.isNullOrBlank())
+                kmsAway= " ${item.Distance} Kms away"
             UiUtil.setTextView(binding.tvKmsAway, kmsAway.trim())
 
             binding.root.setOnClickListener {
                 listener?.onItemClick(
-                        product,
+                        item,
                         0,
                         it,
                         ListItemClickAction.SELECT

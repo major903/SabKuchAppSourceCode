@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         android:textColor="@color/brown"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -29,6 +29,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:scaleType="fitXY"
+        android:contentDescription="@string/image_content_description"
         tools:src="@color/light_phone_book" />
 
     <LinearLayout
@@ -36,8 +37,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/iv_event"
-        android:layout_alignLeft="@+id/iv_event"
-        android:layout_alignRight="@+id/iv_event"
+        android:layout_alignStart="@+id/iv_event"
+        android:layout_alignEnd="@+id/iv_event"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:orientation="vertical">
 
@@ -59,7 +60,7 @@
                 android:id="@+id/tvDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin_4dp"
+                android:layout_marginEnd="@dimen/margin_4dp"
                 android:layout_weight="1"
                 android:textColor="@color/black"
                 tools:text="@string/err" />
@@ -68,7 +69,7 @@
                 android:id="@+id/tvTime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_4dp"
+                android:layout_marginStart="@dimen/margin_4dp"
                 android:layout_weight="1"
                 android:textColor="@color/black"
                 tools:text="@string/err" />

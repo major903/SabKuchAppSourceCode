@@ -49,7 +49,12 @@ class GooglePlacesDataSource(private val geoDataClient: PlacesClient) {
         val addressList = ArrayList<Address>()
         result?.let { predictionsResults ->
             for (prediction in predictionsResults.autocompletePredictions) {
-                val placeFields = listOf(Place.Field.ID, Place.Field.NAME)
+                val placeFields = listOf(
+                    Place.Field.ID,
+                    Place.Field.DISPLAY_NAME,
+                    Place.Field.LOCATION,
+                    Place.Field.FORMATTED_ADDRESS
+                )
                 val fetchPlaceRequest = FetchPlaceRequest.builder(prediction.placeId, placeFields).build()
                 val placeBufferResponseTask = geoDataClient.fetchPlace(fetchPlaceRequest)
                 try {
@@ -71,11 +76,11 @@ class GooglePlacesDataSource(private val geoDataClient: PlacesClient) {
 
     private fun mapPlaceToAddress(place: Place): Address {
         val address = Address(Locale.getDefault())
-        place.latLng?.let {
+        place.location?.let {
             address.latitude = it.latitude
             address.longitude = it.longitude
         }
-        val addressName = place.name?.toString() + " - " + place.address?.toString()
+        val addressName = "${place.displayName} - ${place.formattedAddress}"
         address.setAddressLine(0, addressName)
         address.featureName = addressName
         return address

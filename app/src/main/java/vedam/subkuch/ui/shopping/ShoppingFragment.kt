@@ -101,16 +101,12 @@ class ShoppingFragment : BaseFragment(), OnListViewItemClickListener {
                 loading = true
                 loadProducts(response.result?.list)
             } else {
-                productsAdapter?.submitList(emptyList()) {
-                    productsAdapter?.notifyDataSetChanged()
-                }
+                productsAdapter?.submitList(emptyList())
                 UiUtil.showToast(mContext, getString(R.string.no_products_found))
             }
         } else {
             UiUtil.showToast(mContext, getString(R.string.err_occurred))
-            productsAdapter?.submitList(emptyList()) {
-                productsAdapter?.notifyDataSetChanged()
-            }
+            productsAdapter?.submitList(emptyList())
         }
     }
 
@@ -122,9 +118,7 @@ class ShoppingFragment : BaseFragment(), OnListViewItemClickListener {
         if (response != null && response.isNotEmpty()) {
             pageNo++
             productsList.addAll(response)
-            productsAdapter?.submitList(productsList) {
-                productsAdapter?.notifyDataSetChanged()
-            }
+            productsAdapter?.submitList(productsList.toList())
         }
     }
 

@@ -41,9 +41,9 @@
                 android:id="@+id/map_search_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:layout_marginLeft="@dimen/leku_gap"
+                android:layout_marginStart="@dimen/leku_gap"
                 app:navigationIcon="@drawable/leku_ic_close"
-                android:layout_marginRight="@dimen/leku_gap"
+                android:layout_marginEnd="@dimen/leku_gap"
                 tools:ignore="UnusedAttribute,elevation" />
         </FrameLayout>
 

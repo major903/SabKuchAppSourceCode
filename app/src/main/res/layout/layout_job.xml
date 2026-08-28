@@ -7,9 +7,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginStart="@dimen/margin_16dp"
         android:layout_marginTop="@dimen/margin_16dp"
-        android:layout_marginRight="@dimen/margin_16dp"
+        android:layout_marginEnd="@dimen/margin_16dp"
         android:layout_marginBottom="@dimen/margin_4dp"
         android:orientation="horizontal">
 
@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/bt_remove"
+            android:layout_toStartOf="@+id/bt_remove"
             android:text="@string/job_title" />
 
         <Button
@@ -26,7 +26,7 @@
             style="@style/ButtonBlue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:minHeight="0dp"
             android:padding="@dimen/margin_4dp"
@@ -38,20 +38,21 @@
         style="@style/EditTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_16dp"
-        android:layout_marginRight="@dimen/margin_16dp"
+        android:layout_marginStart="@dimen/margin_16dp"
+        android:layout_marginEnd="@dimen/margin_16dp"
         android:layout_marginBottom="@dimen/margin_16dp"
         android:hint="@string/job_position"
         android:inputType="textMultiLine"
+        android:importantForAutofill="no"
         android:padding="@dimen/margin_4dp" />
 
     <TextView
         style="@style/TextViewBlackHeading2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginStart="@dimen/margin_16dp"
         android:layout_marginTop="@dimen/margin_16dp"
-        android:layout_marginRight="@dimen/margin_16dp"
+        android:layout_marginEnd="@dimen/margin_16dp"
         android:text="@string/job_gender" />
 
     <Spinner
@@ -59,16 +60,16 @@
         style="@style/SpinnerStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginStart="@dimen/margin_16dp"
         android:layout_marginTop="@dimen/margin_4dp"
-        android:layout_marginRight="@dimen/margin_16dp" />
+        android:layout_marginEnd="@dimen/margin_16dp" />
 
     <TextView
         style="@style/TextViewBlackHeading2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_16dp"
-        android:layout_marginRight="@dimen/margin_16dp"
+        android:layout_marginStart="@dimen/margin_16dp"
+        android:layout_marginEnd="@dimen/margin_16dp"
         android:text="@string/job_requirement" />
 
     <EditText
@@ -76,10 +77,11 @@
         style="@style/EditTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginStart="@dimen/margin_16dp"
         android:layout_marginTop="@dimen/margin_4dp"
-        android:layout_marginRight="@dimen/margin_16dp"
+        android:layout_marginEnd="@dimen/margin_16dp"
         android:hint="@string/job_requirement_hint"
         android:inputType="textMultiLine"
+        android:importantForAutofill="no"
         android:padding="@dimen/margin_4dp" />
 </LinearLayout>

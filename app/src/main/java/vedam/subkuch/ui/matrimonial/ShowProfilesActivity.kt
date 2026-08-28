@@ -29,36 +29,37 @@ import vedam.subkuch.network.DataFetcher
 import vedam.subkuch.network.DataFetcher.updateLocation
 import vedam.subkuch.network.models.AddEventResponse
 import vedam.subkuch.network.models.BaseResponse
+import vedam.subkuch.network.models.MenuIds
+import vedam.subkuch.network.models.MenuPage
 import vedam.subkuch.network.models.OMenu
 import vedam.subkuch.ui.chat.ChatListFragment.Companion.newInstance
 import vedam.subkuch.ui.home.HomeActivity
 import vedam.subkuch.ui.inbox.InboxActivity
+import java.util.Locale
 import vedam.subkuch.ui.matrimonial.editProfile.EditProfileFragment
 import vedam.subkuch.ui.matrimonial.preference.PreferenceFragment
+import vedam.subkuch.ui.contribute.ContributeActivity
 import vedam.subkuch.ui.profile.EditProfileActivity
-import vedam.subkuch.ui.stafftrack.StaffTrackActivity
 import vedam.subkuch.ui.wallet.WalletActivity
 import vedam.subkuch.utils.AppPrefs
+import vedam.subkuch.utils.MenuCache
 import vedam.subkuch.utils.UiUtil
 
 class ShowProfilesActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener,
     FragmentManager.OnBackStackChangedListener {
-    private companion object {
-        const val CASHBACK_MENU_ID = 3
-    }
-
     private var binding: ActivityShowProfilesBinding? = null
     private var hmNavigationIds: HashMap<String?, Int>? = null
     private var isDating = false
     private var menu: Menu? = null
     private var tvNotificationCount: TextView? = null
     private var snapshotListener: ListenerRegistration? = null
+    private var renderedMenus: List<OMenu>? = null
 
     val iconHash = mapOf(
-        1 to R.drawable.ic_menu_profile,
-        2 to R.drawable.ic_menu_wallet,
-        4 to R.drawable.ic_menu_inbox,
-        5 to R.drawable.ic_drawer_contribute
+        MenuIds.EDIT_PROFILE to R.drawable.ic_menu_profile,
+        MenuIds.WALLET to R.drawable.ic_menu_wallet,
+        MenuIds.CONTRIBUTE to R.drawable.ic_drawer_contribute,
+        MenuIds.INBOX to R.drawable.ic_menu_inbox
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,6 +67,7 @@ class ShowProfilesActivity : BaseActivity(), NavigationView.OnNavigationItemSele
         binding = DataBindingUtil.setContentView(this, R.layout.activity_show_profiles)
         // Keep the supplied vector colors instead of NavigationView's default gray tint.
         binding!!.navView.itemIconTintList = null
+        showMenuImmediately()
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (binding!!.drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -91,8 +93,7 @@ class ShowProfilesActivity : BaseActivity(), NavigationView.OnNavigationItemSele
     }
 
     private fun getMenus() {
-        UiUtil.showProgressDialog(this, getString(R.string.please_wait))
-        val type = object : TypeToken<BaseResponse<ArrayList<ArrayList<OMenu>>>>() {}.type
+        val type = object : TypeToken<BaseResponse<MenuPage>>() {}.type
         DataFetcher.getMenus(
             this,
             onMenuSuccessListener,
@@ -102,33 +103,46 @@ class ShowProfilesActivity : BaseActivity(), NavigationView.OnNavigationItemSele
     }
 
     private val onMenuSuccessListener =
-        Response.Listener { response: BaseResponse<ArrayList<ArrayList<OMenu>>>? ->
-            UiUtil.cancelProgressDialog()
+        Response.Listener { response: BaseResponse<MenuPage>? ->
             if (response != null) {
                 if (response.returnCode == Constants.SUCCESS_RETURN_CODE) {
-                    setMenu(response.returnData)
-                } else if (!TextUtils.isEmpty(response.returnMessage)) UiUtil.showToast(
-                    this@ShowProfilesActivity,
-                    response.returnMessage
-                )
+                    response.returnData?.menus?.let { menus ->
+                        MenuCache.save(this, menus)
+                        setMenu(menus)
+                    }
+                } else {
+                    if (!TextUtils.isEmpty(response.returnMessage)) UiUtil.showToast(
+                        this@ShowProfilesActivity,
+                        response.returnMessage
+                    )
+                }
             } else UiUtil.showToast(this@ShowProfilesActivity, getString(R.string.err_occurred))
         }
 
-    private fun setMenu(menus: ArrayList<ArrayList<OMenu>>?) {
-        menus?.get(0)?.let {
+    private fun setMenu(menus: List<OMenu>?) {
+        menus?.let { incomingMenus ->
+            val stableMenus = MenuCache.stableOrder(incomingMenus)
+            if (MenuCache.hasSameVisibleContent(renderedMenus, stableMenus)) {
+                renderedMenus = stableMenus
+                return
+            }
+            renderedMenus = stableMenus
             binding?.navView?.menu?.clear()
-            for (menu in it) {
-                if (menu.MenuId == CASHBACK_MENU_ID) continue
-
+            for (menu in stableMenus) {
                 val a = binding?.navView?.menu?.add(0, menu.MenuId, 0, menu.name)
                 a?.apply {
                     setIcon(iconHash[menu.MenuId] ?: R.drawable.ic_menu_inbox)
                     isCheckable = true
-                    isChecked = menu.MenuId == 1
+                    isChecked = menu.MenuId == MenuIds.EDIT_PROFILE
                 }
             }
             binding?.navView?.invalidate()
         }
+    }
+
+    private fun showMenuImmediately() {
+        val cachedMenus = MenuCache.load(this)
+        if (cachedMenus != null) setMenu(cachedMenus)
     }
 
     private fun initUI() {
@@ -193,7 +207,7 @@ class ShowProfilesActivity : BaseActivity(), NavigationView.OnNavigationItemSele
     private fun setCount(count: Int) {
         if (count == 0) tvNotificationCount!!.visibility = View.GONE else if (count < 100) {
             tvNotificationCount!!.visibility = View.VISIBLE
-            tvNotificationCount!!.text = count.toString()
+            tvNotificationCount!!.text = String.format(Locale.US, "%d", count)
         } else {
             tvNotificationCount!!.visibility = View.VISIBLE
             tvNotificationCount!!.text = getString(R.string.max_notification_number)
@@ -216,14 +230,33 @@ class ShowProfilesActivity : BaseActivity(), NavigationView.OnNavigationItemSele
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         val id = item.itemId
-        if (id == 1) {
+        if (id == MenuIds.EDIT_PROFILE) {
             startActivity(Intent(this, EditProfileActivity::class.java))
-        } else if (id == 2) {
+        } else if (id == MenuIds.WALLET) {
             startActivity(Intent(this, WalletActivity::class.java))
-        } else if (id == 4) {
+        } else if (id == MenuIds.CONTRIBUTE) {
+            startActivity(Intent(this, ContributeActivity::class.java))
+        } else if (id == MenuIds.INBOX) {
             startActivity(Intent(this, InboxActivity::class.java))
-        } else if (id == 5) {
-            startActivity(Intent(this, StaffTrackActivity::class.java))
+        } else if (id == R.id.nav_home) {
+            startHomeActivity()
+        } else if (id == R.id.nav_matches) {
+            changeFragment(
+                MatchedProfileFragment.newInstance(isDating),
+                Constants.TAG_MATCHES_FRAGMENT
+            )
+        } else if (id == R.id.nav_profile) {
+            changeFragment(
+                EditProfileFragment.newInstance(isDating),
+                Constants.TAG_PROFILE_FRAGMENT
+            )
+        } else if (id == R.id.nav_preferences) {
+            changeFragment(
+                PreferenceFragment.newInstance(isDating),
+                Constants.TAG_PREFERENCES_FRAGMENT
+            )
+        } else if (id == R.id.nav_chats) {
+            changeFragment(newInstance(isDating), Constants.TAG_CHATS_FRAGMENT)
         }
         item.isChecked = true
         binding!!.drawerLayout.closeDrawer(GravityCompat.START)

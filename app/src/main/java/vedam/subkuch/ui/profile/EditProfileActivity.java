@@ -44,6 +44,7 @@ public class EditProfileActivity extends BaseActivity {
     private String languageId;
     private Profile profile;
     private boolean hasDistrictData;
+    private boolean districtAutoRefetchDone;
     private boolean hasStateData;
     private boolean hasLanguageData;
 //    private ArrayList<Country> countries = new ArrayList<>();
@@ -77,9 +78,18 @@ public class EditProfileActivity extends BaseActivity {
     }
 
     private void loadStates() {
+        ArrayList<RegistrationMasterOption> cachedStates =
+                RegistrationMasterCache.getStates(this);
+        boolean hasCachedStates = !cachedStates.isEmpty();
+        if (hasCachedStates) {
+            showStates(cachedStates);
+        }
+        if (hasCachedStates && RegistrationMasterCache.areStatesFresh(this)) {
+            return;
+        }
         DataFetcher.getRegistrationStates(this, onStatesSuccessListener,
                 RegistrationMasterResponse.class, error -> {
-                    if (!hasStateData) {
+                    if (!hasCachedStates) {
                         onErrorReceived(error);
                     }
                 });
@@ -103,10 +113,14 @@ public class EditProfileActivity extends BaseActivity {
                 });
     }
 
+    private void forceReloadDistricts() {
+        DataFetcher.getRegistrationDistricts(this, onDistrictsSuccessListener,
+                RegistrationMasterResponse.class, error -> { /* keep showing cached data */ });
+    }
+
     private void loadLanguages() {
         ArrayList<RegistrationMasterOption> cachedLanguages =
-                RegistrationMasterCache.getLanguages(this);
-        boolean hasCachedLanguages = !cachedLanguages.isEmpty();
+                RegistrationMasterCache.getLanguages(this);        boolean hasCachedLanguages = !cachedLanguages.isEmpty();
         if (hasCachedLanguages) {
             setLanguages(cachedLanguages);
         }
@@ -134,6 +148,7 @@ public class EditProfileActivity extends BaseActivity {
     private Response.Listener<RegistrationMasterResponse> onStatesSuccessListener = response -> {
         if (response != null && Constants.SUCCESS.equals(response.getReturnMessage())
                 && response.getReturnData() != null && !response.getReturnData().isEmpty()) {
+            RegistrationMasterCache.putStates(this, response.getReturnData());
             showStates(response.getReturnData());
         } else if (!hasStateData) {
             UiUtil.showToast(this, getString(R.string.err_occurred));
@@ -200,6 +215,14 @@ public class EditProfileActivity extends BaseActivity {
             if (countryMatches && stateMatches) {
                 options.add(district);
             }
+        }
+
+        if (options.size() == 1 && stateId != null && !districtAutoRefetchDone) {
+            // A valid state produced no districts: the cached master list is likely
+            // outdated (e.g. districts added server-side after the cache was written).
+            // Re-fetch once per screen instead of leaving an empty dropdown.
+            districtAutoRefetchDone = true;
+            forceReloadDistricts();
         }
 
         ArrayAdapter<RegistrationMasterOption> adapter = new ArrayAdapter<>(this,
@@ -498,10 +521,6 @@ public class EditProfileActivity extends BaseActivity {
         else if (!AppUtil.isStringOnlyAlphabet(activityEditProfileBinding.etFirstName.getText().toString()) ||
                 !AppUtil.isStringName(activityEditProfileBinding.etLastName.getText().toString()))
             errorMessage = R.string.no_special_characters_allowed_in_name;
-        else if (TextUtils.isEmpty(activityEditProfileBinding.etEmail.getText()))
-            errorMessage = R.string.enter_email;
-        else if (!AppUtil.validateEmail(activityEditProfileBinding.etEmail.getText().toString()))
-            errorMessage = R.string.enter_valid_email;
         else if (TextUtils.isEmpty(stateId))
             errorMessage = R.string.select_a_state;
         else if (TextUtils.isEmpty(districtId))

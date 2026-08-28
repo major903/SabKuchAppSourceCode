@@ -78,6 +78,7 @@
                     android:hint="@string/optional_freshers"
                     android:inputType="textMultiLine"
                     android:lines="3"
+                    android:importantForAutofill="no"
                     android:padding="@dimen/margin_8dp" />
             </LinearLayout>
         </ScrollView>

@@ -93,9 +93,7 @@
           android:baselineAligned="false"
           android:paddingBottom="16dp"
           android:paddingStart="24dp"
-          android:paddingLeft="24dp"
           android:paddingEnd="24dp"
-          android:paddingRight="24dp"
           android:layout_marginBottom="48dp"
           >
 

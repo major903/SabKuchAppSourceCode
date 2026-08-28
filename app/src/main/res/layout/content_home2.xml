@@ -25,20 +25,20 @@
                 android:layout_height="wrap_content"
                 app:alignmentMode="alignBounds"
                 app:columnCount="2"
-                android:paddingLeft="@dimen/margin_8dp"
+                android:paddingStart="@dimen/margin_8dp"
                 android:paddingTop="@dimen/margin_16dp"
-                android:paddingRight="@dimen/margin_8dp"
+                android:paddingEnd="@dimen/margin_8dp"
                 android:paddingBottom="@dimen/margin_32dp"
                 android:background="@drawable/blue_2_rounded_edges"
                 app:rowOrderPreserved="false"
                 app:useDefaultMargins="true">
 
-                <com.makeramen.roundedimageview.RoundedImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/iv_directory"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_8dp"
-                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:layout_marginStart="@dimen/margin_8dp"
+                    android:layout_marginEnd="@dimen/margin_8dp"
                     android:onClick="directoryClick"
                     android:scaleType="fitXY"
                     android:src="@drawable/grey_background"
@@ -47,14 +47,14 @@
                     android:visibility="gone"
                     tools:visibility="visible"
                     app:layout_gravity="fill_horizontal"
-                    app:riv_corner_radius="@dimen/margin_8dp" />
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.RoundedImage" />
 
-                <com.makeramen.roundedimageview.RoundedImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/iv_events"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_8dp"
-                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:layout_marginStart="@dimen/margin_8dp"
+                    android:layout_marginEnd="@dimen/margin_8dp"
                     android:scaleType="fitXY"
                     android:onClick="eventsClick"
                     app:layout_columnWeight="1"
@@ -63,14 +63,14 @@
                     tools:visibility="visible"
                     android:src="@drawable/grey_background"
                     app:layout_gravity="fill_horizontal"
-                    app:riv_corner_radius="@dimen/margin_8dp" />
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.RoundedImage" />
 
-                <com.makeramen.roundedimageview.RoundedImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/iv_jobs"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_8dp"
-                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:layout_marginStart="@dimen/margin_8dp"
+                    android:layout_marginEnd="@dimen/margin_8dp"
                     android:scaleType="fitXY"
                     android:layout_marginTop="@dimen/margin_16dp"
                     app:layout_columnWeight="1"
@@ -80,15 +80,15 @@
                     app:layout_gravity="fill_horizontal"
                     tools:visibility="visible"
                     android:src="@drawable/grey_background"
-                    app:riv_corner_radius="@dimen/margin_8dp" />
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.RoundedImage" />
 
-                <com.makeramen.roundedimageview.RoundedImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/iv_movies"
                     android:layout_width="0dp"
                     android:layout_marginTop="@dimen/margin_16dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_8dp"
-                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:layout_marginStart="@dimen/margin_8dp"
+                    android:layout_marginEnd="@dimen/margin_8dp"
                     android:scaleType="fitXY"
                     android:adjustViewBounds="true"
                     app:layout_columnWeight="1"
@@ -97,24 +97,24 @@
                     android:visibility="gone"
                     app:layout_gravity="fill_horizontal"
                     tools:visibility="visible"
-                    app:riv_corner_radius="@dimen/margin_8dp" />
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.RoundedImage" />
 
             </androidx.gridlayout.widget.GridLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_8dp"
+                android:layout_marginStart="@dimen/margin_8dp"
                 android:layout_marginTop="@dimen/margin_16dp"
-                android:layout_marginRight="@dimen/margin_8dp"
+                android:layout_marginEnd="@dimen/margin_8dp"
                 android:orientation="horizontal"
                 android:weightSum="3">
 
-                <com.makeramen.roundedimageview.RoundedImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/iv_classifieds"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_8dp"
-                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:layout_marginStart="@dimen/margin_8dp"
+                    android:layout_marginEnd="@dimen/margin_8dp"
                     android:layout_weight="1"
                     android:scaleType="fitXY"
                     android:visibility="gone"
@@ -122,14 +122,14 @@
                     tools:visibility="visible"
                     android:onClick="classifiedsClick"
                     android:src="@drawable/grey_background"
-                    app:riv_corner_radius="@dimen/margin_8dp" />
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.RoundedImage" />
 
-                <com.makeramen.roundedimageview.RoundedImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/iv_needs"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_8dp"
-                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:layout_marginStart="@dimen/margin_8dp"
+                    android:layout_marginEnd="@dimen/margin_8dp"
                     android:layout_weight="1"
                     android:scaleType="fitXY"
                     android:adjustViewBounds="true"
@@ -137,39 +137,39 @@
                     android:visibility="gone"
                     tools:visibility="visible"
                     android:src="@drawable/grey_background"
-                    app:riv_corner_radius="@dimen/margin_8dp" />
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.RoundedImage" />
 
-                <com.makeramen.roundedimageview.RoundedImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/iv_ask_me"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_8dp"
-                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:layout_marginStart="@dimen/margin_8dp"
+                    android:layout_marginEnd="@dimen/margin_8dp"
                     android:layout_weight="1"
-                    android:onClick="askClick"
+                    android:onClick="node2ThirdFeatureClick"
                     android:scaleType="fitXY"
                     android:adjustViewBounds="true"
                     android:visibility="gone"
                     tools:visibility="visible"
                     android:src="@drawable/grey_background"
-                    app:riv_corner_radius="@dimen/margin_8dp" />
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.RoundedImage" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_8dp"
+                android:layout_marginStart="@dimen/margin_8dp"
                 android:layout_marginTop="@dimen/margin_16dp"
-                android:layout_marginRight="@dimen/margin_8dp"
+                android:layout_marginEnd="@dimen/margin_8dp"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
-                <com.makeramen.roundedimageview.RoundedImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/iv_dating"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_8dp"
-                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:layout_marginStart="@dimen/margin_8dp"
+                    android:layout_marginEnd="@dimen/margin_8dp"
                     android:layout_weight="1"
                     android:scaleType="fitXY"
                     android:onClick="datingClick"
@@ -177,14 +177,14 @@
                     tools:visibility="visible"
                     android:adjustViewBounds="true"
                     android:src="@drawable/grey_background"
-                    app:riv_corner_radius="@dimen/margin_8dp" />
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.RoundedImage" />
 
-                <com.makeramen.roundedimageview.RoundedImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/iv_matrimonial"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_8dp"
-                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:layout_marginStart="@dimen/margin_8dp"
+                    android:layout_marginEnd="@dimen/margin_8dp"
                     android:layout_weight="1"
                     android:onClick="matrimonialClick"
                     android:scaleType="fitXY"
@@ -192,24 +192,24 @@
                     tools:visibility="visible"
                     android:adjustViewBounds="true"
                     android:src="@drawable/grey_background"
-                    app:riv_corner_radius="@dimen/margin_8dp" />
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.RoundedImage" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_8dp"
+                android:layout_marginStart="@dimen/margin_8dp"
                 android:layout_marginTop="@dimen/margin_16dp"
-                android:layout_marginRight="@dimen/margin_8dp"
+                android:layout_marginEnd="@dimen/margin_8dp"
                 android:orientation="horizontal"
                 android:weightSum="3">
 
-                <com.makeramen.roundedimageview.RoundedImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/iv_public_utility"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_8dp"
-                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:layout_marginStart="@dimen/margin_8dp"
+                    android:layout_marginEnd="@dimen/margin_8dp"
                     android:layout_weight="1"
                     android:onClick="publicUtilityClick"
                     android:scaleType="fitXY"
@@ -217,37 +217,37 @@
                     tools:visibility="visible"
                     android:adjustViewBounds="true"
                     android:src="@drawable/grey_background"
-                    app:riv_corner_radius="@dimen/margin_8dp" />
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.RoundedImage" />
 
-                <com.makeramen.roundedimageview.RoundedImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/iv_bus"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_8dp"
-                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:layout_marginStart="@dimen/margin_8dp"
+                    android:layout_marginEnd="@dimen/margin_8dp"
                     android:layout_weight="1"
                     android:scaleType="fitXY"
-                    android:onClick="busClick"
+                    android:onClick="node4MiddleFeatureClick"
                     android:visibility="gone"
                     tools:visibility="visible"
                     android:adjustViewBounds="true"
                     android:src="@drawable/grey_background"
-                    app:riv_corner_radius="@dimen/margin_8dp" />
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.RoundedImage" />
 
-                <com.makeramen.roundedimageview.RoundedImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/iv_phone_book"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_8dp"
-                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:layout_marginStart="@dimen/margin_8dp"
+                    android:layout_marginEnd="@dimen/margin_8dp"
                     android:layout_weight="1"
                     android:scaleType="fitXY"
                     android:visibility="gone"
                     tools:visibility="visible"
                     android:adjustViewBounds="true"
-                    android:onClick="phoneBookClick"
+                    android:onClick="node4LastFeatureClick"
                     android:src="@drawable/grey_background"
-                    app:riv_corner_radius="@dimen/margin_8dp" />
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.RoundedImage" />
 
             </LinearLayout>
 
@@ -256,13 +256,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginStart="@dimen/margin_16dp"
                 android:layout_marginTop="@dimen/margin_16dp"
-                android:layout_marginRight="@dimen/margin_16dp"
+                android:layout_marginEnd="@dimen/margin_16dp"
                 android:adjustViewBounds="true"
                 tools:background="@drawable/transport"
                 android:onClick="transportClick"
                 android:visibility="gone"
+                android:contentDescription="@string/image_content_description"
                 tools:visibility="visible" />
 
             <ImageView
@@ -270,14 +271,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginStart="@dimen/margin_16dp"
                 android:layout_marginTop="@dimen/margin_16dp"
-                android:layout_marginRight="@dimen/margin_16dp"
+                android:layout_marginEnd="@dimen/margin_16dp"
                 android:layout_marginBottom="@dimen/margin_4dp"
                 android:adjustViewBounds="true"
                 tools:background="@drawable/specialoffer"
                 android:onClick="specialOfferClick"
                 android:visibility="gone"
+                android:contentDescription="@string/image_content_description"
                 tools:visibility="visible" />
 
             <ImageView
@@ -285,13 +287,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginStart="@dimen/margin_16dp"
                 android:layout_marginTop="@dimen/margin_16dp"
-                android:layout_marginRight="@dimen/margin_16dp"
+                android:layout_marginEnd="@dimen/margin_16dp"
                 android:adjustViewBounds="true"
                 android:onClick="giftALifeClick"
                 android:visibility="gone"
                 tools:background="@drawable/giftalife"
+                android:contentDescription="@string/image_content_description"
                 tools:visibility="visible" />
         </LinearLayout>
     </ScrollView>

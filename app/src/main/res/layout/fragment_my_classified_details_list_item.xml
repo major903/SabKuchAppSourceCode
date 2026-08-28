@@ -16,6 +16,7 @@
         android:layout_gravity="center"
         android:scaleType="fitXY"
         android:layout_margin="@dimen/margin_16dp"
+        android:contentDescription="@string/image_content_description"
         tools:src="@color/light_phone_book" />
 
     <TextView
@@ -97,9 +98,9 @@
             android:layout_height="wrap_content"
             android:minWidth="0dp"
             android:minHeight="0dp"
-            android:paddingLeft="@dimen/margin_16dp"
+            android:paddingStart="@dimen/margin_16dp"
             android:paddingTop="@dimen/margin_4dp"
-            android:paddingRight="@dimen/margin_16dp"
+            android:paddingEnd="@dimen/margin_16dp"
             android:paddingBottom="@dimen/margin_4dp"
             android:text="@string/edit" />
 
@@ -108,12 +109,12 @@
             style="@style/ButtonBlue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_16dp"
+            android:layout_marginStart="@dimen/margin_16dp"
             android:minWidth="0dp"
             android:minHeight="0dp"
-            android:paddingLeft="@dimen/margin_16dp"
+            android:paddingStart="@dimen/margin_16dp"
             android:paddingTop="@dimen/margin_4dp"
-            android:paddingRight="@dimen/margin_16dp"
+            android:paddingEnd="@dimen/margin_16dp"
             android:paddingBottom="@dimen/margin_4dp"
             android:text="@string/delete" />
     </LinearLayout>

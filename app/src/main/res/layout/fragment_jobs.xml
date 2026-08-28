@@ -26,7 +26,7 @@
                     android:id="@+id/et_search"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/ib_close"
+                    android:layout_toStartOf="@+id/ib_close"
                     android:background="@null"
                     android:backgroundTint="@null"
                     android:hint="@string/search_jobs"
@@ -34,18 +34,20 @@
                     android:inputType="text"
                     android:maxLines="1"
                     android:padding="@dimen/margin_16dp"
+                    android:importantForAutofill="no"
                     android:textSize="14sp" />
 
                 <ImageButton
                     android:id="@+id/ib_close"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/margin_8dp"
+                    android:layout_marginEnd="@dimen/margin_8dp"
                     android:background="@color/transparent"
                     android:src="@drawable/ic_close_black_24dp"
                     android:visibility="gone"
+                    android:contentDescription="@string/image_action_description"
                     tools:visibility="visible" />
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -53,9 +55,23 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_jobs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:clipToPadding="false"
             android:padding="@dimen/margin_8dp"
             tools:listitem="@layout/fragment_jobs_list_item" />
+
+        <TextView
+            android:id="@+id/tv_empty_jobs"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/margin_16dp"
+            android:text="@string/no_jobs_found"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:visibility="gone"
+            tools:visibility="visible" />
     </LinearLayout>
 </layout>

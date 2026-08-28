@@ -1,7 +1,6 @@
 package vedam.subkuch.ui.matrimonial;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +9,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -46,6 +47,11 @@ public class MatchedProfileFragment extends BaseFragment implements OnListViewIt
     private int pageSize = 20;
     private boolean hasMoreProjects = true;
     private boolean isDating;
+    private final ActivityResultLauncher<Intent> viewProfileLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == android.app.Activity.RESULT_OK) refreshData();
+            });
 
     public MatchedProfileFragment() {
         // Required empty public constructor
@@ -123,8 +129,9 @@ public class MatchedProfileFragment extends BaseFragment implements OnListViewIt
 
         if (response != null && !response.isEmpty()) {
             pageNo++;
+            int previousSize = datingProfiles.size();
             datingProfiles.addAll(response);
-            adapter.notifyDataSetChanged();
+            adapter.notifyItemRangeInserted(previousSize, response.size());
         }
     }
 
@@ -142,7 +149,7 @@ public class MatchedProfileFragment extends BaseFragment implements OnListViewIt
         intent.putExtra(Constants.EXTRA_NAME, AppUtil.deNull(datingProfile.getFirstName()));
         intent.putExtra(Constants.EXTRA_DATA, datingProfile);
         intent.putExtra(Constants.EXTRA_IS_DATING, isDating);
-        startActivityForResult(intent, Constants.REQUEST_VIEW_PROFILE);
+        viewProfileLauncher.launch(intent);
     }
 
 
@@ -179,25 +186,13 @@ public class MatchedProfileFragment extends BaseFragment implements OnListViewIt
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case Constants.REQUEST_VIEW_PROFILE:
-                if (resultCode == Activity.RESULT_OK) {
-                    refreshData();
-                }
-                break;
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
     private void refreshData() {
         pageNo = 1;
         hasMoreProjects = true;
         loading = true;
+        int previousSize = datingProfiles.size();
         datingProfiles.clear();
-        adapter.notifyDataSetChanged();
+        if (previousSize > 0) adapter.notifyItemRangeRemoved(0, previousSize);
         getMatchedProfiles();
     }
 }

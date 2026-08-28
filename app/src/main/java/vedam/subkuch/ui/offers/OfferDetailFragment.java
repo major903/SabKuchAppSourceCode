@@ -1,6 +1,7 @@
 package vedam.subkuch.ui.offers;
 
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -54,12 +55,14 @@ public class OfferDetailFragment extends BaseFragment {
     }
 
     @Override
+    @SuppressLint("SetJavaScriptEnabled")
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         WebView webView = view.findViewById(R.id.webview);
         webView.loadUrl(offerUrl);
         WebSettings webSettings = webView.getSettings();
+        // Offer pages are server-rendered and require JavaScript for their interactive content.
         webSettings.setJavaScriptEnabled(true);
         webView.setWebViewClient(new MyWebViewClient());
     }

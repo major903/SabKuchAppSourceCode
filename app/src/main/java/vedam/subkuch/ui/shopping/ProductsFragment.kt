@@ -81,9 +81,7 @@ class ProductsFragment : BaseFragment(), OnListViewItemClickListener {
         if (response != null && response.isNotEmpty()) {
             pageNo++
             productsList.addAll(response)
-            productsAdapter?.submitList(productsList) {
-                productsAdapter?.notifyDataSetChanged()
-            }
+            productsAdapter?.submitList(productsList.toList())
         }
     }
 

@@ -19,7 +19,7 @@ class LocationSearchAdapter(
         }
 
         override fun onClick(v: View?) {
-            clickListener.onItemClick(adapterPosition)
+            clickListener.onItemClick(bindingAdapterPosition)
         }
     }
 

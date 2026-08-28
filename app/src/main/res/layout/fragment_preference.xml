@@ -41,6 +41,7 @@
                      android:layout_width="match_parent"
                      android:layout_height="wrap_content"
                      android:background="@null"
+                      android:importantForAutofill="no"
                       />
 
              -->
@@ -73,10 +74,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -108,10 +110,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -143,10 +146,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -178,10 +182,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -212,10 +217,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -247,10 +253,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -282,10 +289,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -319,10 +327,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -355,10 +364,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -390,10 +400,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -425,10 +436,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -460,10 +472,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -495,10 +508,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -530,10 +544,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -563,10 +578,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -598,10 +614,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -631,10 +648,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -665,10 +683,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -698,10 +717,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/dp_sixteen"
+                    android:layout_marginEnd="@dimen/dp_sixteen"
+                    android:contentDescription="@string/image_content_description"
                     app:srcCompat="@drawable/ic_drop_down" />
             </RelativeLayout>
 
@@ -719,33 +739,25 @@
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/sp_eighteen" />
 
-                <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                <com.google.android.material.slider.RangeSlider
                     android:id="@+id/seekBarIncome"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_income_range"
                     android:layout_marginTop="@dimen/margin_8dp"
-                    app:bar_color="@color/grey"
-                    app:bar_highlight_color="@color/colorPrimary"
-                    app:data_type="_integer"
-                    app:gap="1"
-                    app:left_thumb_color="@color/colorPrimary"
-                    app:left_thumb_color_pressed="@color/colorPrimary"
-                    app:max_value="5000000"
-                    app:min_value="0"
-                    app:right_thumb_color="@color/colorPrimary"
-                    app:right_thumb_color_pressed="@color/colorPrimary"
-                    app:steps="1" />
+                    android:stepSize="1"
+                    android:valueFrom="0"
+                    android:valueTo="5000000" />
 
                 <TextView
                     android:id="@+id/textViewIncome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/seekBarIncome"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginTop="@dimen/margin_4dp"
-                    android:layout_marginRight="@dimen/dp_four"
-                    android:text="100000-200000"
+                    android:layout_marginEnd="@dimen/dp_four"
+                    android:text="@string/default_income_range"
                     android:textColor="@android:color/black" />
 
             </RelativeLayout>
@@ -763,33 +775,25 @@
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/sp_eighteen" />
 
-                <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                <com.google.android.material.slider.RangeSlider
                     android:id="@+id/seekBarAge"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_age"
                     android:layout_marginTop="@dimen/margin_8dp"
-                    app:bar_color="@color/grey"
-                    app:bar_highlight_color="@color/colorPrimary"
-                    app:data_type="_integer"
-                    app:gap="1"
-                    app:left_thumb_color="@color/colorPrimary"
-                    app:left_thumb_color_pressed="@color/colorPrimary"
-                    app:max_value="99"
-                    app:min_value="18"
-                    app:right_thumb_color="@color/colorPrimary"
-                    app:right_thumb_color_pressed="@color/colorPrimary"
-                    app:steps="1" />
+                    android:stepSize="1"
+                    android:valueFrom="18"
+                    android:valueTo="99" />
 
                 <TextView
                     android:id="@+id/textViewAge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/seekBarAge"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginTop="@dimen/margin_4dp"
-                    android:layout_marginRight="@dimen/dp_four"
-                    android:text="18-40"
+                    android:layout_marginEnd="@dimen/dp_four"
+                    android:text="@string/default_age_range"
                     android:textColor="@android:color/black" />
 
             </RelativeLayout>
@@ -807,33 +811,25 @@
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/sp_eighteen" />
 
-                <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                <com.google.android.material.slider.RangeSlider
                     android:id="@+id/seekBarHeight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_height"
                     android:layout_marginTop="@dimen/margin_8dp"
-                    app:bar_color="@color/grey"
-                    app:bar_highlight_color="@color/colorPrimary"
-                    app:data_type="_integer"
-                    app:gap="1"
-                    app:left_thumb_color="@color/colorPrimary"
-                    app:left_thumb_color_pressed="@color/colorPrimary"
-                    app:max_value="200"
-                    app:min_value="0"
-                    app:right_thumb_color="@color/colorPrimary"
-                    app:right_thumb_color_pressed="@color/colorPrimary"
-                    app:steps="1" />
+                    android:stepSize="1"
+                    android:valueFrom="0"
+                    android:valueTo="200" />
 
                 <TextView
                     android:id="@+id/textViewHeight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/seekBarHeight"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginTop="@dimen/margin_4dp"
-                    android:layout_marginRight="@dimen/dp_four"
-                    android:text="3-12"
+                    android:layout_marginEnd="@dimen/dp_four"
+                    android:text="@string/default_height_range"
                     android:textColor="@android:color/black" />
 
             </RelativeLayout>
@@ -853,33 +849,25 @@
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/sp_eighteen" />
 
-                <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                <com.google.android.material.slider.RangeSlider
                     android:id="@+id/seekBarWeight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_weight"
                     android:layout_marginTop="@dimen/margin_8dp"
-                    app:bar_color="@color/grey"
-                    app:bar_highlight_color="@color/colorPrimary"
-                    app:data_type="_integer"
-                    app:gap="1"
-                    app:left_thumb_color="@color/colorPrimary"
-                    app:left_thumb_color_pressed="@color/colorPrimary"
-                    app:max_value="200"
-                    app:min_value="0"
-                    app:right_thumb_color="@color/colorPrimary"
-                    app:right_thumb_color_pressed="@color/colorPrimary"
-                    app:steps="1" />
+                    android:stepSize="1"
+                    android:valueFrom="0"
+                    android:valueTo="200" />
 
                 <TextView
                     android:id="@+id/textViewWeight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/seekBarWeight"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginTop="@dimen/margin_4dp"
-                    android:layout_marginRight="@dimen/dp_four"
-                    android:text="10-60"
+                    android:layout_marginEnd="@dimen/dp_four"
+                    android:text="@string/default_weight_range"
                     android:textColor="@android:color/black" />
 
             </RelativeLayout>
@@ -897,33 +885,25 @@
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/sp_eighteen" />
 
-                <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                <com.google.android.material.slider.RangeSlider
                     android:id="@+id/seekBarDistance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_distance"
                     android:layout_marginTop="@dimen/margin_8dp"
-                    app:bar_color="@color/grey"
-                    app:bar_highlight_color="@color/colorPrimary"
-                    app:data_type="_integer"
-                    app:gap="1"
-                    app:left_thumb_color="@color/colorPrimary"
-                    app:left_thumb_color_pressed="@color/colorPrimary"
-                    app:max_value="2000"
-                    app:min_value="0"
-                    app:right_thumb_color="@color/colorPrimary"
-                    app:right_thumb_color_pressed="@color/colorPrimary"
-                    app:steps="1" />
+                    android:stepSize="1"
+                    android:valueFrom="0"
+                    android:valueTo="2000" />
 
                 <TextView
                     android:id="@+id/textViewDistance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/seekBarDistance"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginTop="@dimen/margin_4dp"
-                    android:layout_marginRight="@dimen/dp_four"
-                    android:text="18-40"
+                    android:layout_marginEnd="@dimen/dp_four"
+                    android:text="@string/default_distance_range"
                     android:textColor="@android:color/black" />
 
             </RelativeLayout>

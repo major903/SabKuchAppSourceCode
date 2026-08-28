@@ -7,7 +7,6 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         app:cardUseCompatPadding="true">
 
         <RelativeLayout
@@ -19,16 +18,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_hundered"
                 android:scaleType="centerInside"
+                android:contentDescription="@string/image_content_description"
                 app:srcCompat="@drawable/ic_add" />
 
             <ImageView
                 android:id="@+id/imageViewCross"
                 android:layout_width="@dimen/dp_twenty_four"
                 android:layout_height="@dimen/dp_twenty_four"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:background="@drawable/background_white_circle"
                 android:padding="@dimen/dp_four"
                 app:srcCompat="@drawable/ic_cross"
+                android:contentDescription="@string/image_content_description"
                 android:visibility="gone" />
 
         </RelativeLayout>

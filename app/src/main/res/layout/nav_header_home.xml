@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="192dp"
     android:background="@drawable/side_nav_bar"
-    android:paddingLeft="@dimen/margin_24dp"
+    android:paddingStart="@dimen/margin_24dp"
     android:paddingTop="@dimen/margin_24dp"
-    android:paddingRight="@dimen/margin_16dp"
+    android:paddingEnd="@dimen/margin_16dp"
     android:paddingBottom="@dimen/margin_24dp">
 
     <LinearLayout
@@ -17,11 +17,11 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:background="@drawable/bg_drawer_logo"
             android:contentDescription="@string/app_name"
-            android:padding="8dp"
+            android:padding="6dp"
             android:scaleType="centerInside"
             android:src="@mipmap/icon" />
 

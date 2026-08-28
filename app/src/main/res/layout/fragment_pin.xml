@@ -50,12 +50,14 @@
                 style="@style/PinStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin_8dp"
+                android:layout_marginEnd="@dimen/margin_8dp"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:hint="@string/pin_digit_1"
                 android:inputType="numberPassword"
                 android:maxLength="1"
                 android:padding="@dimen/margin_8dp"
+                android:importantForAutofill="no"
                 android:singleLine="true">
 
                 <requestFocus />
@@ -66,12 +68,14 @@
                 style="@style/PinStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin_8dp"
+                android:layout_marginEnd="@dimen/margin_8dp"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:hint="@string/pin_digit_2"
                 android:inputType="numberPassword"
                 android:maxLength="1"
                 android:padding="@dimen/margin_8dp"
+                android:importantForAutofill="no"
                 android:singleLine="true" />
 
             <EditText
@@ -79,12 +83,14 @@
                 style="@style/PinStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin_8dp"
+                android:layout_marginEnd="@dimen/margin_8dp"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:hint="@string/pin_digit_3"
                 android:inputType="numberPassword"
                 android:maxLength="1"
                 android:padding="@dimen/margin_8dp"
+                android:importantForAutofill="no"
                 android:singleLine="true" />
 
             <EditText
@@ -94,9 +100,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:hint="@string/pin_digit_4"
                 android:inputType="numberPassword"
                 android:maxLength="1"
                 android:padding="@dimen/margin_8dp"
+                android:importantForAutofill="no"
                 android:singleLine="true" />
         </LinearLayout>
 

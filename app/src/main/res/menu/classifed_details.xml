@@ -5,12 +5,12 @@
     <item
         android:id="@+id/action_add"
         android:icon="@drawable/outline_add_white_24dp"
-        android:title="Add"
-        app:showAsAction="always" />
+        android:title="@string/add"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_edit"
         android:icon="@drawable/baseline_edit_white_24"
-        android:title="My Ads"
-        app:showAsAction="always" />
+        android:title="@string/my_ads"
+        app:showAsAction="ifRoom" />
 </menu>

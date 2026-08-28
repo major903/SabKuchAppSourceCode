@@ -54,8 +54,8 @@ class ChatListFragment : BaseFragment(), OnListViewItemClickListener {
         return fragmentChatListBinding?.root
     }
 
-    override fun onViewCreated(v: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(v, savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setTitle(getString(R.string.matches))
         initUI()
     }
@@ -163,7 +163,7 @@ class ChatListFragment : BaseFragment(), OnListViewItemClickListener {
         intent.putExtra(Constants.EXTRA_NAME, AppUtil.deNull(datingProfile.FirstName))
         intent.putExtra(Constants.EXTRA_CHAT_TO_ID, datingProfile.ProfileId)
         intent.putExtra(Constants.EXTRA_IS_DATING, isDating)
-        startActivityForResult(intent, Constants.REQUEST_CHAT)
+        startActivity(intent)
     }
 
     private val onMatchedProfilesSuccessListener =
