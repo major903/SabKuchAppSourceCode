@@ -1,6 +1,7 @@
 package vedam.subkuch.ui.contribute;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -53,6 +54,7 @@ public class RealEstateLeadActivity extends BaseActivity {
     private Spinner spDistrict;
     private Spinner spEstateType;
     private Button btSubmit;
+    private TextView tvNotice;
     private TextView tvNoDataEntries;
     private LinearLayout llDataEntries;
     private boolean hasCachedEntries;
@@ -73,6 +75,15 @@ public class RealEstateLeadActivity extends BaseActivity {
         String userName = AppPrefs.getPrefsUserName(this).trim();
         ((TextView) findViewById(R.id.tv_name)).setText(getString(R.string.contribute_greeting,
                 userName.isEmpty() ? getString(R.string.contributor) : userName));
+        tvNotice = findViewById(R.id.tv_notice);
+        String contribNotice = getIntent().getStringExtra(ContributeActivity.EXTRA_CONTRIB_DETAIL);
+        if (TextUtils.isEmpty(contribNotice)) {
+            contribNotice = getSharedPreferences(ContributeActivity.CONTRIB_PREFS, MODE_PRIVATE)
+                    .getString("key_detail_" + ContributeActivity.CONTRIB_ID_REAL_ESTATE, null);
+        }
+        if (!TextUtils.isEmpty(contribNotice) && tvNotice != null) {
+            tvNotice.setText(contribNotice);
+        }
         etName = findViewById(R.id.et_name);
         etMobile = findViewById(R.id.et_mobile);
         etLocation = findViewById(R.id.et_location);

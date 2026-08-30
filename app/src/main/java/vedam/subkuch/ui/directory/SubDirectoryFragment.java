@@ -33,27 +33,33 @@ import vedam.subkuch.utils.UiUtil;
 public class SubDirectoryFragment extends BaseListFragment {
 
     private String categoryId;
+    private String categoryName;
     private ArrayList<SubCategory> subCategories;
 
     public SubDirectoryFragment() {
         // Required empty public constructor
     }
 
-    public static SubDirectoryFragment newInstance(String categoryId) {
-
+    public static SubDirectoryFragment newInstance(String categoryId, String categoryName) {
         SubDirectoryFragment fragment = new SubDirectoryFragment();
-
         Bundle args = new Bundle();
         args.putString(Constants.EXTRA_CATEGORY_ID, categoryId);
+        args.putString(Constants.EXTRA_CATEGORY_NAME, categoryName);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public static SubDirectoryFragment newInstance(String categoryId) {
+        return newInstance(categoryId, "");
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null)
+        if (getArguments() != null) {
             categoryId = getArguments().getString(Constants.EXTRA_CATEGORY_ID);
+            categoryName = getArguments().getString(Constants.EXTRA_CATEGORY_NAME);
+        }
     }
 
     @Override
@@ -81,16 +87,30 @@ public class SubDirectoryFragment extends BaseListFragment {
 
     }
 
-    private Response.Listener<SubCategoryResponse> onCategorySuccessListener = response -> {
-
+    private final Response.Listener<SubCategoryResponse> onCategorySuccessListener = response -> {
         UiUtil.cancelProgressDialog();
-        if (getActivity() != null)
+        if (getActivity() != null) {
             if (response != null && response.getStatus().equals(Constants.TRUE)) {
                 subCategories = response.getSubCategoryResult().getSubCategories();
-                loadValues();
-            } else
-                UiUtil.showToast(context, getString(R.string.no_data));
+                if (subCategories != null && !subCategories.isEmpty()) {
+                    loadValues();
+                    return;
+                }
+            }
+            openDirectoryDetailsDirectly();
+        }
     };
+
+    private void openDirectoryDetailsDirectly() {
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.EXTRA_CATEGORY_ID, categoryId);
+        bundle.putString(Constants.EXTRA_CATEGORY_NAME, categoryName);
+        bundle.putString(Constants.EXTRA_SUB_CATEGORY_NAME, categoryName);
+        bundle.putString(Constants.EXTRA_SUB_CATEGORY_ID, "");
+        if (getActivity() != null && !getActivity().isFinishing()) {
+            replaceFragment(R.id.content_frame, DirectoryDetailsFragment.newInstance(bundle), null, false, 0, 0, 0, 0);
+        }
+    }
 
     private void loadValues() {
 

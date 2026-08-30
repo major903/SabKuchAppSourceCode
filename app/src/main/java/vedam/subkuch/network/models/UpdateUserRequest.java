@@ -1,38 +1,31 @@
 package vedam.subkuch.network.models;
 
-/** Request body for POST /api/Users/update. */
+/** Request body for POST /api/UserProfile/EditProfile. */
 public class UpdateUserRequest {
 
-    private final int UserId;
-    private final String FirstName;
-    private final String LastName;
-    private final String DOB;
-    private final String Mobile;
-    private final int OccupationId;
-    private final String OccupationOther;
-    private final int UserTypeId;
-    private final String DeviceId;
-    private final double Latitude;
-    private final double Longitude;
+    private final int ProfileId;
+    private final String firstName;
+    private final String lastName;
+    private final int CountryId;
     private final int DistrictId;
-    private final int countryid;
+    private final int StateId;
+    private final int LanguageId;
+    private final String EMail;
 
-    public UpdateUserRequest(int userId, String firstName, String lastName, String dob,
-                             String mobile, int occupationId, String occupationOther,
-                             int userTypeId, String deviceId, double latitude,
-                             double longitude, int districtId, int countryId) {
-        UserId = userId;
-        FirstName = firstName;
-        LastName = lastName;
-        DOB = dob;
-        Mobile = mobile;
-        OccupationId = occupationId;
-        OccupationOther = occupationOther;
-        UserTypeId = userTypeId;
-        DeviceId = deviceId;
-        Latitude = latitude;
-        Longitude = longitude;
+    public UpdateUserRequest(int profileId, String firstName, String lastName, int countryId,
+                             int districtId, int stateId, int languageId, String email) {
+        ProfileId = profileId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        CountryId = countryId;
         DistrictId = districtId;
-        countryid = countryId;
+        StateId = stateId;
+        LanguageId = languageId;
+        EMail = email;
+    }
+
+    public UpdateUserRequest(int profileId, String firstName, String lastName, int countryId,
+                             int districtId, String email) {
+        this(profileId, firstName, lastName, countryId, districtId, 0, 0, email);
     }
 }

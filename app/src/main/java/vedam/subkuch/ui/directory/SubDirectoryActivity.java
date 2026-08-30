@@ -20,9 +20,17 @@ public class SubDirectoryActivity extends BaseActivity {
         String catName = getIntent().getStringExtra(Constants.EXTRA_CATEGORY_NAME);
         setTitle(catName);
         TextView tvToolbarTitle = findViewById(R.id.tv_toolbar_title);
-        tvToolbarTitle.setMaxEms(12);
+        if (tvToolbarTitle != null) {
+            tvToolbarTitle.setMaxEms(12);
+        }
 
-        addFragment(R.id.content_frame, SubDirectoryFragment.newInstance(categoryId));
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.EXTRA_CATEGORY_ID, categoryId);
+        bundle.putString(Constants.EXTRA_CATEGORY_NAME, catName);
+        bundle.putString(Constants.EXTRA_SUB_CATEGORY_NAME, catName);
+        bundle.putString(Constants.EXTRA_SUB_CATEGORY_ID, "");
+
+        addFragment(R.id.content_frame, DirectoryDetailsFragment.newInstance(bundle));
     }
 
 }

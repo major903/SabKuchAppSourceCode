@@ -3,6 +3,7 @@ package vedam.subkuch.ui.needs;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,7 +25,7 @@ import vedam.subkuch.R;
 import vedam.subkuch.base.BaseListFragment;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
-import vedam.subkuch.network.models.ProfileResponse;
+import vedam.subkuch.network.models.Profile;
 import vedam.subkuch.network.models.needs.Provider;
 import vedam.subkuch.network.models.needs.ProviderResponse;
 import vedam.subkuch.utils.UiUtil;
@@ -101,16 +102,15 @@ public class NeedsFragment extends BaseListFragment {
 
     private void getUserTypeId() {
         UiUtil.showProgressDialog(context, getString(R.string.loading));
-        DataFetcher.getProfile(context, onProfileSuccessListener, ProfileResponse.class, onErrorListener);
+        DataFetcher.getUserProfile(context, onProfileSuccessListener, Profile.class, onErrorListener);
 
     }
 
-    private Response.Listener<ProfileResponse> onProfileSuccessListener = response -> {
+    private Response.Listener<Profile> onProfileSuccessListener = response -> {
         UiUtil.cancelProgressDialog();
         if (getActivity() != null)
-            if (response != null && response.getReturnMessage().equals(Constants.SUCCESS) &&
-                    response.getReturnData() != null && response.getReturnData().size() > 0) {
-                userTypeId = response.getReturnData().get(0).getUserTypeId();
+            if (response != null && !TextUtils.isEmpty(response.getProfileId())) {
+                userTypeId = response.getUserTypeId();
             } else {
                 UiUtil.showToast(context, getString(R.string.err_occurred));
             }

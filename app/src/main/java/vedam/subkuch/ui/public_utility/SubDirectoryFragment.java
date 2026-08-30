@@ -59,6 +59,10 @@ public class SubDirectoryFragment extends BaseListFragment {
             }
             return false;
         });
+        View tvEmpty = v.findViewById(R.id.tv_empty);
+        if (tvEmpty != null) {
+            tvEmpty.setVisibility(View.GONE);
+        }
         getSubCategories();
     }
 
@@ -68,15 +72,25 @@ public class SubDirectoryFragment extends BaseListFragment {
 
     }
 
-    private Response.Listener<SubCategoryResponse> onCategorySuccessListener = response -> {
+    private final Response.Listener<SubCategoryResponse> onCategorySuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (getActivity() != null)
-            if (response != null && response.getStatus().equals(Constants.TRUE)) {
+        if (getActivity() != null && getView() != null) {
+            View tvEmpty = getView().findViewById(R.id.tv_empty);
+            View listView = getView().findViewById(android.R.id.list);
+            if (response != null && response.getStatus() != null && response.getStatus().equals(Constants.TRUE)
+                    && response.getSubCategoryResult() != null
+                    && response.getSubCategoryResult().getSubCategories() != null
+                    && !response.getSubCategoryResult().getSubCategories().isEmpty()) {
+                if (tvEmpty != null) tvEmpty.setVisibility(View.GONE);
+                if (listView != null) listView.setVisibility(View.VISIBLE);
                 subCategories = response.getSubCategoryResult().getSubCategories();
                 loadValues();
-            } else
-                UiUtil.showToast(context, getString(R.string.no_data));
+            } else {
+                if (tvEmpty != null) tvEmpty.setVisibility(View.VISIBLE);
+                if (listView != null) listView.setVisibility(View.GONE);
+            }
+        }
     };
 
     private void loadValues() {

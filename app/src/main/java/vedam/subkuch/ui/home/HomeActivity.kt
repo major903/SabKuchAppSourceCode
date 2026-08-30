@@ -34,7 +34,6 @@ import com.marsad.stylishdialogs.StylishAlertDialog
 import retrofit2.Call
 import retrofit2.Callback
 import vedam.subkuch.R
-import vedam.subkuch.MainActivity
 import vedam.subkuch.RegistrationIntentService
 import vedam.subkuch.base.BaseActivity
 import vedam.subkuch.databinding.ActivityHomeBinding
@@ -79,6 +78,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private var referrerClient: InstallReferrerClient? = null
     private var isDeletingProfile = false
     private var renderedMenus: List<OMenu>? = null
+    private var renderedFeaturesJson: String? = null
     private val notificationPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
     val iconHash = mapOf(
@@ -103,23 +103,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         R.id.iv_transport,
         R.id.iv_offer,
         R.id.iv_gift
-    )
-    private val fallbackFeatureIcons = mapOf(
-        R.id.iv_directory to R.drawable.directory,
-        R.id.iv_events to R.drawable.learn,
-        R.id.iv_jobs to R.drawable.jobs,
-        R.id.iv_movies to R.drawable.movies,
-        R.id.iv_classifieds to R.drawable.classifieds,
-        R.id.iv_needs to R.drawable.needs,
-        R.id.iv_ask_me to R.drawable.realestate,
-        R.id.iv_dating to R.drawable.dating,
-        R.id.iv_matrimonial to R.drawable.matrimonial,
-        R.id.iv_public_utility to R.drawable.public_utility,
-        R.id.iv_bus to R.drawable.bustrain,
-        R.id.iv_phone_book to R.drawable.phonebook,
-        R.id.iv_transport to R.drawable.transport,
-        R.id.iv_offer to R.drawable.offers,
-        R.id.iv_gift to R.drawable.giftalife
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -152,9 +135,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         binding!!.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         binding!!.navView.setNavigationItemSelectedListener(this)
-        val tvName =
-            binding!!.navView.getHeaderView(0).findViewById<TextView>(R.id.tv_name)
-        tvName.text = AppPrefs.getPrefsUserName(this)
+        refreshDrawerName()
         binding!!.navView.getHeaderView(0).findViewById<View>(R.id.btn_close_drawer)
             .setOnClickListener { binding!!.drawerLayout.closeDrawer(GravityCompat.START) }
         val privacyFooter = binding!!.navView.findViewById<View>(R.id.ll_tnc)
@@ -197,9 +178,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         binding!!.root.post {
             if (!isFinishing && !isDestroyed) {
                 requestLocation(false)
-                if (!intent.getBooleanExtra(MainActivity.EXTRA_MENU_PRELOADED, false)) {
-                    getMenus()
-                }
+                getMenus()
                 getFeatures()
                 getBroadCastMessage()
                 registerFCM()
@@ -208,8 +187,19 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        refreshDrawerName()
+    }
+
+    private fun refreshDrawerName() {
+        binding?.navView?.getHeaderView(0)?.findViewById<TextView>(R.id.tv_name)?.text =
+            AppPrefs.getPrefsUserName(this)
+    }
+
     private fun showHomeImmediately() {
-        val cachedFeatures = AppPrefs.getPrefsHomeFeatures(this)
+        val cachedJson = AppPrefs.getPrefsHomeFeatures(this)
+        val cachedFeatures = cachedJson
             .takeIf { it.isNotBlank() }
             ?.let {
                 try {
@@ -221,17 +211,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             }
 
         if (cachedFeatures != null) {
-            renderFeatures(cachedFeatures)
-        } else {
-            hideFeatureViews()
-            fallbackFeatureIcons.forEach { (viewId, drawableId) ->
-                binding!!.root.findViewById<ImageView>(viewId).apply {
-                    setImageResource(drawableId)
-                    visibility = View.VISIBLE
-                    isEnabled = false
-                }
-            }
-            binding!!.root.findViewById<View>(R.id.ll_container).visibility = View.VISIBLE
+            renderFeatures(cachedFeatures, cachedJson)
         }
     }
 
@@ -296,8 +276,13 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         UiUtil.showToast(this, getString(R.string.account_deleted_successfully))
     }
 
-    private fun renderFeatures(features: Feature) {
-        hideFeatureViews()
+    private fun renderFeatures(features: Feature, rawJson: String? = null) {
+        val jsonToCompare = rawJson ?: Gson().toJson(features)
+        if (jsonToCompare == renderedFeaturesJson) {
+            binding!!.root.findViewById<View>(R.id.ll_container).visibility = View.VISIBLE
+            return
+        }
+        renderedFeaturesJson = jsonToCompare
         enableFeatures(features)
         binding!!.root.findViewById<View>(R.id.ll_container).visibility = View.VISIBLE
     }
@@ -444,8 +429,9 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         if (response != null) {
             if (response.returnCode == Constants.SUCCESS_RETURN_CODE) {
                 response.returnData?.let { features ->
-                    AppPrefs.setPrefsHomeFeatures(this, Gson().toJson(features))
-                    renderFeatures(features)
+                    val newJson = Gson().toJson(features)
+                    AppPrefs.setPrefsHomeFeatures(this, newJson)
+                    renderFeatures(features, newJson)
                 }
             } else if (!TextUtils.isEmpty(response.returnMessage)) UiUtil.showToast(
                 this@HomeActivity,
@@ -501,36 +487,51 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     private fun enableFeatures(response: Feature) {
-        if (response.node1 != null) enableFeaturesByNode1(response.node1)
-        if (response.node2 != null) enableFeaturesByNode2(response.node2)
-        if (response.node3 != null) enableFeaturesByNode3(response.node3)
-        if (response.node4 != null) enableFeaturesByNode4(response.node4)
-        if (response.node5 != null) enableFeaturesByNode5(response.node5)
+        val activeViewIds = mutableSetOf<Int>()
+        response.node1?.let { enableFeaturesByNode1(it, activeViewIds) }
+        response.node2?.let { enableFeaturesByNode2(it, activeViewIds) }
+        response.node3?.let { enableFeaturesByNode3(it, activeViewIds) }
+        response.node4?.let { enableFeaturesByNode4(it, activeViewIds) }
+        response.node5?.let { enableFeaturesByNode5(it, activeViewIds) }
+
+        featureViewIds.forEach { viewId ->
+            if (!activeViewIds.contains(viewId)) {
+                binding!!.root.findViewById<ImageView>(viewId).apply {
+                    visibility = View.GONE
+                    isEnabled = false
+                    tag = null
+                }
+            }
+        }
     }
 
-    private fun enableFeaturesByNode1(nodes: ArrayList<Node>) {
+    private fun enableFeaturesByNode1(nodes: ArrayList<Node>, activeViews: MutableSet<Int>) {
         for (feature in nodes) {
             when (feature.name) {
                 Constants.Directory -> {
                     val ivDirectory =
                         binding!!.root.findViewById<ImageView>(R.id.iv_directory)
                     ivDirectory.visibility = View.VISIBLE
+                    activeViews.add(R.id.iv_directory)
                     setImage(ivDirectory, R.drawable.directory, feature)
                 }
                 Constants.Learn, Constants.Events -> {
                     val ivEvent = binding!!.root.findViewById<ImageView>(R.id.iv_events)
                     ivEvent.visibility = View.VISIBLE
+                    activeViews.add(R.id.iv_events)
                     setImage(ivEvent, R.drawable.learn, feature)
                 }
                 Constants.Jobs -> {
                     val ivJobs = binding!!.root.findViewById<ImageView>(R.id.iv_jobs)
                     ivJobs.visibility = View.VISIBLE
+                    activeViews.add(R.id.iv_jobs)
                     setImage(ivJobs, R.drawable.jobs, feature)
                 }
                 Constants.Movies, Constants.Movies_Timings -> {
                     val ivMovies =
                         binding!!.root.findViewById<ImageView>(R.id.iv_movies)
                     ivMovies.visibility = View.VISIBLE
+                    activeViews.add(R.id.iv_movies)
                     setImage(ivMovies, R.drawable.movies, feature)
                 }
             }
@@ -540,120 +541,136 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private fun setImage(ivDirectory: ImageView, resourceId: Int, feature: Node) {
         ivDirectory.tag = feature
         ivDirectory.isEnabled = true
-        UiUtil.setImageView(
-            ImageSetter.ImageBuilder(this)
-                .setImageLink(feature.iconUrl)
-                .setPlaceholderResource(resourceId)
+        val builder = ImageSetter.ImageBuilder(this)
+            .setImageLink(feature.iconUrl)
+            .setTarget(ivDirectory)
+        if (ivDirectory.drawable == null && resourceId != 0) {
+            builder.setPlaceholderResource(resourceId)
                 .setErrorResource(resourceId)
-                .setTarget(ivDirectory).build()
-        )
+        }
+        UiUtil.setImageView(builder.build())
     }
 
-    private fun enableFeaturesByNode2(nodes: ArrayList<Node>) {
+    private fun enableFeaturesByNode2(nodes: ArrayList<Node>, activeViews: MutableSet<Int>) {
         for (feature in nodes) {
             when (feature.name) {
                 Constants.Ask_Me -> {
                     val ivAskMe = binding!!.root.findViewById<ImageView>(R.id.iv_ask_me)
                     ivAskMe.visibility = View.VISIBLE
+                    activeViews.add(R.id.iv_ask_me)
                     setImage(ivAskMe, R.drawable.ask, feature)
                 }
                 Constants.RealEstate -> {
                     val ivRealEstate =
                         binding!!.root.findViewById<ImageView>(R.id.iv_ask_me)
                     ivRealEstate.visibility = View.VISIBLE
+                    activeViews.add(R.id.iv_ask_me)
                     setImage(ivRealEstate, R.drawable.realestate, feature)
                 }
                 Constants.Classifieds -> {
                     val ivClassifieds =
                         binding!!.root.findViewById<ImageView>(R.id.iv_classifieds)
                     ivClassifieds.visibility = View.VISIBLE
+                    activeViews.add(R.id.iv_classifieds)
                     setImage(ivClassifieds, R.drawable.classifieds, feature)
                 }
                 Constants.Needs -> {
                     val ivNeeds = binding!!.root.findViewById<ImageView>(R.id.iv_needs)
                     ivNeeds.visibility = View.VISIBLE
+                    activeViews.add(R.id.iv_needs)
                     setImage(ivNeeds, R.drawable.needs, feature)
                 }
             }
         }
     }
 
-    private fun enableFeaturesByNode3(nodes: ArrayList<Node>) {
+    private fun enableFeaturesByNode3(nodes: ArrayList<Node>, activeViews: MutableSet<Int>) {
         for (feature in nodes) {
             when (feature.name) {
                 Constants.Dating -> {
                     val ivDating =
                         binding!!.root.findViewById<ImageView>(R.id.iv_dating)
                     ivDating.visibility = View.VISIBLE
+                    activeViews.add(R.id.iv_dating)
                     setImage(ivDating, R.drawable.dating, feature)
                 }
                 Constants.Matrimonial -> {
                     val ivMatrimonial =
                         binding!!.root.findViewById<ImageView>(R.id.iv_matrimonial)
                     ivMatrimonial.visibility = View.VISIBLE
+                    activeViews.add(R.id.iv_matrimonial)
                     setImage(ivMatrimonial, R.drawable.matrimonial, feature)
                 }
             }
         }
     }
 
-    private fun enableFeaturesByNode4(nodes: ArrayList<Node>) {
+    private fun enableFeaturesByNode4(nodes: ArrayList<Node>, activeViews: MutableSet<Int>) {
         for (feature in nodes) {
             when (feature.name) {
                 Constants.Phone_book -> {
                     val ivPhoneBook =
                         binding!!.root.findViewById<ImageView>(R.id.iv_phone_book)
                     ivPhoneBook.visibility = View.VISIBLE
+                    activeViews.add(R.id.iv_phone_book)
                     setImage(ivPhoneBook, R.drawable.phonebook, feature)
                 }
                 Constants.Public_Transport_Timings -> {
                     val ivBus = binding!!.root.findViewById<ImageView>(R.id.iv_bus)
                     ivBus.visibility = View.VISIBLE
+                    activeViews.add(R.id.iv_bus)
                     setImage(ivBus, R.drawable.bustrain, feature)
                 }
                 Constants.Ask -> {
                     val ivAsk = binding!!.root.findViewById<ImageView>(R.id.iv_bus)
                     ivAsk.visibility = View.VISIBLE
+                    activeViews.add(R.id.iv_bus)
                     setImage(ivAsk, R.drawable.ask, feature)
                 }
                 Constants.Goods_Transport -> {
                     val ivTransport =
                         binding!!.root.findViewById<ImageView>(R.id.iv_phone_book)
                     ivTransport.visibility = View.VISIBLE
-                    setImage(ivTransport, R.drawable.transport, feature)
+                    activeViews.add(R.id.iv_phone_book)
+                    setImage(ivTransport, 0, feature)
                 }
                 Constants.Public_Utility -> {
                     val ivPublicUtility =
                         binding!!.root.findViewById<ImageView>(R.id.iv_public_utility)
                     ivPublicUtility.visibility = View.VISIBLE
+                    activeViews.add(R.id.iv_public_utility)
                     setImage(ivPublicUtility, R.drawable.public_utility, feature)
                 }
             }
         }
     }
 
-    private fun enableFeaturesByNode5(nodes: ArrayList<Node>) {
+    private fun enableFeaturesByNode5(nodes: ArrayList<Node>, activeViews: MutableSet<Int>) {
         for (feature in nodes) {
             when (feature.name) {
                 Constants.Goods_Transport -> {
                     val ivTransport =
                         binding!!.root.findViewById<ImageView>(R.id.iv_transport)
                     ivTransport.visibility = View.VISIBLE
-                    setImage(ivTransport, R.drawable.transport, feature)
+                    activeViews.add(R.id.iv_transport)
+                    setImage(ivTransport, 0, feature)
                 }
                 Constants.Gift_A_Life -> {
                     val ivGift = binding!!.root.findViewById<ImageView>(R.id.iv_gift)
                     ivGift.visibility = View.VISIBLE
+                    activeViews.add(R.id.iv_gift)
                     setImage(ivGift, R.drawable.giftalife, feature)
                 }
                 Constants.Offers -> {
                     val ivOffers = binding!!.root.findViewById<ImageView>(R.id.iv_offer)
                     ivOffers.visibility = View.VISIBLE
+                    activeViews.add(R.id.iv_offer)
                     setImage(ivOffers, R.drawable.offers, feature)
                 }
                 Constants.Window_Shopping -> {
                     val ivShopping = binding!!.root.findViewById<ImageView>(R.id.iv_offer)
                     ivShopping.visibility = View.VISIBLE
+                    activeViews.add(R.id.iv_offer)
                     setImage(ivShopping, R.drawable.offers, feature)
                 }
             }

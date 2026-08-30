@@ -20,3 +20,6 @@
 hs_err_pid*.log
 /device-layout*.json
 /device-wallet-layout.json
+/key/
+/.gradle-project-cache
+/.gradle-user

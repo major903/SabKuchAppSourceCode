@@ -30,6 +30,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import android.text.TextUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -45,6 +47,7 @@ import vedam.subkuch.network.models.DataEntryListItem;
 import vedam.subkuch.network.models.DataEntryListResponse;
 import vedam.subkuch.network.models.RegistrationMasterOption;
 import vedam.subkuch.network.models.RegistrationMasterResponse;
+import vedam.subkuch.ui.contribute.ContributeActivity;
 import vedam.subkuch.ui.jobs.models.AddResponse;
 import vedam.subkuch.utils.AppPrefs;
 import vedam.subkuch.utils.UiUtil;
@@ -53,6 +56,9 @@ import vedam.subkuch.utils.UiUtil;
 public class DataEntryActivity extends BaseActivity {
 
     private static final String DATA_ENTRY_CACHE_PREFS = "data_entry_cache";
+    private static final int DATA_ENTRY_HISTORY_PAGE_SIZE = 10;
+    // Prevent a malformed server response from repeatedly requesting the same full page.
+    private static final int MAX_DATA_ENTRY_HISTORY_PAGES = 100;
     private ActivityDataEntryBinding binding;
     private String stateId;
     private String districtId;
@@ -72,6 +78,14 @@ public class DataEntryActivity extends BaseActivity {
         String userName = AppPrefs.getPrefsUserName(this).trim();
         binding.tvName.setText(getString(R.string.contribute_greeting,
                 userName.isEmpty() ? getString(R.string.contributor) : userName));
+        String contribNotice = getIntent().getStringExtra(ContributeActivity.EXTRA_CONTRIB_DETAIL);
+        if (TextUtils.isEmpty(contribNotice)) {
+            contribNotice = getSharedPreferences(ContributeActivity.CONTRIB_PREFS, MODE_PRIVATE)
+                    .getString("key_detail_" + ContributeActivity.CONTRIB_ID_COMPANY, null);
+        }
+        if (!TextUtils.isEmpty(contribNotice) && binding.tvNotice != null) {
+            binding.tvNotice.setText(contribNotice);
+        }
         bindStateSpinner(new ArrayList<>());
         updateDistrictSpinner();
         configureKeyboardScrolling();
@@ -193,32 +207,57 @@ public class DataEntryActivity extends BaseActivity {
             if (!hasCachedDataEntries) displayDataEntries(new ArrayList<>());
             return;
         }
-        RegistrationApiClient.getApi(this).getUniqueDataEntries(userId, 1, 10).enqueue(
+        loadDataEntriesPage(userId, 1, new ArrayList<>());
+    }
+
+    /**
+     * The API is paginated. Keep requesting pages so the history is not limited to
+     * the first ten submitted companies.
+     */
+    private void loadDataEntriesPage(int userId, int pageIndex,
+                                     ArrayList<DataEntryListItem> allEntries) {
+        RegistrationApiClient.getApi(this).getUniqueDataEntries(
+                userId, pageIndex, DATA_ENTRY_HISTORY_PAGE_SIZE).enqueue(
                 new Callback<DataEntryListResponse>() {
                     @Override
                     public void onResponse(Call<DataEntryListResponse> call,
                                            Response<DataEntryListResponse> response) {
                         if (isFinishing() || isDestroyed()) return;
                         if (response.isSuccessful() && response.body() != null) {
-                            showDataEntries(response.body());
-                        } else if (!hasCachedDataEntries) {
-                            displayDataEntries(new ArrayList<>());
+                            List<DataEntryListItem> pageEntries = getDataEntryItems(response.body());
+                            allEntries.addAll(pageEntries);
+                            if (pageEntries.size() == DATA_ENTRY_HISTORY_PAGE_SIZE
+                                    && pageIndex < MAX_DATA_ENTRY_HISTORY_PAGES) {
+                                loadDataEntriesPage(userId, pageIndex + 1, allEntries);
+                            } else {
+                                showDataEntries(allEntries);
+                            }
+                        } else {
+                            showLoadedDataEntries(allEntries);
                         }
                     }
 
                     @Override
                     public void onFailure(Call<DataEntryListResponse> call, Throwable throwable) {
-                        if (!isFinishing() && !isDestroyed() && !hasCachedDataEntries) {
-                            displayDataEntries(new ArrayList<>());
+                        if (!isFinishing() && !isDestroyed()) {
+                            showLoadedDataEntries(allEntries);
                         }
                     }
                 });
     }
 
-    private void showDataEntries(DataEntryListResponse response) {
-        List<DataEntryListItem> entries = getDataEntryItems(response);
+    private void showDataEntries(List<DataEntryListItem> entries) {
         saveDataEntries(entries);
         displayDataEntries(entries);
+    }
+
+    /** Keeps cached history visible if a later page cannot be loaded. */
+    private void showLoadedDataEntries(List<DataEntryListItem> entries) {
+        if (entries == null || entries.isEmpty()) {
+            if (!hasCachedDataEntries) displayDataEntries(new ArrayList<>());
+            return;
+        }
+        showDataEntries(entries);
     }
 
     private boolean showCachedDataEntries() {

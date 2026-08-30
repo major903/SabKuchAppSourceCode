@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import vedam.subkuch.network.Response;
 
 import java.util.ArrayList;
+import java.util.Locale;
+import android.text.TextUtils;
 
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseFragment;
@@ -39,6 +41,7 @@ public class DirectoryDetailsFragment extends BaseFragment implements OnListView
 
     private String categoryId;
     private String subCategoryId;
+    private String categoryName;
     private DirectoryDetailsAdapter adapter;
     private FragmentDirectoryDetailsBinding binding;
     private LinearLayoutManager linearLayoutManager;
@@ -65,6 +68,10 @@ public class DirectoryDetailsFragment extends BaseFragment implements OnListView
         if (getArguments() != null) {
             categoryId = getArguments().getString(Constants.EXTRA_CATEGORY_ID);
             subCategoryId = getArguments().getString(Constants.EXTRA_SUB_CATEGORY_ID);
+            categoryName = getArguments().getString(Constants.EXTRA_CATEGORY_NAME);
+            if (TextUtils.isEmpty(categoryName)) {
+                categoryName = getArguments().getString(Constants.EXTRA_SUB_CATEGORY_NAME);
+            }
         }
     }
 
@@ -95,25 +102,92 @@ public class DirectoryDetailsFragment extends BaseFragment implements OnListView
 
 
     private void getDirectoryDetails() {
+        if (!TextUtils.isEmpty(subCategoryId)) {
+            UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
+            DataFetcher.getDirectoryDetails(mContext, onDirectoryDetailSuccessListener,
+                    DirectoryDetailResponse.class, onErrorListener, categoryId, subCategoryId,
+                    null, pageNo, pageSize);
+        } else {
+            searchBusinessesByCategory();
+        }
+    }
 
+    private void searchBusinessesByCategory() {
+        String keyword = getSearchKeywordForCategory(categoryName);
+        if (TextUtils.isEmpty(keyword)) {
+            keyword = "a";
+        }
         UiUtil.showProgressDialog(mContext, getString(R.string.please_wait));
-        DataFetcher.getDirectoryDetails(mContext, onDirectoryDetailSuccessListener,
-                DirectoryDetailResponse.class, onErrorListener, categoryId, subCategoryId,
-                null, pageNo, pageSize);
+        DataFetcher.searchBusiness(mContext, onSearchFallbackSuccessListener,
+                DirectoryDetailResponse.class, onErrorListener, keyword);
     }
 
     private final Response.Listener<DirectoryDetailResponse> onDirectoryDetailSuccessListener = response -> {
-
-        UiUtil.cancelProgressDialog();
-        if (getActivity() != null)
-            if (response != null && response.getStatus().equals(Constants.TRUE)) {
+        if (getActivity() != null) {
+            if (response != null && response.getStatus() != null && response.getStatus().equals(Constants.TRUE)
+                    && response.getBusinessesResult() != null
+                    && response.getBusinessesResult().getBusinesses() != null
+                    && !response.getBusinessesResult().getBusinesses().isEmpty()) {
+                UiUtil.cancelProgressDialog();
                 ArrayList<Business> businesses = response.getBusinessesResult().getBusinesses();
                 hasMoreProjects = businesses.size() >= pageSize;
                 loading = true;
                 loadValues(businesses);
-            } else
-                UiUtil.showToast(mContext, getString(R.string.no_data));
+            } else {
+                searchBusinessesByCategory();
+            }
+        } else {
+            UiUtil.cancelProgressDialog();
+        }
     };
+
+    private final Response.Listener<DirectoryDetailResponse> onSearchFallbackSuccessListener = response -> {
+        UiUtil.cancelProgressDialog();
+        if (getActivity() != null) {
+            if (response != null && response.getStatus() != null && response.getStatus().equals(Constants.TRUE)
+                    && response.getBusinessesResult() != null
+                    && response.getBusinessesResult().getBusinesses() != null
+                    && !response.getBusinessesResult().getBusinesses().isEmpty()) {
+                ArrayList<Business> businesses = response.getBusinessesResult().getBusinesses();
+                hasMoreProjects = false;
+                loading = false;
+                loadValues(businesses);
+            } else {
+                UiUtil.showToast(mContext, getString(R.string.no_data));
+            }
+        }
+    };
+
+    private String getSearchKeywordForCategory(String name) {
+        if (TextUtils.isEmpty(name)) return "";
+        String lower = name.toLowerCase(Locale.ENGLISH);
+        if (lower.contains("account")) return "Account";
+        if (lower.contains("advocate") || lower.contains("notary")) return "Advocate";
+        if (lower.contains("bank")) return "Bank";
+        if (lower.contains("hotel") || lower.contains("resort")) return "Hotel";
+        if (lower.contains("medical") || lower.contains("health") || lower.contains("hospital")) return "Hospital";
+        if (lower.contains("college") || lower.contains("school") || lower.contains("education")) return "College";
+        if (lower.contains("food") || lower.contains("beverage") || lower.contains("restaurant")) return "Hotel";
+        if (lower.contains("electric")) return "Electric";
+        if (lower.contains("comput") || lower.contains("software")) return "Computer";
+        if (lower.contains("build") || lower.contains("construct")) return "Construction";
+        if (lower.contains("travel") || lower.contains("tour")) return "Travel";
+        if (lower.contains("beauty")) return "Beauty";
+        if (lower.contains("auto")) return "Automobile";
+        if (lower.contains("stationery") || lower.contains("book")) return "Book";
+        if (lower.contains("jewel")) return "Jewel";
+        if (lower.contains("garment") || lower.contains("textile")) return "Garment";
+        if (lower.contains("advertis")) return "Advertis";
+        if (lower.contains("agri")) return "Agri";
+
+        String[] tokens = name.split("[/&\\-–,\\s]+");
+        for (String token : tokens) {
+            if (token.length() >= 3) {
+                return token;
+            }
+        }
+        return name;
+    }
 
     private void loadValues(ArrayList<Business> response) {
 

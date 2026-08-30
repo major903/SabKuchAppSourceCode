@@ -5,6 +5,8 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import vedam.subkuch.network.models.ContribListResponse;
+import vedam.subkuch.network.models.ContribResponse;
 import vedam.subkuch.network.models.DataEntryListResponse;
 import vedam.subkuch.network.models.DataEntryRequest;
 import vedam.subkuch.network.models.DataEstateRequest;
@@ -13,10 +15,15 @@ import vedam.subkuch.network.models.DeleteProfileRequest;
 import vedam.subkuch.network.models.DeleteProfileResponse;
 import vedam.subkuch.network.models.EstateTypeListResponse;
 import vedam.subkuch.network.models.RegistrationMasterResponse;
+import vedam.subkuch.network.models.Profile;
 import vedam.subkuch.ui.jobs.models.AddResponse;
 
 /** Typed Retrofit endpoints for the newer registration and contribution API. */
 public interface RegistrationApi {
+
+    /** Returns the profile for the authenticated user. */
+    @GET("api/Users")
+    Call<Profile> getCurrentUserProfile();
 
     @GET("api/Master/GetStates")
     Call<RegistrationMasterResponse> getStates();
@@ -65,4 +72,10 @@ public interface RegistrationApi {
             @Query("pageIndex") int pageIndex,
             @Query("pageSize") int pageSize
     );
+
+    @GET("api/Contrib/GetContrib")
+    Call<ContribResponse> getContrib(@Query("contribId") int contribId);
+
+    @GET("api/Contrib/GetContribs")
+    Call<ContribListResponse> getContribs();
 }

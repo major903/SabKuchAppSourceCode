@@ -114,6 +114,7 @@
             />
         <activity
             android:name=".ui.profile.EditProfileActivity"
+            android:windowSoftInputMode="adjustResize"
             />
         <activity
             android:name=".ui.jobs.jobmela.JobMelaActivity"

@@ -210,8 +210,8 @@ public class EditProfileActivity extends BaseActivity {
         for (RegistrationMasterOption district : districts) {
             boolean countryMatches = district.getCountryId() == null
                     || countryId.equals(String.valueOf(district.getCountryId()));
-            boolean stateMatches = district.getStateId() == null
-                    || stateId != null && stateId.equals(String.valueOf(district.getStateId()));
+            boolean stateMatches = stateId == null
+                    || (district.getStateId() != null && stateId.equals(String.valueOf(district.getStateId())));
             if (countryMatches && stateMatches) {
                 options.add(district);
             }
@@ -234,6 +234,17 @@ public class EditProfileActivity extends BaseActivity {
                 RegistrationMasterOption district =
                         (RegistrationMasterOption) parent.getItemAtPosition(position);
                 districtId = district.getId() == 0 ? null : String.valueOf(district.getId());
+                if (stateId == null && district.getStateId() != null) {
+                    String matchingStateId = String.valueOf(district.getStateId());
+                    for (int i = 1; i < activityEditProfileBinding.spState.getCount(); i++) {
+                        RegistrationMasterOption stateOption =
+                                (RegistrationMasterOption) activityEditProfileBinding.spState.getItemAtPosition(i);
+                        if (matchingStateId.equals(String.valueOf(stateOption.getId()))) {
+                            activityEditProfileBinding.spState.setSelection(i);
+                            break;
+                        }
+                    }
+                }
             }
 
             @Override
@@ -446,22 +457,15 @@ public class EditProfileActivity extends BaseActivity {
         if (userId == 0) {
             userId = parseRequiredId(profile.getProfileId());
         }
-        String deviceId = TextUtils.isEmpty(profile.getDeviceId())
-                ? DeviceIdProvider.getDeviceId(this) : profile.getDeviceId();
         UpdateUserRequest request = new UpdateUserRequest(
                 userId,
                 profile.getFirstName(),
                 profile.getLastName(),
-                AppUtil.deNull(profile.getDOB()),
-                AppUtil.deNull(profile.getMobile()),
-                parseRequiredId(profile.getOccupationid()),
-                AppUtil.deNull(profile.getOccupationOther()),
-                profile.getUserTypeId(),
-                deviceId,
-                parseCoordinate(latitude, profile.getLatitude()),
-                parseCoordinate(longitude, profile.getLongitude()),
+                parseRequiredId(countryId),
                 parseRequiredId(districtId),
-                parseRequiredId(countryId));
+                parseRequiredId(stateId),
+                parseRequiredId(languageId),
+                AppUtil.deNull(profile.getEMail()));
         DataFetcher.updateUser(this, new Gson().toJson(request), onRegisterUserSuccessListener,
                 UpdateUserResponse.class, onErrorListener);
     }
@@ -486,8 +490,7 @@ public class EditProfileActivity extends BaseActivity {
     private Response.Listener<UpdateUserResponse> onRegisterUserSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (response != null && response.getStatus() == 1
-                && Constants.SUCCESS.equalsIgnoreCase(response.getMessage())) {
+        if (response != null && response.isSuccess()) {
             SharedPreferences.Editor editor = AppPrefs.getInstance(EditProfileActivity.this).getSharedPreferences().edit();
             editor.putString(PREFS_USER_NAME, getFullName());
             editor.putInt(AppPrefs.PREFS_USER_GENDER, getGenderCode(profile.getGender()));
@@ -512,14 +515,9 @@ public class EditProfileActivity extends BaseActivity {
 
     private int validateErrorMessage() {
         int errorMessage = 0;
-        if (TextUtils.isEmpty(activityEditProfileBinding.etFirstName.getText()))
-            errorMessage = R.string.enter_given_name;
-        else if (TextUtils.isEmpty(activityEditProfileBinding.etLastName.getText()))
+        if (TextUtils.isEmpty(activityEditProfileBinding.etLastName.getText()))
             errorMessage = R.string.enter_surname;
-        else if (activityEditProfileBinding.etFirstName.getText().length() < 3)
-            errorMessage = R.string.minimum_3_characters_first_name;
-        else if (!AppUtil.isStringOnlyAlphabet(activityEditProfileBinding.etFirstName.getText().toString()) ||
-                !AppUtil.isStringName(activityEditProfileBinding.etLastName.getText().toString()))
+        else if (!AppUtil.isStringName(activityEditProfileBinding.etLastName.getText().toString()))
             errorMessage = R.string.no_special_characters_allowed_in_name;
         else if (TextUtils.isEmpty(stateId))
             errorMessage = R.string.select_a_state;
@@ -527,6 +525,10 @@ public class EditProfileActivity extends BaseActivity {
             errorMessage = R.string.select_a_city;
         else if (TextUtils.isEmpty(languageId))
             errorMessage = R.string.select_app_language;
+        else if (TextUtils.isEmpty(activityEditProfileBinding.etEmail.getText()))
+            errorMessage = R.string.enter_email;
+        else if (!AppUtil.validateEmail(activityEditProfileBinding.etEmail.getText().toString()))
+            errorMessage = R.string.enter_valid_email;
         /*else if (TextUtils.isEmpty(countryId))
             errorMessage = R.string.select_a_country;*/
         else if ((TextUtils.isEmpty(latitude) || TextUtils.isEmpty(longitude))

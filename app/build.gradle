@@ -18,6 +18,10 @@ def stableDebugKeystorePath = (project.findProperty('sabkuchDebugKeystore')
         ?: System.getenv('SABKUCH_DEBUG_KEYSTORE')
         ?: 'E:/BatoBuzzBuildCache/AndroidUserHome/debug.keystore').toString()
 def stableDebugKeystore = file(stableDebugKeystorePath)
+def releaseKeystorePath = project.findProperty('sabkuchReleaseKeystore') ?: System.getenv('SABKUCH_RELEASE_KEYSTORE')
+def releaseKeystorePassword = project.findProperty('sabkuchReleaseStorePassword') ?: System.getenv('SABKUCH_RELEASE_STORE_PASSWORD')
+def releaseKeyAlias = project.findProperty('sabkuchReleaseKeyAlias') ?: System.getenv('SABKUCH_RELEASE_KEY_ALIAS')
+def releaseKeyPassword = project.findProperty('sabkuchReleaseKeyPassword') ?: System.getenv('SABKUCH_RELEASE_KEY_PASSWORD')
 
 android {
     namespace = 'vedam.subkuch'
@@ -34,13 +38,21 @@ android {
                 keyPassword 'android'
             }
         }
+        release {
+            if (releaseKeystorePath) {
+                storeFile file(releaseKeystorePath)
+                storePassword releaseKeystorePassword
+                keyAlias releaseKeyAlias
+                keyPassword releaseKeyPassword
+            }
+        }
     }
     defaultConfig {
         applicationId "vedam.subkuch"
         minSdk = 26
         targetSdk = 36
-        versionCode = 76
-        versionName = "1.7"
+        versionCode = 62
+        versionName = "1.0.22"
         multiDexEnabled = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -55,7 +67,7 @@ android {
     }
     buildTypes {
         release {
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled = true
             shrinkResources = true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'

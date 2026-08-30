@@ -8,9 +8,9 @@ public class RegistrationMasterOption {
     private String name;
     @SerializedName(value = "CountryId", alternate = {"Countryid", "countryid"})
     private Integer countryId;
-    @SerializedName(value = "StateId", alternate = {"stateid"})
+    @SerializedName(value = "StateId", alternate = {"stateid", "stateId"})
     private Integer stateId;
-    @SerializedName(value = "DistrictId", alternate = {"districtid", "CityId", "Cityid"})
+    @SerializedName(value = "DistrictId", alternate = {"districtid", "districtId", "CityId", "Cityid", "cityId"})
     private Integer districtId;
     @SerializedName(value = "LanguageId", alternate = {"languageid"})
     private Integer languageId;

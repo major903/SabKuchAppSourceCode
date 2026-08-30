@@ -5,6 +5,7 @@ public class NetworkConstants {
     public static final String WEB_SOCKET_END_POINT = "ws://sabkuch4.sabkuchworld.com/api/SabkuchChat/Get";
     public static final String END_POINT = "https://sabkuch.sabkuchworld.com";
     public static final String END_POINT2 = "https://api.sabkuchworld.com";
+    public static final String SABKUCH2_END_POINT = "https://sabkuch2.sabkuchworld.com";
     public static final String JOB_END_POINT = "https://api.sabkuchworld.com";
     public static final String END_POINT4 = "https://sabkuch5.sabkuchworld.com/api";
     public static final String Authorization = "Authorization";

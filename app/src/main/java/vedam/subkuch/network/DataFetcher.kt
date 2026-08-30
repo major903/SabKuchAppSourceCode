@@ -44,7 +44,7 @@ object DataFetcher {
         repClass: Class<T>?,
         errorListener: Response.ErrorListener?
     ) {
-        val url = registrationUrl("Users/update")
+        val url = registrationUrl("UserProfile/EditProfile")
         NetworkGateway.callApiWithBody(
             context,
             url,
@@ -209,7 +209,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url =
-            String.format("%s/api/JobsOld/Directory/GetCategories", NetworkConstants.END_POINT2)
+            String.format("%s/api/JobsOld/Directory/GetCategories", NetworkConstants.SABKUCH2_END_POINT)
         NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
@@ -223,7 +223,7 @@ object DataFetcher {
     ) {
         val url = String.format(
             "%s/api/JobsOld/Directory/SearchBusinesses?SearchText=%s",
-            NetworkConstants.END_POINT2, searchTerm ?: ""
+            NetworkConstants.SABKUCH2_END_POINT, searchTerm ?: ""
         )
         NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
@@ -238,7 +238,7 @@ object DataFetcher {
     ) {
         val url = String.format(
             "%s/api/JobsOld/Directory/GetSubCategories?CategoryId=%s",
-            NetworkConstants.END_POINT2,
+            NetworkConstants.SABKUCH2_END_POINT,
             categoryId
         )
         NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
@@ -321,7 +321,7 @@ object DataFetcher {
         errorListener: Response.ErrorListener?
     ) {
         val url =
-            String.format("%s/api/PublicUtility/GetSubCategories", NetworkConstants.END_POINT2)
+            String.format("%s/api/PublicUtility/GetSubCategories", NetworkConstants.SABKUCH2_END_POINT)
         NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
     }
 
@@ -339,7 +339,7 @@ object DataFetcher {
     ) {
         val url = String.format(Locale.US,
             "%s/api/JobsOld/Directory/GetBusiness?SubCategoryCityId=%s&CategoryId=%s&PageIndex=%d&PageSize=%d",
-            NetworkConstants.END_POINT2,
+            NetworkConstants.SABKUCH2_END_POINT,
             subCategoryId,
             categoryId,
             pageIndex,
@@ -363,7 +363,7 @@ object DataFetcher {
         val url = String.format(
             Locale.US,
             "%s/api/PublicUtility/GetPublicUtilities?SubCategoryCityId=%s&UserId=%s&PageIndex=%d&PageSize=%d",
-            NetworkConstants.END_POINT2,
+            NetworkConstants.SABKUCH2_END_POINT,
             subCategoryId,
             userId,
             pageIndex,
@@ -465,7 +465,7 @@ object DataFetcher {
         repClass: Class<T>?,
         errorListener: Response.ErrorListener?
     ) {
-        val url = String.format("%s/Directory/ReviewRating", NetworkConstants.END_POINT2)
+        val url = String.format("%s/Directory/ReviewRating", NetworkConstants.SABKUCH2_END_POINT)
         NetworkGateway.callApiWithBody(
             context,
             url,
@@ -485,7 +485,7 @@ object DataFetcher {
         repClass: Type?,
         errorListener: Response.ErrorListener?
     ) {
-        val url = String.format("%s/api/JobsOld/Directory/AddBusiness", NetworkConstants.END_POINT2)
+        val url = String.format("%s/api/JobsOld/Directory/AddBusiness", NetworkConstants.SABKUCH2_END_POINT)
         NetworkGateway.callApiWithBody(
             context,
             url,
@@ -736,22 +736,6 @@ object DataFetcher {
         val userId = AppPrefs.getPrefsUserId(context)
         val url = String.format(
             "%s/api/Inbox/GetInbox?UserProfileId=%s",
-            NetworkConstants.END_POINT2,
-            userId
-        )
-        NetworkGateway.callGetApi(context, url, null, updateSuccessListener, repClass, errorListener)
-    }
-
-    @JvmStatic
-    fun <T> getProfile(
-        context: Context?,
-        updateSuccessListener: Response.Listener<T>?,
-        repClass: Class<T>?,
-        errorListener: Response.ErrorListener?
-    ) {
-        val userId = AppPrefs.getPrefsUserId(context)
-        val url = String.format(
-            "%s/api/UserProfile/ViewProfile?ProfileId=%s",
             NetworkConstants.END_POINT2,
             userId
         )

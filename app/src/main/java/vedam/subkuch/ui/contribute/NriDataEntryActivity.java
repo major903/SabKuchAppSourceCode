@@ -1,6 +1,7 @@
 package vedam.subkuch.ui.contribute;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,6 +17,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.reflect.TypeToken;
+import com.hbb20.CountryCodePicker;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,6 +25,7 @@ import retrofit2.Response;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import vedam.subkuch.R;
 import vedam.subkuch.base.BaseActivity;
@@ -31,10 +34,12 @@ import vedam.subkuch.network.RegistrationMasterCache;
 import vedam.subkuch.network.models.DataEntryListResponse;
 import vedam.subkuch.network.models.DataNriRequest;
 import vedam.subkuch.network.models.NriListItem;
+import vedam.subkuch.network.models.Profile;
 import vedam.subkuch.network.models.RegistrationMasterOption;
 import vedam.subkuch.network.models.RegistrationMasterResponse;
 import vedam.subkuch.ui.jobs.models.AddResponse;
 import vedam.subkuch.utils.AppPrefs;
+import vedam.subkuch.utils.AppUtil;
 import vedam.subkuch.utils.UiUtil;
 
 /** Form for the DataNRI/AddDataNRI contribution API. */
@@ -49,8 +54,14 @@ public class NriDataEntryActivity extends BaseActivity {
     private ScrollView svForm;
     private Spinner spCountry;
     private Button btSubmit;
+    private TextView tvGreeting;
+    private TextView tvNotice;
     private TextView tvNoDataEntries;
     private LinearLayout llDataEntries;
+    private CountryCodePicker ccpCountryCode;
+    private String countryCode;
+    private boolean syncingCountryPicker;
+    private final ArrayList<RegistrationMasterOption> countryOptions = new ArrayList<>();
     private boolean hasCachedEntries;
     private Integer countryId;
     private boolean isSubmitting;
@@ -62,9 +73,18 @@ public class NriDataEntryActivity extends BaseActivity {
         setContentView(R.layout.activity_nri_data_entry);
         setTitle(R.string.submit_nri_data);
         setToolbarBackButton();
-        String userName = AppPrefs.getPrefsUserName(this).trim();
-        ((TextView) findViewById(R.id.tv_name)).setText(getString(R.string.contribute_greeting,
-                userName.isEmpty() ? getString(R.string.contributor) : userName));
+        tvGreeting = findViewById(R.id.tv_name);
+        tvNotice = findViewById(R.id.tv_notice);
+        String contribNotice = getIntent().getStringExtra(ContributeActivity.EXTRA_CONTRIB_DETAIL);
+        if (TextUtils.isEmpty(contribNotice)) {
+            contribNotice = getSharedPreferences(ContributeActivity.CONTRIB_PREFS, MODE_PRIVATE)
+                    .getString("key_detail_" + ContributeActivity.CONTRIB_ID_NRI, null);
+        }
+        if (!TextUtils.isEmpty(contribNotice) && tvNotice != null) {
+            tvNotice.setText(contribNotice);
+        }
+        setGreeting("");
+        loadGreeting();
         etName = findViewById(R.id.et_name);
         etNativePlace = findViewById(R.id.et_native_place);
         etMobile = findViewById(R.id.et_mobile);
@@ -74,6 +94,8 @@ public class NriDataEntryActivity extends BaseActivity {
         btSubmit = findViewById(R.id.bt_submit);
         tvNoDataEntries = findViewById(R.id.tv_no_data_entries);
         llDataEntries = findViewById(R.id.ll_data_entries);
+        ccpCountryCode = findViewById(R.id.ccp_country_code);
+        configurePhoneCountryCodePicker();
         bindCountrySpinner(new ArrayList<>());
         bindSpinnerKeyboardDismissal();
         configureKeyboardScrolling();
@@ -86,6 +108,30 @@ public class NriDataEntryActivity extends BaseActivity {
         loadCountries();
         hasCachedEntries = showCachedEntries();
         loadEntries();
+    }
+
+    /** Loads the greeting from the current user-profile API instead of saved display data. */
+    private void loadGreeting() {
+        if (!RegistrationApiClient.isConfigured()) return;
+        RegistrationApiClient.getApi(this).getCurrentUserProfile().enqueue(new Callback<Profile>() {
+            @Override
+            public void onResponse(Call<Profile> call, Response<Profile> response) {
+                if (isFinishing() || isDestroyed() || !response.isSuccessful()
+                        || response.body() == null) return;
+                Profile profile = response.body();
+                setGreeting(AppUtil.getFullName(profile.getFirstName(), profile.getLastName()));
+            }
+
+            @Override
+            public void onFailure(Call<Profile> call, Throwable throwable) {
+                // Leave the generic greeting in place when the profile service is unavailable.
+            }
+        });
+    }
+
+    private void setGreeting(String name) {
+        String displayName = TextUtils.isEmpty(name) ? getString(R.string.contributor) : name;
+        tvGreeting.setText(getString(R.string.contribute_greeting, displayName));
     }
 
     private void loadEntries() {
@@ -228,25 +274,141 @@ public class NriDataEntryActivity extends BaseActivity {
                 });
     }
 
+    private void configurePhoneCountryCodePicker() {
+        if (ccpCountryCode == null) return;
+        ccpCountryCode.setDefaultCountryUsingNameCode("AE");
+        ccpCountryCode.resetToDefaultCountry();
+        ccpCountryCode.setOnCountryChangeListener(() -> {
+            if (syncingCountryPicker) return;
+            String selectedName = ccpCountryCode.getSelectedCountryName();
+            String selectedNameCode = ccpCountryCode.getSelectedCountryNameCode();
+            String selectedCode = ccpCountryCode.getSelectedCountryCode();
+
+            // 1. First attempt: match by exact country name or name code
+            for (int index = 1; index < countryOptions.size(); index++) {
+                RegistrationMasterOption country = countryOptions.get(index);
+                if (country.getName() != null && (
+                        country.getName().equalsIgnoreCase(selectedName) ||
+                        country.getName().equalsIgnoreCase(selectedNameCode))) {
+                    applyCountrySelection(index, country);
+                    return;
+                }
+            }
+
+            // 2. Second attempt: match by partial country name
+            for (int index = 1; index < countryOptions.size(); index++) {
+                RegistrationMasterOption country = countryOptions.get(index);
+                if (country.getName() != null && (
+                        country.getName().toLowerCase(Locale.ROOT).contains(selectedName.toLowerCase(Locale.ROOT)) ||
+                        selectedName.toLowerCase(Locale.ROOT).contains(country.getName().toLowerCase(Locale.ROOT)))) {
+                    applyCountrySelection(index, country);
+                    return;
+                }
+            }
+
+            // 3. Fallback: match by dial code
+            for (int index = 1; index < countryOptions.size(); index++) {
+                RegistrationMasterOption country = countryOptions.get(index);
+                if (selectedCode.equals(normalizeCountryCode(country.getCountryCode()))) {
+                    applyCountrySelection(index, country);
+                    return;
+                }
+            }
+        });
+    }
+
+    private void applyCountrySelection(int index, RegistrationMasterOption country) {
+        try {
+            syncingCountryPicker = true;
+            spCountry.setSelection(index);
+            countryId = country.getId();
+            countryCode = country.getCountryCode();
+        } finally {
+            syncingCountryPicker = false;
+        }
+    }
+
+    private void syncPhoneCountryCodePicker(String countryName, String value) {
+        if (ccpCountryCode == null) return;
+        try {
+            syncingCountryPicker = true;
+            boolean set = false;
+            if (!TextUtils.isEmpty(countryName)) {
+                String iso = getIsoCodeForCountryName(countryName);
+                if (!TextUtils.isEmpty(iso)) {
+                    ccpCountryCode.setCountryForNameCode(iso);
+                    set = true;
+                }
+            }
+            if (!set && !TextUtils.isEmpty(value)) {
+                String code = normalizeCountryCode(value);
+                ccpCountryCode.setCountryForPhoneCode(Integer.parseInt(code));
+            }
+        } catch (Exception ignored) {
+        } finally {
+            syncingCountryPicker = false;
+        }
+    }
+
+    private String getIsoCodeForCountryName(String countryName) {
+        if (TextUtils.isEmpty(countryName)) return null;
+        if ("United States".equalsIgnoreCase(countryName) || "USA".equalsIgnoreCase(countryName)) return "US";
+        if ("United Kingdom".equalsIgnoreCase(countryName) || "UK".equalsIgnoreCase(countryName)) return "GB";
+        if ("United Arab Emirates".equalsIgnoreCase(countryName) || "UAE".equalsIgnoreCase(countryName)) return "AE";
+        for (String iso : Locale.getISOCountries()) {
+            Locale l = new Locale.Builder().setRegion(iso).build();
+            if (l.getDisplayCountry(Locale.ENGLISH).equalsIgnoreCase(countryName)
+                    || l.getDisplayCountry().equalsIgnoreCase(countryName)) {
+                return iso;
+            }
+        }
+        return null;
+    }
+
+    private String normalizeCountryCode(String value) {
+        if (TextUtils.isEmpty(value)) return "971";
+        return value.startsWith("+") ? value.substring(1) : value;
+    }
+
     private void bindCountrySpinner(List<RegistrationMasterOption> values) {
         ArrayList<RegistrationMasterOption> options = new ArrayList<>();
         options.add(RegistrationMasterOption.placeholder(getString(R.string.select_a_country)));
         options.addAll(values);
+        countryOptions.clear();
+        countryOptions.addAll(options);
+        Integer previousCountryId = countryId;
         spCountry.setAdapter(new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, options));
         spCountry.setOnItemSelectedListener(new SimpleItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                countryId = position == 0 ? null
-                        : ((RegistrationMasterOption) parent.getItemAtPosition(position)).getId();
+                if (syncingCountryPicker) return;
+                RegistrationMasterOption country = position == 0 ? null
+                        : ((RegistrationMasterOption) parent.getItemAtPosition(position));
+                countryId = country == null ? null : country.getId();
+                countryCode = country == null ? null : country.getCountryCode();
+                if (country != null) {
+                    syncPhoneCountryCodePicker(country.getName(), countryCode);
+                }
             }
         });
+        if (previousCountryId != null) {
+            for (int i = 1; i < options.size(); i++) {
+                if (options.get(i).getId() == previousCountryId) {
+                    spCountry.setSelection(i);
+                    break;
+                }
+            }
+        }
     }
 
     private int validateForm() {
         if (etName.getText().toString().trim().isEmpty()) return R.string.enter_name;
         if (countryId == null) return R.string.select_a_country;
-        if (etMobile.getText().toString().trim().isEmpty()) return R.string.enter_mobile;
+        String mobile = etMobile.getText().toString().trim().replaceAll("[^0-9]", "");
+        if (mobile.length() != 10) {
+            return R.string.enter_mobile;
+        }
         return 0;
     }
 
@@ -254,11 +416,15 @@ public class NriDataEntryActivity extends BaseActivity {
         isSubmitting = true;
         btSubmit.setEnabled(false);
         UiUtil.showProgressDialog(this, getString(R.string.please_wait));
+        String cleanMobile = etMobile.getText().toString().trim().replaceAll("[^0-9]", "");
+        if (cleanMobile.length() > 10 && cleanMobile.startsWith("0")) {
+            cleanMobile = cleanMobile.substring(1);
+        }
         DataNriRequest request = new DataNriRequest(getCurrentUserId(),
                 etName.getText().toString().trim(), countryId,
                 etNativePlace.getText().toString().trim(),
-                etMobile.getText().toString().trim(),
-                etDetails.getText().toString().trim());
+                cleanMobile,
+                etDetails != null && etDetails.getText() != null ? etDetails.getText().toString().trim() : "");
         if (!RegistrationApiClient.isConfigured()) {
             UiUtil.cancelProgressDialog();
             resetSubmittingState();
@@ -299,7 +465,14 @@ public class NriDataEntryActivity extends BaseActivity {
         etName.setText("");
         etNativePlace.setText("");
         etMobile.setText("");
-        etDetails.setText("");
+        if (etDetails != null) etDetails.setText("");
+        if (spCountry != null && spCountry.getAdapter() != null && spCountry.getAdapter().getCount() > 0) {
+            spCountry.setSelection(0);
+        }
+        countryId = null;
+        if (ccpCountryCode != null) {
+            ccpCountryCode.resetToDefaultCountry();
+        }
         etName.requestFocus();
     }
 

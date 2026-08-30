@@ -150,6 +150,7 @@ public class TransferActivity extends BaseActivity {
         return response != null && (
                 response.isSuccess()
                         || response.isStatus()
+                        || response.getReturnCode() == 1
                         || Constants.SUCCESS.equalsIgnoreCase(response.getReturnMessage())
         );
     }

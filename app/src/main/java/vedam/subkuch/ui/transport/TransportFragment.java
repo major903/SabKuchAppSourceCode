@@ -2,6 +2,7 @@ package vedam.subkuch.ui.transport;
 
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,7 @@ import vedam.subkuch.base.BaseFragment;
 import vedam.subkuch.databinding.FragmentTransportBinding;
 import vedam.subkuch.helpers.Constants;
 import vedam.subkuch.network.DataFetcher;
-import vedam.subkuch.network.models.ProfileResponse;
+import vedam.subkuch.network.models.Profile;
 import vedam.subkuch.utils.UiUtil;
 
 /**
@@ -55,16 +56,15 @@ public class TransportFragment extends BaseFragment {
 
     private void getUserTypeId() {
         UiUtil.showProgressDialog(mContext, getString(R.string.loading));
-        DataFetcher.getProfile(mContext, onProfileSuccessListener, ProfileResponse.class, onErrorListener);
+        DataFetcher.getUserProfile(mContext, onProfileSuccessListener, Profile.class, onErrorListener);
 
     }
 
-    private Response.Listener<ProfileResponse> onProfileSuccessListener = response -> {
+    private Response.Listener<Profile> onProfileSuccessListener = response -> {
         UiUtil.cancelProgressDialog();
         if (getActivity() != null)
-            if (response != null && response.getReturnMessage().equals(Constants.SUCCESS) &&
-                    response.getReturnData() != null && response.getReturnData().size() > 0) {
-                userTypeId = response.getReturnData().get(0).getUserTypeId();
+            if (response != null && !TextUtils.isEmpty(response.getProfileId())) {
+                userTypeId = response.getUserTypeId();
             } else {
                 UiUtil.showToast(mContext, getString(R.string.err_occurred));
             }

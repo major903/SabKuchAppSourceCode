@@ -89,29 +89,16 @@
                     android:padding="12dp"
                     android:src="@drawable/ic_contribute_company" />
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tv_company_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-medium"
-                        android:text="@string/submit_company_data"
-                        android:textColor="@color/form_text_primary"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="@string/submit_company_data_subtitle"
-                        android:textColor="@color/form_text_secondary"
-                        android:textSize="13sp" />
-                </LinearLayout>
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/submit_company_data"
+                    android:textColor="@color/form_text_primary"
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:layout_width="20dp"
@@ -142,29 +129,16 @@
                     android:padding="12dp"
                     android:src="@drawable/ic_contribute_nri" />
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tv_nri_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-medium"
-                        android:text="@string/submit_nri_data"
-                        android:textColor="@color/form_text_primary"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="@string/submit_nri_data_subtitle"
-                        android:textColor="@color/form_text_secondary"
-                        android:textSize="13sp" />
-                </LinearLayout>
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/submit_nri_data"
+                    android:textColor="@color/form_text_primary"
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:layout_width="20dp"
@@ -195,29 +169,16 @@
                     android:padding="12dp"
                     android:src="@drawable/ic_contribute_real_estate" />
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tv_real_estate_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-medium"
-                        android:text="@string/submit_real_estate_lead"
-                        android:textColor="@color/form_text_primary"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="@string/submit_real_estate_lead_subtitle"
-                        android:textColor="@color/form_text_secondary"
-                        android:textSize="13sp" />
-                </LinearLayout>
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/submit_real_estate_lead"
+                    android:textColor="@color/form_text_primary"
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:layout_width="20dp"

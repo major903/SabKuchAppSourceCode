@@ -75,7 +75,7 @@
     <string name="select_a_district">Select a district</string>
     <string name="contributor">Contributor</string>
     <string name="contribute_greeting">Hello, %1$s</string>
-    <string name="contribute_data_notice">Enter a unique data. Any fake data you submit will result in a penalty of 100 to 1000 Vedam Coins.</string>
+    <string name="contribute_data_notice">Submit useful data to encash Vedam Coins</string>
     <string name="submit_data">Submit Data</string>
     <string name="submit_location">Submit Location</string>
     <string name="submit_real_estate_lead">Submit Real Estate Lead</string>
@@ -86,7 +86,7 @@
     <string name="submit_real_estate_lead_subtitle">Share a property or plot lead</string>
     <string name="contribute_sheet_subtitle">Choose what you want to submit</string>
     <string name="contribute_hero_title">Contribute &amp; Earn</string>
-    <string name="contribute_hero_subtitle">Submit useful data and earn Vedam Coins</string>
+    <string name="contribute_hero_subtitle">Submit useful data to encash Vedam Coins</string>
     <string name="select_estate_type">Select estate type</string>
     <string name="real_estate">Real Estate</string>
     <string name="real_estate_listings">Real Estate</string>
@@ -94,7 +94,7 @@
     <string name="real_estate_listings_error">Unable to load listings. Please try again later.</string>
     <string name="full_name">Name</string>
     <string name="enter_name">Enter name</string>
-    <string name="native_place">Native place</string>
+    <string name="native_place">Native Place</string>
     <string name="mobile_1">Mobile 1</string>
     <string name="mobile_2">Mobile 2</string>
     <string name="data_submitted">Thank you! Data added to our Database</string>

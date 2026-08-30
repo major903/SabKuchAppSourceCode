@@ -37,8 +37,8 @@
 -keep class vedam.subkuch.db.chat.** { *; }
 -keepclassmembers public class vedam.subkuch.db.chat.** { *; }
 
--keep class vedam.subkuch.network.models.** { *; }
--keepclassmembers public class vedam.subkuch.network.models.** { *; }
+-keep class vedam.subkuch.network.** { *; }
+-keepclassmembers class vedam.subkuch.network.** { *; }
 
 -keep class vedam.subkuch.update.** { *; }
 

@@ -30,7 +30,7 @@ import vedam.subkuch.network.DataFetcher;
 import vedam.subkuch.network.WebServices;
 import vedam.subkuch.network.models.OtpResponse;
 import vedam.subkuch.network.models.Profile;
-import vedam.subkuch.network.models.ProfileResponse;
+import vedam.subkuch.network.models.RegistrationResponse;
 import vedam.subkuch.network.models.RegistrationRequest;
 import vedam.subkuch.network.models.VerifyOtpResponse;
 import vedam.subkuch.utils.AppPrefs;
@@ -167,7 +167,8 @@ public class VerificationActivity extends BaseActivity {
                 parseRequiredId(getIntent().getStringExtra(Constants.EXTRA_STATE_ID)),
                 parseRequiredId(getIntent().getStringExtra(Constants.EXTRA_LANGUAGE_ID)),
                 parseRequiredId(profile.getCountryid()));
-        DataFetcher.registerUser(this, new Gson().toJson(request), onRegisterUserSuccessListener, ProfileResponse.class, onErrorListener);
+        DataFetcher.registerUser(this, new Gson().toJson(request), onRegisterUserSuccessListener,
+                RegistrationResponse.class, onErrorListener);
     }
 
     private int parseRequiredId(String value) {
@@ -243,15 +244,40 @@ public class VerificationActivity extends BaseActivity {
         return token.regionMatches(true, 0, "Bearer ", 0, 7) ? token : "Bearer " + token;
     }
 
-    private Response.Listener<ProfileResponse> onRegisterUserSuccessListener = response -> {
+    private Response.Listener<RegistrationResponse> onRegisterUserSuccessListener = response -> {
 
         UiUtil.cancelProgressDialog();
-        if (response != null && Constants.SUCCESS.equals(response.getReturnMessage())
-                && response.getReturnData() != null && !response.getReturnData().isEmpty()) {
-            handleResponse(response.getReturnData().get(0));
-        } else
+        if (response != null && !TextUtils.isEmpty(response.getUserId())
+                && !TextUtils.isEmpty(response.getAuthenticationResult())) {
+            handleRegistrationResponse(response);
+        } else {
             UiUtil.showToast(VerificationActivity.this, getString(R.string.err_occurred));
+        }
     };
+
+    private void handleRegistrationResponse(RegistrationResponse response) {
+        String bearer = normalizeBearer(response.getAuthenticationResult());
+        if (TextUtils.isEmpty(bearer)) {
+            UiUtil.showToast(this, getString(R.string.err_occurred));
+            return;
+        }
+
+        SharedPreferences.Editor editor = AppPrefs.getInstance(this).getSharedPreferences().edit();
+        editor.putBoolean(PREFS_IF_USER_LOGGED_IN, true);
+        editor.putString(PREFS_USER_ID, response.getUserId());
+        editor.putString(PREFS_TOKEN, bearer);
+        editor.putString(PREFS_USER_NAME,
+                AppUtil.getFullName(profile.getFirstName(), profile.getLastName()));
+        editor.putInt(AppPrefs.PREFS_USER_GENDER, getGenderCode(profile.getGender()));
+        editor.putString(PREFS_IS_REFERRAL_DONE, String.valueOf(true));
+        editor.apply();
+
+        WebServices.getInstance().setBearer(bearer);
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        UiUtil.showToast(this, getString(R.string.user_registered_successfully));
+    }
 
     private void handleResponse(Profile receivedProfile) {
 

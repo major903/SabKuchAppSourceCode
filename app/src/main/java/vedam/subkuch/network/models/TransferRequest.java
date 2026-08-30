@@ -1,13 +1,17 @@
 package vedam.subkuch.network.models;
 
+import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
 
 public class TransferRequest {
-    private String ReceiverPhoneNumber;
+    @SerializedName(value = "ReceiverMobile", alternate = {"ReceiverPhoneNumber"})
+    private String ReceiverMobile;
+
+    @SerializedName("Coins")
     private BigDecimal Coins;
 
     public void setReceiverPhoneNumber(String receiverPhoneNumber) {
-        ReceiverPhoneNumber = receiverPhoneNumber;
+        ReceiverMobile = receiverPhoneNumber;
     }
 
     public void setCoins(BigDecimal coins) {

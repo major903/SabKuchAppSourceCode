@@ -259,8 +259,24 @@ public class RegisterUserActivity extends BaseActivity {
         activityRegisterUserBinding.spCity.setOnItemSelectedListener(new SimpleItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                cityId = position == 0 ? null : String.valueOf(
-                        ((RegistrationMasterOption) parent.getItemAtPosition(position)).getId());
+                if (position == 0) {
+                    cityId = null;
+                    return;
+                }
+                RegistrationMasterOption selectedDistrict =
+                        (RegistrationMasterOption) parent.getItemAtPosition(position);
+                cityId = String.valueOf(selectedDistrict.getId());
+                if (stateId == null && selectedDistrict.getStateId() != null) {
+                    String matchingStateId = String.valueOf(selectedDistrict.getStateId());
+                    for (int i = 1; i < activityRegisterUserBinding.spState.getCount(); i++) {
+                        RegistrationMasterOption stateOption =
+                                (RegistrationMasterOption) activityRegisterUserBinding.spState.getItemAtPosition(i);
+                        if (matchingStateId.equals(String.valueOf(stateOption.getId()))) {
+                            activityRegisterUserBinding.spState.setSelection(i);
+                            break;
+                        }
+                    }
+                }
             }
         });
     }
@@ -284,7 +300,7 @@ public class RegisterUserActivity extends BaseActivity {
         ArrayList<RegistrationMasterOption> filtered = new ArrayList<>();
         for (RegistrationMasterOption option : districts) {
             boolean countryMatches = option.getCountryId() == null || countryId != null && countryId.equals(String.valueOf(option.getCountryId()));
-            boolean stateMatches = option.getStateId() == null || stateId != null && stateId.equals(String.valueOf(option.getStateId()));
+            boolean stateMatches = stateId == null || (option.getStateId() != null && stateId.equals(String.valueOf(option.getStateId())));
             if (countryMatches && stateMatches) filtered.add(option);
         }
         return filtered;
