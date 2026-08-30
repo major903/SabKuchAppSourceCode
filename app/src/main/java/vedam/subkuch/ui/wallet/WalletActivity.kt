@@ -105,6 +105,9 @@ class WalletActivity : BaseActivity() {
     private val onMyReferralSuccessListener = Response.Listener { response: MyReferralResponse? ->
         if (!requestStack.isEmpty()) requestStack.pop()
         myReferralResponse = response
+        // A fresh response must start on the first page. Otherwise a refresh after the
+        // list has been expanded can leave the pagination control in the wrong state.
+        areReferralsExpanded = false
         checkFlagAndLoadUI()
     }
 
@@ -200,6 +203,7 @@ class WalletActivity : BaseActivity() {
         binding.tvReferralHeading.visibility = View.GONE
         binding.rlSubContainer.visibility = View.VISIBLE
         binding.rlSubContainer.setOnClickListener(null)
+        binding.llReferralToggle.setOnClickListener(null)
 
         if (referrals.isEmpty()) {
             referralsAdapter.submitList(emptyList())
@@ -223,7 +227,7 @@ class WalletActivity : BaseActivity() {
 
         if (!canExpand) {
             binding.llReferralToggle.visibility = View.GONE
-            binding.rlSubContainer.setOnClickListener(null)
+            binding.llReferralToggle.setOnClickListener(null)
             return
         }
 
@@ -243,7 +247,10 @@ class WalletActivity : BaseActivity() {
         } else {
             getString(R.string.show_all_referrals, referrals.size)
         }
-        binding.rlSubContainer.setOnClickListener {
+        // Keep pagination on its explicit control. RecyclerView consumes its own touch
+        // events, so putting this listener on the surrounding container makes expanding
+        // unreliable when the list is tapped.
+        binding.llReferralToggle.setOnClickListener {
             areReferralsExpanded = !areReferralsExpanded
             renderReferralNames(referrals)
         }

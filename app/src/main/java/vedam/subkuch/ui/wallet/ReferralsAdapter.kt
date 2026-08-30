@@ -28,8 +28,20 @@ class ReferralsAdapter : ListAdapter<MyReferral, ReferralsAdapter.ViewHolder>(DI
 
     private companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MyReferral>() {
-            override fun areItemsTheSame(oldItem: MyReferral, newItem: MyReferral): Boolean =
-                oldItem.refferalCode == newItem.refferalCode
+            override fun areItemsTheSame(oldItem: MyReferral, newItem: MyReferral): Boolean {
+                val oldCode = oldItem.refferalCode
+                val newCode = newItem.refferalCode
+
+                // Some referral responses do not include a referral code. Treating two
+                // missing codes as the same item causes DiffUtil to drop or reuse rows as
+                // the visible page grows. The same object is safe to retain between pages;
+                // otherwise let DiffUtil insert a distinct row.
+                return if (oldCode.isNullOrBlank() || newCode.isNullOrBlank()) {
+                    oldItem === newItem
+                } else {
+                    oldCode == newCode
+                }
+            }
 
             override fun areContentsTheSame(oldItem: MyReferral, newItem: MyReferral): Boolean =
                 oldItem.firstName == newItem.firstName &&
