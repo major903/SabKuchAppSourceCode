@@ -269,7 +269,10 @@ public class VerificationActivity extends BaseActivity {
         editor.putString(PREFS_USER_NAME,
                 AppUtil.getFullName(profile.getFirstName(), profile.getLastName()));
         editor.putInt(AppPrefs.PREFS_USER_GENDER, getGenderCode(profile.getGender()));
-        editor.putString(PREFS_IS_REFERRAL_DONE, String.valueOf(true));
+        // A newly registered user still needs the Play install referrer linked.
+        // If the server reports an existing account, do not allow it to be re-linked.
+        editor.putString(PREFS_IS_REFERRAL_DONE,
+                String.valueOf(response.isAlreadyRegistered()));
         editor.apply();
 
         WebServices.getInstance().setBearer(bearer);

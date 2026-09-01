@@ -46,10 +46,7 @@ class JobsAdapter constructor(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val job = jobs[position]
         holder.tvOrganisation.text = job.organisationName
-        val distance = job.distance
-            ?.trim()
-            ?.takeIf { it.isNotEmpty() }
-            ?.let(::formatApiDistance)
+        val distance = resolveDistance(job)?.let(::formatApiDistance)
         holder.tvDistance.visibility = if (distance == null) View.GONE else View.VISIBLE
         holder.tvDistance.text = distance.orEmpty()
         UiUtil.setTextView("Dealing in : ", job.dealingIn, holder.tvDealsIn)
@@ -109,6 +106,11 @@ class JobsAdapter constructor(
         distanceKm < 1 -> "${(distanceKm * METERS_PER_KILOMETRE).toInt()} m away"
         else -> String.format(Locale.US, "%.1f km away", distanceKm)
     }
+
+    private fun resolveDistance(job: Job): String? = sequenceOf(job.distance)
+        .plus(job.posts.orEmpty().asSequence().map { it.distance })
+        .mapNotNull { it?.trim()?.takeIf(String::isNotEmpty) }
+        .firstOrNull()
 
     /**
      * The Jobs query supplies this value for the signed-in user. Retain its text when

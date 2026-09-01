@@ -887,6 +887,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 } catch (e: Exception) {
                     e.printStackTrace()
                     FirebaseCrashlytics.getInstance().recordException(e)
+                    endConnection()
                 }
             }
             InstallReferrerResponse.FEATURE_NOT_SUPPORTED -> {}
@@ -901,26 +902,36 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         )
     }
 
-    private fun addReferralCode(referrerCode: String) {
-        if (!TextUtils.isEmpty(referrerCode) && !referrerCode.startsWith("utm")) {
-            val referralRequest = ReferralRequest()
-            referralRequest.setProfileId(AppPrefs.getPrefsUserId(this))
-            referralRequest.setReferredBy(referrerCode)
-            addReferral(
-                this,
-                Gson().toJson(referralRequest),
-                onAddReferralSuccessListener,
-                AddResponse::class.java,
-                onErrorListener
-            )
+    private fun addReferralCode(installReferrer: String) {
+        val referralCode = ReferralCodeParser.extract(installReferrer)
+        if (referralCode == null) {
+            completeReferralHandling()
+            return
         }
+
+        val referralRequest = ReferralRequest()
+        referralRequest.setProfileId(AppPrefs.getPrefsUserId(this))
+        referralRequest.setReferredBy(referralCode)
+        addReferral(
+            this,
+            Gson().toJson(referralRequest),
+            onAddReferralSuccessListener,
+            AddResponse::class.java,
+            onErrorListener
+        )
     }
 
     private val onAddReferralSuccessListener = Response.Listener { response: AddResponse? ->
         if (response != null && response.returnMessage == Constants.SUCCESS) {
-            AppPrefs.setPrefsIsReferralDone(this, Constants.TRUE)
+            completeReferralHandling()
+        } else {
             endConnection()
         }
+    }
+
+    private fun completeReferralHandling() {
+        AppPrefs.setPrefsIsReferralDone(this, Constants.TRUE)
+        endConnection()
     }
 
     override fun onDestroy() {
