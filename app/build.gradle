@@ -9,7 +9,7 @@ plugins {
 
 def registrationApiBaseUrl = (project.findProperty('registrationApiBaseUrl') ?: 'https://api.sabkuchworld.com').toString().replace('"', '\\"')
 def registrationCompanyId = (project.findProperty('registrationCompanyId') ?: '').toString().replace('"', '\\"')
-def appUpdateManifestUrl = (project.findProperty('appUpdateManifestUrl') ?: 'https://raw.githubusercontent.com/major903/SabKuchApp-Updates/main/update.json').toString().replace('"', '\\"')
+def appUpdateManifestUrl = (project.findProperty('appUpdateManifestUrl') ?: 'https://raw.githubusercontent.com/major903/SabKuchAppSourceCode/main/update.json').toString().replace('"', '\\"')
 // Bunny Stream playback needs only a public Video Library ID. Keep privileged API keys on the server.
 def bunnyStreamLibraryId = (project.findProperty('bunnyStreamLibraryId') ?: '').toString().replace('"', '\\"')
 def mapsApiKey = (project.findProperty('mapsApiKey') ?: System.getenv('SABKUCH_MAPS_API_KEY') ?: '').toString().replace('"', '\\"')
